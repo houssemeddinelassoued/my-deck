@@ -1,0 +1,62 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+
+      - run: npm ci
+
+      # Pages serves the site from /<repo>/. open-slide reads `base` from
+      # open-slide.config.ts, so it is injected here on the CI checkout only:
+      # local `npm run dev` keeps serving from "/".
+      - name: Point the build at the Pages sub-path
+        env:
+          BASE_PATH: /${{ github.event.repository.name }}/
+        run: |
+          sed -i "s|OpenSlideConfig = {|OpenSlideConfig = { base: '${BASE_PATH}',|" open-slide.config.ts
+          grep -q "base: '${BASE_PATH}'" open-slide.config.ts || { echo "::error::could not set base in open-slide.config.ts"; exit 1; }
+
+      - run: npm run build
+        env:
+          OPEN_SLIDE_SKIP_SKILLS_CHECK: '1'
+
+      # Deep links such as /<repo>/s/ml-explique are client-side routes: serve the app for them too.
+      - name: SPA fallback
+        run: |
+          cp dist/index.html dist/404.html
+          touch dist/.nojekyll
+
+      - uses: actions/upload-pages-artifact@v5
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v5
