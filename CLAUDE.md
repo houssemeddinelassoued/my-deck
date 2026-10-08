@@ -9,6 +9,7 @@ You are authoring **slides** in this repo. Every slide is arbitrary React code t
 - Put slide-specific images/videos/fonts under `slides/<id>/assets/`. For assets reused across decks or themes (logos, avatars), use the global `assets/` folder and import via `@assets/...`.
 - Do **not** touch `package.json`, `open-slide.config.ts`, or other slides.
 - Do not add dependencies. Use only `react` and standard web APIs.
+- **One press = one step.** Every deck's `index.tsx` must contain the `// ─── One press = one step` block (copy it verbatim from any existing deck, right after the webfont/design block). It stops a held key or presenter-remote button from auto-repeating through several reveals. Keep it identical across decks; if you change it, change it in every deck.
 
 ## Which skill to use
 

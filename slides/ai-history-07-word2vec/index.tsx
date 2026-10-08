@@ -1,0 +1,1504 @@
+import {
+  type DesignSystem,
+  type Page,
+  type SlideMeta,
+  type SlideTransition,
+  Step,
+  Steps,
+  useIsActivePage,
+  useSlidePageNumber,
+} from '@open-slide/core';
+import type { CSSProperties, ReactNode } from 'react';
+import portrait from '@assets/Houssem.jpg';
+import imgMikolov from '@assets/ai-history/mikolov.jpg';
+import imgSchmidhuber from '@assets/ai-history/schmidhuber.jpg';
+
+export const design: DesignSystem = {
+  palette: { bg: '#ece3ce', text: '#27231d', accent: '#b0352a' },
+  fonts: {
+    display: '"Special Elite", "Courier New", monospace',
+    body: '"Courier Prime", "Courier New", monospace',
+  },
+  typeScale: { hero: 150, body: 32 },
+  radius: 4,
+};
+
+// ─── Webfonts (module-level, slide-keyed) ───────────────────────────────────
+const FONT_HREF =
+  'https://fonts.googleapis.com/css2?family=Caveat:wght@600&family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Special+Elite&display=swap';
+const FONT_LINK_ID = 'osd-webfont-ai-history-07-word2vec';
+if (typeof document !== 'undefined') {
+  let link = document.getElementById(FONT_LINK_ID) as HTMLLinkElement | null;
+  if (!link) {
+    link = document.createElement('link');
+    link.id = FONT_LINK_ID;
+    link.rel = 'stylesheet';
+    document.head.appendChild(link);
+  }
+  if (link.href !== FONT_HREF) link.href = FONT_HREF;
+}
+
+// ─── One press = one step ───────────────────────────────────────────────────
+// Holding an arrow key or a presenter-remote button makes the OS auto-repeat
+// keydown (and some remotes fire a burst of presses), which the player turns
+// into several reveals in a row. This capture-phase guard runs before the
+// player's own listener and lets exactly one press through per hold, with a
+// short cooldown. Installed once per window by whichever deck loads first —
+// keep this block identical in every deck.
+if (typeof window !== 'undefined') {
+  const w = window as Window & { __osdOnePressGuard?: boolean };
+  if (!w.__osdOnePressGuard) {
+    w.__osdOnePressGuard = true;
+    const NAV_KEYS = new Set(['ArrowRight', 'ArrowDown', ' ', 'PageDown', 'ArrowLeft', 'ArrowUp', 'PageUp']);
+    const COOLDOWN_MS = 350;
+    const held = new Set<string>();
+    let last = Number.NEGATIVE_INFINITY;
+    const isTyping = (t: EventTarget | null) =>
+      t instanceof HTMLElement && (t.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName));
+    window.addEventListener(
+      'keydown',
+      (e) => {
+        if (!NAV_KEYS.has(e.key) || isTyping(e.target)) return;
+        const k = e.code || e.key;
+        const now = performance.now();
+        if (e.repeat || held.has(k) || now - last < COOLDOWN_MS) {
+          e.preventDefault();
+          e.stopImmediatePropagation();
+          return;
+        }
+        held.add(k);
+        last = now;
+      },
+      true,
+    );
+    window.addEventListener('keyup', (e) => held.delete(e.code || e.key), true);
+    window.addEventListener('blur', () => held.clear());
+  }
+}
+
+// ─── Palette (1950s lab archive: manila paper, typewriter ink, stamp red) ───
+const ink = {
+  text: '#27231d',
+  soft: '#4d463b',
+  muted: '#7d7261',
+  faint: '#b1a48a',
+  rule: '#c9bb9c',
+  sheet: '#f7f0de',
+  card: '#efe1bd',
+  print: '#b88a6a',
+  hole: '#3a3128',
+  pixel: '#2d2822',
+  red: '#b0352a',
+  redSoft: 'rgba(176, 53, 42, 0.12)',
+  blue: '#2b4a7a',
+  blueSoft: 'rgba(43, 74, 122, 0.13)',
+  grid: 'rgba(70, 120, 115, 0.28)',
+  gridFine: 'rgba(70, 120, 115, 0.11)',
+};
+
+const typewriter = 'var(--osd-font-display)';
+const mono = 'var(--osd-font-body)';
+const hand = '"Caveat", "Segoe Print", "Bradley Hand", cursive';
+
+const BLEED = '0 0 0.8px rgba(39, 35, 29, 0.5)';
+const SHADOW = '0 1px 0 rgba(255, 255, 255, 0.5) inset, 0 18px 30px -20px rgba(70, 45, 10, 0.6)';
+const MARGIN = 'rgba(176, 53, 42, 0.32)';
+
+// Layout grid: punched margin on the left, content from x = 170 to x = 1780.
+const L = 170;
+const RIGHT = 140;
+const CW = 1920 - L - RIGHT;
+
+const EASE = 'cubic-bezier(0.22, 1, 0.36, 1)';
+const EASE_OUT = 'cubic-bezier(0, 0, 0.2, 1)';
+const EASE_IN = 'cubic-bezier(0.4, 0, 1, 1)';
+const THUNK = 'cubic-bezier(0.3, 0, 0.35, 1.25)';
+
+// ─── Small helpers ──────────────────────────────────────────────────────────
+// CSS custom properties as inline style (React's CSSProperties has no index signature).
+const vars = (o: Record<string, string | number>): CSSProperties => {
+  const out: Record<string, string | number> = {};
+  for (const k of Object.keys(o)) out[`--${k}`] = o[k];
+  return out as CSSProperties;
+};
+const pad2 = (n: number) => String(n).padStart(2, '0');
+// French decimal comma.
+const fr = (x: number) => x.toFixed(1).replace('.', ',');
+const svgUrl = (s: string) => `url("data:image/svg+xml,${encodeURIComponent(s)}")`;
+
+// Deterministic pseudo-random generator (same picture on every render).
+const rng = (seed: number) => {
+  let s = seed >>> 0;
+  return () => {
+    s = (Math.imul(s, 1664525) + 1013904223) >>> 0;
+    return s / 4294967296;
+  };
+};
+
+// Arrowhead polygon with its tip at (x, y), pointing towards `ang` degrees.
+const head = (x: number, y: number, ang: number, s = 14) => {
+  const a = (ang * Math.PI) / 180;
+  const p = (dx: number, dy: number) =>
+    `${(x + dx * Math.cos(a) - dy * Math.sin(a)).toFixed(1)},${(y + dx * Math.sin(a) + dy * Math.cos(a)).toFixed(1)}`;
+  return `${p(0, 0)} ${p(-s, -s * 0.55)} ${p(-s, s * 0.55)}`;
+};
+
+// Catmull-Rom spline through the points, as cubic Béziers.
+const smooth = (pts: [number, number][]) => {
+  const f = (v: number) => v.toFixed(1);
+  let d = `M ${pts[0][0]} ${pts[0][1]}`;
+  for (let i = 0; i < pts.length - 1; i++) {
+    const p0 = pts[i - 1] ?? pts[i];
+    const p1 = pts[i];
+    const p2 = pts[i + 1];
+    const p3 = pts[i + 2] ?? p2;
+    d += ` C ${f(p1[0] + (p2[0] - p0[0]) / 6)} ${f(p1[1] + (p2[1] - p0[1]) / 6)}, ${f(p2[0] - (p3[0] - p1[0]) / 6)} ${f(p2[1] - (p3[1] - p1[1]) / 6)}, ${p2[0]} ${p2[1]}`;
+  }
+  return d;
+};
+
+// Paper grain (brown speckles) and the worn-ink mask used by rubber stamps.
+const GRAIN = svgUrl(
+  `<svg xmlns='http://www.w3.org/2000/svg' width='360' height='360'><filter id='g'><feTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.42  0 0 0 0 0.32  0 0 0 0 0.18  1.2 0 0 0 -0.5'/></filter><rect width='360' height='360' filter='url(#g)'/></svg>`,
+);
+const GRUNGE = svgUrl(
+  `<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='m'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' seed='4' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  -2.4 0 0 0 2.05'/></filter><rect width='240' height='240' filter='url(#m)'/></svg>`,
+);
+
+// Graph paper (engineering green) and ruled index-card backgrounds.
+const graph = (s = 48): CSSProperties => ({
+  backgroundColor: ink.sheet,
+  backgroundImage: `linear-gradient(${ink.grid} 1px, transparent 1px), linear-gradient(90deg, ${ink.grid} 1px, transparent 1px), linear-gradient(${ink.gridFine} 1px, transparent 1px), linear-gradient(90deg, ${ink.gridFine} 1px, transparent 1px)`,
+  backgroundSize: `${s}px ${s}px, ${s}px ${s}px, ${s / 4}px ${s / 4}px, ${s / 4}px ${s / 4}px`,
+  boxShadow: SHADOW,
+});
+const ruled = (top: number, gap: number): CSSProperties => ({
+  backgroundColor: ink.sheet,
+  backgroundImage: `linear-gradient(to bottom, transparent ${top - 2}px, ${MARGIN} ${top - 2}px, ${MARGIN} ${top}px, transparent ${top}px), repeating-linear-gradient(to bottom, transparent 0, transparent ${gap - 1.5}px, rgba(43, 74, 122, 0.2) ${gap - 1.5}px, rgba(43, 74, 122, 0.2) ${gap}px)`,
+  backgroundPosition: `0 0, 0 ${top}px`,
+  boxShadow: SHADOW,
+});
+
+// ─── Stylesheet (collected from every page, injected once at the bottom) ────
+const CSS: string[] = [];
+
+// `has(n)` matches a page once its n-th click ("beat") has been revealed.
+const has = (n: number) => `.d07-page:has([data-osd-step="revealed"] > .d07-k${n})`;
+
+CSS.push(`
+@keyframes d07-rise{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+@keyframes d07-fade{from{opacity:0}to{opacity:1}}
+@keyframes d07-type{from{opacity:0}to{opacity:1}}
+@keyframes d07-draw{from{stroke-dashoffset:1.01}to{stroke-dashoffset:0}}
+@keyframes d07-grow{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@keyframes d07-pop{0%{opacity:0;transform:scale(.3)}60%{opacity:1;transform:scale(1.15)}100%{opacity:1;transform:scale(1)}}
+@keyframes d07-stamp{0%{opacity:0;transform:rotate(var(--r,0deg)) scale(1.9)}35%{opacity:1}70%{transform:rotate(var(--r,0deg)) scale(.94)}100%{opacity:1;transform:rotate(var(--r,0deg)) scale(1)}}
+@keyframes d07-blink{0%,100%{opacity:1}50%{opacity:.2}}
+@keyframes d07-spin{to{transform:rotate(360deg)}}
+@keyframes d07-scan{0%{transform:translateY(0);opacity:0}8%{opacity:.75}92%{opacity:.75}100%{transform:translateY(var(--h,400px));opacity:0}}
+@keyframes d07-back{to{stroke-dashoffset:36}}
+.d07-stamp{transform:rotate(var(--r,0deg))}
+.d07-in-draw{stroke-dasharray:1 2}
+.d07-in-pop,.d07-pop{transform-box:fill-box;transform-origin:center}
+.d07-in-grow{transform-origin:left center}
+.d07-live .d07-in{animation:d07-rise 800ms ${EASE} var(--d,0ms) both}
+.d07-live .d07-in-fade{animation:d07-fade 900ms ${EASE} var(--d,0ms) both}
+.d07-live .d07-in-draw{animation:d07-draw 1300ms ${EASE} var(--d,0ms) both}
+.d07-live .d07-in-grow{animation:d07-grow 600ms ${EASE} var(--d,0ms) both}
+.d07-live .d07-in-pop{animation:d07-pop 520ms ${EASE} var(--d,0ms) both}
+.d07-live .d07-in-st{animation:d07-stamp 480ms ${EASE_OUT} var(--d,0ms) both}
+.d07-live .d07-ty0 .d07-c{animation:d07-type 40ms linear var(--d,0ms) both}
+.d07-live .d07-lamp{animation:d07-blink var(--t,1.4s) steps(1,end) var(--d,0ms) infinite}
+.d07-reel{transform-box:fill-box;transform-origin:center}
+.d07-live .d07-reel{animation:d07-spin var(--t,8s) linear infinite}
+.d07-scan{opacity:0}
+.d07-live .d07-scan{animation:d07-scan 3.4s ease-in-out var(--d,0ms) infinite}
+.d07-live .d07-back{animation:d07-back 900ms linear infinite}
+@media (prefers-reduced-motion: reduce){.d07-page *{animation:none !important;transition:none !important}}
+`);
+
+// Beat utilities — visible from beat n: on (rise) / fade / typed text / stamp
+// (thunk) / grow; hidden from beat n: off; stroke drawn at beat n: draw (path
+// needs pathLength={1}); faded back at beat n: dim.
+for (let n = 1; n <= 6; n++) {
+  const at = has(n);
+  CSS.push(`
+.d07-on${n}{opacity:0;transform:translateY(14px);transition:opacity 500ms ${EASE} var(--d,0ms),transform 700ms ${EASE} var(--d,0ms)}
+${at} .d07-on${n}{opacity:1;transform:none}
+.d07-fade${n}{opacity:0;transition:opacity 550ms ${EASE} var(--d,0ms)}
+${at} .d07-fade${n}{opacity:1}
+.d07-ty${n} .d07-c{opacity:0}
+${at} .d07-ty${n} .d07-c{opacity:1;transition:opacity 40ms linear var(--d,0ms)}
+.d07-st${n}{opacity:0;transform:rotate(var(--r,0deg)) scale(1.9);transition:opacity 120ms linear var(--d,0ms),transform 440ms ${THUNK} var(--d,0ms)}
+${at} .d07-st${n}{opacity:1;transform:rotate(var(--r,0deg)) scale(1)}
+.d07-grow${n}{transform:scaleX(0);transform-origin:left center;transition:transform 600ms ${EASE} var(--d,0ms)}
+${at} .d07-grow${n}{transform:scaleX(1)}
+.d07-off${n}{transition:opacity 380ms ${EASE}}
+${at} .d07-off${n}{opacity:0}
+.d07-draw${n}{stroke-dasharray:1 2;stroke-dashoffset:1.01;transition:stroke-dashoffset 1000ms ${EASE} var(--d,0ms)}
+${at} .d07-draw${n}{stroke-dashoffset:0}
+.d07-dim${n}{transition:opacity 500ms ${EASE}}
+${at} .d07-dim${n}{opacity:.22}
+`);
+}
+
+// ─── Frame components ───────────────────────────────────────────────────────
+// Invisible click markers: each beat is a <Step> whose reveal state drives the
+// page's CSS (via :has), so a single click can animate SVG, bars, stamps…
+const Beats = ({ count }: { count: number }) => (
+  <div aria-hidden style={{ position: 'absolute', left: 0, top: 0, width: 0, height: 0 }}>
+    <Steps>
+      {Array.from({ length: count }, (_, i) => (
+        <Step key={i} duration={0}>
+          <i className={`d07-k${i + 1}`} />
+        </Step>
+      ))}
+    </Steps>
+  </div>
+);
+
+// Binder holes punched in the left margin.
+const Hole = ({ y }: { y: number }) => (
+  <div
+    aria-hidden
+    style={{
+      position: 'absolute',
+      left: 44,
+      top: y - 18,
+      width: 36,
+      height: 36,
+      borderRadius: 999,
+      background: 'radial-gradient(circle at 42% 38%, #9c8762, #c4b089 72%)',
+      boxShadow: 'inset 2px 3px 5px rgba(50, 32, 10, 0.45), 0 0 0 1px rgba(120, 95, 55, 0.25)',
+    }}
+  />
+);
+
+const Paper = () => (
+  <>
+    <div
+      aria-hidden
+      style={{
+        position: 'absolute',
+        inset: 0,
+        pointerEvents: 'none',
+        background:
+          'radial-gradient(ellipse 70% 60% at 42% 38%, rgba(255, 251, 238, 0.6), rgba(255, 251, 238, 0) 72%), radial-gradient(ellipse 115% 100% at 50% 50%, rgba(0, 0, 0, 0) 60%, rgba(115, 82, 34, 0.2) 100%)',
+      }}
+    />
+    <div
+      aria-hidden
+      style={{
+        position: 'absolute',
+        inset: 0,
+        pointerEvents: 'none',
+        backgroundImage: GRAIN,
+        backgroundSize: '360px 360px',
+        opacity: 0.5,
+      }}
+    />
+    <div
+      aria-hidden
+      style={{
+        position: 'absolute',
+        left: 114,
+        top: 0,
+        bottom: 0,
+        width: 4,
+        borderLeft: `1.5px solid ${MARGIN}`,
+        borderRight: `1.5px solid ${MARGIN}`,
+      }}
+    />
+    <Hole y={270} />
+    <Hole y={540} />
+    <Hole y={810} />
+  </>
+);
+
+// Rubber stamp: worn red (or blue) ink, rotated, lands with a "thunk".
+// beat = 0 stamps on page entry (after `d` ms); beat = n stamps on click n.
+const Stamp = ({
+  children,
+  pos,
+  rot = -6,
+  size = 40,
+  color = ink.red,
+  beat = 0,
+  d = 0,
+}: {
+  children: ReactNode;
+  pos: CSSProperties;
+  rot?: number;
+  size?: number;
+  color?: string;
+  beat?: number;
+  d?: number;
+}) => (
+  <div
+    className={`d07-stamp ${beat ? `d07-st${beat}` : 'd07-in-st'}`}
+    style={{ ...vars({ r: `${rot}deg`, d: `${d}ms` }), position: 'absolute', transformOrigin: 'center', ...pos }}
+  >
+    <div
+      style={{
+        color,
+        border: `${Math.max(3, Math.round(size / 12))}px solid currentColor`,
+        borderRadius: 8,
+        padding: `${Math.round(size * 0.14)}px ${Math.round(size * 0.32)}px ${Math.round(size * 0.1)}px`,
+        fontFamily: typewriter,
+        fontSize: size,
+        lineHeight: 1,
+        letterSpacing: '0.06em',
+        textTransform: 'uppercase',
+        whiteSpace: 'nowrap',
+        opacity: 0.88,
+        WebkitMaskImage: GRUNGE,
+        maskImage: GRUNGE,
+        WebkitMaskSize: '240px 240px',
+        maskSize: '240px 240px',
+      }}
+    >
+      {children}
+    </div>
+  </div>
+);
+
+const Header = ({ era }: { era?: string }) => (
+  <>
+    <div
+      style={{
+        position: 'absolute',
+        left: L,
+        top: 58,
+        fontFamily: mono,
+        fontSize: 22,
+        letterSpacing: '0.16em',
+        textTransform: 'uppercase',
+        color: ink.muted,
+        whiteSpace: 'nowrap',
+      }}
+    >
+      <span style={{ color: 'var(--osd-accent)', fontWeight: 700 }}>Archives de l'IA</span>
+      {` · Dossier nº ${pad2(DOSSIER.n)} — ${DOSSIER.short}`}
+    </div>
+    <div
+      style={{
+        position: 'absolute',
+        left: L,
+        right: RIGHT,
+        top: 100,
+        height: 4,
+        borderTop: `1.5px solid ${ink.rule}`,
+        borderBottom: `1.5px solid ${ink.rule}`,
+      }}
+    />
+    {era ? (
+      <Stamp pos={{ right: RIGHT, top: 44 }} rot={-4} size={28} d={500}>
+        {era}
+      </Stamp>
+    ) : null}
+  </>
+);
+
+const Footer = () => {
+  const { current, total } = useSlidePageNumber();
+  return (
+    <div
+      style={{
+        position: 'absolute',
+        left: L,
+        right: RIGHT,
+        bottom: 44,
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'baseline',
+        fontFamily: mono,
+        fontSize: 22,
+        color: ink.muted,
+      }}
+    >
+      <span style={{ fontStyle: 'italic' }}>{DOSSIER.footer}</span>
+      <span style={{ letterSpacing: '0.12em' }}>
+        FEUILLET {pad2(current)} / {pad2(total)}
+      </span>
+    </div>
+  );
+};
+
+// Typewriter text: characters appear one by one. beat = 0 types on page entry
+// (live page only); beat = n types on click n. `step` = ms per character.
+const Typed = ({ text, d = 0, step = 26, beat = 0 }: { text: string; d?: number; step?: number; beat?: number }) => {
+  let i = 0;
+  return (
+    <span className={`d07-ty${beat}`}>
+      {Array.from(text).map((ch, k) =>
+        ch === '\n' ? (
+          <br key={k} />
+        ) : (
+          <span key={k} className="d07-c" style={vars({ d: `${d + i++ * step}ms` })}>
+            {ch}
+          </span>
+        ),
+      )}
+    </span>
+  );
+};
+
+const Eyebrow = ({ children }: { children: ReactNode }) => (
+  <div
+    className="d07-in-fade"
+    style={{
+      position: 'absolute',
+      left: L,
+      top: 146,
+      fontFamily: mono,
+      fontWeight: 700,
+      fontSize: 24,
+      letterSpacing: '0.14em',
+      textTransform: 'uppercase',
+      color: 'var(--osd-accent)',
+    }}
+  >
+    {children}
+  </div>
+);
+
+const Title = ({ text }: { text: string }) => (
+  <h2
+    style={{
+      position: 'absolute',
+      left: L,
+      top: 184,
+      margin: 0,
+      maxWidth: CW,
+      fontFamily: typewriter,
+      fontWeight: 400,
+      fontSize: 64,
+      lineHeight: 1.15,
+      textShadow: BLEED,
+    }}
+  >
+    <Typed text={text} d={120} step={24} />
+  </h2>
+);
+
+const Frame = ({
+  id,
+  era,
+  eyebrow,
+  title,
+  beats = 0,
+  chrome = true,
+  children,
+}: {
+  id: string;
+  era?: string;
+  eyebrow?: string;
+  title?: string;
+  beats?: number;
+  chrome?: boolean;
+  children: ReactNode;
+}) => {
+  const live = useIsActivePage();
+  return (
+    <div
+      className={`d07-page d07-${id}${live ? ' d07-live' : ''}`}
+      style={{
+        position: 'relative',
+        width: '100%',
+        height: '100%',
+        background: 'var(--osd-bg)',
+        color: 'var(--osd-text)',
+        fontFamily: mono,
+        fontSize: 28,
+      }}
+    >
+      <Paper />
+      {chrome ? <Header era={era} /> : null}
+      {eyebrow ? <Eyebrow>{eyebrow}</Eyebrow> : null}
+      {title ? <Title text={title} /> : null}
+      {children}
+      {chrome ? <Footer /> : null}
+      {beats > 0 ? <Beats count={beats} /> : null}
+    </div>
+  );
+};
+
+// ─── Shared paper props ─────────────────────────────────────────────────────
+// Handwritten marginalia in fountain-pen blue.
+const Hand = ({
+  children,
+  x,
+  y,
+  w,
+  rot = -2,
+  size = 34,
+  c = ink.blue,
+  className = 'd07-in-fade',
+  d = 0,
+}: {
+  children: ReactNode;
+  x: number;
+  y: number;
+  w?: number;
+  rot?: number;
+  size?: number;
+  c?: string;
+  className?: string;
+  d?: number;
+}) => (
+  <div
+    className={className}
+    style={{
+      ...vars({ d: `${d}ms` }),
+      position: 'absolute',
+      left: x,
+      top: y,
+      width: w,
+      fontFamily: hand,
+      fontWeight: 600,
+      fontSize: size,
+      lineHeight: 1.1,
+      color: c,
+      transform: `rotate(${rot}deg)`,
+      transformOrigin: 'left top',
+    }}
+  >
+    {children}
+  </div>
+);
+
+// Hand-drawn underline under a word (drawn on entry, or on click `beat`).
+const Mark = ({ children, beat = 0, d = 0, c = ink.blue }: { children: ReactNode; beat?: number; d?: number; c?: string }) => (
+  <span style={{ position: 'relative', display: 'inline-block' }}>
+    {children}
+    <svg
+      aria-hidden
+      viewBox="0 0 300 20"
+      preserveAspectRatio="none"
+      style={{ position: 'absolute', left: -6, bottom: -14, width: 'calc(100% + 12px)', height: 20, overflow: 'visible' }}
+    >
+      <path
+        d="M 3 13 C 60 5, 120 17, 180 10 S 268 6, 297 12"
+        pathLength={1}
+        fill="none"
+        stroke={c}
+        strokeWidth={4}
+        strokeLinecap="round"
+        className={beat ? `d07-draw${beat}` : 'd07-in-draw'}
+        style={vars({ d: `${d}ms` })}
+      />
+    </svg>
+  </span>
+);
+
+const Tape = ({ x, y, rot, w = 130 }: { x: number; y: number; rot: number; w?: number }) => (
+  <div
+    aria-hidden
+    style={{
+      position: 'absolute',
+      left: x,
+      top: y,
+      width: w,
+      height: 38,
+      background: 'rgba(238, 228, 198, 0.75)',
+      boxShadow: '0 1px 3px rgba(80, 60, 20, 0.2)',
+      transform: `rotate(${rot}deg)`,
+    }}
+  />
+);
+
+const PaperClip = ({ x, y, rot = -8 }: { x: number; y: number; rot?: number }) => (
+  <svg
+    aria-hidden
+    width={46}
+    height={104}
+    style={{ position: 'absolute', left: x, top: y, overflow: 'visible', transform: `rotate(${rot}deg)` }}
+  >
+    <path
+      d="M 15 44 V 16 a 8 8 0 0 1 16 0 V 78 a 13 13 0 0 1 -26 0 V 12 a 18 18 0 0 1 36 0 V 64"
+      fill="none"
+      stroke="#868b91"
+      strokeWidth={4}
+      strokeLinecap="round"
+    />
+  </svg>
+);
+
+const Label = ({ children, c = ink.muted }: { children: ReactNode; c?: string }) => (
+  <span
+    style={{
+      fontFamily: mono,
+      fontWeight: 700,
+      fontSize: 21,
+      letterSpacing: '0.14em',
+      textTransform: 'uppercase',
+      color: c,
+    }}
+  >
+    {children}
+  </span>
+);
+
+// ─── This dossier ───────────────────────────────────────────────────────────
+const DOSSIER = {
+  "id": "ai-history-07-word2vec",
+  "n": 7,
+  "short": "Les mots en nombres",
+  "footer": "Les mots en nombres — word2vec et la mémoire des réseaux",
+  "title": "Les mots en nombres",
+  "subtitle": "word2vec, et la mémoire des réseaux",
+  "lede": "2013 : chaque mot devient une liste de nombres, et le sens devient de la géométrie.",
+  "year": "2013",
+  "card": "WORD2VEC 2013",
+  "metaTitle": "Les mots deviennent des nombres : word2vec et la mémoire des réseaux",
+  "next": {
+    "n": 8,
+    "title": "AlphaGo",
+    "id": "ai-history-08-alphago"
+  }
+} as {
+  id: string;
+  n: number;
+  short: string;
+  footer: string;
+  title: string;
+  subtitle: string;
+  lede: string;
+  year: string;
+  card: string;
+  next: { n: number; title: string; id: string } | null;
+};
+
+// ═══ Couverture ══════════════════════════════════════════════════════════════
+// IBM-style punch card: the top edge prints the text, the holes encode it in
+// Hollerith code (rows 12, 11, then digits 0–9).
+const hollerith = (ch: string): number[] => {
+  const zone = (s: string, z: number, from: number) => (s.includes(ch) ? [z, s.indexOf(ch) + from] : null);
+  if (ch >= '0' && ch <= '9') return [Number(ch) + 2];
+  return zone('ABCDEFGHI', 0, 3) ?? zone('JKLMNOPQR', 1, 3) ?? zone('STUVWXYZ', 2, 4) ?? [];
+};
+const PC = { w: 900, h: 330, cols: 40, colW: 20, x0: 50, y0: 64, rowH: 21 };
+const pcX = (c: number) => PC.x0 + c * PC.colW + PC.colW / 2;
+const pcY = (r: number) => PC.y0 + r * PC.rowH + PC.rowH / 2;
+const PC_HOLES: [number, number][] = Array.from(DOSSIER.card).flatMap((ch, i) =>
+  hollerith(ch).map((r): [number, number] => [i + 2, r]),
+);
+const PC_PUNCHED = new Set(PC_HOLES.map(([c, r]) => `${c}:${r}`));
+
+const PunchCard = () => (
+  <svg width={PC.w} height={PC.h} style={{ display: 'block', overflow: 'visible', filter: 'drop-shadow(0 14px 16px rgba(70, 45, 10, 0.28))' }}>
+    <path d={`M 30 0 H ${PC.w} V ${PC.h} H 0 V 30 Z`} fill={ink.card} stroke="rgba(120, 90, 50, 0.4)" strokeWidth={1.5} />
+    {Array.from(DOSSIER.card).map((ch, i) => (
+      <text key={i} x={pcX(i + 2)} y={42} textAnchor="middle" style={{ fontFamily: mono, fontSize: 20, fontWeight: 700 }} fill={ink.text}>
+        {ch}
+      </text>
+    ))}
+    <text x={PC.w - 30} y={42} textAnchor="end" style={{ fontFamily: mono, fontSize: 15, letterSpacing: '0.12em' }} fill={ink.print}>
+      CARTE DE DONNÉES · DOSSIER Nº {pad2(DOSSIER.n)}
+    </text>
+    {Array.from({ length: PC.cols }, (_, c) =>
+      Array.from({ length: 10 }, (_, k) =>
+        PC_PUNCHED.has(`${c}:${k + 2}`) ? null : (
+          <text key={`${c}-${k}`} x={pcX(c)} y={pcY(k + 2) + 4.5} textAnchor="middle" style={{ fontFamily: mono, fontSize: 12.5 }} fill={ink.print}>
+            {k}
+          </text>
+        ),
+      ),
+    )}
+    {PC_HOLES.map(([c, r], i) => (
+      <rect key={i} x={pcX(c) - 4.5} y={pcY(r) - 7.5} width={9} height={15} rx={1.5} fill={ink.hole} className="d07-in-pop" style={vars({ d: `${2900 + c * 80}ms` })} />
+    ))}
+  </svg>
+);
+
+const CoffeeRing = () => (
+  <svg aria-hidden width={360} height={360} style={{ position: 'absolute', left: 1500, top: 850, overflow: 'visible' }}>
+    <circle cx={180} cy={180} r={126} fill="none" stroke="rgba(125, 85, 35, 0.14)" strokeWidth={9} strokeDasharray="520 40 190 30" />
+    <circle cx={182} cy={178} r={117} fill="none" stroke="rgba(125, 85, 35, 0.08)" strokeWidth={3} />
+  </svg>
+);
+
+const AuthorCard = () => (
+  <div className="d07-in-fade" style={{ ...vars({ d: '3300ms' }), position: 'absolute', left: 1190, top: 668, width: 590, height: 262 }}>
+    <div style={{ position: 'relative', width: '100%', height: '100%', background: ink.sheet, boxShadow: SHADOW, transform: 'rotate(1.4deg)' }}>
+      <img
+        src={portrait}
+        alt="Houssem Eddine Lassoued"
+        style={{
+          position: 'absolute',
+          left: 30,
+          top: 34,
+          width: 160,
+          height: 196,
+          objectFit: 'cover',
+          objectPosition: '56% 30%',
+          border: '6px solid #fffaf0',
+          boxShadow: '0 4px 10px -4px rgba(60, 40, 10, 0.5)',
+          filter: 'grayscale(1) sepia(0.5) contrast(1.05)',
+        }}
+      />
+      <PaperClip x={48} y={4} />
+      <div style={{ position: 'absolute', left: 224, top: 30, right: 24 }}>
+        <Label>Conçu par</Label>
+        <div style={{ marginTop: 14, paddingTop: 12, borderTop: `2px solid ${MARGIN}`, fontFamily: typewriter, fontSize: 36, lineHeight: 1.15, textShadow: BLEED }}>
+          Houssem Eddine
+          <br />
+          Lassoued
+        </div>
+        <div style={{ display: 'flex', alignItems: 'baseline', gap: 14, marginTop: 16, fontSize: 26 }}>
+          <span style={{ fontWeight: 700 }}>2026</span>
+          <span style={{ color: ink.faint }}>·</span>
+          <a
+            href="https://www.linkedin.com/in/houssemeddinelassoued"
+            target="_blank"
+            rel="noreferrer"
+            style={{ color: 'var(--osd-accent)', textDecoration: 'underline', textUnderlineOffset: 5 }}
+          >
+            LinkedIn ↗
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+);
+
+const Cover: Page = () => (
+  <Frame id="cover" chrome={false}>
+    <div
+      className="d07-in-fade"
+      style={{
+        position: 'absolute',
+        left: L,
+        top: 150,
+        fontFamily: mono,
+        fontWeight: 700,
+        fontSize: 26,
+        letterSpacing: '0.18em',
+        textTransform: 'uppercase',
+        color: 'var(--osd-accent)',
+      }}
+    >
+      Archives de l'IA — Dossier nº {pad2(DOSSIER.n)}
+    </div>
+    <h1
+      style={{
+        position: 'absolute',
+        left: L - 6,
+        top: 196,
+        margin: 0,
+        fontFamily: typewriter,
+        fontWeight: 400,
+        fontSize: 107,
+        lineHeight: 1,
+        whiteSpace: 'nowrap',
+        textShadow: BLEED,
+      }}
+    >
+      <Typed text={DOSSIER.title} d={250} step={70} />
+    </h1>
+    <Stamp pos={{ left: 1400, top: 168 }} rot={-10} size={110} d={1300}>
+      {DOSSIER.year}
+    </Stamp>
+    <div style={{ position: 'absolute', left: L, top: 380, fontFamily: typewriter, fontSize: 54, lineHeight: 1.1, color: ink.soft, textShadow: BLEED }}>
+      <Typed text={DOSSIER.subtitle} d={1550} step={30} />
+    </div>
+    <p
+      className="d07-in"
+      style={{
+        ...vars({ d: '2500ms' }),
+        position: 'absolute',
+        left: L,
+        top: 470,
+        margin: 0,
+        maxWidth: 1000,
+        fontSize: 'var(--osd-size-body)',
+        lineHeight: 1.45,
+        color: ink.soft,
+      }}
+    >
+      {DOSSIER.lede}
+    </p>
+    <CoffeeRing />
+    <div className="d07-in" style={{ ...vars({ d: '2700ms' }), position: 'absolute', left: L, top: 636 }}>
+      <div style={{ transform: 'rotate(-1.5deg)' }}>
+        <PunchCard />
+      </div>
+    </div>
+    <AuthorCard />
+  </Frame>
+);
+
+// ─── Series navigation (links to the other decks) ───────────────────────────
+// Absolute URL of another deck, built from the current one so it works both
+// locally (/s/<id>) and on GitHub Pages (/<repo>/s/<id>).
+const deckHref = (id: string) => {
+  if (typeof location === 'undefined') return `/s/${id}`;
+  const p = location.pathname;
+  const i = p.indexOf('/s/');
+  const base = i >= 0 ? p.slice(0, i + 1) : p.endsWith('/') ? p : `${p}/`;
+  return `${base}s/${id}`;
+};
+
+const NavCard = ({ id, kicker, children }: { id: string; kicker: string; children: ReactNode }) => (
+  <a href={deckHref(id)} style={{ display: 'block', width: 400, color: 'inherit', textDecoration: 'none' }}>
+    <div style={{ padding: '14px 20px 16px', background: ink.sheet, boxShadow: SHADOW, border: `2.5px solid ${ink.red}` }}>
+      <Label c={ink.red}>
+        {kicker}
+      </Label>
+      <div style={{ marginTop: 6, fontFamily: typewriter, fontSize: 30, lineHeight: 1.15, textShadow: BLEED }}>{children}</div>
+    </div>
+  </a>
+);
+
+// "← Sommaire général" + "Dossier suivant →", for the last page.
+const SeriesNav = ({ left, top, d = 0 }: { left: number; top: number; d?: number }) => (
+  <div className="d07-in" style={{ ...vars({ d: `${d}ms` }), position: 'absolute', left, top, display: 'flex', gap: 28 }}>
+    <NavCard id="ai-history-sommaire" kicker="← Sommaire général">
+      Les 11 dossiers
+    </NavCard>
+    {DOSSIER.next ? (
+      <NavCard id={DOSSIER.next.id} kicker={`Dossier nº ${pad2(DOSSIER.next.n)} →`}>
+        {DOSSIER.next.title}
+      </NavCard>
+    ) : null}
+  </div>
+);
+
+// ─── Archive props shared by the dossiers ───────────────────────────────────
+// A photo taped onto the page (real images from Wikimedia Commons; credited on
+// the last page). beat = 0 shows it on entry (after `d` ms), beat = n on click n.
+const Photo = ({
+  src,
+  caption,
+  x,
+  y,
+  w = 150,
+  h = 190,
+  rot = 0,
+  zoom = 1,
+  origin = '50% 50%',
+  fit = 'cover',
+  tone = true,
+  beat = 0,
+  d = 0,
+}: {
+  src: string;
+  caption: string;
+  x: number;
+  y: number;
+  w?: number;
+  h?: number;
+  rot?: number;
+  zoom?: number;
+  origin?: string;
+  fit?: 'cover' | 'contain';
+  tone?: boolean;
+  beat?: number;
+  d?: number;
+}) => (
+  <div className={beat ? `d07-on${beat}` : 'd07-in'} style={{ ...vars({ d: `${d}ms` }), position: 'absolute', left: x, top: y, width: w + 16 }}>
+    <div style={{ position: 'relative', transform: `rotate(${rot}deg)` }}>
+      <div style={{ padding: 8, background: '#fffaf0', boxShadow: '0 12px 20px -12px rgba(60, 40, 10, 0.6)' }}>
+        <div style={{ width: w, height: h, overflow: 'hidden', background: fit === 'contain' ? '#fffaf0' : '#d8cdb5' }}>
+          <img
+            src={src}
+            alt={caption}
+            style={{
+              display: 'block',
+              width: '100%',
+              height: '100%',
+              objectFit: fit,
+              transform: zoom === 1 ? undefined : `scale(${zoom})`,
+              transformOrigin: origin,
+              filter: tone ? 'grayscale(1) sepia(0.35) contrast(1.05)' : 'sepia(0.2)',
+            }}
+          />
+        </div>
+      </div>
+      <div style={{ marginTop: 6, textAlign: 'center', fontFamily: hand, fontWeight: 600, fontSize: 26, lineHeight: 1.05, color: ink.blue }}>{caption}</div>
+      <div
+        aria-hidden
+        style={{
+          position: 'absolute',
+          left: '50%',
+          top: -12,
+          width: 70,
+          height: 24,
+          marginLeft: -35,
+          background: 'rgba(238, 228, 198, 0.8)',
+          boxShadow: '0 1px 3px rgba(80, 60, 20, 0.2)',
+          transform: 'rotate(-4deg)',
+        }}
+      />
+    </div>
+  </div>
+);
+
+// Index card from the archive drawer, with typed lines.
+const FicheLine = ({ label, value, d, w = 150 }: { label: string; value: string; d: number; w?: number }) => (
+  <div style={{ display: 'flex', alignItems: 'baseline', height: 46 }}>
+    <span style={{ width: w, flex: 'none', fontWeight: 700, fontSize: 19, letterSpacing: '0.12em', color: ink.muted }}>{label}</span>
+    <span style={{ fontSize: 25, color: ink.text }}>
+      <Typed text={value} d={d} step={20} />
+    </span>
+  </div>
+);
+
+const Fiche = ({
+  code,
+  x,
+  y,
+  w,
+  h,
+  rot = -1,
+  beat = 0,
+  d = 0,
+  children,
+}: {
+  code: string;
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+  rot?: number;
+  beat?: number;
+  d?: number;
+  children: ReactNode;
+}) => (
+  <div className={beat ? `d07-on${beat}` : 'd07-in'} style={{ ...vars({ d: `${d}ms` }), position: 'absolute', left: x, top: y, width: w, height: h }}>
+    <div style={{ width: '100%', height: '100%', padding: '20px 28px', boxSizing: 'border-box', transform: `rotate(${rot}deg)`, ...ruled(78, 46) }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', height: 52 }}>
+        <span style={{ fontFamily: typewriter, fontSize: 28, color: ink.red }}>{code}</span>
+        <Label>Archives</Label>
+      </div>
+      <div style={{ marginTop: 6 }}>{children}</div>
+    </div>
+  </div>
+);
+
+// Small print for image credits (Wikimedia Commons licenses require it).
+const Credits = ({ children, top = 1000 }: { children: ReactNode; top?: number }) => (
+  <div className="d07-in-fade" style={{ ...vars({ d: '1500ms' }), position: 'absolute', left: L, right: RIGHT, top, fontSize: 15, lineHeight: 1.35, color: ink.muted }}>
+    {children}
+  </div>
+);
+
+const halo: CSSProperties = { stroke: ink.sheet, strokeWidth: 8, paintOrder: 'stroke', strokeLinejoin: 'round' };
+
+// ═══ 2 · Le problème ════════════════════════════════════════════════════════
+const OneHot = ({ word, at, beat, top }: { word: string; at: number; beat: number; top: number }) => (
+  <div className={beat ? `d07-on${beat}` : 'd07-in'} style={{ ...vars({ d: beat ? '0ms' : '500ms' }), position: 'absolute', left: L, top, display: 'flex', alignItems: 'center', gap: 26 }}>
+    <span style={{ width: 200, fontFamily: typewriter, fontSize: 40, textShadow: BLEED }}>{word}</span>
+    <span style={{ display: 'flex', gap: 4 }}>
+      {Array.from({ length: 22 }, (_, i) => (
+        <span
+          key={i}
+          style={{
+            width: 34,
+            height: 44,
+            display: 'grid',
+            placeItems: 'center',
+            background: i === at ? ink.redSoft : ink.sheet,
+            border: `1.5px solid ${i === at ? ink.red : ink.rule}`,
+            fontFamily: mono,
+            fontSize: 22,
+            color: i === at ? ink.red : ink.faint,
+            fontWeight: i === at ? 700 : 400,
+          }}
+        >
+          {i === at ? 1 : 0}
+        </span>
+      ))}
+    </span>
+    <span style={{ fontSize: 24, color: ink.muted }}>… 100 000 cases</span>
+  </div>
+);
+
+const Problem: Page = () => (
+  <Frame id="problem" era="Avant 2013" eyebrow="Le problème" title="Un mot n'est qu'une étiquette" beats={2}>
+    <div className="d07-in" style={{ ...vars({ d: '300ms' }), position: 'absolute', left: L, top: 320, width: CW, fontSize: 27, lineHeight: 1.45, color: ink.soft }}>
+      La méthode classique : une case par mot du vocabulaire, et un seul 1.
+    </div>
+    <OneHot word="chat" at={3} beat={0} top={410} />
+    <OneHot word="chien" at={11} beat={0} top={490} />
+    <OneHot word="vélo" at={17} beat={1} top={570} />
+    <div className="d07-on2" style={{ position: 'absolute', left: L, top: 700, width: CW }}>
+      <div style={{ fontFamily: typewriter, fontSize: 42, lineHeight: 1.25, textShadow: BLEED }}>
+        « chat » est aussi loin de « chien » que de « vélo ».
+      </div>
+      <div style={{ marginTop: 12, fontSize: 27, color: ink.soft }}>Ces nombres ne disent rien du sens des mots.</div>
+    </div>
+  </Frame>
+);
+
+// ═══ 3 · L'idée ═════════════════════════════════════════════════════════════
+const Blank = ({ beat, before, after, guess }: { beat: number; before: string; after: string; guess: string }) => (
+  <div className={beat ? `d07-on${beat}` : 'd07-in'} style={{ ...vars({ d: beat ? '0ms' : '600ms' }), marginBottom: 30, fontFamily: typewriter, fontSize: 40, textShadow: BLEED }}>
+    {before}
+    <span style={{ display: 'inline-block', minWidth: 150, margin: '0 10px', borderBottom: `3px solid ${ink.text}`, textAlign: 'center', color: ink.red }}>{guess}</span>
+    {after}
+  </div>
+);
+
+const Company: Page = () => (
+  <Frame id="company" era="1957" eyebrow="Une vieille idée de linguiste" title="On connaît un mot à ses voisins" beats={2}>
+    <div className="d07-in" style={{ ...vars({ d: '300ms' }), position: 'absolute', left: L, top: 330, width: 1000, padding: '22px 30px', boxSizing: 'border-box', background: ink.sheet, boxShadow: SHADOW, borderLeft: `6px solid ${ink.red}` }}>
+      <div style={{ fontFamily: typewriter, fontSize: 36, lineHeight: 1.3, textShadow: BLEED }}>« You shall know a word by the company it keeps. »</div>
+      <div style={{ marginTop: 10, fontSize: 24, color: ink.soft }}>John Rupert Firth, linguiste, 1957 : « On connaît un mot à ses fréquentations. »</div>
+    </div>
+    <div style={{ position: 'absolute', left: L, top: 560, width: 1200 }}>
+      <Blank beat={1} before="Le" after="miaule sur le canapé." guess="chat" />
+      <Blank beat={2} before="Le" after="aboie dans le jardin." guess="chien" />
+    </div>
+    <Hand x={1300} y={570} w={480} rot={-2} size={32} d={300}>
+      Deux mots qui apparaissent dans les mêmes contextes ont probablement un sens proche.
+    </Hand>
+  </Frame>
+);
+
+// ═══ 4 · word2vec ═══════════════════════════════════════════════════════════
+const SENT = ['le', 'petit', 'chat', 'dort', 'sur', 'le', 'canapé'];
+const WordBox = ({ i, center }: { i: number; center: number }) => {
+  const d = Math.abs(i - center);
+  const inWin = d > 0 && d <= 2;
+  return (
+    <span
+      style={{
+        padding: '10px 18px',
+        background: d === 0 ? ink.red : inWin ? ink.blueSoft : ink.sheet,
+        border: `2.5px solid ${d === 0 ? ink.red : inWin ? ink.blue : ink.rule}`,
+        color: d === 0 ? ink.sheet : ink.text,
+        fontFamily: typewriter,
+        fontSize: 36,
+      }}
+    >
+      {SENT[i]}
+    </span>
+  );
+};
+
+const Window = ({ center, className }: { center: number; className: string }) => (
+  <div className={className} style={{ position: 'absolute', left: L, top: 340, display: 'flex', gap: 14 }}>
+    {SENT.map((_, i) => (
+      <WordBox key={i} i={i} center={center} />
+    ))}
+  </div>
+);
+
+const Word2vec: Page = () => (
+  <Frame id="w2v" era="2013" eyebrow="Google, 2013" title="word2vec : deviner les voisins de chaque mot" beats={2}>
+    <Window center={2} className="d07-off1" />
+    <Window center={3} className="d07-fade1 d07-off2" />
+    <Window center={4} className="d07-fade2" />
+    <div className="d07-in" style={{ ...vars({ d: '500ms' }), position: 'absolute', left: L, top: 470, width: 1000, fontSize: 27, lineHeight: 1.5 }}>
+      Un petit réseau lit des milliards de phrases. Pour chaque mot <b style={{ color: ink.red }}>au centre</b>, il apprend à prédire ses <b style={{ color: ink.blue }}>voisins</b>.
+    </div>
+    <div className="d07-in" style={{ ...vars({ d: '900ms' }), position: 'absolute', left: L, top: 600, width: 1000, fontSize: 27, lineHeight: 1.5 }}>
+      Pour y arriver, il doit ranger chaque mot dans une liste de <b>300 nombres</b>. À la fin, on jette le réseau et on garde ces listes : les <b>vecteurs de mots</b>.
+    </div>
+    <Photo src={imgMikolov} caption="Tomáš Mikolov" x={1350} y={450} w={180} h={230} rot={2.5} zoom={1.15} origin="50% 25%" d={600} />
+    <Hand x={L + 10} y={790} w={1000} rot={-1} size={30} d={1400}>
+      Tomáš Mikolov et son équipe chez Google. Un entraînement de quelques heures sur un ordinateur ordinaire.
+    </Hand>
+  </Frame>
+);
+
+// ═══ 5 · La carte du sens ═══════════════════════════════════════════════════
+const Pt = ({ x, y, w, c, k }: { x: number; y: number; w: string; c: string; k: number }) => (
+  <g className="d07-in" style={vars({ d: `${300 + k * 60}ms` })}>
+    <circle cx={x} cy={y} r={8} fill={c} />
+    <text x={x + 14} y={y + 8} style={{ fontFamily: mono, fontSize: 24, ...halo }} fill={ink.text}>
+      {w}
+    </text>
+  </g>
+);
+
+const Cluster = ({ cx, cy, rx, ry, label, beat, c }: { cx: number; cy: number; rx: number; ry: number; label: string; beat: number; c: string }) => (
+  <g className={`d07-fade${beat}`}>
+    <ellipse cx={cx} cy={cy} rx={rx} ry={ry} fill="none" stroke={c} strokeWidth={3} strokeDasharray="10 8" />
+    <text x={cx} y={cy - ry - 12} textAnchor="middle" style={{ fontFamily: hand, fontWeight: 600, fontSize: 32 }} fill={c}>
+      {label}
+    </text>
+  </g>
+);
+
+const MeaningMap: Page = () => (
+  <Frame id="map" era="2013" eyebrow="Le sens devient de la géométrie" title="Les mots proches se retrouvent côte à côte" beats={1}>
+    <div className="d07-in-fade" style={{ ...vars({ d: '200ms' }), position: 'absolute', left: L, top: 320, width: 1100, height: 560, ...graph(44) }}>
+      <svg width={1100} height={560} style={{ position: 'absolute', left: 0, top: 0, overflow: 'visible' }}>
+        <Pt x={140} y={150} w="chat" c={ink.red} k={0} />
+        <Pt x={210} y={210} w="chien" c={ink.red} k={1} />
+        <Pt x={120} y={250} w="lapin" c={ink.red} k={2} />
+        <Pt x={250} y={130} w="tigre" c={ink.red} k={3} />
+        <Pt x={720} y={130} w="France" c={ink.blue} k={4} />
+        <Pt x={820} y={190} w="Italie" c={ink.blue} k={5} />
+        <Pt x={700} y={230} w="Espagne" c={ink.blue} k={6} />
+        <Pt x={860} y={100} w="Japon" c={ink.blue} k={7} />
+        <Pt x={300} y={420} w="pain" c="#3e7a4e" k={8} />
+        <Pt x={190} y={470} w="fromage" c="#3e7a4e" k={9} />
+        <Pt x={360} y={490} w="pomme" c="#3e7a4e" k={10} />
+        <Pt x={720} y={430} w="courir" c="#8a6a12" k={11} />
+        <Pt x={820} y={470} w="marcher" c="#8a6a12" k={12} />
+        <Pt x={760} y={510} w="sauter" c="#8a6a12" k={13} />
+        <Cluster cx={200} cy={195} rx={160} ry={110} label="animaux" beat={1} c={ink.red} />
+        <Cluster cx={790} cy={170} rx={170} ry={110} label="pays" beat={1} c={ink.blue} />
+        <Cluster cx={290} cy={465} rx={160} ry={80} label="nourriture" beat={1} c="#3e7a4e" />
+        <Cluster cx={790} cy={475} rx={150} ry={80} label="mouvements" beat={1} c="#8a6a12" />
+      </svg>
+    </div>
+    <div className="d07-in" style={{ ...vars({ d: '800ms' }), position: 'absolute', left: 1330, top: 340, width: 450, fontSize: 27, lineHeight: 1.5 }}>
+      Personne n'a donné de catégories au réseau. Les groupes apparaissent seuls, parce que ces mots ont les mêmes voisins.
+    </div>
+    <Hand x={1334} y={620} w={440} rot={-2} size={30} d={1400}>
+      300 dimensions réduites à 2 pour le dessin : carte illustrative
+    </Hand>
+  </Frame>
+);
+
+// ═══ 6 · L'arithmétique des mots ════════════════════════════════════════════
+const V = { roi: [180, 130], reine: [560, 130], homme: [180, 400], femme: [560, 400] } as const;
+
+const Arrow = ({ a, b, c, className, dash }: { a: readonly [number, number]; b: readonly [number, number]; c: string; className?: string; dash?: boolean }) => {
+  const ang = (Math.atan2(b[1] - a[1], b[0] - a[0]) * 180) / Math.PI;
+  const k = 1 - 18 / Math.hypot(b[0] - a[0], b[1] - a[1]);
+  const ex = a[0] + (b[0] - a[0]) * k;
+  const ey = a[1] + (b[1] - a[1]) * k;
+  return (
+    <g className={className}>
+      <line x1={a[0]} y1={a[1]} x2={ex} y2={ey} stroke={c} strokeWidth={5} strokeDasharray={dash ? '12 9' : undefined} />
+      <polygon points={head(ex + (b[0] - ex) * 0.4, ey + (b[1] - ey) * 0.4, ang, 18)} fill={c} />
+    </g>
+  );
+};
+
+const WordPt = ({ at, w, hot, className }: { at: readonly [number, number]; w: string; hot?: boolean; className?: string }) => (
+  <g className={className}>
+    <circle cx={at[0]} cy={at[1]} r={12} fill={hot ? ink.red : ink.text} />
+    <text x={at[0]} y={at[1] - 26} textAnchor="middle" style={{ fontFamily: typewriter, fontSize: 38, ...halo }} fill={hot ? ink.red : ink.text}>
+      {w}
+    </text>
+  </g>
+);
+
+const Arithmetic: Page = () => (
+  <Frame id="arith" era="2013" eyebrow="La découverte qui fascine" title="roi − homme + femme ≈ reine" beats={3}>
+    <div className="d07-in-fade" style={{ ...vars({ d: '200ms' }), position: 'absolute', left: L, top: 320, width: 760, height: 540, ...graph(45) }}>
+      <svg width={760} height={540} style={{ position: 'absolute', left: 0, top: 0, overflow: 'visible' }}>
+        <WordPt at={V.homme} w="homme" />
+        <WordPt at={V.femme} w="femme" />
+        <WordPt at={V.roi} w="roi" />
+        <Arrow a={V.homme} b={V.femme} c={ink.blue} className="d07-fade1" />
+        <text x={370} y={450} textAnchor="middle" className="d07-fade1" style={{ fontFamily: hand, fontWeight: 600, fontSize: 30 }} fill={ink.blue}>
+          « masculin → féminin »
+        </text>
+        <Arrow a={V.roi} b={V.reine} c={ink.blue} className="d07-fade2" dash />
+        <WordPt at={V.reine} w="reine" hot className="d07-fade3" />
+      </svg>
+    </div>
+    <div style={{ position: 'absolute', left: 1050, top: 340, width: 730 }}>
+      <div className="d07-on1" style={{ fontSize: 27, lineHeight: 1.5, marginBottom: 26 }}>
+        Le trajet de « homme » à « femme » forme une direction dans l'espace.
+      </div>
+      <div className="d07-on2" style={{ fontSize: 27, lineHeight: 1.5, marginBottom: 26 }}>
+        On part de « roi » et on suit la même direction…
+      </div>
+      <div className="d07-on3" style={{ fontSize: 27, lineHeight: 1.5 }}>
+        Le mot le plus proche du point d'arrivée est <b style={{ color: ink.red }}>« reine »</b>.
+        <div style={{ marginTop: 22, fontFamily: typewriter, fontSize: 34, lineHeight: 1.4, textShadow: BLEED }}>
+          Paris − France + Italie ≈ Rome
+        </div>
+      </div>
+    </div>
+  </Frame>
+);
+
+// ═══ 7 · Les limites ════════════════════════════════════════════════════════
+const Limit = ({ beat, title, children }: { beat: number; title: string; children: ReactNode }) => (
+  <div className={beat ? `d07-on${beat}` : 'd07-in'} style={{ ...vars({ d: beat ? '0ms' : '500ms' }), marginBottom: 40 }}>
+    <div style={{ fontFamily: typewriter, fontSize: 38, textShadow: BLEED }}>{title}</div>
+    <div style={{ marginTop: 8, fontSize: 27, lineHeight: 1.5, color: ink.soft }}>{children}</div>
+  </div>
+);
+
+const Limits: Page = () => (
+  <Frame id="limits" era="2013–2016" eyebrow="Ce que ces vecteurs ne savent pas faire" title="Un vecteur par mot, ce n'est pas assez" beats={2}>
+    <div style={{ position: 'absolute', left: L, top: 340, width: 1050 }}>
+      <Limit beat={0} title="Un seul sens par mot">
+        « avocat » a un seul vecteur, à mi-chemin entre le fruit et le métier. Le contexte de la phrase ne change rien.
+      </Limit>
+      <Limit beat={1} title="Les biais des textes">
+        Appris sur des textes humains, les vecteurs en reproduisent les stéréotypes. En 2016, des chercheurs montrent par exemple des associations entre métiers et genre.
+      </Limit>
+      <Limit beat={2} title="L'ordre des mots est perdu">
+        « Le chien mord l'homme » et « l'homme mord le chien » contiennent les mêmes mots.
+      </Limit>
+    </div>
+    <Stamp pos={{ left: 1400, top: 420 }} rot={-7} size={46} beat={2} d={400}>
+      Il faut lire
+    </Stamp>
+    <Hand x={1380} y={540} w={400} rot={-2} size={32} d={1200}>
+      … une phrase dans l'ordre
+    </Hand>
+  </Frame>
+);
+
+// ═══ 8 · Les réseaux récurrents ═════════════════════════════════════════════
+const RNN_WORDS = ['le', 'chat', 'dort', 'sur', 'le'];
+const RX = (i: number) => 120 + i * 280;
+
+const RnnCell = ({ i }: { i: number }) => (
+  <g className={i === 0 ? undefined : `d07-fade${Math.min(i, 3)}`}>
+    <rect x={RX(i) - 70} y={150} width={140} height={110} rx={8} fill={ink.sheet} stroke={ink.text} strokeWidth={3} />
+    <text x={RX(i)} y={215} textAnchor="middle" style={{ fontFamily: typewriter, fontSize: 28 }}>
+      mémoire
+    </text>
+    <line x1={RX(i)} y1={350} x2={RX(i)} y2={268} stroke={ink.soft} strokeWidth={3} />
+    <polygon points={head(RX(i), 264, -90, 14)} fill={ink.soft} />
+    <text x={RX(i)} y={392} textAnchor="middle" style={{ fontFamily: typewriter, fontSize: 34 }} fill={ink.text}>
+      {RNN_WORDS[i]}
+    </text>
+    {i < RNN_WORDS.length - 1 ? (
+      <g>
+        <line x1={RX(i) + 70} y1={205} x2={RX(i + 1) - 84} y2={205} stroke={ink.red} strokeWidth={4} />
+        <polygon points={head(RX(i + 1) - 72, 205, 0, 15)} fill={ink.red} />
+      </g>
+    ) : (
+      <g>
+        <line x1={RX(i) + 70} y1={205} x2={RX(i) + 160} y2={205} stroke={ink.red} strokeWidth={4} />
+        <polygon points={head(RX(i) + 174, 205, 0, 15)} fill={ink.red} />
+        <text x={RX(i) + 196} y={215} style={{ fontFamily: typewriter, fontSize: 34 }} fill={ink.red}>
+          canapé ?
+        </text>
+      </g>
+    )}
+  </g>
+);
+
+const Recurrent: Page = () => (
+  <Frame id="rnn" era="1986–2014" eyebrow="Lire dans l'ordre" title="Les réseaux récurrents : un mot à la fois" beats={3}>
+    <svg width={1600} height={420} style={{ position: 'absolute', left: L, top: 300, overflow: 'visible' }}>
+      <RnnCell i={0} />
+      <RnnCell i={1} />
+      <RnnCell i={2} />
+      <RnnCell i={3} />
+      <RnnCell i={4} />
+      <text x={RX(1) - 20} y={128} textAnchor="middle" style={{ fontFamily: hand, fontWeight: 600, fontSize: 30 }} fill={ink.red}>
+        la mémoire passe au mot suivant
+      </text>
+    </svg>
+    <div className="d07-in" style={{ ...vars({ d: '500ms' }), position: 'absolute', left: L, top: 740, width: CW, fontSize: 28, lineHeight: 1.5 }}>
+      À chaque mot, le réseau met à jour un petit vecteur « mémoire » qui résume tout ce qu'il a lu jusque-là. Puis il s'en sert pour deviner la suite.
+    </div>
+    <Hand x={L + 10} y={860} w={1500} rot={-0.8} size={30} d={1300}>
+      En pratique, c'est le même réseau, réutilisé à chaque mot : on l'a dessiné « déroulé ».
+    </Hand>
+  </Frame>
+);
+
+// ═══ 9 · LSTM ═══════════════════════════════════════════════════════════════
+const Gate = ({ x, beat, name, what, c }: { x: number; beat: number; name: string; what: string; c: string }) => (
+  <div className={beat ? `d07-on${beat}` : 'd07-in'} style={{ ...vars({ d: beat ? '0ms' : '500ms' }), position: 'absolute', left: x, top: 470, width: 330, textAlign: 'center' }}>
+    <div style={{ width: 150, height: 150, margin: '0 auto', borderRadius: 999, border: `5px solid ${c}`, background: ink.sheet, display: 'grid', placeItems: 'center', fontFamily: typewriter, fontSize: 30, color: c }}>
+      {name}
+    </div>
+    <div style={{ marginTop: 18, fontSize: 25, lineHeight: 1.45 }}>{what}</div>
+  </div>
+);
+
+const Lstm: Page = () => (
+  <Frame id="lstm" era="1997" eyebrow="Le problème de la mémoire courte" title="LSTM : une mémoire qui sait quoi garder" beats={3}>
+    <div className="d07-in" style={{ ...vars({ d: '300ms' }), position: 'absolute', left: L, top: 320, width: 1060, fontSize: 26, lineHeight: 1.5, color: ink.soft }}>
+      Un réseau récurrent simple oublie vite : c'est encore le signal qui s'efface (dossier 2). « Le chat que la voisine avait trouvé… <b>dort</b> » : qui dort ?
+    </div>
+    <Gate x={170} beat={1} name="oublier" what="effacer ce qui ne sert plus" c={ink.red} />
+    <Gate x={520} beat={2} name="écrire" what="ajouter l'information utile" c={ink.blue} />
+    <Gate x={870} beat={3} name="lire" what="sortir ce dont on a besoin maintenant" c="#3e7a4e" />
+    <Photo src={imgSchmidhuber} caption="Jürgen Schmidhuber" x={1370} y={330} w={170} h={220} rot={2.5} origin="50% 30%" d={600} />
+    <div className="d07-in" style={{ ...vars({ d: '900ms' }), position: 'absolute', left: 1300, top: 620, width: 480, fontSize: 25, lineHeight: 1.5 }}>
+      <b>1997</b> : Sepp Hochreiter et Jürgen Schmidhuber inventent la LSTM (« longue mémoire à court terme »), avec des <b>portes</b> qui s'apprennent.
+    </div>
+    <Hand x={L + 10} y={790} w={1050} rot={-1} size={30} d={300}>
+      Chaque porte est un petit réseau qui décide, entre 0 et 1, combien laisser passer.
+    </Hand>
+  </Frame>
+);
+
+// ═══ 10 · Traduire ══════════════════════════════════════════════════════════
+const Translate: Page = () => (
+  <Frame id="translate" era="2014–2016" eyebrow="Le grand succès" title="Lire une phrase entière, puis la réécrire" beats={2}>
+    <svg width={1600} height={300} style={{ position: 'absolute', left: L, top: 340, overflow: 'visible' }}>
+      <g className="d07-in" style={vars({ d: '300ms' })}>
+        <rect x={0} y={60} width={500} height={120} rx={8} fill={ink.sheet} stroke={ink.text} strokeWidth={3} />
+        <text x={250} y={132} textAnchor="middle" style={{ fontFamily: typewriter, fontSize: 32 }}>
+          the cat is sleeping
+        </text>
+        <text x={250} y={40} textAnchor="middle" style={{ fontFamily: mono, fontSize: 22, fontWeight: 700, letterSpacing: '0.1em' }} fill={ink.muted}>
+          ENCODEUR (LIT)
+        </text>
+      </g>
+      <g className="d07-fade1">
+        <line x1={510} y1={120} x2={660} y2={120} stroke={ink.red} strokeWidth={5} />
+        <circle cx={730} cy={120} r={60} fill={ink.redSoft} stroke={ink.red} strokeWidth={4} />
+        <text x={730} y={130} textAnchor="middle" style={{ fontFamily: typewriter, fontSize: 28 }} fill={ink.red}>
+          sens
+        </text>
+        <line x1={790} y1={120} x2={930} y2={120} stroke={ink.red} strokeWidth={5} />
+        <polygon points={head(944, 120, 0, 16)} fill={ink.red} />
+        <text x={730} y={230} textAnchor="middle" style={{ fontFamily: hand, fontWeight: 600, fontSize: 30 }} fill={ink.red}>
+          toute la phrase dans un seul vecteur
+        </text>
+      </g>
+      <g className="d07-fade2">
+        <rect x={950} y={60} width={560} height={120} rx={8} fill={ink.sheet} stroke={ink.text} strokeWidth={3} />
+        <text x={1230} y={132} textAnchor="middle" style={{ fontFamily: typewriter, fontSize: 32 }}>
+          le chat dort
+        </text>
+        <text x={1230} y={40} textAnchor="middle" style={{ fontFamily: mono, fontSize: 22, fontWeight: 700, letterSpacing: '0.1em' }} fill={ink.muted}>
+          DÉCODEUR (ÉCRIT)
+        </text>
+      </g>
+    </svg>
+    <div className="d07-on2" style={{ position: 'absolute', left: L, top: 660, width: CW, fontSize: 28, lineHeight: 1.5 }}>
+      <b>2014</b> : Sutskever, Vinyals et Le montrent qu'un réseau à base de LSTM traduit des phrases entières. <b>2016</b> : Google Traduction passe aux réseaux de neurones.
+    </div>
+    <Hand x={L + 10} y={820} w={1500} rot={-0.8} size={30} d={1200}>
+      Mais faire tenir une longue phrase dans un seul petit vecteur… c'est beaucoup demander.
+    </Hand>
+  </Frame>
+);
+
+// ═══ 11 · La limite ═════════════════════════════════════════════════════════
+const Bottleneck: Page = () => (
+  <Frame id="bottleneck" era="2016" eyebrow="Ce qui bloque encore" title="Lire mot après mot, c'est lent et ça oublie" beats={2}>
+    <div style={{ position: 'absolute', left: L, top: 340, width: 1000 }}>
+      <div className="d07-in" style={{ ...vars({ d: '400ms' }), display: 'flex', gap: 24, marginBottom: 36 }}>
+        <span style={{ fontFamily: typewriter, fontSize: 48, color: ink.red, width: 54, flex: 'none' }}>1</span>
+        <span style={{ fontSize: 28, lineHeight: 1.5 }}>
+          <b>Lent</b> : il faut finir le mot 9 avant de lire le mot 10. Impossible d'utiliser les milliers de cœurs d'une carte graphique (dossier 6).
+        </span>
+      </div>
+      <div className="d07-on1" style={{ display: 'flex', gap: 24 }}>
+        <span style={{ fontFamily: typewriter, fontSize: 48, color: ink.red, width: 54, flex: 'none' }}>2</span>
+        <span style={{ fontSize: 28, lineHeight: 1.5 }}>
+          <b>Oublieux</b> : même avec des portes, le début d'un long texte s'estompe.
+        </span>
+      </div>
+    </div>
+    <div className="d07-on2" style={{ position: 'absolute', left: 1250, top: 340, width: 530 }}>
+      <div style={{ fontFamily: typewriter, fontSize: 40, lineHeight: 1.25, color: 'var(--osd-accent)', textShadow: BLEED }}>Et si chaque mot pouvait regarder directement tous les autres ?</div>
+      <div style={{ marginTop: 16, fontSize: 27, lineHeight: 1.5, color: ink.soft }}>C'est l'idée de l'attention, et du Transformer : dossier 9.</div>
+    </div>
+  </Frame>
+);
+
+// ═══ 12 · Ce qu'il faut retenir ═════════════════════════════════════════════
+const Lesson: Page = () => (
+  <Frame id="lesson" eyebrow="Ce qu'il faut retenir" beats={1}>
+    <div className="d07-in-fade" style={{ position: 'absolute', left: L - 16, top: 170, fontFamily: typewriter, fontSize: 300, lineHeight: 1, color: ink.rule }}>
+      «
+    </div>
+    <div style={{ position: 'absolute', left: L, top: 370, fontFamily: typewriter, fontSize: 70, lineHeight: 1.22, textShadow: BLEED }}>
+      <Typed text="Un mot devient un point dans l'espace." d={400} step={28} />
+    </div>
+    <div style={{ position: 'absolute', left: L, top: 480, fontFamily: typewriter, fontSize: 70, lineHeight: 1.22, textShadow: BLEED }}>
+      <Typed text="Le sens devient " beat={1} step={30} />
+      <span style={{ color: 'var(--osd-accent)' }}>
+        <Mark beat={1} d={1100}>
+          <Typed text="une distance" beat={1} d={480} step={30} />
+        </Mark>
+      </span>
+      <Typed text="." beat={1} d={840} step={30} />
+    </div>
+    <SeriesNav left={L} top={700} d={800} />
+    <Credits top={930}>
+      Photos via Wikimedia Commons : Tomáš Mikolov, 2020, par Jindřich Nosek (CC BY-SA 4.0) · Jürgen Schmidhuber, 2017, ITU / R. Farrell (CC BY 2.0). Images
+      recadrées et teintées.
+    </Credits>
+  </Frame>
+);
+
+
+// ─── Deck wiring ────────────────────────────────────────────────────────────
+const HOLD: Keyframe[] = [{ opacity: 1 }, { opacity: 1 }];
+
+export const transition: SlideTransition = {
+  duration: 260,
+  exit: { duration: 260, easing: EASE_IN, keyframes: HOLD },
+  enter: {
+    duration: 260,
+    easing: EASE_OUT,
+    keyframes: [
+      { opacity: 0, transform: 'translateY(6px)' },
+      { opacity: 1, transform: 'translateY(0)' },
+    ],
+  },
+};
+
+Cover.transition = {
+  duration: 280,
+  exit: { duration: 280, easing: EASE_IN, keyframes: HOLD },
+  enter: {
+    duration: 280,
+    easing: EASE_OUT,
+    keyframes: [
+      { opacity: 0, transform: 'translateY(12px)', filter: 'blur(4px)' },
+      { opacity: 1, transform: 'translateY(0)', filter: 'blur(0)' },
+    ],
+  },
+};
+
+const STYLE_ID = 'osd-styles-ai-history-07-word2vec';
+const STYLE_CSS = CSS.join('\n');
+if (typeof document !== 'undefined') {
+  let style = document.getElementById(STYLE_ID);
+  if (!style) {
+    style = document.createElement('style');
+    style.id = STYLE_ID;
+    document.head.appendChild(style);
+  }
+  if (style.textContent !== STYLE_CSS) style.textContent = STYLE_CSS;
+}
+
+export const meta: SlideMeta = {
+  title: "Les mots deviennent des nombres : word2vec et la mémoire des réseaux",
+  createdAt: '2026-10-08T02:39:47.571Z',
+};
+
+export const notes: (string | undefined)[] = [
+  `Dossier 7 : comment les mots sont devenus des nombres. C'est la première pierre des modèles de langage.
+La carte perforée encode « WORD2VEC 2013 ».`,
+  `Le problème. Pour un ordinateur, un mot est une étiquette. La méthode classique : une case par mot du vocabulaire, et un seul 1.
+Clic 1 : vélo a lui aussi sa case.
+Clic 2 : avec cette méthode, chat est aussi loin de chien que de vélo. Ces nombres ne disent rien du sens.`,
+  `L'idée vient d'un linguiste, John Rupert Firth, en 1957 : on connaît un mot à ses fréquentations.
+Clic 1 : « le … miaule sur le canapé » : on devine chat. Clic 2 : « le … aboie dans le jardin » : chien.
+Deux mots qui partagent leurs contextes ont un sens proche.`,
+  `2013, chez Google, Tomáš Mikolov et son équipe publient word2vec.
+Un petit réseau lit des milliards de phrases. Pour le mot au centre, il apprend à deviner ses voisins. Clics 1 et 2 : la fenêtre glisse.
+Pour y arriver, il range chaque mot dans une liste de 300 nombres. À la fin, on garde ces listes : les vecteurs de mots. Quelques heures de calcul.`,
+  `Le résultat : une carte du sens, ici réduite à deux dimensions pour le dessin.
+Clic : des groupes apparaissent seuls, animaux, pays, nourriture, mouvements, sans que personne n'ait donné de catégories.`,
+  `La découverte qui a fasciné tout le monde.
+Clic 1 : le trajet de homme à femme forme une direction.
+Clic 2 : on part de roi et on suit la même direction.
+Clic 3 : le mot le plus proche du point d'arrivée est reine. De même, Paris moins France plus Italie donne Rome.`,
+  `Mais trois limites. Un seul vecteur par mot : avocat est coincé entre le fruit et le métier.
+Clic 1 : les biais des textes : en 2016, des chercheurs montrent des associations stéréotypées entre métiers et genre.
+Clic 2 : l'ordre des mots est perdu : le chien mord l'homme, ou l'inverse. Il faut lire une phrase dans l'ordre.`,
+  `Pour lire dans l'ordre : les réseaux récurrents. Ils lisent un mot à la fois et mettent à jour une petite mémoire.
+Clics 1 à 3 : la mémoire passe de mot en mot, et sert à deviner la suite : canapé.
+C'est le même réseau, réutilisé à chaque mot.`,
+  `Problème : cette mémoire est courte, c'est encore le signal qui s'efface du dossier 2.
+1997 : Hochreiter et Schmidhuber inventent la LSTM. Clic 1 : une porte pour oublier. Clic 2 : une porte pour écrire. Clic 3 : une porte pour lire.
+Chaque porte s'apprend et décide combien laisser passer.`,
+  `Le grand succès : la traduction. Un encodeur lit la phrase, clic 1, la résume dans un vecteur, clic 2, un décodeur la réécrit dans l'autre langue.
+2014, Sutskever, Vinyals et Le ; 2016, Google Traduction passe aux réseaux de neurones.
+Mais faire tenir une longue phrase dans un seul vecteur, c'est beaucoup demander.`,
+  `Deux limites restent. Lent : il faut lire le mot 9 avant le mot 10, impossible d'exploiter les cartes graphiques.
+Clic 1 : oublieux sur les longs textes.
+Clic 2 : et si chaque mot pouvait regarder directement tous les autres ? C'est l'attention, et le Transformer : dossier 9.`,
+  `À retenir : un mot devient un point dans l'espace. Clic : le sens devient une distance.
+Prochain dossier : AlphaGo, une machine qui apprend en jouant.`,
+];
+
+export default [Cover, Problem, Company, Word2vec, MeaningMap, Arithmetic, Limits, Recurrent, Lstm, Translate, Bottleneck, Lesson] satisfies Page[];

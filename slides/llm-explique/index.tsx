@@ -36,6 +36,44 @@ if (typeof document !== 'undefined') {
   if (link.href !== FONT_HREF) link.href = FONT_HREF;
 }
 
+// ─── One press = one step ───────────────────────────────────────────────────
+// Holding an arrow key or a presenter-remote button makes the OS auto-repeat
+// keydown (and some remotes fire a burst of presses), which the player turns
+// into several reveals in a row. This capture-phase guard runs before the
+// player's own listener and lets exactly one press through per hold, with a
+// short cooldown. Installed once per window by whichever deck loads first —
+// keep this block identical in every deck.
+if (typeof window !== 'undefined') {
+  const w = window as Window & { __osdOnePressGuard?: boolean };
+  if (!w.__osdOnePressGuard) {
+    w.__osdOnePressGuard = true;
+    const NAV_KEYS = new Set(['ArrowRight', 'ArrowDown', ' ', 'PageDown', 'ArrowLeft', 'ArrowUp', 'PageUp']);
+    const COOLDOWN_MS = 350;
+    const held = new Set<string>();
+    let last = Number.NEGATIVE_INFINITY;
+    const isTyping = (t: EventTarget | null) =>
+      t instanceof HTMLElement && (t.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName));
+    window.addEventListener(
+      'keydown',
+      (e) => {
+        if (!NAV_KEYS.has(e.key) || isTyping(e.target)) return;
+        const k = e.code || e.key;
+        const now = performance.now();
+        if (e.repeat || held.has(k) || now - last < COOLDOWN_MS) {
+          e.preventDefault();
+          e.stopImmediatePropagation();
+          return;
+        }
+        held.add(k);
+        last = now;
+      },
+      true,
+    );
+    window.addEventListener('keyup', (e) => held.delete(e.code || e.key), true);
+    window.addEventListener('blur', () => held.clear());
+  }
+}
+
 // ─── Palette (paper / ink / pastel tokens) ──────────────────────────────────
 const ink = {
   text: '#1d1b16',
