@@ -1,0 +1,261 @@
+warning: in the working copy of '.ia134-build/j1-20-m1b.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of '.ia134-build/j2-10-m6.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of '.ia134-build/j2-20-m7m8.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'README.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'slides/ia-agentique-feuille-de-route/index.tsx', LF will be replaced by CRLF the next time Git touches it
+[1mdiff --git a/.ia134-build/j1-20-m1b.tsx b/.ia134-build/j1-20-m1b.tsx[m
+[1mindex ff1fdea..af51969 100644[m
+[1m--- a/.ia134-build/j1-20-m1b.tsx[m
+[1m+++ b/.ia134-build/j1-20-m1b.tsx[m
+[36m@@ -192,7 +192,7 @@[m [mconst M1b_ReAct: Page = () => {[m
+         <Btn icon="reset" ghost onClick={() => setMan(0)}>[m
+           Recommencer[m
+         </Btn>[m
+[31m-        <span style={{ marginLeft: 'auto', fontFamily: mono, fontSize: 22, color: C.muted }}>[m
+[32m+[m[32m        <span style={{ marginLeft: 'auto', whiteSpace: 'nowrap', fontFamily: mono, fontSize: 22, color: C.muted }}>[m
+           {pad(step)} / {M1B_STEPS}[m
+         </span>[m
+       </div>[m
+[1mdiff --git a/.ia134-build/j2-10-m6.tsx b/.ia134-build/j2-10-m6.tsx[m
+[1mindex 2f991ee..794043c 100644[m
+[1m--- a/.ia134-build/j2-10-m6.tsx[m
+[1m+++ b/.ia134-build/j2-10-m6.tsx[m
+[36m@@ -766,7 +766,7 @@[m [mconst M6Outcome = ({[m
+   note: ReactNode;[m
+   verdict: ReactNode;[m
+ }) => ([m
+[31m-  <div className={b.on(n)} style={{ position: 'absolute', left: x, top: 640, width: 430 }}>[m
+[32m+[m[32m  <div className={b.on(n)} style={{ position: 'absolute', left: x, top: 590, width: 430 }}>[m
+     <div[m
+       style={{[m
+         height: 318,[m
+[36m@@ -907,7 +907,7 @@[m [mconst M6_Security: Page = () => ([m
+         </div>[m
+       </div>[m
+     </div>[m
+[31m-    <div className={b.pop(1)} style={{ position: 'absolute', left: 700, top: 586 }}>[m
+[32m+[m[32m    <div className={b.pop(1)} style={{ position: 'absolute', right: 920, top: 482 }}>[m
+       <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 21, fontWeight: 600, color: T.coral.fg }}>[m
+         <Icon name="eye" size={26} />[m
+         texte blanc sur blanc[m
+[1mdiff --git a/.ia134-build/j2-20-m7m8.tsx b/.ia134-build/j2-20-m7m8.tsx[m
+[1mindex 199d46d..01dcedb 100644[m
+[1m--- a/.ia134-build/j2-20-m7m8.tsx[m
+[1m+++ b/.ia134-build/j2-20-m7m8.tsx[m
+[36m@@ -442,22 +442,22 @@[m [mconst M78_Compare: Page = () => ([m
+         </svg>[m
+       </div>[m
+     </div>[m
+[31m-    <M78RowLbl y={500} icon="bolt" n={1}>[m
+[32m+[m[32m    <M78RowLbl y={482} icon="bolt" n={1}>[m
+       Rapidité de démarrage[m
+     </M78RowLbl>[m
+[31m-    <M78RowLbl y={556} icon="users" n={1}>[m
+[31m-      Accessible aux équipes métier[m
+[32m+[m[32m    <M78RowLbl y={538} icon="users" n={1}>[m
+[32m+[m[32m      Accessible au métier[m
+     </M78RowLbl>[m
+[31m-    <M78RowLbl y={612} icon="puzzle" n={2}>[m
+[32m+[m[32m    <M78RowLbl y={594} icon="puzzle" n={2}>[m
+       Flexibilité[m
+     </M78RowLbl>[m
+[31m-    <M78RowLbl y={668} icon="lock" n={2}>[m
+[32m+[m[32m    <M78RowLbl y={650} icon="lock" n={2}>[m
+       Contrôle des données[m
+     </M78RowLbl>[m
+[31m-    <M78RowLbl y={724} h={110} icon="target" n={3}>[m
+[32m+[m[32m    <M78RowLbl y={706} h={110} icon="target" n={3}>[m
+       Idéal pour…[m
+     </M78RowLbl>[m
+[31m-    <M78RowLbl y={834} h={110} icon="alert" n={4}>[m
+[32m+[m[32m    <M78RowLbl y={816} h={110} icon="alert" n={4}>[m
+       Attention à…[m
+     </M78RowLbl>[m
+ [m
+[1mdiff --git a/.ia134-build/j2-30-m9m10close.tsx b/.ia134-build/j2-30-m9m10close.tsx[m
+[1mindex 17327d4..de482a4 100644[m
+[1m--- a/.ia134-build/j2-30-m9m10close.tsx[m
+[1m+++ b/.ia134-build/j2-30-m9m10close.tsx[m
+[36m@@ -541,7 +541,12 @@[m [mconst M910Objection = ({ text }: { text: string }) => ([m
+   </div>[m
+ );[m
+ [m
+[31m-const M910Answer = ({ children }: { children: ReactNode }) => <div style={{ fontSize: 24, lineHeight: 1.4, color: C.ink }}>{children}</div>;[m
+[32m+[m[32mconst M910Answer = ({ q, children }: { q: string; children: ReactNode }) => ([m
+[32m+[m[32m  <div>[m
+[32m+[m[32m    <div style={{ fontSize: 21, fontStyle: 'italic', fontWeight: 600, lineHeight: 1.3, color: T.coral.fg, marginBottom: 12 }}>{q}</div>[m
+[32m+[m[32m    <div style={{ fontSize: 24, lineHeight: 1.4, color: C.ink }}>{children}</div>[m
+[32m+[m[32m  </div>[m
+[32m+[m[32m);[m
+ [m
+ const M910_Change: Page = () => ([m
+   <Frame mod={9} beats={8}>[m
+[36m@@ -577,7 +582,7 @@[m [mconst M910_Change: Page = () => ([m
+       style={{ position: 'absolute', left: 120, top: 664 }}[m
+       front={<M910Objection text="« L’IA va prendre mon emploi. »" />}[m
+       back={[m
+[31m-        <M910Answer>[m
+[32m+[m[32m        <M910Answer q="« L’IA va prendre mon emploi. »">[m
+           L’agent prend le tri et les réponses répétitives. Vous gardez les cas délicats, les décisions et la relation. On le dit, et on le prouve pendant le pilote.[m
+         </M910Answer>[m
+       }[m
+[36m@@ -590,7 +595,7 @@[m [mconst M910_Change: Page = () => ([m
+       style={{ position: 'absolute', left: 688, top: 664 }}[m
+       front={<M910Objection text="« Il va se tromper, et c’est moi qui serai blâmé. »" />}[m
+       back={[m
+[31m-        <M910Answer>[m
+[32m+[m[32m        <M910Answer q="« Il va se tromper, et c’est moi qui serai blâmé. »">[m
+           Pendant le pilote, vous validez avant l’envoi. Les erreurs servent à améliorer l’agent : elles sont attendues, journalisées et jamais reprochées.[m
+         </M910Answer>[m
+       }[m
+[36m@@ -603,7 +608,7 @@[m [mconst M910_Change: Page = () => ([m
+       style={{ position: 'absolute', left: 1256, top: 664 }}[m
+       front={<M910Objection text="« Encore un outil de plus à apprendre… »" />}[m
+       back={[m
+[31m-        <M910Answer>[m
+[32m+[m[32m        <M910Answer q="« Encore un outil de plus à apprendre… »">[m
+           L’agent s’intègre à la boîte de courriels existante : pas de nouvel écran. Formation de 45 minutes, ambassadeur à côté de vous.[m
+         </M910Answer>[m
+       }[m
+[1mdiff --git a/README.md b/README.md[m
+[1mindex a19f53d..3302e48 100644[m
+[1m--- a/README.md[m
+[1m+++ b/README.md[m
+[36m@@ -26,9 +26,23 @@[m [mChaque page est un composant React, chaque schéma est calculé, chaque clic ré[m
+ | --- | :---: | --- | --- |[m
+ | **Comment une machine apprend**<br><sub>`slides/ml-explique`</sub> | 22 | Ingénieurs qui veulent comprendre le machine learning de l'intérieur | [Ouvrir](https://houssemeddinelassoued.github.io/my-deck/s/ml-explique) · [Vue présentateur](https://houssemeddinelassoued.github.io/my-deck/s/ml-explique/presenter) |[m
+ | **Comment fonctionne un LLM**<br><sub>`slides/llm-explique`</sub> | 20 | Ingénieurs curieux de ce qui se passe entre le prompt et la réponse | [Ouvrir](https://houssemeddinelassoued.github.io/my-deck/s/llm-explique) · [Vue présentateur](https://houssemeddinelassoued.github.io/my-deck/s/llm-explique/presenter) |[m
+[32m+[m[32m| **Feuille de route pour l'IA agentique** (formation Technologia IA134, 2 jours)<br><sub>`slides/ia-agentique-feuille-de-route`</sub> | 112 | Gestionnaires, analystes, TI et chefs de projet qui veulent bâtir une feuille de route d'agents IA | [Ouvrir](https://houssemeddinelassoued.github.io/my-deck/s/ia-agentique-feuille-de-route) · [Vue présentateur](https://houssemeddinelassoued.github.io/my-deck/s/ia-agentique-feuille-de-route/presenter) |[m
+[32m+[m[32m| **Archives de l'IA** (série de 11 épisodes + sommaire)<br><sub>`slides/ai-history-*`</sub> | 9–20 | Tous publics : l'histoire de l'IA, du neurone formel à ChatGPT | [Sommaire](https://houssemeddinelassoued.github.io/my-deck/s/ai-history-sommaire) |[m
+ | Getting started<br><sub>`slides/getting-started`</sub> | 18 | Démo fournie par le framework open-slide | [Ouvrir](https://houssemeddinelassoued.github.io/my-deck/s/getting-started) |[m
+ [m
+[31m-Les deux présentations partagent la même direction artistique : papier et encre, titres en Newsreader, texte en Inter, code en JetBrains Mono, un rouge brique comme accent. Chacune a ses **notes de l'orateur** complètes, page par page, avec les repères de clics.[m
+[32m+[m[32m### Feuille de route pour l'IA agentique (IA134)[m
+[32m+[m
+[32m+[m[32mFormation de 2 jours qui suit le [programme officiel Technologia](https://www.technologia.com/formations/feuille-de-route-pour-lia-agentique---une-exploration-complete-des-agents-dia) : 10 modules (Jour 1 : comprendre les agents · Jour 2 : construire la feuille de route), avec QCM, ateliers minutés, simulateurs interactifs, un fil rouge (Boréal Distribution) et les notes du formateur sur chaque page.[m
+[32m+[m
+[32m+[m[32mLe deck est **généré** : ne modifiez pas `slides/ia-agentique-feuille-de-route/index.tsx` à la main. Modifiez les fragments dans `.ia134-build/` (`kit.tsx` + `j1-*.tsx` / `j2-*.tsx`), puis reconstruisez :[m
+[32m+[m
+[32m+[m[32m```bash[m
+[32m+[m[32mnode .ia134-build/build.mjs all[m
+[32m+[m[32m```[m
+[32m+[m
+[32m+[m[32m### Comment une machine apprend · Comment fonctionne un LLM[m
+[32m+[m
+[32m+[m[32mCes deux présentations partagent la même direction artistique : papier et encre, titres en Newsreader, texte en Inter, code en JetBrains Mono, un rouge brique comme accent. Chacune a ses **notes de l'orateur** complètes, page par page, avec les repères de clics.[m
+ [m
+ ### Comment une machine apprend[m
+ [m
+[36m@@ -127,7 +141,10 @@[m [mmy-deck/[m
+ │   │   ├── index.tsx         #   les 22 pages + les notes de l'orateur[m
+ │   │   └── assets/[m
+ │   ├── llm-explique/         # Comment fonctionne un LLM[m
+[32m+[m[32m│   ├── ia-agentique-feuille-de-route/  # formation IA134 (généré depuis .ia134-build/)[m
+[32m+[m[32m│   ├── ai-history-*/         # série « Archives de l'IA » (sommaire + 11 épisodes)[m
+ │   └── getting-started/      # démo du framework[m
+[32m+[m[32m├── .ia134-build/             # sources de la formation IA134 : kit, fragments, build.mjs[m
+ ├── assets/                   # images partagées entre présentations[m
+ ├── themes/                   # thèmes réutilisables[m
+ ├── docs/preview/             # captures utilisées dans ce README[m
+[1mdiff --git a/slides/ia-agentique-feuille-de-route/index.tsx b/slides/ia-agentique-feuille-de-route/index.tsx[m
+[1mindex e415461..1928bb7 100644[m
+[1m--- a/slides/ia-agentique-feuille-de-route/index.tsx[m
+[1m+++ b/slides/ia-agentique-feuille-de-route/index.tsx[m
+[36m@@ -5088,7 +5088,7 @@[m [mconst M1b_ReAct: Page = () => {[m
+         <Btn icon="reset" ghost onClick={() => setMan(0)}>[m
+           Recommencer[m
+         </Btn>[m
+[31m-        <span style={{ marginLeft: 'auto', fontFamily: mono, fontSize: 22, color: C.muted }}>[m
+[32m+[m[32m        <span style={{ marginLeft: 'auto', whiteSpace: 'nowrap', fontFamily: mono, fontSize: 22, color: C.muted }}>[m
+           {pad(step)} / {M1B_STEPS}[m
+         </span>[m
+       </div>[m
+[36m@@ -11267,7 +11267,7 @@[m [mconst M6Outcome = ({[m
+   note: ReactNode;[m
+   verdict: ReactNode;[m
+ }) => ([m
+[31m-  <div className={b.on(n)} style={{ position: 'absolute', left: x, top: 640, width: 430 }}>[m
+[32m+[m[32m  <div className={b.on(n)} style={{ position: 'absolute', left: x, top: 590, width: 430 }}>[m
+     <div[m
+       style={{[m
+         height: 318,[m
+[36m@@ -11408,7 +11408,7 @@[m [mconst M6_Security: Page = () => ([m
+         </div>[m
+       </div>[m
+     </div>[m
+[31m-    <div className={b.pop(1)} style={{ position: 'absolute', left: 700, top: 586 }}>[m
+[32m+[m[32m    <div className={b.pop(1)} style={{ position: 'absolute', right: 920, top: 482 }}>[m
+       <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 21, fontWeight: 600, color: T.coral.fg }}>[m
+         <Icon name="eye" size={26} />[m
+         texte blanc sur blanc[m
+[36m@@ -12167,22 +12167,22 @@[m [mconst M78_Compare: Page = () => ([m
+         </svg>[m
+       </div>[m
+     </div>[m
+[31m-    <M78RowLbl y={500} icon="bolt" n={1}>[m
+[32m+[m[32m    <M78RowLbl y={482} icon="bolt" n={1}>[m
+       Rapidité de démarrage[m
+     </M78RowLbl>[m
+[31m-    <M78RowLbl y={556} icon="users" n={1}>[m
+[31m-      Accessible aux équipes métier[m
+[32m+[m[32m    <M78RowLbl y={538} icon="users" n={1}>[m
+[32m+[m[32m      Accessible au métier[m
+     </M78RowLbl>[m
+[31m-    <M78RowLbl y={612} icon="puzzle" n={2}>[m
+[32m+[m[32m    <M78RowLbl y={594} icon="puzzle" n={2}>[m
+       Flexibilité[m
+     </M78RowLbl>[m
+[31m-    <M78RowLbl y={668} icon="lock" n={2}>[m
+[32m+[m[32m    <M78RowLbl y={650} icon="lock" n={2}>[m
+       Contrôle des données[m
+     </M78RowLbl>[m
+[31m-    <M78RowLbl y={724} h={110} icon="target" n={3}>[m
+[32m+[m[32m    <M78RowLbl y={706} h={110} icon="target" n={3}>[m
+       Idéal pour…[m
+     </M78RowLbl>[m
+[31m-    <M78RowLbl y={834} h={110} icon="alert" n={4}>[m
+[32m+[m[32m    <M78RowLbl y={816} h={110} icon="alert" n={4}>[m
+       Attention à…[m
+     </M78RowLbl>[m
+ [m
+[36m@@ -14088,7 +14088,12 @@[m [mconst M910Objection = ({ text }: { text: string }) => ([m
+   </div>[m
+ );[m
+ [m
+[31m-const M910Answer = ({ children }: { children: ReactNode }) => <div style={{ fontSize: 24, lineHeight: 1.4, color: C.ink }}>{children}</div>;[m
+[32m+[m[32mconst M910Answer = ({ q, children }: { q: string; children: ReactNode }) => ([m
+[32m+[m[32m  <div>[m
+[32m+[m[32m    <div style={{ fontSize: 21, fontStyle: 'italic', fontWeight: 600, lineHeight: 1.3, color: T.coral.fg, marginBottom: 12 }}>{q}</div>[m
+[32m+[m[32m    <div style={{ fontSize: 24, lineHeight: 1.4, color: C.ink }}>{children}</div>[m
+[32m+[m[32m  </div>[m
+[32m+[m[32m);[m
+ [m
+ const M910_Change: Page = () => ([m
+   <Frame mod={9} beats={8}>[m
+[36m@@ -14124,7 +14129,7 @@[m [mconst M910_Change: Page = () => ([m
+       style={{ position: 'absolute', left: 120, top: 664 }}[m
+       front={<M910Objection text="« L’IA va prendre mon emploi. »" />}[m
+       back={[m
+[31m-        <M910Answer>[m
+[32m+[m[32m        <M910Answer q="« L’IA va prendre mon emploi. »">[m
+           L’agent prend le tri et les réponses répétitives. Vous gardez les cas délicats, les décisions et la relation. On le dit, et on le prouve pendant le pilote.[m
+         </M910Answer>[m
+       }[m
+[36m@@ -14137,7 +14142,7 @@[m [mconst M910_Change: Page = () => ([m
+       style={{ position: 'absolute', left: 688, top: 664 }}[m
+       front={<M910Objection text="« Il va se tromper, et c’est moi qui serai blâmé. »" />}[m
+       back={[m
+[31m-        <M910Answer>[m
+[32m+[m[32m        <M910Answer q="« Il va se tromper, et c’est moi qui serai blâmé. »">[m
+           Pendant le pilote, vous validez avant l’envoi. Les erreurs servent à améliorer l’agent : elles sont attendues, journalisées et jamais reprochées.[m
+         </M910Answer>[m
+       }[m
+[36m@@ -14150,7 +14155,7 @@[m [mconst M910_Change: Page = () => ([m
+       style={{ position: 'absolute', left: 1256, top: 664 }}[m
+       front={<M910Objection text="« Encore un outil de plus à apprendre… »" />}[m
+       back={[m
+[31m-        <M910Answer>[m
+[32m+[m[32m        <M910Answer q="« Encore un outil de plus à apprendre… »">[m
+           L’agent s’intègre à la boîte de courriels existante : pas de nouvel écran. Formation de 45 minutes, ambassadeur à côté de vous.[m
+         </M910Answer>[m
+       }[m

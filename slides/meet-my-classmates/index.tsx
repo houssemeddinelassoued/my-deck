@@ -32,6 +32,7 @@ import imgPencil from './assets/pencil.png';
 import imgRainbow from './assets/rainbow.png';
 import imgRaise from './assets/raising-hands.png';
 import imgHeart from './assets/red-heart.png';
+import imgSchool from './assets/school.png';
 import imgSmile from './assets/slightly-smiling-face.png';
 import imgSoccer from './assets/soccer-ball.png';
 import imgSparkles from './assets/sparkles.png';
@@ -355,7 +356,7 @@ const Footer = () => {
         color: C.muted,
       }}
     >
-      <span>Lesson 4 · Meet my classmates</span>
+      <span>Lesson 4 · Meet my classmates · Teacher: Hela Sahli</span>
       <span
         style={{
           background: '#fff',
@@ -1361,7 +1362,7 @@ const RainbowWord = ({ text }: { text: string }) => (
 
 const Cover: Page = () => (
   <Shell footer={false}>
-    <div style={{ position: 'absolute', left: PAD, top: 210, width: 960 }}>
+    <div style={{ position: 'absolute', left: PAD, top: 140, width: 960 }}>
       <Anim kind="drop">
         <Tag tone="red">Lesson 4</Tag>
       </Anim>
@@ -1403,6 +1404,29 @@ const Cover: Page = () => (
             <Sticker src={imgWave} size={76} />
           </Anim>
           <span style={{ fontFamily: display, fontWeight: 600, fontSize: 46 }}>Hello, friends!</span>
+        </div>
+      </Anim>
+      <Anim kind="rise" d={680} style={{ marginTop: 40 }}>
+        <div
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: 22,
+            background: '#fff',
+            borderRadius: 30,
+            padding: '16px 34px 16px 18px',
+            boxShadow: `0 7px 0 ${SOFT.blue}`,
+          }}
+        >
+          <Sticker src={imgSchool} size={86} />
+          <div>
+            <div style={{ fontFamily: display, fontWeight: 500, fontSize: 36, color: C.soft, lineHeight: 1.2 }}>
+              Teacher: <b style={{ fontWeight: 600, color: C.ink }}>Hela Sahli</b>
+            </div>
+            <div style={{ fontWeight: 800, fontSize: 28, color: DEEP.blue, lineHeight: 1.35, marginTop: 4 }}>
+              École primaire El Ghrouss · Rafraf
+            </div>
+          </div>
         </div>
       </Anim>
     </div>

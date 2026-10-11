@@ -27,6 +27,10 @@ jobs:
 
       - run: npm ci
 
+      # Folder password protection etc. are local patches to @open-slide/core
+      # (see patches/). npm ci reinstalls a pristine copy, so re-apply them.
+      - run: node scripts/apply-core-patch.mjs
+
       # Pages serves the site from /<repo>/. open-slide reads `base` from
       # open-slide.config.ts, so it is injected here on the CI checkout only:
       # local `npm run dev` keeps serving from "/".

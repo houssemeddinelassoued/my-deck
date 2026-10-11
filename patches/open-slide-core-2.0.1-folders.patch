@@ -1,0 +1,1461 @@
+diff --git a/dist/config-hT1o6Jct.js b/dist/config-hT1o6Jct.js
+index 76f82bc..944bf66 100644
+--- a/dist/config-hT1o6Jct.js
++++ b/dist/config-hT1o6Jct.js
+@@ -1877,6 +1877,11 @@ function registerFolderRoutes(server, ctx) {
+ 						if (!icon) return json(res, 400, { error: "invalid icon" });
+ 						folder.icon = icon;
+ 					}
++					if (body.lock !== void 0) {
++						if (body.lock === null) delete folder.lock;
++						else if (body.lock && typeof body.lock === "object" && typeof body.lock.hash === "string" && /^[0-9a-f]{64}$/.test(body.lock.hash)) folder.lock = { hash: body.lock.hash };
++						else return json(res, 400, { error: "invalid lock" });
++					}
+ 					await writeManifest(ctx.manifestPath, manifest);
+ 					return json(res, 200, folder);
+ 				}
+diff --git a/src/app/app.tsx b/src/app/app.tsx
+index 650f670..f0d3684 100644
+--- a/src/app/app.tsx
++++ b/src/app/app.tsx
+@@ -1,5 +1,6 @@
+ import config from 'virtual:open-slide/config';
+ import { BrowserRouter, Route, Routes } from 'react-router-dom';
++import { SlideLockGate } from './components/folder-lock';
+ import { Toaster } from './components/ui/sonner';
+ import { TooltipProvider } from './components/ui/tooltip';
+ import { useLocale } from './lib/use-locale';
+@@ -25,8 +26,22 @@ export function App() {
+               <Route path="/assets" element={<AssetsPage />} />
+             </Route>
+           )}
+-          <Route path="/s/:slideId" element={<Slide />} />
+-          <Route path="/s/:slideId/presenter" element={<Presenter />} />
++          <Route
++            path="/s/:slideId"
++            element={
++              <SlideLockGate>
++                <Slide />
++              </SlideLockGate>
++            }
++          />
++          <Route
++            path="/s/:slideId/presenter"
++            element={
++              <SlideLockGate>
++                <Presenter />
++              </SlideLockGate>
++            }
++          />
+           <Route path="*" element={<NotFound />} />
+         </Routes>
+       </TooltipProvider>
+diff --git a/src/app/components/command/home-command-menu.tsx b/src/app/components/command/home-command-menu.tsx
+index f814bd3..6969f74 100644
+--- a/src/app/components/command/home-command-menu.tsx
++++ b/src/app/components/command/home-command-menu.tsx
+@@ -14,12 +14,15 @@ export function HomeCommandMenu({
+   onOpenChange,
+   folders,
+   titleMap,
++  hiddenSlides,
+   onSelectView,
+ }: {
+   open: boolean;
+   onOpenChange: (open: boolean) => void;
+   folders: Folder[];
+   titleMap: Record<string, string>;
++  /** Decks inside locked folders — left out of the search results. */
++  hiddenSlides: Set<string>;
+   onSelectView: (id: string) => void;
+ }) {
+   const t = useLocale();
+@@ -27,13 +30,15 @@ export function HomeCommandMenu({
+   const loadedTitles = useSlideTitles(open);
+ 
+   const groups = useMemo<CommandGroupSpec[]>(() => {
+-    const slides: CommandSpec[] = slideIds.map((id) => ({
+-      id: `slide-${id}`,
+-      label: titleMap[id] ?? loadedTitles[id] ?? id,
+-      icon: <Presentation />,
+-      keywords: [id],
+-      run: () => navigate(`/s/${id}`),
+-    }));
++    const slides: CommandSpec[] = slideIds
++      .filter((id) => !hiddenSlides.has(id))
++      .map((id) => ({
++        id: `slide-${id}`,
++        label: titleMap[id] ?? loadedTitles[id] ?? id,
++        icon: <Presentation />,
++        keywords: [id],
++        run: () => navigate(`/s/${id}`),
++      }));
+ 
+     const folderItems: CommandSpec[] = [
+       {
+@@ -83,7 +88,7 @@ export function HomeCommandMenu({
+       { id: 'folders', heading: t.commandMenu.groupFolders, items: folderItems },
+       { id: 'navigation', heading: t.commandMenu.groupNavigation, items: navigation },
+     ];
+-  }, [t, folders, titleMap, loadedTitles, navigate, onSelectView]);
++  }, [t, folders, titleMap, hiddenSlides, loadedTitles, navigate, onSelectView]);
+ 
+   return (
+     <CommandMenu
+diff --git b/src/app/components/folder-lock.tsx b/src/app/components/folder-lock.tsx
+new file mode 100644
+index 0000000..40c13c0
+--- /dev/null
++++ b/src/app/components/folder-lock.tsx
+@@ -0,0 +1,248 @@
++import { Eye, EyeOff, Lock } from 'lucide-react';
++import { type ReactNode, useEffect, useRef, useState } from 'react';
++import { Link, useParams } from 'react-router-dom';
++import { Button } from '@/components/ui/button';
++import {
++  Dialog,
++  DialogContent,
++  DialogDescription,
++  DialogFooter,
++  DialogHeader,
++  DialogTitle,
++} from '@/components/ui/dialog';
++import {
++  DEFAULT_FOLDER_PASSWORD,
++  isFolderLocked,
++  unlockFolder,
++  useUnlockedFolders,
++} from '@/lib/folder-lock';
++import { useFolders } from '@/lib/folders';
++import type { Folder } from '@/lib/sdk';
++import { format, useLocale } from '@/lib/use-locale';
++import { cn } from '@/lib/utils';
++import { FolderIconChip } from './sidebar/folder-item';
++
++function PasswordInput({
++  value,
++  onChange,
++  onEnter,
++  invalid,
++  autoFocus,
++}: {
++  value: string;
++  onChange: (value: string) => void;
++  onEnter: () => void;
++  invalid?: boolean;
++  autoFocus?: boolean;
++}) {
++  const [visible, setVisible] = useState(false);
++  const inputRef = useRef<HTMLInputElement | null>(null);
++  const t = useLocale();
++
++  useEffect(() => {
++    if (!autoFocus) return;
++    queueMicrotask(() => {
++      inputRef.current?.focus();
++      inputRef.current?.select();
++    });
++  }, [autoFocus]);
++
++  return (
++    <div className="relative w-full">
++      <input
++        ref={inputRef}
++        type={visible ? 'text' : 'password'}
++        value={value}
++        onChange={(e) => onChange(e.target.value)}
++        onKeyDown={(e) => {
++          if (e.nativeEvent.isComposing) return;
++          if (e.key === 'Enter') {
++            e.preventDefault();
++            onEnter();
++          }
++        }}
++        aria-invalid={invalid || undefined}
++        autoComplete="off"
++        maxLength={64}
++        placeholder={t.folderLock.passwordPlaceholder}
++        className={cn(
++          'h-9 w-full rounded-[6px] border border-border bg-background pl-3 pr-9 font-mono text-[13px] tracking-[0.08em] outline-none',
++          'focus-visible:border-foreground/40 focus-visible:ring-2 focus-visible:ring-ring/30',
++          'aria-invalid:border-destructive aria-invalid:ring-2 aria-invalid:ring-destructive/25',
++        )}
++      />
++      <button
++        type="button"
++        onClick={() => setVisible((v) => !v)}
++        aria-label={visible ? t.folderLock.hidePassword : t.folderLock.showPassword}
++        className="absolute right-1.5 top-1/2 flex size-6 -translate-y-1/2 items-center justify-center rounded-[4px] text-muted-foreground outline-none hover:bg-muted hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring/30"
++      >
++        {visible ? <EyeOff className="size-3.5" /> : <Eye className="size-3.5" />}
++      </button>
++    </div>
++  );
++}
++
++/** Password prompt shown in place of a locked folder's content. */
++export function UnlockPanel({
++  folder,
++  hint,
++  onUnlocked,
++}: {
++  folder: Folder;
++  hint: string;
++  onUnlocked?: () => void;
++}) {
++  const [value, setValue] = useState('');
++  const [wrong, setWrong] = useState(false);
++  const t = useLocale();
++
++  const submit = () => {
++    if (unlockFolder(folder, value)) {
++      setValue('');
++      setWrong(false);
++      onUnlocked?.();
++    } else {
++      setWrong(true);
++    }
++  };
++
++  return (
++    <div className="rounded-[8px] border border-dashed border-border px-8 py-16">
++      <div className="mx-auto flex max-w-[320px] flex-col items-center text-center">
++        <span className="relative flex size-10 items-center justify-center rounded-full bg-muted">
++          <Lock className="size-4.5 text-foreground/80" aria-hidden />
++          <FolderIconChip
++            icon={folder.icon}
++            className="absolute -right-1 -bottom-1 ring-2 ring-background"
++          />
++        </span>
++        <p className="mt-4 font-heading text-[14px] font-semibold tracking-tight">
++          {format(t.folderLock.lockedTitle, { name: folder.name })}
++        </p>
++        <p className="mt-1.5 text-[13px] leading-relaxed text-muted-foreground">{hint}</p>
++        <div className="mt-5 flex w-full flex-col gap-2">
++          <PasswordInput
++            value={value}
++            onChange={(v) => {
++              setValue(v);
++              setWrong(false);
++            }}
++            onEnter={submit}
++            invalid={wrong}
++            autoFocus
++          />
++          <p
++            className={cn(
++              'h-4 text-left text-[11.5px] text-destructive',
++              !wrong && 'invisible',
++            )}
++            aria-live="polite"
++          >
++            {t.folderLock.wrongPassword}
++          </p>
++          <Button size="sm" onClick={submit} disabled={!value}>
++            {t.folderLock.unlock}
++          </Button>
++        </div>
++      </div>
++    </div>
++  );
++}
++
++export function FolderPasswordDialog({
++  open,
++  folder,
++  onOpenChange,
++  onSubmit,
++}: {
++  open: boolean;
++  folder: Folder | null;
++  onOpenChange: (open: boolean) => void;
++  onSubmit: (password: string) => Promise<void> | void;
++}) {
++  const isChange = Boolean(folder?.lock);
++  const [value, setValue] = useState(DEFAULT_FOLDER_PASSWORD);
++  const [submitting, setSubmitting] = useState(false);
++  const t = useLocale();
++
++  useEffect(() => {
++    if (open) {
++      setValue(isChange ? '' : DEFAULT_FOLDER_PASSWORD);
++      setSubmitting(false);
++    }
++  }, [open, isChange]);
++
++  const submit = async () => {
++    if (!value) return;
++    setSubmitting(true);
++    try {
++      await onSubmit(value);
++    } finally {
++      setSubmitting(false);
++    }
++  };
++
++  const name = folder?.name ?? '';
++  return (
++    <Dialog open={open} onOpenChange={onOpenChange}>
++      <DialogContent>
++        <DialogHeader>
++          <span className="eyebrow">{t.folderLock.dialogEyebrow}</span>
++          <DialogTitle>
++            {format(isChange ? t.folderLock.dialogChangeTitle : t.folderLock.dialogTitle, {
++              name,
++            })}
++          </DialogTitle>
++          <DialogDescription>{t.folderLock.dialogDescription}</DialogDescription>
++        </DialogHeader>
++        <div className="flex flex-col gap-2">
++          <PasswordInput value={value} onChange={setValue} onEnter={submit} autoFocus={open} />
++          <p className="text-[11.5px] text-muted-foreground">
++            {format(t.folderLock.dialogDefaultHint, { password: DEFAULT_FOLDER_PASSWORD })}
++            {' · '}
++            {t.folderLock.dialogClientSideNote}
++          </p>
++        </div>
++        <DialogFooter>
++          <Button variant="ghost" size="sm" onClick={() => onOpenChange(false)}>
++            {t.common.cancel}
++          </Button>
++          <Button size="sm" disabled={submitting || !value} onClick={submit}>
++            <Lock />
++            {t.common.save}
++          </Button>
++        </DialogFooter>
++      </DialogContent>
++    </Dialog>
++  );
++}
++
++/**
++ * Guards /s/:slideId routes: a deck inside a locked folder can't be opened by
++ * URL until its folder is unlocked in this tab.
++ */
++export function SlideLockGate({ children }: { children: ReactNode }) {
++  const { slideId } = useParams<{ slideId: string }>();
++  const { manifest, loading } = useFolders();
++  const state = useUnlockedFolders();
++  const t = useLocale();
++
++  if (loading) return null;
++  const folderId = slideId ? manifest.assignments[slideId] : undefined;
++  const folder = folderId ? manifest.folders.find((f) => f.id === folderId) : undefined;
++  if (!folder || !isFolderLocked(folder, state)) return <>{children}</>;
++
++  return (
++    <div className="grid min-h-dvh place-items-center bg-background px-5 text-foreground">
++      <div className="w-full max-w-[460px]">
++        <UnlockPanel folder={folder} hint={t.folderLock.lockedSlideHint} />
++        <div className="mt-4 text-center">
++          <Link to="/" className="text-[12.5px] text-muted-foreground hover:text-foreground">
++            {t.common.home}
++          </Link>
++        </div>
++      </div>
++    </div>
++  );
++}
+diff --git a/src/app/components/sidebar/folder-item.tsx b/src/app/components/sidebar/folder-item.tsx
+index 04c9d1c..8106553 100644
+--- a/src/app/components/sidebar/folder-item.tsx
++++ b/src/app/components/sidebar/folder-item.tsx
+@@ -1,6 +1,9 @@
+ import {
+   FolderOpen,
++  KeyRound,
+   LayoutGrid,
++  Lock,
++  LockOpen,
+   type LucideIcon,
+   MoreHorizontal,
+   Palette,
+@@ -13,6 +16,7 @@ import {
+   DropdownMenu,
+   DropdownMenuContent,
+   DropdownMenuItem,
++  DropdownMenuSeparator,
+   DropdownMenuTrigger,
+ } from '@/components/ui/dropdown-menu';
+ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+@@ -91,6 +95,11 @@ type Row =
+       onRename: (name: string) => void;
+       onChangeIcon: (icon: FolderIcon) => void;
+       onDelete: () => void;
++      /** Folder is password protected and not unlocked in this tab. */
++      locked: boolean;
++      onProtect: () => void;
++      onRemovePassword: () => void;
++      onLock: () => void;
+     }
+   | {
+       kind: 'all';
+@@ -251,13 +260,28 @@ export function FolderItem({
+ 
+       <span
+         className={cn(
+-          'folio ml-auto shrink-0 transition-opacity',
++          'folio ml-auto flex shrink-0 items-center gap-1.5 transition-opacity',
+           row.kind === 'folder' &&
+             import.meta.env.DEV &&
+             'group-hover:opacity-0 group-has-[[aria-expanded=true]]:opacity-0',
+         )}
+       >
+-        {pad2(count)}
++        {row.kind === 'folder' && row.folder.lock && (
++          <span title={t.folderLock.protectedBadge} className="flex items-center">
++            {row.locked ? (
++              <Lock
++                className="size-3 text-foreground/70"
++                aria-label={t.folderLock.protectedBadge}
++              />
++            ) : (
++              <LockOpen
++                className="size-3 text-muted-foreground"
++                aria-label={t.folderLock.protectedBadge}
++              />
++            )}
++          </span>
++        )}
++        {row.kind === 'folder' && row.locked ? null : pad2(count)}
+       </span>
+ 
+       {row.kind === 'folder' && import.meta.env.DEV && (
+@@ -274,20 +298,47 @@ export function FolderItem({
+               </button>
+             }
+           />
+-          <DropdownMenuContent align="end" className="min-w-[140px]">
+-            <DropdownMenuItem
+-              onClick={() => {
+-                setDraftName(row.folder.name);
+-                setRenaming(true);
+-              }}
+-            >
+-              <Pencil />
+-              {t.common.rename}
+-            </DropdownMenuItem>
+-            <DropdownMenuItem variant="destructive" onClick={() => row.onDelete()}>
+-              <Trash2 />
+-              {t.common.delete}
+-            </DropdownMenuItem>
++          <DropdownMenuContent align="end" className="min-w-[190px]">
++            {row.locked ? (
++              <DropdownMenuItem onClick={onSelect}>
++                <KeyRound />
++                {t.folderLock.unlockAction}
++              </DropdownMenuItem>
++            ) : (
++              <>
++                <DropdownMenuItem
++                  onClick={() => {
++                    setDraftName(row.folder.name);
++                    setRenaming(true);
++                  }}
++                >
++                  <Pencil />
++                  {t.common.rename}
++                </DropdownMenuItem>
++                <DropdownMenuSeparator />
++                <DropdownMenuItem onClick={() => row.onProtect()}>
++                  <KeyRound />
++                  {row.folder.lock ? t.folderLock.changePassword : t.folderLock.protect}
++                </DropdownMenuItem>
++                {row.folder.lock && (
++                  <>
++                    <DropdownMenuItem onClick={() => row.onLock()}>
++                      <Lock />
++                      {t.folderLock.lockNow}
++                    </DropdownMenuItem>
++                    <DropdownMenuItem onClick={() => row.onRemovePassword()}>
++                      <LockOpen />
++                      {t.folderLock.removePassword}
++                    </DropdownMenuItem>
++                  </>
++                )}
++                <DropdownMenuSeparator />
++                <DropdownMenuItem variant="destructive" onClick={() => row.onDelete()}>
++                  <Trash2 />
++                  {t.common.delete}
++                </DropdownMenuItem>
++              </>
++            )}
+           </DropdownMenuContent>
+         </DropdownMenu>
+       )}
+diff --git a/src/app/components/sidebar/sidebar.tsx b/src/app/components/sidebar/sidebar.tsx
+index 2e82c52..1375477 100644
+--- a/src/app/components/sidebar/sidebar.tsx
++++ b/src/app/components/sidebar/sidebar.tsx
+@@ -7,6 +7,7 @@ import type { Folder, FolderIcon } from '@/lib/sdk';
+ import { format, useLocale } from '@/lib/use-locale';
+ import { cn } from '@/lib/utils';
+ import { COMMAND_MENU_SHORTCUT } from '../command/command-menu';
++import { FolderPasswordDialog } from '../folder-lock';
+ import { FolderIconChip, FolderItem } from './folder-item';
+ import { IconPicker, PRESET_COLORS } from './icon-picker';
+ import { SidebarFooter } from './sidebar-footer';
+@@ -34,6 +35,10 @@ export function Sidebar({
+   onDropToDraft,
+   onReorder,
+   onOpenCommandMenu,
++  isLocked,
++  onSetPassword,
++  onRemovePassword,
++  onLock,
+ }: {
+   folders: Folder[];
+   countFor: (folderId: string | null) => number;
+@@ -50,7 +55,13 @@ export function Sidebar({
+   onDropToDraft: (slideId: string) => void;
+   onReorder: (ids: string[]) => void;
+   onOpenCommandMenu: () => void;
++  isLocked: (folderId: string) => boolean;
++  onSetPassword: (folderId: string, password: string) => Promise<void>;
++  onRemovePassword: (folderId: string) => void;
++  onLock: (folderId: string) => void;
+ }) {
++  const [passwordFor, setPasswordFor] = useState<string | null>(null);
++  const passwordFolder = folders.find((f) => f.id === passwordFor) ?? null;
+   const [dragId, setDragId] = useState<string | null>(null);
+   const [dropTarget, setDropTarget] = useState<{ id: string; before: boolean } | null>(null);
+ 
+@@ -198,10 +209,10 @@ export function Sidebar({
+             aria-label={t.home.newFolder}
+             title={t.home.newFolder}
+             className={cn(
+-              'flex size-5 items-center justify-center rounded-[4px] text-muted-foreground/70 opacity-0 outline-none',
+-              'transition-[opacity,background-color,color,scale] duration-100',
++              'flex size-5 items-center justify-center rounded-[4px] text-muted-foreground outline-none',
++              'transition-[background-color,color,scale] duration-100',
+               'hover:bg-muted hover:text-foreground active:scale-90',
+-              'group-hover/side:opacity-100 focus-visible:opacity-100 focus-visible:ring-1 focus-visible:ring-brand',
++              'focus-visible:ring-1 focus-visible:ring-brand',
+             )}
+           >
+             <Plus className="size-3.5" />
+@@ -275,6 +286,10 @@ export function Sidebar({
+                   onRename: (name) => onRename(folder.id, name),
+                   onChangeIcon: (icon) => onChangeIcon(folder.id, icon),
+                   onDelete: () => onDelete(folder.id),
++                  locked: isLocked(folder.id),
++                  onProtect: () => setPasswordFor(folder.id),
++                  onRemovePassword: () => onRemovePassword(folder.id),
++                  onLock: () => onLock(folder.id),
+                 }}
+                 count={countFor(folder.id)}
+                 selected={selectedId === folder.id}
+@@ -285,6 +300,24 @@ export function Sidebar({
+           );
+         })}
+ 
++        {import.meta.env.DEV && !creating && (
++          <button
++            type="button"
++            onClick={startCreating}
++            className={cn(
++              'mt-1 flex w-full items-center gap-2.5 rounded-[5px] border border-dashed border-transparent px-2 py-[5px] text-left text-[12.5px] text-muted-foreground outline-none',
++              'transition-[background-color,color,border-color] duration-100',
++              'hover:border-foreground/20 hover:text-foreground',
++              'focus-visible:ring-1 focus-visible:ring-brand',
++            )}
++          >
++            <span aria-hidden className="flex size-5 shrink-0 items-center justify-center">
++              <Plus className="size-3.5" />
++            </span>
++            {t.home.newFolder}
++          </button>
++        )}
++
+         {import.meta.env.DEV && creating && (
+           <div
+             data-folder-create
+@@ -324,6 +357,19 @@ export function Sidebar({
+       </div>
+ 
+       <SidebarFooter />
++
++      <FolderPasswordDialog
++        open={passwordFolder !== null}
++        folder={passwordFolder}
++        onOpenChange={(open) => {
++          if (!open) setPasswordFor(null);
++        }}
++        onSubmit={async (password) => {
++          if (!passwordFor) return;
++          await onSetPassword(passwordFor, password);
++          setPasswordFor(null);
++        }}
++      />
+     </aside>
+   );
+ }
+diff --git b/src/app/lib/folder-lock.ts b/src/app/lib/folder-lock.ts
+new file mode 100644
+index 0000000..5d355f5
+--- /dev/null
++++ b/src/app/lib/folder-lock.ts
+@@ -0,0 +1,166 @@
++import { useMemo, useSyncExternalStore } from 'react';
++import type { Folder, FoldersManifest } from './sdk';
++
++/**
++ * Folder password protection.
++ *
++ * A protected folder stores only `sha256("open-slide:<folderId>:<password>")`
++ * in slides/.folders.json. Unlocking is remembered per browser tab
++ * (sessionStorage) and is tied to the hash, so changing the password re-locks
++ * every tab. This is a client-side gate: it keeps casual viewers out of the
++ * browser UI, but the deck code still ships in the static bundle.
++ */
++export const DEFAULT_FOLDER_PASSWORD = '0999';
++
++const STORAGE_KEY = 'open-slide:unlocked-folders';
++
++// biome-ignore format: SHA-256 round constants
++const K = new Uint32Array([
++  0x428a2f98, 0x71374491, 0xb5c0fbcf, 0xe9b5dba5, 0x3956c25b, 0x59f111f1, 0x923f82a4, 0xab1c5ed5,
++  0xd807aa98, 0x12835b01, 0x243185be, 0x550c7dc3, 0x72be5d74, 0x80deb1fe, 0x9bdc06a7, 0xc19bf174,
++  0xe49b69c1, 0xefbe4786, 0x0fc19dc6, 0x240ca1cc, 0x2de92c6f, 0x4a7484aa, 0x5cb0a9dc, 0x76f988da,
++  0x983e5152, 0xa831c66d, 0xb00327c8, 0xbf597fc7, 0xc6e00bf3, 0xd5a79147, 0x06ca6351, 0x14292967,
++  0x27b70a85, 0x2e1b2138, 0x4d2c6dfc, 0x53380d13, 0x650a7354, 0x766a0abb, 0x81c2c92e, 0x92722c85,
++  0xa2bfe8a1, 0xa81a664b, 0xc24b8b70, 0xc76c51a3, 0xd192e819, 0xd6990624, 0xf40e3585, 0x106aa070,
++  0x19a4c116, 0x1e376c08, 0x2748774c, 0x34b0bcb5, 0x391c0cb3, 0x4ed8aa4a, 0x5b9cca4f, 0x682e6ff3,
++  0x748f82ee, 0x78a5636f, 0x84c87814, 0x8cc70208, 0x90befffa, 0xa4506ceb, 0xbef9a3f7, 0xc67178f2,
++]);
++
++const rotr = (x: number, n: number) => (x >>> n) | (x << (32 - n));
++
++// Synchronous SHA-256: crypto.subtle is missing on non-secure origins (e.g.
++// the dev server opened over a LAN IP), and a sync hash keeps callers simple.
++function sha256Hex(message: string): string {
++  const bytes = new TextEncoder().encode(message);
++  const size = ((bytes.length + 9 + 63) >> 6) << 6;
++  const buf = new Uint8Array(size);
++  buf.set(bytes);
++  buf[bytes.length] = 0x80;
++  const view = new DataView(buf.buffer);
++  const bitLen = bytes.length * 8;
++  view.setUint32(size - 8, Math.floor(bitLen / 0x100000000));
++  view.setUint32(size - 4, bitLen >>> 0);
++
++  const h = new Uint32Array([
++    0x6a09e667, 0xbb67ae85, 0x3c6ef372, 0xa54ff53a, 0x510e527f, 0x9b05688c, 0x1f83d9ab, 0x5be0cd19,
++  ]);
++  const w = new Uint32Array(64);
++  for (let off = 0; off < size; off += 64) {
++    for (let i = 0; i < 16; i++) w[i] = view.getUint32(off + i * 4);
++    for (let i = 16; i < 64; i++) {
++      const x = w[i - 15];
++      const y = w[i - 2];
++      const s0 = rotr(x, 7) ^ rotr(x, 18) ^ (x >>> 3);
++      const s1 = rotr(y, 17) ^ rotr(y, 19) ^ (y >>> 10);
++      w[i] = (w[i - 16] + s0 + w[i - 7] + s1) >>> 0;
++    }
++    let [a, b, c, d, e, f, g, hh] = h;
++    for (let i = 0; i < 64; i++) {
++      const t1 =
++        (hh + (rotr(e, 6) ^ rotr(e, 11) ^ rotr(e, 25)) + ((e & f) ^ (~e & g)) + K[i] + w[i]) >>> 0;
++      const t2 = ((rotr(a, 2) ^ rotr(a, 13) ^ rotr(a, 22)) + ((a & b) ^ (a & c) ^ (b & c))) >>> 0;
++      hh = g;
++      g = f;
++      f = e;
++      e = (d + t1) >>> 0;
++      d = c;
++      c = b;
++      b = a;
++      a = (t1 + t2) >>> 0;
++    }
++    h[0] += a;
++    h[1] += b;
++    h[2] += c;
++    h[3] += d;
++    h[4] += e;
++    h[5] += f;
++    h[6] += g;
++    h[7] += hh;
++  }
++  return Array.from(h, (x) => x.toString(16).padStart(8, '0')).join('');
++}
++
++export function hashFolderPassword(folderId: string, password: string): string {
++  return sha256Hex(`open-slide:${folderId}:${password}`);
++}
++
++// ─── Unlock store (per tab) ───────────────────────────────────────────────
++
++type Unlocked = Record<string, string>;
++
++function readUnlocked(): Unlocked {
++  try {
++    const raw = window.sessionStorage.getItem(STORAGE_KEY);
++    const parsed = raw ? JSON.parse(raw) : {};
++    return parsed && typeof parsed === 'object' ? (parsed as Unlocked) : {};
++  } catch {
++    return {};
++  }
++}
++
++let unlocked: Unlocked = typeof window === 'undefined' ? {} : readUnlocked();
++const listeners = new Set<() => void>();
++
++function writeUnlocked(next: Unlocked) {
++  unlocked = next;
++  try {
++    window.sessionStorage.setItem(STORAGE_KEY, JSON.stringify(next));
++  } catch {}
++  for (const l of listeners) l();
++}
++
++function subscribe(listener: () => void) {
++  listeners.add(listener);
++  return () => listeners.delete(listener);
++}
++
++export function useUnlockedFolders(): Unlocked {
++  return useSyncExternalStore(
++    subscribe,
++    () => unlocked,
++    () => unlocked,
++  );
++}
++
++export function isFolderLocked(folder: Folder | undefined, state: Unlocked = unlocked): boolean {
++  return Boolean(folder?.lock) && state[folder!.id] !== folder!.lock!.hash;
++}
++
++/** Returns false when the password is wrong. */
++export function unlockFolder(folder: Folder, password: string): boolean {
++  if (!folder.lock) return true;
++  if (hashFolderPassword(folder.id, password) !== folder.lock.hash) return false;
++  writeUnlocked({ ...unlocked, [folder.id]: folder.lock.hash });
++  return true;
++}
++
++/** Mark a folder unlocked with a hash we just set (so its owner isn't locked out). */
++export function rememberUnlocked(folderId: string, hash: string) {
++  writeUnlocked({ ...unlocked, [folderId]: hash });
++}
++
++export function relockFolder(folderId: string) {
++  if (!(folderId in unlocked)) return;
++  const { [folderId]: _, ...rest } = unlocked;
++  writeUnlocked(rest);
++}
++
++export type FolderLocks = {
++  isLocked: (folderId: string) => boolean;
++  /** Slides whose folder is currently locked: hidden from every listing. */
++  hiddenSlides: Set<string>;
++};
++
++export function useFolderLocks(manifest: FoldersManifest): FolderLocks {
++  const state = useUnlockedFolders();
++  return useMemo(() => {
++    const locked = new Set(
++      manifest.folders.filter((f) => isFolderLocked(f, state)).map((f) => f.id),
++    );
++    const hiddenSlides = new Set<string>();
++    for (const [slideId, folderId] of Object.entries(manifest.assignments)) {
++      if (locked.has(folderId)) hiddenSlides.add(slideId);
++    }
++    return { isLocked: (id) => locked.has(id), hiddenSlides };
++  }, [manifest, state]);
++}
+diff --git a/src/app/lib/folders.ts b/src/app/lib/folders.ts
+index 32d34ef..be39317 100644
+--- a/src/app/lib/folders.ts
++++ b/src/app/lib/folders.ts
+@@ -1,6 +1,6 @@
+ import buildManifest from 'virtual:open-slide/folders';
+ import { useCallback, useEffect, useState } from 'react';
+-import type { Folder, FolderIcon, FoldersManifest } from './sdk';
++import type { Folder, FolderIcon, FolderLock, FoldersManifest } from './sdk';
+ 
+ const EMPTY: FoldersManifest = { folders: [], assignments: {} };
+ 
+@@ -85,9 +85,11 @@ async function postFolder(name: string, icon: FolderIcon): Promise<Folder> {
+   return asFolder(await requestJson('POST', '/__folders', { name, icon }));
+ }
+ 
++export type FolderPatch = { name?: string; icon?: FolderIcon; lock?: FolderLock | null };
++
+ async function patchFolder(
+   id: string,
+-  patch: { name?: string; icon?: FolderIcon },
++  patch: FolderPatch,
+ ): Promise<Folder> {
+   return asFolder(await requestJson('PATCH', `/__folders/${id}`, patch));
+ }
+@@ -108,7 +110,7 @@ export type UseFoldersResult = {
+   manifest: FoldersManifest;
+   loading: boolean;
+   create: (name: string, icon: FolderIcon) => Promise<Folder>;
+-  update: (id: string, patch: { name?: string; icon?: FolderIcon }) => Promise<void>;
++  update: (id: string, patch: FolderPatch) => Promise<void>;
+   remove: (id: string) => Promise<void>;
+   reorder: (ids: string[]) => Promise<void>;
+   assign: (slideId: string, folderId: string | null) => Promise<void>;
+@@ -164,7 +166,7 @@ export function useFolders(): UseFoldersResult {
+   );
+ 
+   const update = useCallback(
+-    async (id: string, patch: { name?: string; icon?: FolderIcon }) => {
++    async (id: string, patch: FolderPatch) => {
+       await patchFolder(id, patch);
+       await refresh();
+     },
+diff --git a/src/app/lib/sdk.ts b/src/app/lib/sdk.ts
+index 082e3c4..61ef31b 100644
+--- a/src/app/lib/sdk.ts
++++ b/src/app/lib/sdk.ts
+@@ -22,10 +22,14 @@ export type SlideModule = {
+ 
+ export type FolderIcon = { type: 'emoji'; value: string } | { type: 'color'; value: string };
+ 
++/** SHA-256 hex of the folder password (see lib/folder-lock.ts). */
++export type FolderLock = { hash: string };
++
+ export type Folder = {
+   id: string;
+   name: string;
+   icon: FolderIcon;
++  lock?: FolderLock;
+ };
+ 
+ export type FoldersManifest = {
+diff --git a/src/app/routes/home-shell.tsx b/src/app/routes/home-shell.tsx
+index 270344a..fa66f34 100644
+--- a/src/app/routes/home-shell.tsx
++++ b/src/app/routes/home-shell.tsx
+@@ -11,6 +11,12 @@ import {
+   DropdownMenuTrigger,
+ } from '@/components/ui/dropdown-menu';
+ import { GLOBAL_ASSET_SCOPE, useAssets } from '@/lib/assets';
++import {
++  hashFolderPassword,
++  relockFolder,
++  rememberUnlocked,
++  useFolderLocks,
++} from '@/lib/folder-lock';
+ import { useFolders } from '@/lib/folders';
+ import { rememberHomeLocation } from '@/lib/last-home-location';
+ import { format, useLocale } from '@/lib/use-locale';
+@@ -19,7 +25,7 @@ import { CommandMenuTrigger } from '../components/command/command-menu';
+ import { HomeCommandMenu } from '../components/command/home-command-menu';
+ import { SystemViewIcon } from '../components/sidebar/folder-item';
+ import { ALL_SLIDES_ID, ASSETS_ID, Sidebar, THEMES_ID } from '../components/sidebar/sidebar';
+-import type { FoldersManifest } from '../lib/sdk';
++import type { Folder, FolderIcon, FoldersManifest } from '../lib/sdk';
+ import { slideIds } from '../lib/slides';
+ import { themes as themeRegistry } from '../lib/themes';
+ 
+@@ -37,6 +43,11 @@ export type HomeOutletContext = {
+   renameSlide: (slideId: string, name: string) => Promise<void>;
+   duplicateSlide: (slideId: string, newId?: string) => Promise<string>;
+   deleteSlide: (slideId: string) => Promise<void>;
++  createFolder: (name: string, icon: FolderIcon) => Promise<Folder>;
++  /** True while a password-protected folder hasn't been unlocked in this tab. */
++  isFolderLocked: (folderId: string) => boolean;
++  /** Decks inside locked folders: kept out of "Slides", search and the command menu. */
++  hiddenSlides: Set<string>;
+ };
+ 
+ function pathToSelectedId(pathname: string, search: URLSearchParams): string {
+@@ -108,6 +119,37 @@ export function HomeShell() {
+     return { draftSlides: draft, slidesByFolder: byFolder };
+   }, [manifest]);
+ 
++  const { isLocked: isFolderLocked, hiddenSlides } = useFolderLocks(manifest);
++  const visibleCount = useMemo(
++    () => slideIds.filter((id) => !hiddenSlides.has(id)).length,
++    [hiddenSlides],
++  );
++
++  const folderName = (id: string) => manifest.folders.find((f) => f.id === id)?.name ?? id;
++
++  const setFolderPassword = async (id: string, password: string) => {
++    const hash = hashFolderPassword(id, password);
++    // Remember first so the folder doesn't flash locked for the person setting it.
++    rememberUnlocked(id, hash);
++    try {
++      await update(id, { lock: { hash } });
++      toast.success(format(t.folderLock.toastProtected, { name: folderName(id) }));
++    } catch {
++      toast.error(t.folderLock.toastFailed);
++      throw new Error('set folder password failed');
++    }
++  };
++
++  const removeFolderPassword = async (id: string) => {
++    try {
++      await update(id, { lock: null });
++      relockFolder(id);
++      toast.success(format(t.folderLock.toastUnprotected, { name: folderName(id) }));
++    } catch {
++      toast.error(t.folderLock.toastFailed);
++    }
++  };
++
+   const countFor = (folderId: string | null) =>
+     folderId === null ? draftSlides.length : (slidesByFolder[folderId]?.length ?? 0);
+ 
+@@ -142,6 +184,9 @@ export function HomeShell() {
+     renameSlide,
+     duplicateSlide,
+     deleteSlide,
++    createFolder: create,
++    isFolderLocked,
++    hiddenSlides,
+   };
+ 
+   return (
+@@ -150,7 +195,7 @@ export function HomeShell() {
+         <Sidebar
+           folders={manifest.folders}
+           countFor={countFor}
+-          allCount={slideIds.length}
++          allCount={visibleCount}
+           themesCount={themeRegistry.length}
+           assetsCount={globalAssets.length}
+           selectedId={selectedId}
+@@ -178,6 +223,13 @@ export function HomeShell() {
+               toast.error(t.home.toastFolderReorderFailed);
+             }
+           }}
++          isLocked={isFolderLocked}
++          onSetPassword={setFolderPassword}
++          onRemovePassword={removeFolderPassword}
++          onLock={(id) => {
++            relockFolder(id);
++            toast.success(format(t.folderLock.toastLocked, { name: folderName(id) }));
++          }}
+         />
+       </div>
+ 
+@@ -212,7 +264,7 @@ export function HomeShell() {
+                   >
+                     <SystemViewIcon kind="all" className="text-muted-foreground" />
+                     <span className="flex-1 truncate">{t.home.slides}</span>
+-                    <span className="folio">{pad2(slideIds.length)}</span>
++                    <span className="folio">{pad2(visibleCount)}</span>
+                   </DropdownMenuItem>
+                   <DropdownMenuItem
+                     onClick={() => selectFolder(THEMES_ID)}
+@@ -254,6 +306,7 @@ export function HomeShell() {
+         onOpenChange={setCommandOpen}
+         folders={manifest.folders}
+         titleMap={titleMap}
++        hiddenSlides={hiddenSlides}
+         onSelectView={selectFolder}
+       />
+     </div>
+diff --git a/src/app/routes/home.tsx b/src/app/routes/home.tsx
+index 21936c3..f809db4 100644
+--- a/src/app/routes/home.tsx
++++ b/src/app/routes/home.tsx
+@@ -5,9 +5,12 @@ import {
+   Copy,
+   FolderInput,
+   FolderPlus,
++  Lock,
++  LockOpen,
+   MoreHorizontal,
+   Palette,
+   Pencil,
++  Plus,
+   Search,
+   Trash2,
+   X,
+@@ -32,11 +35,13 @@ import {
+ } from '@/components/ui/dropdown-menu';
+ import { format, useLocale } from '@/lib/use-locale';
+ import { cn, pad2 } from '@/lib/utils';
++import { UnlockPanel } from '../components/folder-lock';
+ import { FolderIconChip, SLIDE_DND_MIME, SystemViewIcon } from '../components/sidebar/folder-item';
++import { PRESET_COLORS } from '../components/sidebar/icon-picker';
+ import { ALL_SLIDES_ID, DRAFT_ID } from '../components/sidebar/sidebar';
+ import { SlideCanvas } from '../components/slide-canvas';
+ import { SlidePageProvider } from '../lib/page-context';
+-import type { Folder, SlideModule } from '../lib/sdk';
++import type { Folder, FolderIcon, SlideModule } from '../lib/sdk';
+ import { loadSlide, slideCreatedAt, slideIds } from '../lib/slides';
+ import type { HomeOutletContext } from './home-shell';
+ 
+@@ -83,6 +88,9 @@ export function Home() {
+     renameSlide,
+     duplicateSlide,
+     deleteSlide,
++    createFolder,
++    isFolderLocked,
++    hiddenSlides,
+   } = useOutletContext<HomeOutletContext>();
+   const t = useLocale();
+ 
+@@ -90,8 +98,10 @@ export function Home() {
+   const isDraft = selectedId === DRAFT_ID;
+   const selectedFolder =
+     isAll || isDraft ? null : (manifest.folders.find((f) => f.id === selectedId) ?? null);
++  const folderLocked = selectedFolder ? isFolderLocked(selectedFolder.id) : false;
++  const allVisible = useMemo(() => slideIds.filter((id) => !hiddenSlides.has(id)), [hiddenSlides]);
+   const visibleSlides = isAll
+-    ? slideIds
++    ? allVisible
+     : isDraft
+       ? draftSlides
+       : (slidesByFolder[selectedId] ?? []);
+@@ -161,7 +171,7 @@ export function Home() {
+               >
+                 <SystemViewIcon kind="all" className="text-muted-foreground" />
+                 <span className="flex-1 truncate">{t.home.slides}</span>
+-                <span className="folio">{pad2(slideIds.length)}</span>
++                <span className="folio">{pad2(allVisible.length)}</span>
+               </DropdownMenuItem>
+               <DropdownMenuItem
+                 onClick={() => selectFolder(DRAFT_ID)}
+@@ -179,12 +189,28 @@ export function Home() {
+                 >
+                   <FolderIconChip icon={f.icon} />
+                   <span className="flex-1 truncate">{f.name}</span>
+-                  <span className="folio">{pad2(slidesByFolder[f.id]?.length ?? 0)}</span>
++                  {isFolderLocked(f.id) ? (
++                    <Lock className="size-3 text-muted-foreground" aria-hidden />
++                  ) : (
++                    <span className="folio">{pad2(slidesByFolder[f.id]?.length ?? 0)}</span>
++                  )}
+                 </DropdownMenuItem>
+               ))}
+             </DropdownMenuContent>
+           </DropdownMenu>
+-          {!loading && (
++          {selectedFolder?.lock &&
++            (folderLocked ? (
++              <Lock
++                className="size-3.5 text-muted-foreground"
++                aria-label={t.folderLock.protectedBadge}
++              />
++            ) : (
++              <LockOpen
++                className="size-3.5 text-muted-foreground"
++                aria-label={t.folderLock.protectedBadge}
++              />
++            ))}
++          {!loading && !folderLocked && (
+             <span className="folio ml-0.5">
+               {pad2(isSearching ? filteredSlides.length : visibleSlides.length)}
+               {isSearching && <span className="opacity-40">/{pad2(visibleSlides.length)}</span>}
+@@ -199,6 +225,14 @@ export function Home() {
+ 
+       {loading ? (
+         <HomeLoading />
++      ) : selectedFolder && folderLocked ? (
++        <UnlockPanel
++          folder={selectedFolder}
++          hint={t.folderLock.lockedFolderHint}
++          onUnlocked={() =>
++            toast.success(format(t.folderLock.toastUnlocked, { name: selectedFolder.name }))
++          }
++        />
+       ) : visibleSlides.length === 0 ? (
+         <EmptyState isDraft={isAll || isDraft} folderName={selectedFolder?.name} />
+       ) : filteredSlides.length === 0 ? (
+@@ -214,6 +248,7 @@ export function Home() {
+               <SlideCard
+                 id={id}
+                 folders={manifest.folders}
++                onCreateFolder={createFolder}
+                 currentFolderId={manifest.assignments[id] ?? null}
+                 onRename={(name) => renameSlide(id, name)}
+                 onDuplicate={async () => {
+@@ -444,6 +479,7 @@ type DialogKind = null | 'rename' | 'move' | 'delete';
+ function SlideCard({
+   id,
+   folders,
++  onCreateFolder,
+   currentFolderId,
+   onRename,
+   onDuplicate,
+@@ -453,6 +489,7 @@ function SlideCard({
+ }: {
+   id: string;
+   folders: Folder[];
++  onCreateFolder: (name: string, icon: FolderIcon) => Promise<Folder>;
+   currentFolderId: string | null;
+   onRename: (name: string) => Promise<void> | void;
+   onDuplicate: () => Promise<void> | void;
+@@ -591,6 +628,7 @@ function SlideCard({
+         open={dialog === 'move'}
+         slideName={displayTitle}
+         folders={folders}
++        onCreateFolder={onCreateFolder}
+         currentFolderId={currentFolderId}
+         onOpenChange={(v) => setDialog(v ? 'move' : null)}
+         onSubmit={async (folderId) => {
+@@ -692,6 +730,7 @@ function MoveDialog({
+   open,
+   slideName,
+   folders,
++  onCreateFolder,
+   currentFolderId,
+   onOpenChange,
+   onSubmit,
+@@ -699,21 +738,45 @@ function MoveDialog({
+   open: boolean;
+   slideName: string;
+   folders: Folder[];
++  onCreateFolder: (name: string, icon: FolderIcon) => Promise<Folder>;
+   currentFolderId: string | null;
+   onOpenChange: (open: boolean) => void;
+   onSubmit: (folderId: string | null) => Promise<void> | void;
+ }) {
+   const [selected, setSelected] = useState<string | null>(currentFolderId);
+   const [submitting, setSubmitting] = useState(false);
++  const [newName, setNewName] = useState<string | null>(null);
+   const t = useLocale();
+ 
+   useEffect(() => {
+     if (open) {
+       setSelected(currentFolderId);
+       setSubmitting(false);
++      setNewName(null);
+     }
+   }, [open, currentFolderId]);
+ 
++  const creatingRef = useRef(false);
++  const createAndSelect = async () => {
++    const trimmed = newName?.trim();
++    setNewName(null);
++    // Enter unmounts the input, which can also fire its onBlur.
++    if (!trimmed || creatingRef.current) return;
++    creatingRef.current = true;
++    try {
++      const folder = await onCreateFolder(trimmed, {
++        type: 'color',
++        value: PRESET_COLORS[folders.length % PRESET_COLORS.length],
++      });
++      setSelected(folder.id);
++      toast.success(format(t.home.toastFolderCreated, { name: folder.name }));
++    } catch {
++      toast.error(t.home.toastFolderCreateFailed);
++    } finally {
++      creatingRef.current = false;
++    }
++  };
++
+   const submit = async () => {
+     if (selected === currentFolderId) {
+       onOpenChange(false);
+@@ -751,10 +814,51 @@ function MoveDialog({
+               key={f.id}
+               chip={<FolderIconChip icon={f.icon} />}
+               label={f.name}
++              locked={Boolean(f.lock)}
+               active={selected === f.id}
+               onClick={() => setSelected(f.id)}
+             />
+           ))}
++          {newName === null ? (
++            <button
++              type="button"
++              onClick={() => setNewName('')}
++              className="flex w-full items-center gap-2 px-3 py-2 text-left text-[13px] text-muted-foreground outline-none transition-colors duration-100 hover:bg-muted/60 hover:text-foreground focus-visible:ring-1 focus-visible:ring-inset focus-visible:ring-brand"
++            >
++              <span aria-hidden className="flex size-5 shrink-0 items-center justify-center">
++                <Plus className="size-3.5" />
++              </span>
++              {t.folderLock.newFolderInMove}
++            </button>
++          ) : (
++            <div className="flex items-center gap-2 px-3 py-1.5">
++              <span aria-hidden className="flex size-5 shrink-0 items-center justify-center">
++                <FolderPlus className="size-3.5 text-muted-foreground" />
++              </span>
++              <input
++                // biome-ignore lint/a11y/noAutofocus: the row only appears once the user asks for it
++                autoFocus
++                value={newName}
++                onChange={(e) => setNewName(e.target.value)}
++                onKeyDown={(e) => {
++                  if (e.nativeEvent.isComposing) return;
++                  if (e.key === 'Enter') {
++                    e.preventDefault();
++                    createAndSelect();
++                  }
++                  if (e.key === 'Escape') {
++                    e.preventDefault();
++                    e.stopPropagation();
++                    setNewName(null);
++                  }
++                }}
++                onBlur={createAndSelect}
++                maxLength={40}
++                placeholder={t.folderLock.newFolderPlaceholder}
++                className="h-7 min-w-0 flex-1 rounded-[4px] border border-border bg-card px-2 text-[13px] outline-none focus-visible:border-foreground/40"
++              />
++            </div>
++          )}
+         </div>
+         <DialogFooter>
+           <Button variant="ghost" size="sm" onClick={() => onOpenChange(false)}>
+@@ -772,11 +876,13 @@ function MoveDialog({
+ function FolderOption({
+   chip,
+   label,
++  locked,
+   active,
+   onClick,
+ }: {
+   chip: React.ReactNode;
+   label: string;
++  locked?: boolean;
+   active: boolean;
+   onClick: () => void;
+ }) {
+@@ -792,6 +898,12 @@ function FolderOption({
+     >
+       {chip}
+       <span className="truncate">{label}</span>
++      {locked && (
++        <Lock
++          className="size-3 shrink-0 text-muted-foreground"
++          aria-label={tOpt.folderLock.protectedBadge}
++        />
++      )}
+       {active && (
+         <span className="ml-auto inline-flex items-center gap-1 text-[10.5px] text-brand">
+           <span className="inline-block size-1 rounded-full bg-brand" aria-hidden />
+diff --git a/src/app/routes/presenter.tsx b/src/app/routes/presenter.tsx
+index c29b8b6..bb7a3bd 100644
+--- a/src/app/routes/presenter.tsx
++++ b/src/app/routes/presenter.tsx
+@@ -20,6 +20,8 @@ import {
+ import { useNavigate, useParams } from 'react-router-dom';
+ import { Button } from '@/components/ui/button';
+ import { Dialog, DialogContent, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
++import { useFolderLocks } from '@/lib/folder-lock';
++import { useFolders } from '@/lib/folders';
+ import { hasModifier, isBackwardKey, isForwardKey, isTypingTarget } from '@/lib/keys';
+ import { useDocumentTitle } from '@/lib/use-document-title';
+ import { format, useLocale } from '@/lib/use-locale';
+@@ -362,6 +364,8 @@ function DeckSwitcher({
+ }) {
+   const t = useLocale();
+   const modules = useDeckModules();
++  const { manifest } = useFolders();
++  const { hiddenSlides } = useFolderLocks(manifest);
+   const [open, setOpen] = useState(false);
+   const [query, setQuery] = useState('');
+   const [activeIndex, setActiveIndex] = useState(0);
+@@ -369,6 +373,7 @@ function DeckSwitcher({
+ 
+   const trimmed = query.trim().toLowerCase();
+   const filtered = slideIds.filter((id) => {
++    if (hiddenSlides.has(id) && id !== slideId) return false;
+     if (!trimmed) return true;
+     const title = modules[id]?.meta?.title;
+     return id.toLowerCase().includes(trimmed) || title?.toLowerCase().includes(trimmed);
+diff --git a/src/locale/en.ts b/src/locale/en.ts
+index 9a2525a..bd2cd9b 100644
+--- a/src/locale/en.ts
++++ b/src/locale/en.ts
+@@ -95,6 +95,36 @@ export const en: Locale = {
+     pickIcon: 'Pick icon',
+   },
+ 
++  folderLock: {
++    protect: 'Protect with password…',
++    changePassword: 'Change password…',
++    removePassword: 'Remove password',
++    lockNow: 'Lock now',
++    unlockAction: 'Unlock…',
++    protectedBadge: 'Password protected',
++    lockedTitle: '“{name}” is locked',
++    lockedFolderHint: 'Enter the password to see the decks in this folder.',
++    lockedSlideHint: 'This deck is in a protected folder. Enter the password to open it.',
++    passwordPlaceholder: 'Password',
++    unlock: 'Unlock',
++    wrongPassword: 'Wrong password',
++    showPassword: 'Show password',
++    hidePassword: 'Hide password',
++    dialogEyebrow: 'Folder · protection',
++    dialogTitle: 'Protect “{name}”',
++    dialogChangeTitle: 'Change password of “{name}”',
++    dialogDescription: 'Decks in this folder stay hidden — in the grid, in “Slides” and in search — until the password is entered.',
++    dialogDefaultHint: 'Default password: {password}',
++    dialogClientSideNote: 'Client-side lock: it keeps casual viewers out of the UI, it is not encryption.',
++    toastProtected: 'Protected “{name}”',
++    toastUnprotected: 'Removed the password from “{name}”',
++    toastLocked: 'Locked “{name}”',
++    toastUnlocked: 'Unlocked “{name}”',
++    toastFailed: 'Could not update the folder password',
++    newFolderInMove: 'New folder…',
++    newFolderPlaceholder: 'New folder name',
++  },
++
+   slide: {
+     home: 'Home',
+     backToHome: 'Back to home',
+diff --git a/src/locale/ja.ts b/src/locale/ja.ts
+index a39090f..3e0a3d8 100644
+--- a/src/locale/ja.ts
++++ b/src/locale/ja.ts
+@@ -95,6 +95,36 @@ export const ja: Locale = {
+     pickIcon: 'アイコンを選択',
+   },
+ 
++  folderLock: {
++    protect: 'パスワードで保護…',
++    changePassword: 'パスワードを変更…',
++    removePassword: 'パスワードを解除',
++    lockNow: '今すぐロック',
++    unlockAction: 'ロック解除…',
++    protectedBadge: 'パスワード保護',
++    lockedTitle: '「{name}」はロックされています',
++    lockedFolderHint: 'このフォルダのスライドを見るにはパスワードを入力してください。',
++    lockedSlideHint: 'このスライドは保護されたフォルダにあります。開くにはパスワードを入力してください。',
++    passwordPlaceholder: 'パスワード',
++    unlock: 'ロック解除',
++    wrongPassword: 'パスワードが違います',
++    showPassword: 'パスワードを表示',
++    hidePassword: 'パスワードを隠す',
++    dialogEyebrow: 'フォルダ · 保護',
++    dialogTitle: '「{name}」を保護',
++    dialogChangeTitle: '「{name}」のパスワードを変更',
++    dialogDescription: 'パスワードが入力されるまで、このフォルダのスライドは一覧・検索に表示されません。',
++    dialogDefaultHint: '既定のパスワード: {password}',
++    dialogClientSideNote: 'クライアント側のロックです。暗号化ではありません。',
++    toastProtected: '「{name}」を保護しました',
++    toastUnprotected: '「{name}」のパスワードを解除しました',
++    toastLocked: '「{name}」をロックしました',
++    toastUnlocked: '「{name}」のロックを解除しました',
++    toastFailed: 'フォルダのパスワードを更新できませんでした',
++    newFolderInMove: '新規フォルダ…',
++    newFolderPlaceholder: '新しいフォルダ名',
++  },
++
+   slide: {
+     agentConnected: 'エージェント接続中',
+     agentConnectedTooltip:
+diff --git a/src/locale/types.ts b/src/locale/types.ts
+index e05bfe3..8db13da 100644
+--- a/src/locale/types.ts
++++ b/src/locale/types.ts
+@@ -99,6 +99,36 @@ export type Locale = {
+     pickIcon: string;
+   };
+ 
++  folderLock: {
++    protect: string;
++    changePassword: string;
++    removePassword: string;
++    lockNow: string;
++    unlockAction: string;
++    protectedBadge: string;
++    lockedTitle: string;
++    lockedFolderHint: string;
++    lockedSlideHint: string;
++    passwordPlaceholder: string;
++    unlock: string;
++    wrongPassword: string;
++    showPassword: string;
++    hidePassword: string;
++    dialogEyebrow: string;
++    dialogTitle: string;
++    dialogChangeTitle: string;
++    dialogDescription: string;
++    dialogDefaultHint: string;
++    dialogClientSideNote: string;
++    toastProtected: string;
++    toastUnprotected: string;
++    toastLocked: string;
++    toastUnlocked: string;
++    toastFailed: string;
++    newFolderInMove: string;
++    newFolderPlaceholder: string;
++  };
++
+   slide: {
+     home: string;
+     backToHome: string;
+diff --git a/src/locale/zh-cn.ts b/src/locale/zh-cn.ts
+index 7fdf60b..6956613 100644
+--- a/src/locale/zh-cn.ts
++++ b/src/locale/zh-cn.ts
+@@ -95,6 +95,36 @@ export const zhCN: Locale = {
+     pickIcon: '选择图标',
+   },
+ 
++  folderLock: {
++    protect: '设置密码保护…',
++    changePassword: '修改密码…',
++    removePassword: '移除密码',
++    lockNow: '立即锁定',
++    unlockAction: '解锁…',
++    protectedBadge: '密码保护',
++    lockedTitle: '“{name}”已锁定',
++    lockedFolderHint: '输入密码以查看此文件夹中的幻灯片。',
++    lockedSlideHint: '此幻灯片位于受保护的文件夹中。请输入密码打开。',
++    passwordPlaceholder: '密码',
++    unlock: '解锁',
++    wrongPassword: '密码错误',
++    showPassword: '显示密码',
++    hidePassword: '隐藏密码',
++    dialogEyebrow: '文件夹 · 保护',
++    dialogTitle: '保护“{name}”',
++    dialogChangeTitle: '修改“{name}”的密码',
++    dialogDescription: '在输入密码之前，此文件夹中的幻灯片不会出现在列表和搜索中。',
++    dialogDefaultHint: '默认密码：{password}',
++    dialogClientSideNote: '这是客户端锁定，并非加密。',
++    toastProtected: '已保护“{name}”',
++    toastUnprotected: '已移除“{name}”的密码',
++    toastLocked: '已锁定“{name}”',
++    toastUnlocked: '已解锁“{name}”',
++    toastFailed: '无法更新文件夹密码',
++    newFolderInMove: '新建文件夹…',
++    newFolderPlaceholder: '新文件夹名称',
++  },
++
+   slide: {
+     agentConnected: 'Agent 已连接',
+     agentConnectedTooltip: '目前的 slide 与 Inspector 选择会即时同步给 agent。',
+diff --git a/src/locale/zh-tw.ts b/src/locale/zh-tw.ts
+index 62297df..9553916 100644
+--- a/src/locale/zh-tw.ts
++++ b/src/locale/zh-tw.ts
+@@ -95,6 +95,36 @@ export const zhTW: Locale = {
+     pickIcon: '選擇圖示',
+   },
+ 
++  folderLock: {
++    protect: '設定密碼保護…',
++    changePassword: '變更密碼…',
++    removePassword: '移除密碼',
++    lockNow: '立即鎖定',
++    unlockAction: '解鎖…',
++    protectedBadge: '密碼保護',
++    lockedTitle: '「{name}」已鎖定',
++    lockedFolderHint: '輸入密碼以檢視此資料夾中的投影片。',
++    lockedSlideHint: '此投影片位於受保護的資料夾中。請輸入密碼開啟。',
++    passwordPlaceholder: '密碼',
++    unlock: '解鎖',
++    wrongPassword: '密碼錯誤',
++    showPassword: '顯示密碼',
++    hidePassword: '隱藏密碼',
++    dialogEyebrow: '資料夾 · 保護',
++    dialogTitle: '保護「{name}」',
++    dialogChangeTitle: '變更「{name}」的密碼',
++    dialogDescription: '在輸入密碼之前，此資料夾中的投影片不會出現在列表與搜尋中。',
++    dialogDefaultHint: '預設密碼：{password}',
++    dialogClientSideNote: '這是用戶端鎖定，並非加密。',
++    toastProtected: '已保護「{name}」',
++    toastUnprotected: '已移除「{name}」的密碼',
++    toastLocked: '已鎖定「{name}」',
++    toastUnlocked: '已解鎖「{name}」',
++    toastFailed: '無法更新資料夾密碼',
++    newFolderInMove: '新增資料夾…',
++    newFolderPlaceholder: '新資料夾名稱',
++  },
++
+   slide: {
+     agentConnected: 'Agent 已連線',
+     agentConnectedTooltip: '目前的 slide 與 Inspector 選擇會即時同步給 agent。',
