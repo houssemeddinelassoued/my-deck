@@ -484,7 +484,7 @@ const M7_Thanks: Page = () => (
       <div style={{ marginTop: 8, fontSize: 23, color: C.soft }}>Questions, retours d’expérience à 45 jours : écrivez-moi via LinkedIn.</div>
     </div>
     <div className={A.pop} style={{ position: 'absolute', left: 1500, top: 720, ...dl(600) }}>
-      <DapLogo size={40} stacked />
+      <DapLogo size={40} />
     </div>
     <Footer left={390} />
   </Frame>

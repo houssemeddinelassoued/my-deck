@@ -780,32 +780,54 @@ const IconTile = ({
 );
 
 // ─── Brand motif: Docaposte (three bars, navy slabs, outlined frames) ───────
-// The "≡" mark: short bar top, long bar middle, medium bar bottom.
+// The "≡" mark: three equal rounded bars, staggered — middle one furthest right,
+// bottom one furthest left (geometry measured on the official logo).
+const DAP_MARK_RATIO = 58 / 30;
 const DapMark = ({ h = 28, color = C.electric, cls, style }: { h?: number; color?: string; cls?: string; style?: CSSProperties }) => (
-  <svg width={(h * 100) / 64} height={h} viewBox="0 0 100 64" className={cls} style={{ display: 'block', flex: 'none', ...style }} aria-hidden>
-    <rect x={30} y={0} width={50} height={12} rx={6} fill={color} />
-    <rect x={10} y={26} width={90} height={12} rx={6} fill={color} />
-    <rect x={0} y={52} width={56} height={12} rx={6} fill={color} />
+  <svg width={h * DAP_MARK_RATIO} height={h} viewBox="0 0 58 30" className={cls} style={{ display: 'block', flex: 'none', ...style }} aria-hidden>
+    <rect x={6} y={0} width={40} height={6} rx={3} fill={color} />
+    <rect x={16} y={12} width={42} height={6} rx={3} fill={color} />
+    <rect x={0} y={24} width={42} height={6} rx={3} fill={color} />
   </svg>
 );
 
-// Wordmark (typographic stand-in — swap for the official logo file if needed).
-const DapWord = ({ size = 26, color = C.electric }: { size?: number; color?: string }) => (
-  <span style={{ fontFamily: display, fontWeight: 800, fontSize: size, letterSpacing: '0.02em', color, lineHeight: 1 }}>DOCAPOSTE</span>
-);
-
-const DapLogo = ({ size = 26, stacked = false, color = C.electric }: { size?: number; stacked?: boolean; color?: string }) =>
-  stacked ? (
-    <div style={{ display: 'inline-flex', flexDirection: 'column', alignItems: 'center', gap: Math.round(size * 0.45) }}>
-      <DapMark h={Math.round(size * 1.5)} color={color} />
-      <DapWord size={size} color={color} />
-    </div>
-  ) : (
-    <div style={{ display: 'inline-flex', alignItems: 'center', gap: Math.round(size * 0.5) }}>
-      <DapMark h={Math.round(size * 0.95)} color={color} />
-      <DapWord size={size} color={color} />
+// "DOCAPOSTE Institute" lockup: wordmark, the mark at the top-right of the
+// final E (its bottom bar on the cap line), "Institute" right-aligned below.
+// `size` is the DOCAPOSTE font size; Montserrat cap height = 0.7 em.
+const DAP_LS = 0.09; // wordmark letter-spacing (em)
+const DapLogo = ({ size = 26, color = C.electric }: { size?: number; color?: string }) => {
+  const markH = size * 0.47;
+  return (
+    <div
+      role="img"
+      aria-label="Docaposte Institute"
+      style={{ display: 'inline-flex', flex: 'none', paddingTop: size * 0.25, paddingRight: size * 1.02, color, fontFamily: display, lineHeight: 1 }}
+    >
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
+        <span
+          style={{
+            position: 'relative',
+            fontWeight: 600,
+            fontSize: size,
+            letterSpacing: `${DAP_LS}em`,
+            marginRight: `-${DAP_LS}em`,
+            whiteSpace: 'nowrap',
+          }}
+        >
+          DOCAPOSTE
+          <DapMark
+            h={markH}
+            color={color}
+            style={{ position: 'absolute', left: `calc(100% + ${size * (0.11 - DAP_LS)}px)`, top: size * -0.24 }}
+          />
+        </span>
+        <span style={{ fontWeight: 500, fontSize: size * 0.95, letterSpacing: '0.02em', marginRight: '-0.02em', marginTop: size * -0.12, whiteSpace: 'nowrap' }}>
+          Institute
+        </span>
+      </div>
     </div>
   );
+};
 
 // Navy rounded slab (cover / section pages).
 const Slab = ({
@@ -872,7 +894,7 @@ const Outline = ({
 );
 
 // Tiny mark used as a bullet / header ornament.
-const MiniMark = ({ size = 22 }: { size?: number }) => <DapMark h={Math.round(size * 0.82)} color={C.electric} />;
+const MiniMark = ({ size = 22 }: { size?: number }) => <DapMark h={Math.round(size * 0.62)} color={C.electric} />;
 
 const BrandStripe = () => (
   <>
@@ -3386,7 +3408,7 @@ const O_Cover: Page = () => (
       </div>
     </div>
     <div className={A.pop} style={{ position: 'absolute', left: 1500, top: 720, ...dl(600) }}>
-      <DapLogo size={40} stacked />
+      <DapLogo size={40} />
     </div>
     <Footer left={390} />
   </Frame>
@@ -4026,7 +4048,7 @@ type TlEvent = {
   text: string;
   fact: string;
 };
-type TlHover = ({ kind: 'ev' } & TlEvent) | { kind: 'era'; era: TlEraId } | null;
+type TlHover = ({ kind: 'ev' } & TlEvent) | { kind: 'era'; era: TlEraId; cx: number } | null;
 const TlCtx = createContext<{ hover: TlHover; set: (h: TlHover) => void }>({ hover: null, set: () => {} });
 
 // Axis geometry (pixel-constant).
@@ -4040,6 +4062,7 @@ CSS.push(`
 ${at(1)} .${P}-tl-w.${P}-on1,${at(1)} .${P}-tl-w.${P}-fd1,${at(2)} .${P}-tl-w.${P}-on2,${at(2)} .${P}-tl-w.${P}-fd2{pointer-events:auto}
 .${P}-tl-ev{cursor:pointer;outline:none;transition:opacity 260ms ${EASE},filter 260ms ${EASE}}
 .${P}-tl-dim{opacity:.26;filter:grayscale(.75)}
+.${P}-tl-fade{transition:opacity 260ms ${EASE},filter 260ms ${EASE}}
 .${P}-tl-thumb{transition:transform 320ms ${EASE_BACK},box-shadow 320ms ${EASE}}
 .${P}-tl-on .${P}-tl-thumb{transform:scale(1.24);box-shadow:0 0 0 7px color-mix(in srgb,var(--c) 22%,transparent),0 16px 30px -12px rgba(11,31,92,.6)}
 .${P}-tl-title{transition:color 220ms ${EASE}}
@@ -4164,7 +4187,7 @@ const TlEra = ({ era, from, to, beat = 0, first }: { era: TlEraId; from: number;
     >
       <div
         className={cx(k('tl-era'), dim && k('tl-era-dim'))}
-        onMouseEnter={() => set({ kind: 'era', era })}
+        onMouseEnter={() => set({ kind: 'era', era, cx: left + w / 2 })}
         onMouseLeave={() => set(null)}
         style={{
           width: '100%',
@@ -4225,7 +4248,7 @@ const TlPop = () => {
         className={k('tl-pop')}
         style={{
           position: 'absolute',
-          left: 560,
+          left: Math.min(Math.max(hover.cx - 400, 120), 1000),
           top: TL_BAND + 70,
           width: 800,
           padding: '26px 32px',
@@ -4328,7 +4351,7 @@ const TlPop = () => {
           </span>
           <Tag tone={e.tone} size={17}>{e.name}</Tag>
         </div>
-        <div style={{ fontFamily: display, fontWeight: 800, fontSize: 34, lineHeight: 1.15, color: C.navy, marginTop: 10 }}>{ev.title}</div>
+        <div style={{ fontFamily: display, fontWeight: 800, fontSize: 30, lineHeight: 1.15, color: C.navy, marginTop: 8 }}>{ev.title}</div>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginTop: 12 }}>
           {ev.people.map((p) => (
             <TlChip key={p.n} p={p.img === pic ? { n: p.n } : p} c={e.c} />
@@ -4365,7 +4388,7 @@ const M1_Timeline: Page = () => {
     <Frame mod={1} beats={2}>
       <TlCtx.Provider value={{ hover, set }}>
         <Title>L’IA… depuis quand ?</Title>
-        <Lede>80 ans d’histoire, deux hivers, puis une accélération brutale depuis 2017. Survolez un jalon : qui, quoi, pourquoi.</Lede>
+        <Lede cls={cx(k('tl-fade'), hover && k('tl-dim'))}>80 ans d’histoire, deux hivers, puis une accélération brutale depuis 2017. Survolez un jalon : qui, quoi, pourquoi.</Lede>
 
         <div style={{ position: 'absolute', left: 178, top: TL_BAND + 20, width: 1566, height: 8, borderRadius: 4, background: C.rule }} />
         <TlEra era="a" from={0} to={4} first />
@@ -4551,7 +4574,8 @@ const M1_Timeline: Page = () => {
           year="2017"
           title="Transformer"
           era="e"
-          img={TLI.transformer}
+          icon="layers"
+          pic={TLI.transformer}
           picCap="L’architecture Transformer"
           people={[{ n: 'Ashish Vaswani' }, { n: 'Noam Shazeer' }, { n: '+ 6 co-auteurs (Google)' }]}
           text="« Attention Is All You Need » : le mécanisme d’attention remplace la récurrence et se parallélise sur GPU. C’est le « T » de GPT."
@@ -6206,7 +6230,7 @@ const M2_Lab21: Page = () => (
         <Tag tone="blue" size={18}>Mermaid</Tag>
       </>
     }
-    minutes={20}
+    minutes={10}
     crit={
       <>
         <CheckItem id="l21a" size={22}>L’agent apparaît dans la liste des agents</CheckItem>
@@ -9769,7 +9793,7 @@ const M7_Thanks: Page = () => (
       <div style={{ marginTop: 8, fontSize: 23, color: C.soft }}>Questions, retours d’expérience à 45 jours : écrivez-moi via LinkedIn.</div>
     </div>
     <div className={A.pop} style={{ position: 'absolute', left: 1500, top: 720, ...dl(600) }}>
-      <DapLogo size={40} stacked />
+      <DapLogo size={40} />
     </div>
     <Footer left={390} />
   </Frame>
@@ -10348,7 +10372,7 @@ DIRE — « GitHub Pages ne sert que des fichiers statiques. Donc tout tourne da
 ANIMATION — Laisser le schéma C4 s’afficher ; pointer le flux en pointillé vers Open Food Facts.
 
 TRANSITION — « Lab 2.1 : un agent qui ne peut pas coder. »`,
-  `⏱ 20 min (minuteur) · LAB 2.1 · 12:10
+  `⏱ 10 min (minuteur) · LAB 2.1 · 12:10
 
 OBJECTIF — Créer un agent personnalisé, comprendre que restreindre les outils garantit le rôle.
 

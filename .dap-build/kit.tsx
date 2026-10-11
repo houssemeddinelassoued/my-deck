@@ -780,32 +780,54 @@ const IconTile = ({
 );
 
 // ─── Brand motif: Docaposte (three bars, navy slabs, outlined frames) ───────
-// The "≡" mark: short bar top, long bar middle, medium bar bottom.
+// The "≡" mark: three equal rounded bars, staggered — middle one furthest right,
+// bottom one furthest left (geometry measured on the official logo).
+const DAP_MARK_RATIO = 58 / 30;
 const DapMark = ({ h = 28, color = C.electric, cls, style }: { h?: number; color?: string; cls?: string; style?: CSSProperties }) => (
-  <svg width={(h * 100) / 64} height={h} viewBox="0 0 100 64" className={cls} style={{ display: 'block', flex: 'none', ...style }} aria-hidden>
-    <rect x={30} y={0} width={50} height={12} rx={6} fill={color} />
-    <rect x={10} y={26} width={90} height={12} rx={6} fill={color} />
-    <rect x={0} y={52} width={56} height={12} rx={6} fill={color} />
+  <svg width={h * DAP_MARK_RATIO} height={h} viewBox="0 0 58 30" className={cls} style={{ display: 'block', flex: 'none', ...style }} aria-hidden>
+    <rect x={6} y={0} width={40} height={6} rx={3} fill={color} />
+    <rect x={16} y={12} width={42} height={6} rx={3} fill={color} />
+    <rect x={0} y={24} width={42} height={6} rx={3} fill={color} />
   </svg>
 );
 
-// Wordmark (typographic stand-in — swap for the official logo file if needed).
-const DapWord = ({ size = 26, color = C.electric }: { size?: number; color?: string }) => (
-  <span style={{ fontFamily: display, fontWeight: 800, fontSize: size, letterSpacing: '0.02em', color, lineHeight: 1 }}>DOCAPOSTE</span>
-);
-
-const DapLogo = ({ size = 26, stacked = false, color = C.electric }: { size?: number; stacked?: boolean; color?: string }) =>
-  stacked ? (
-    <div style={{ display: 'inline-flex', flexDirection: 'column', alignItems: 'center', gap: Math.round(size * 0.45) }}>
-      <DapMark h={Math.round(size * 1.5)} color={color} />
-      <DapWord size={size} color={color} />
-    </div>
-  ) : (
-    <div style={{ display: 'inline-flex', alignItems: 'center', gap: Math.round(size * 0.5) }}>
-      <DapMark h={Math.round(size * 0.95)} color={color} />
-      <DapWord size={size} color={color} />
+// "DOCAPOSTE Institute" lockup: wordmark, the mark at the top-right of the
+// final E (its bottom bar on the cap line), "Institute" right-aligned below.
+// `size` is the DOCAPOSTE font size; Montserrat cap height = 0.7 em.
+const DAP_LS = 0.09; // wordmark letter-spacing (em)
+const DapLogo = ({ size = 26, color = C.electric }: { size?: number; color?: string }) => {
+  const markH = size * 0.47;
+  return (
+    <div
+      role="img"
+      aria-label="Docaposte Institute"
+      style={{ display: 'inline-flex', flex: 'none', paddingTop: size * 0.25, paddingRight: size * 1.02, color, fontFamily: display, lineHeight: 1 }}
+    >
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
+        <span
+          style={{
+            position: 'relative',
+            fontWeight: 600,
+            fontSize: size,
+            letterSpacing: `${DAP_LS}em`,
+            marginRight: `-${DAP_LS}em`,
+            whiteSpace: 'nowrap',
+          }}
+        >
+          DOCAPOSTE
+          <DapMark
+            h={markH}
+            color={color}
+            style={{ position: 'absolute', left: `calc(100% + ${size * (0.11 - DAP_LS)}px)`, top: size * -0.24 }}
+          />
+        </span>
+        <span style={{ fontWeight: 500, fontSize: size * 0.95, letterSpacing: '0.02em', marginRight: '-0.02em', marginTop: size * -0.12, whiteSpace: 'nowrap' }}>
+          Institute
+        </span>
+      </div>
     </div>
   );
+};
 
 // Navy rounded slab (cover / section pages).
 const Slab = ({
@@ -872,7 +894,7 @@ const Outline = ({
 );
 
 // Tiny mark used as a bullet / header ornament.
-const MiniMark = ({ size = 22 }: { size?: number }) => <DapMark h={Math.round(size * 0.82)} color={C.electric} />;
+const MiniMark = ({ size = 22 }: { size?: number }) => <DapMark h={Math.round(size * 0.62)} color={C.electric} />;
 
 const BrandStripe = () => (
   <>

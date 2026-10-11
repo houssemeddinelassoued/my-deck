@@ -584,7 +584,7 @@ const M2_Lab21: Page = () => (
         <Tag tone="blue" size={18}>Mermaid</Tag>
       </>
     }
-    minutes={20}
+    minutes={10}
     crit={
       <>
         <CheckItem id="l21a" size={22}>L’agent apparaît dans la liste des agents</CheckItem>
@@ -1026,7 +1026,7 @@ DIRE — « GitHub Pages ne sert que des fichiers statiques. Donc tout tourne da
 ANIMATION — Laisser le schéma C4 s’afficher ; pointer le flux en pointillé vers Open Food Facts.
 
 TRANSITION — « Lab 2.1 : un agent qui ne peut pas coder. »`,
-  `⏱ 20 min (minuteur) · LAB 2.1 · 12:10
+  `⏱ 10 min (minuteur) · LAB 2.1 · 12:10
 
 OBJECTIF — Créer un agent personnalisé, comprendre que restreindre les outils garantit le rôle.
 

@@ -86,7 +86,7 @@ type TlEvent = {
   text: string;
   fact: string;
 };
-type TlHover = ({ kind: 'ev' } & TlEvent) | { kind: 'era'; era: TlEraId } | null;
+type TlHover = ({ kind: 'ev' } & TlEvent) | { kind: 'era'; era: TlEraId; cx: number } | null;
 const TlCtx = createContext<{ hover: TlHover; set: (h: TlHover) => void }>({ hover: null, set: () => {} });
 
 // Axis geometry (pixel-constant).
@@ -100,6 +100,7 @@ CSS.push(`
 ${at(1)} .${P}-tl-w.${P}-on1,${at(1)} .${P}-tl-w.${P}-fd1,${at(2)} .${P}-tl-w.${P}-on2,${at(2)} .${P}-tl-w.${P}-fd2{pointer-events:auto}
 .${P}-tl-ev{cursor:pointer;outline:none;transition:opacity 260ms ${EASE},filter 260ms ${EASE}}
 .${P}-tl-dim{opacity:.26;filter:grayscale(.75)}
+.${P}-tl-fade{transition:opacity 260ms ${EASE},filter 260ms ${EASE}}
 .${P}-tl-thumb{transition:transform 320ms ${EASE_BACK},box-shadow 320ms ${EASE}}
 .${P}-tl-on .${P}-tl-thumb{transform:scale(1.24);box-shadow:0 0 0 7px color-mix(in srgb,var(--c) 22%,transparent),0 16px 30px -12px rgba(11,31,92,.6)}
 .${P}-tl-title{transition:color 220ms ${EASE}}
@@ -224,7 +225,7 @@ const TlEra = ({ era, from, to, beat = 0, first }: { era: TlEraId; from: number;
     >
       <div
         className={cx(k('tl-era'), dim && k('tl-era-dim'))}
-        onMouseEnter={() => set({ kind: 'era', era })}
+        onMouseEnter={() => set({ kind: 'era', era, cx: left + w / 2 })}
         onMouseLeave={() => set(null)}
         style={{
           width: '100%',
@@ -285,7 +286,7 @@ const TlPop = () => {
         className={k('tl-pop')}
         style={{
           position: 'absolute',
-          left: 560,
+          left: Math.min(Math.max(hover.cx - 400, 120), 1000),
           top: TL_BAND + 70,
           width: 800,
           padding: '26px 32px',
@@ -388,7 +389,7 @@ const TlPop = () => {
           </span>
           <Tag tone={e.tone} size={17}>{e.name}</Tag>
         </div>
-        <div style={{ fontFamily: display, fontWeight: 800, fontSize: 34, lineHeight: 1.15, color: C.navy, marginTop: 10 }}>{ev.title}</div>
+        <div style={{ fontFamily: display, fontWeight: 800, fontSize: 30, lineHeight: 1.15, color: C.navy, marginTop: 8 }}>{ev.title}</div>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginTop: 12 }}>
           {ev.people.map((p) => (
             <TlChip key={p.n} p={p.img === pic ? { n: p.n } : p} c={e.c} />
@@ -425,7 +426,7 @@ const M1_Timeline: Page = () => {
     <Frame mod={1} beats={2}>
       <TlCtx.Provider value={{ hover, set }}>
         <Title>L’IA… depuis quand ?</Title>
-        <Lede>80 ans d’histoire, deux hivers, puis une accélération brutale depuis 2017. Survolez un jalon : qui, quoi, pourquoi.</Lede>
+        <Lede cls={cx(k('tl-fade'), hover && k('tl-dim'))}>80 ans d’histoire, deux hivers, puis une accélération brutale depuis 2017. Survolez un jalon : qui, quoi, pourquoi.</Lede>
 
         <div style={{ position: 'absolute', left: 178, top: TL_BAND + 20, width: 1566, height: 8, borderRadius: 4, background: C.rule }} />
         <TlEra era="a" from={0} to={4} first />
