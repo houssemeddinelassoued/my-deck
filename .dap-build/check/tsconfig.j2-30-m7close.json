@@ -1,0 +1,6 @@
+{
+  "extends": "../../tsconfig.json",
+  "include": [
+    "./j2-30-m7close.tsx"
+  ]
+}

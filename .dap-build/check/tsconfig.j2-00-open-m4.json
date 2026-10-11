@@ -1,0 +1,6 @@
+{
+  "extends": "../../tsconfig.json",
+  "include": [
+    "./j2-00-open-m4.tsx"
+  ]
+}

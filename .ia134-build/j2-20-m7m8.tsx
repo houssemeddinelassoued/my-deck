@@ -442,22 +442,22 @@ const M78_Compare: Page = () => (
         </svg>
       </div>
     </div>
-    <M78RowLbl y={500} icon="bolt" n={1}>
+    <M78RowLbl y={482} icon="bolt" n={1}>
       Rapidité de démarrage
     </M78RowLbl>
-    <M78RowLbl y={556} icon="users" n={1}>
-      Accessible aux équipes métier
+    <M78RowLbl y={538} icon="users" n={1}>
+      Accessible au métier
     </M78RowLbl>
-    <M78RowLbl y={612} icon="puzzle" n={2}>
+    <M78RowLbl y={594} icon="puzzle" n={2}>
       Flexibilité
     </M78RowLbl>
-    <M78RowLbl y={668} icon="lock" n={2}>
+    <M78RowLbl y={650} icon="lock" n={2}>
       Contrôle des données
     </M78RowLbl>
-    <M78RowLbl y={724} h={110} icon="target" n={3}>
+    <M78RowLbl y={706} h={110} icon="target" n={3}>
       Idéal pour…
     </M78RowLbl>
-    <M78RowLbl y={834} h={110} icon="alert" n={4}>
+    <M78RowLbl y={816} h={110} icon="alert" n={4}>
       Attention à…
     </M78RowLbl>
 

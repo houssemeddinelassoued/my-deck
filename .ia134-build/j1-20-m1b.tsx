@@ -192,7 +192,7 @@ const M1b_ReAct: Page = () => {
         <Btn icon="reset" ghost onClick={() => setMan(0)}>
           Recommencer
         </Btn>
-        <span style={{ marginLeft: 'auto', fontFamily: mono, fontSize: 22, color: C.muted }}>
+        <span style={{ marginLeft: 'auto', whiteSpace: 'nowrap', fontFamily: mono, fontSize: 22, color: C.muted }}>
           {pad(step)} / {M1B_STEPS}
         </span>
       </div>

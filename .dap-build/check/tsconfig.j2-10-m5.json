@@ -1,0 +1,6 @@
+{
+  "extends": "../../tsconfig.json",
+  "include": [
+    "./j2-10-m5.tsx"
+  ]
+}

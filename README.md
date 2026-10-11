@@ -26,9 +26,23 @@ Chaque page est un composant React, chaque schéma est calculé, chaque clic ré
 | --- | :---: | --- | --- |
 | **Comment une machine apprend**<br><sub>`slides/ml-explique`</sub> | 22 | Ingénieurs qui veulent comprendre le machine learning de l'intérieur | [Ouvrir](https://houssemeddinelassoued.github.io/my-deck/s/ml-explique) · [Vue présentateur](https://houssemeddinelassoued.github.io/my-deck/s/ml-explique/presenter) |
 | **Comment fonctionne un LLM**<br><sub>`slides/llm-explique`</sub> | 20 | Ingénieurs curieux de ce qui se passe entre le prompt et la réponse | [Ouvrir](https://houssemeddinelassoued.github.io/my-deck/s/llm-explique) · [Vue présentateur](https://houssemeddinelassoued.github.io/my-deck/s/llm-explique/presenter) |
+| **Feuille de route pour l'IA agentique** (formation Technologia IA134, 2 jours)<br><sub>`slides/ia-agentique-feuille-de-route`</sub> | 112 | Gestionnaires, analystes, TI et chefs de projet qui veulent bâtir une feuille de route d'agents IA | [Ouvrir](https://houssemeddinelassoued.github.io/my-deck/s/ia-agentique-feuille-de-route) · [Vue présentateur](https://houssemeddinelassoued.github.io/my-deck/s/ia-agentique-feuille-de-route/presenter) |
+| **Archives de l'IA** (série de 11 épisodes + sommaire)<br><sub>`slides/ai-history-*`</sub> | 9–20 | Tous publics : l'histoire de l'IA, du neurone formel à ChatGPT | [Sommaire](https://houssemeddinelassoued.github.io/my-deck/s/ai-history-sommaire) |
 | Getting started<br><sub>`slides/getting-started`</sub> | 18 | Démo fournie par le framework open-slide | [Ouvrir](https://houssemeddinelassoued.github.io/my-deck/s/getting-started) |
 
-Les deux présentations partagent la même direction artistique : papier et encre, titres en Newsreader, texte en Inter, code en JetBrains Mono, un rouge brique comme accent. Chacune a ses **notes de l'orateur** complètes, page par page, avec les repères de clics.
+### Feuille de route pour l'IA agentique (IA134)
+
+Formation de 2 jours qui suit le [programme officiel Technologia](https://www.technologia.com/formations/feuille-de-route-pour-lia-agentique---une-exploration-complete-des-agents-dia) : 10 modules (Jour 1 : comprendre les agents · Jour 2 : construire la feuille de route), avec QCM, ateliers minutés, simulateurs interactifs, un fil rouge (Boréal Distribution) et les notes du formateur sur chaque page.
+
+Le deck est **généré** : ne modifiez pas `slides/ia-agentique-feuille-de-route/index.tsx` à la main. Modifiez les fragments dans `.ia134-build/` (`kit.tsx` + `j1-*.tsx` / `j2-*.tsx`), puis reconstruisez :
+
+```bash
+node .ia134-build/build.mjs all
+```
+
+### Comment une machine apprend · Comment fonctionne un LLM
+
+Ces deux présentations partagent la même direction artistique : papier et encre, titres en Newsreader, texte en Inter, code en JetBrains Mono, un rouge brique comme accent. Chacune a ses **notes de l'orateur** complètes, page par page, avec les repères de clics.
 
 ### Comment une machine apprend
 
@@ -127,7 +141,10 @@ my-deck/
 │   │   ├── index.tsx         #   les 22 pages + les notes de l'orateur
 │   │   └── assets/
 │   ├── llm-explique/         # Comment fonctionne un LLM
+│   ├── ia-agentique-feuille-de-route/  # formation IA134 (généré depuis .ia134-build/)
+│   ├── ai-history-*/         # série « Archives de l'IA » (sommaire + 11 épisodes)
 │   └── getting-started/      # démo du framework
+├── .ia134-build/             # sources de la formation IA134 : kit, fragments, build.mjs
 ├── assets/                   # images partagées entre présentations
 ├── themes/                   # thèmes réutilisables
 ├── docs/preview/             # captures utilisées dans ce README

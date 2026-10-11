@@ -766,7 +766,7 @@ const M6Outcome = ({
   note: ReactNode;
   verdict: ReactNode;
 }) => (
-  <div className={b.on(n)} style={{ position: 'absolute', left: x, top: 640, width: 430 }}>
+  <div className={b.on(n)} style={{ position: 'absolute', left: x, top: 590, width: 430 }}>
     <div
       style={{
         height: 318,
@@ -907,7 +907,7 @@ const M6_Security: Page = () => (
         </div>
       </div>
     </div>
-    <div className={b.pop(1)} style={{ position: 'absolute', left: 700, top: 586 }}>
+    <div className={b.pop(1)} style={{ position: 'absolute', right: 920, top: 482 }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 21, fontWeight: 600, color: T.coral.fg }}>
         <Icon name="eye" size={26} />
         texte blanc sur blanc

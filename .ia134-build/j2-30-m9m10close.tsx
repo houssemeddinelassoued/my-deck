@@ -541,7 +541,12 @@ const M910Objection = ({ text }: { text: string }) => (
   </div>
 );
 
-const M910Answer = ({ children }: { children: ReactNode }) => <div style={{ fontSize: 24, lineHeight: 1.4, color: C.ink }}>{children}</div>;
+const M910Answer = ({ q, children }: { q: string; children: ReactNode }) => (
+  <div>
+    <div style={{ fontSize: 21, fontStyle: 'italic', fontWeight: 600, lineHeight: 1.3, color: T.coral.fg, marginBottom: 12 }}>{q}</div>
+    <div style={{ fontSize: 24, lineHeight: 1.4, color: C.ink }}>{children}</div>
+  </div>
+);
 
 const M910_Change: Page = () => (
   <Frame mod={9} beats={8}>
@@ -577,7 +582,7 @@ const M910_Change: Page = () => (
       style={{ position: 'absolute', left: 120, top: 664 }}
       front={<M910Objection text="« L’IA va prendre mon emploi. »" />}
       back={
-        <M910Answer>
+        <M910Answer q="« L’IA va prendre mon emploi. »">
           L’agent prend le tri et les réponses répétitives. Vous gardez les cas délicats, les décisions et la relation. On le dit, et on le prouve pendant le pilote.
         </M910Answer>
       }
@@ -590,7 +595,7 @@ const M910_Change: Page = () => (
       style={{ position: 'absolute', left: 688, top: 664 }}
       front={<M910Objection text="« Il va se tromper, et c’est moi qui serai blâmé. »" />}
       back={
-        <M910Answer>
+        <M910Answer q="« Il va se tromper, et c’est moi qui serai blâmé. »">
           Pendant le pilote, vous validez avant l’envoi. Les erreurs servent à améliorer l’agent : elles sont attendues, journalisées et jamais reprochées.
         </M910Answer>
       }
@@ -603,7 +608,7 @@ const M910_Change: Page = () => (
       style={{ position: 'absolute', left: 1256, top: 664 }}
       front={<M910Objection text="« Encore un outil de plus à apprendre… »" />}
       back={
-        <M910Answer>
+        <M910Answer q="« Encore un outil de plus à apprendre… »">
           L’agent s’intègre à la boîte de courriels existante : pas de nouvel écran. Formation de 45 minutes, ambassadeur à côté de vous.
         </M910Answer>
       }

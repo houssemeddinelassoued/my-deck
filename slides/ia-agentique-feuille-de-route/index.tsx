@@ -5088,7 +5088,7 @@ const M1b_ReAct: Page = () => {
         <Btn icon="reset" ghost onClick={() => setMan(0)}>
           Recommencer
         </Btn>
-        <span style={{ marginLeft: 'auto', fontFamily: mono, fontSize: 22, color: C.muted }}>
+        <span style={{ marginLeft: 'auto', whiteSpace: 'nowrap', fontFamily: mono, fontSize: 22, color: C.muted }}>
           {pad(step)} / {M1B_STEPS}
         </span>
       </div>
@@ -11267,7 +11267,7 @@ const M6Outcome = ({
   note: ReactNode;
   verdict: ReactNode;
 }) => (
-  <div className={b.on(n)} style={{ position: 'absolute', left: x, top: 640, width: 430 }}>
+  <div className={b.on(n)} style={{ position: 'absolute', left: x, top: 590, width: 430 }}>
     <div
       style={{
         height: 318,
@@ -11408,7 +11408,7 @@ const M6_Security: Page = () => (
         </div>
       </div>
     </div>
-    <div className={b.pop(1)} style={{ position: 'absolute', left: 700, top: 586 }}>
+    <div className={b.pop(1)} style={{ position: 'absolute', right: 920, top: 482 }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 21, fontWeight: 600, color: T.coral.fg }}>
         <Icon name="eye" size={26} />
         texte blanc sur blanc
@@ -12167,22 +12167,22 @@ const M78_Compare: Page = () => (
         </svg>
       </div>
     </div>
-    <M78RowLbl y={500} icon="bolt" n={1}>
+    <M78RowLbl y={482} icon="bolt" n={1}>
       Rapidité de démarrage
     </M78RowLbl>
-    <M78RowLbl y={556} icon="users" n={1}>
-      Accessible aux équipes métier
+    <M78RowLbl y={538} icon="users" n={1}>
+      Accessible au métier
     </M78RowLbl>
-    <M78RowLbl y={612} icon="puzzle" n={2}>
+    <M78RowLbl y={594} icon="puzzle" n={2}>
       Flexibilité
     </M78RowLbl>
-    <M78RowLbl y={668} icon="lock" n={2}>
+    <M78RowLbl y={650} icon="lock" n={2}>
       Contrôle des données
     </M78RowLbl>
-    <M78RowLbl y={724} h={110} icon="target" n={3}>
+    <M78RowLbl y={706} h={110} icon="target" n={3}>
       Idéal pour…
     </M78RowLbl>
-    <M78RowLbl y={834} h={110} icon="alert" n={4}>
+    <M78RowLbl y={816} h={110} icon="alert" n={4}>
       Attention à…
     </M78RowLbl>
 
@@ -14088,7 +14088,12 @@ const M910Objection = ({ text }: { text: string }) => (
   </div>
 );
 
-const M910Answer = ({ children }: { children: ReactNode }) => <div style={{ fontSize: 24, lineHeight: 1.4, color: C.ink }}>{children}</div>;
+const M910Answer = ({ q, children }: { q: string; children: ReactNode }) => (
+  <div>
+    <div style={{ fontSize: 21, fontStyle: 'italic', fontWeight: 600, lineHeight: 1.3, color: T.coral.fg, marginBottom: 12 }}>{q}</div>
+    <div style={{ fontSize: 24, lineHeight: 1.4, color: C.ink }}>{children}</div>
+  </div>
+);
 
 const M910_Change: Page = () => (
   <Frame mod={9} beats={8}>
@@ -14124,7 +14129,7 @@ const M910_Change: Page = () => (
       style={{ position: 'absolute', left: 120, top: 664 }}
       front={<M910Objection text="« L’IA va prendre mon emploi. »" />}
       back={
-        <M910Answer>
+        <M910Answer q="« L’IA va prendre mon emploi. »">
           L’agent prend le tri et les réponses répétitives. Vous gardez les cas délicats, les décisions et la relation. On le dit, et on le prouve pendant le pilote.
         </M910Answer>
       }
@@ -14137,7 +14142,7 @@ const M910_Change: Page = () => (
       style={{ position: 'absolute', left: 688, top: 664 }}
       front={<M910Objection text="« Il va se tromper, et c’est moi qui serai blâmé. »" />}
       back={
-        <M910Answer>
+        <M910Answer q="« Il va se tromper, et c’est moi qui serai blâmé. »">
           Pendant le pilote, vous validez avant l’envoi. Les erreurs servent à améliorer l’agent : elles sont attendues, journalisées et jamais reprochées.
         </M910Answer>
       }
@@ -14150,7 +14155,7 @@ const M910_Change: Page = () => (
       style={{ position: 'absolute', left: 1256, top: 664 }}
       front={<M910Objection text="« Encore un outil de plus à apprendre… »" />}
       back={
-        <M910Answer>
+        <M910Answer q="« Encore un outil de plus à apprendre… »">
           L’agent s’intègre à la boîte de courriels existante : pas de nouvel écran. Formation de 45 minutes, ambassadeur à côté de vous.
         </M910Answer>
       }
