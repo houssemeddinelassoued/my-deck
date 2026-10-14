@@ -8,7 +8,7 @@ You are authoring **slides** in this repo. Every slide is arbitrary React code t
 - The entry is `slides/<id>/index.tsx`.
 - Put slide-specific images/videos/fonts under `slides/<id>/assets/`. For assets reused across decks or themes (logos, avatars), use the global `assets/` folder and import via `@assets/...`.
 - Do **not** touch `package.json`, `open-slide.config.ts`, or other slides by default, but if there is a real need you can request the user to make the change. If you do, please explain why it is necessary.
-- **`@open-slide/core` is locally patched** (folders UI + folder password protection): `patches/open-slide-core-2.0.1-folders.patch`, re-applied by the `postinstall` hook (`npm run patch:core`). The core is pinned to `2.0.1` — don't upgrade it without regenerating the patch. Never edit `node_modules/@open-slide/core` without updating the patch too.
+- **`@open-slide/core` is locally patched** (folders UI + folder password protection + resizable/arrangeable presenter panes + laser mirrored between projection and presenter): `patches/open-slide-core-2.0.1-folders.patch`, re-applied by the `postinstall` hook (`npm run patch:core`). The core is pinned to `2.0.1` — don't upgrade it without regenerating the patch. Never edit `node_modules/@open-slide/core` without updating the patch too.
 - Do not add dependencies. Use only `react` and standard web APIs.
 - **One press = one step.** Every deck's `index.tsx` must contain the `// ─── One press = one step` block (copy it verbatim from any existing deck, right after the webfont/design block). It stops a held key or presenter-remote button from auto-repeating through several reveals. Keep it identical across decks; if you change it, change it in every deck.
 

@@ -373,6 +373,249 @@ index 0000000..40c13c0
 +    </div>
 +  );
 +}
+diff --git a/src/app/components/player.tsx b/src/app/components/player.tsx
+index 6814ecb..3cb85ec 100644
+--- a/src/app/components/player.tsx
++++ b/src/app/components/player.tsx
+@@ -14,7 +14,7 @@ import { PresentBlackoutOverlay } from './present/blackout-overlay';
+ import { PresentControlBar } from './present/control-bar';
+ import { PresentHelpOverlay } from './present/help-overlay';
+ import { PresentJumpInput } from './present/jump-input';
+-import { PresentLaserPointer } from './present/laser-pointer';
++import { type LaserRemote, SyncedLaserPointer } from './present/laser-pointer';
+ import { PresentProgressBar } from './present/progress-bar';
+ import { useIdle } from './present/use-idle';
+ import { usePointerNearBottom } from './present/use-pointer-near-bottom';
+@@ -79,6 +79,7 @@ export function Player({
+   const [helpOpen, setHelpOpen] = useState(false);
+   const [blackout, setBlackout] = useState<'black' | 'white' | null>(null);
+   const [laser, setLaser] = useState(false);
++  const laserRemoteRef = useRef<LaserRemote | null>(null);
+   const [keyboardDriven, setKeyboardDriven] = useState(false);
+   const [mobileChromeVisible, setMobileChromeVisible] = useState(false);
+   const [mobileChromeDeadline, setMobileChromeDeadline] = useState(0);
+@@ -237,8 +238,9 @@ export function Player({
+       startedAt,
+       stepIndex: stepAggregate.revealed,
+       stepCount: stepAggregate.stepCount,
++      laser,
+     }),
+-    [index, pages.length, blackout, startedAt, stepAggregate],
++    [index, pages.length, blackout, startedAt, stepAggregate, laser],
+   );
+   const presenterStateRef = useRef(presenterState);
+   presenterStateRef.current = presenterState;
+@@ -255,6 +257,10 @@ export function Player({
+         send({ type: 'state', state: presenterStateRef.current });
+       } else if (msg.type === 'switch-slide') {
+         if (msg.slideId !== slideId) onSwitchSlide?.(msg.slideId);
++      } else if (msg.type === 'toggle-laser') {
++        setLaser((v) => !v);
++      } else if (msg.type === 'laser' && msg.from === 'presenter') {
++        laserRemoteRef.current?.show(msg.point);
+       }
+     },
+     [goNext, goPrev, handleIndexChange, pages.length, slideId, onSwitchSlide],
+@@ -425,7 +431,13 @@ export function Player({
+           <PresentProgressBar index={index} total={pages.length} visible={chromeVisible} />
+           <PresentBlackoutOverlay mode={blackout} />
+           <PresentJumpInput pageCount={pages.length} onJump={handleIndexChange} />
+-          <PresentLaserPointer enabled={laser} />
++          <SyncedLaserPointer
++            enabled={laser}
++            scope="window"
++            surfaceRef={rootRef}
++            remoteRef={laserRemoteRef}
++            onLocalMove={(point) => channel.send({ type: 'laser', from: 'projection', point })}
++          />
+           <PresentControlBar
+             tooltipContainer={rootEl}
+             index={index}
+diff --git a/src/app/components/present/laser-pointer.tsx b/src/app/components/present/laser-pointer.tsx
+index 3507376..bcc10b6 100644
+--- a/src/app/components/present/laser-pointer.tsx
++++ b/src/app/components/present/laser-pointer.tsx
+@@ -1,5 +1,6 @@
+-import { useEffect, useRef, useState } from 'react';
++import { type CSSProperties, type RefObject, useEffect, useRef, useState } from 'react';
+ import { cn } from '@/lib/utils';
++import { CANVAS_HEIGHT, CANVAS_WIDTH } from '../../lib/sdk';
+ 
+ /**
+  * Soft red dot that follows the cursor when the laser tool is active.
+@@ -60,3 +61,142 @@ export function PresentLaserPointer({ enabled }: { enabled: boolean }) {
+     />
+   );
+ }
++
++/** A laser position as fractions of the slide canvas (0–1); null = off the slide. */
++export type LaserPoint = { x: number; y: number } | null;
++export type LaserRemote = { show: (point: LaserPoint) => void };
++
++const LASER_DOT_STYLE: CSSProperties = {
++  willChange: 'transform',
++  borderRadius: '50%',
++  background: 'radial-gradient(circle, oklch(0.66 0.24 28 / 0.95) 30%, transparent 70%)',
++  boxShadow: '0 0 18px 4px oklch(0.66 0.24 28 / 0.55)',
++};
++
++/**
++ * Laser dot mirrored between the projection and presenter windows. Positions
++ * travel as fractions of the slide canvas, so each window maps them onto its
++ * own (differently sized, letterboxed) render of the slide. Whichever window
++ * moved last owns the dot.
++ *
++ * `surfaceRef` is the box the slide is fitted into. With `scope: 'window'`
++ * the local pointer drives the dot anywhere in the window (projection); with
++ * `scope: 'surface'` only while it is over that box (presenter preview).
++ */
++export function SyncedLaserPointer({
++  enabled,
++  surfaceRef,
++  scope,
++  size = 18,
++  remoteRef,
++  onLocalMove,
++}: {
++  enabled: boolean;
++  surfaceRef: RefObject<HTMLElement | null>;
++  scope: 'window' | 'surface';
++  size?: number;
++  remoteRef: RefObject<LaserRemote | null>;
++  onLocalMove: (point: LaserPoint) => void;
++}) {
++  const dotRef = useRef<HTMLDivElement | null>(null);
++  const onLocalMoveRef = useRef(onLocalMove);
++  onLocalMoveRef.current = onLocalMove;
++
++  useEffect(() => {
++    if (!enabled) return;
++    let frame = 0;
++    let dot: { x: number; y: number } | null = null;
++    let outgoing: LaserPoint | undefined;
++    let lastSent: LaserPoint | undefined;
++
++    const slideRect = () => {
++      const el = surfaceRef.current;
++      if (!el) return null;
++      const r = el.getBoundingClientRect();
++      const s = Math.min(r.width / CANVAS_WIDTH, r.height / CANVAS_HEIGHT);
++      if (!(s > 0)) return null;
++      const width = CANVAS_WIDTH * s;
++      const height = CANVAS_HEIGHT * s;
++      return {
++        left: r.left + (r.width - width) / 2,
++        top: r.top + (r.height - height) / 2,
++        width,
++        height,
++      };
++    };
++
++    // Position is written straight to the element inside rAF — routing it
++    // through React state would re-render at pointer rate and lag the hand.
++    const flush = () => {
++      frame = 0;
++      const el = dotRef.current;
++      if (el) {
++        if (dot) el.style.transform = `translate3d(${dot.x - size / 2}px, ${dot.y - size / 2}px, 0)`;
++        el.style.opacity = dot ? '1' : '0';
++      }
++      if (outgoing !== undefined) {
++        const same =
++          outgoing === lastSent ||
++          (outgoing && lastSent && outgoing.x === lastSent.x && outgoing.y === lastSent.y);
++        if (!same) onLocalMoveRef.current(outgoing);
++        lastSent = outgoing;
++        outgoing = undefined;
++      }
++    };
++    const schedule = () => {
++      if (!frame) frame = requestAnimationFrame(flush);
++    };
++
++    const onMove = (e: PointerEvent) => {
++      const surface = surfaceRef.current;
++      const inSurface = !!surface && surface.contains(e.target as Node | null);
++      if (scope === 'surface' && !inSurface) {
++        if (dot === null && lastSent === null) return;
++        dot = null;
++        outgoing = null;
++        schedule();
++        return;
++      }
++      dot = { x: e.clientX, y: e.clientY };
++      const r = slideRect();
++      const x = r ? (e.clientX - r.left) / r.width : -1;
++      const y = r ? (e.clientY - r.top) / r.height : -1;
++      outgoing = x >= 0 && x <= 1 && y >= 0 && y <= 1 ? { x, y } : null;
++      schedule();
++    };
++    const onLeave = () => {
++      if (scope === 'surface') dot = null;
++      outgoing = null;
++      schedule();
++    };
++
++    remoteRef.current = {
++      show(point) {
++        const r = point && slideRect();
++        dot = r && point ? { x: r.left + point.x * r.width, y: r.top + point.y * r.height } : null;
++        schedule();
++      },
++    };
++
++    window.addEventListener('pointermove', onMove, { passive: true });
++    document.documentElement.addEventListener('pointerleave', onLeave);
++    window.addEventListener('blur', onLeave);
++    return () => {
++      window.removeEventListener('pointermove', onMove);
++      document.documentElement.removeEventListener('pointerleave', onLeave);
++      window.removeEventListener('blur', onLeave);
++      if (frame) cancelAnimationFrame(frame);
++      remoteRef.current = null;
++    };
++  }, [enabled, scope, size, surfaceRef, remoteRef]);
++
++  if (!enabled) return null;
++  return (
++    <div
++      ref={dotRef}
++      aria-hidden
++      className="pointer-events-none fixed top-0 left-0 z-[60] motion-safe:transition-opacity motion-safe:duration-150"
++      style={{ ...LASER_DOT_STYLE, width: size, height: size, opacity: 0 }}
++    />
++  );
++}
+diff --git a/src/app/components/present/use-presenter-channel.ts b/src/app/components/present/use-presenter-channel.ts
+index 2541a74..0a3a5a4 100644
+--- a/src/app/components/present/use-presenter-channel.ts
++++ b/src/app/components/present/use-presenter-channel.ts
+@@ -1,4 +1,5 @@
+ import { useEffect, useMemo, useRef, useState } from 'react';
++import type { LaserPoint } from './laser-pointer';
+ 
+ export type PresenterState = {
+   index: number;
+@@ -7,6 +8,7 @@ export type PresenterState = {
+   startedAt: number; // epoch ms when present mode began
+   stepIndex: number;
+   stepCount: number;
++  laser: boolean;
+ };
+ 
+ export type PresenterCommand =
+@@ -16,7 +18,10 @@ export type PresenterCommand =
+   | { type: 'prev' }
+   | { type: 'request-state' }
+   | { type: 'toggle-blackout'; mode: 'black' | 'white' }
+-  | { type: 'switch-slide'; slideId: string };
++  | { type: 'switch-slide'; slideId: string }
++  | { type: 'toggle-laser' }
++  // Laser position, mirrored to the other window(s).
++  | { type: 'laser'; from: 'projection' | 'presenter'; point: LaserPoint };
+ 
+ type Handler = (msg: PresenterCommand) => void;
+ 
 diff --git a/src/app/components/sidebar/folder-item.tsx b/src/app/components/sidebar/folder-item.tsx
 index 04c9d1c..8106553 100644
 --- a/src/app/components/sidebar/folder-item.tsx
@@ -1244,19 +1487,845 @@ index 21936c3..f809db4 100644
          <span className="ml-auto inline-flex items-center gap-1 text-[10.5px] text-brand">
            <span className="inline-block size-1 rounded-full bg-brand" aria-hidden />
 diff --git a/src/app/routes/presenter.tsx b/src/app/routes/presenter.tsx
-index c29b8b6..bb7a3bd 100644
+index c29b8b6..41bbaf6 100644
 --- a/src/app/routes/presenter.tsx
 +++ b/src/app/routes/presenter.tsx
-@@ -20,6 +20,8 @@ import {
+@@ -1,17 +1,27 @@
+ import {
+   AArrowDown,
+   AArrowUp,
++  ArrowDown,
++  ArrowLeftRight,
++  ArrowUp,
+   Check,
+   ChevronDown,
+   ChevronLeft,
+   ChevronRight,
++  Crosshair,
++  Eye,
++  EyeOff,
++  GripVertical,
++  LayoutPanelLeft,
+   RotateCcw,
+   Square,
+   Sun,
+ } from 'lucide-react';
+ import {
++  type CSSProperties,
+   type KeyboardEvent as ReactKeyboardEvent,
+   type ReactNode,
++  type RefObject,
+   useCallback,
+   useEffect,
+   useRef,
+@@ -20,11 +30,15 @@ import {
  import { useNavigate, useParams } from 'react-router-dom';
  import { Button } from '@/components/ui/button';
  import { Dialog, DialogContent, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
++import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 +import { useFolderLocks } from '@/lib/folder-lock';
 +import { useFolders } from '@/lib/folders';
  import { hasModifier, isBackwardKey, isForwardKey, isTypingTarget } from '@/lib/keys';
  import { useDocumentTitle } from '@/lib/use-document-title';
  import { format, useLocale } from '@/lib/use-locale';
-@@ -362,6 +364,8 @@ function DeckSwitcher({
+ import { cn, pad2 } from '@/lib/utils';
+ import { NoteMarkdown } from '../components/note-markdown';
++import { type LaserRemote, SyncedLaserPointer } from '../components/present/laser-pointer';
+ import {
+   type PresenterState,
+   usePresenterChannel,
+@@ -58,10 +72,17 @@ export function Presenter() {
+     setWarmedTick((n) => n + 1);
+   }, [slideId]);
+ 
++  const [layout, setLayout] = usePresenterLayout();
++  // The now-showing preview box; the laser maps slide coordinates onto it.
++  const nowSurfaceRef = useRef<HTMLDivElement | null>(null);
++  const laserRemoteRef = useRef<LaserRemote | null>(null);
++
+   const channel = usePresenterChannel(slideId, (msg) => {
+     if (msg.type === 'state') {
+       setState(msg.state);
+       setHasProjection(true);
++    } else if (msg.type === 'laser' && msg.from === 'projection') {
++      laserRemoteRef.current?.show(msg.point);
+     }
+   });
+ 
+@@ -99,6 +120,7 @@ export function Presenter() {
+   const goTo = useCallback((i: number) => send({ type: 'goto', index: i }), [send]);
+   const toggleBlack = useCallback(() => send({ type: 'toggle-blackout', mode: 'black' }), [send]);
+   const toggleWhite = useCallback(() => send({ type: 'toggle-blackout', mode: 'white' }), [send]);
++  const toggleLaser = useCallback(() => send({ type: 'toggle-laser' }), [send]);
+ 
+   // Local-window key bindings mirror the projection's main shortcuts so the
+   // presenter can drive without the mouse.
+@@ -120,11 +142,14 @@ export function Presenter() {
+       } else if (e.key === 'w' || e.key === 'W') {
+         e.preventDefault();
+         toggleWhite();
++      } else if (e.key === 'l' || e.key === 'L') {
++        e.preventDefault();
++        toggleLaser();
+       }
+     };
+     window.addEventListener('keydown', onKey);
+     return () => window.removeEventListener('keydown', onKey);
+-  }, [goNext, goPrev, toggleBlack, toggleWhite]);
++  }, [goNext, goPrev, toggleBlack, toggleWhite, toggleLaser]);
+ 
+   if (error) {
+     return (
+@@ -164,6 +189,7 @@ export function Presenter() {
+   const startedAt = state?.startedAt ?? localStart;
+   const stepIndex = Math.max(0, state?.stepIndex ?? 0);
+   const stepCount = Math.max(0, state?.stepCount ?? 0);
++  const laser = hasProjection && !!state?.laser;
+ 
+   const stepsRemaining = stepIndex < stepCount;
+   const hasNextSlide = index < total - 1;
+@@ -209,13 +235,16 @@ export function Presenter() {
+         slideTitle={slide.meta?.title ?? slideId}
+         connected={hasProjection}
+         onSwitchDeck={switchDeck}
++        layoutMenu={<PresenterLayoutMenu layout={layout} setLayout={setLayout} />}
+       />
+ 
+-      <div className="grid min-h-0 flex-1 grid-cols-1 gap-6 px-6 pb-4 lg:grid-cols-[2fr_1fr]">
+-        {/* Now-showing */}
+-        <section className="flex min-h-0 flex-col gap-3">
+-          <SectionLabel>{t.presenter.nowShowing}</SectionLabel>
+-          <div className="relative min-h-0 flex-1 overflow-hidden rounded-[8px] bg-black ring-1 ring-border">
++      <PresenterPanels
++        layout={layout}
++        setLayout={setLayout}
++        nowSurfaceRef={nowSurfaceRef}
++        laser={laser}
++        nowContent={
++          <>
+             <SlideCanvas flat design={slide.design}>
+               <SlidePageProvider index={index} total={total}>
+                 <PreviewStepHost revealed={stepIndex}>
+@@ -235,47 +264,664 @@ export function Presenter() {
+                 {blackout === 'black' ? t.presenter.blackScreen : t.presenter.whiteScreen}
+               </div>
+             )}
+-          </div>
+-        </section>
+-
+-        {/* Next + notes */}
+-        <aside className="flex min-h-0 flex-col gap-4">
+-          <div className="flex flex-col gap-2">
+-            <SectionLabel>{hasNext ? t.presenter.upNext : t.presenter.lastSlide}</SectionLabel>
+-            <div
+-              className="relative w-full overflow-hidden rounded-[8px] bg-black ring-1 ring-border"
+-              style={{ aspectRatio: `${CANVAS_WIDTH}/${CANVAS_HEIGHT}` }}
+-            >
+-              {NextPage ? (
+-                <SlideCanvas flat freezeMotion design={slide.design}>
+-                  <SlidePageProvider index={nextPageIndex} total={total}>
+-                    <PreviewStepHost revealed={nextRevealed}>
+-                      <NextPage />
+-                    </PreviewStepHost>
+-                  </SlidePageProvider>
+-                </SlideCanvas>
+-              ) : (
+-                <div className="grid h-full place-items-center text-[11.5px] text-muted-foreground">
+-                  {t.presenter.endOfDeck}
+-                </div>
+-              )}
++          </>
++        }
++        nextTitle={hasNext ? t.presenter.upNext : t.presenter.lastSlide}
++        nextContent={
++          NextPage ? (
++            <SlideCanvas flat freezeMotion design={slide.design}>
++              <SlidePageProvider index={nextPageIndex} total={total}>
++                <PreviewStepHost revealed={nextRevealed}>
++                  <NextPage />
++                </PreviewStepHost>
++              </SlidePageProvider>
++            </SlideCanvas>
++          ) : (
++            <div className="grid h-full place-items-center text-[11.5px] text-muted-foreground">
++              {t.presenter.endOfDeck}
+             </div>
+-          </div>
+-
+-          <SpeakerNotes note={note} />
++          )
++        }
++        note={note}
++      />
+ 
+-          <PresenterJumpControl total={total} current={index} onJump={goTo} />
+-        </aside>
+-      </div>
++      <SyncedLaserPointer
++        enabled={laser}
++        scope="surface"
++        size={14}
++        surfaceRef={nowSurfaceRef}
++        remoteRef={laserRemoteRef}
++        onLocalMove={(point) => send({ type: 'laser', from: 'presenter', point })}
++      />
+ 
+       <PresenterBottomBar
+         index={index}
+         total={total}
+         blackout={blackout}
++        laser={laser}
++        connected={hasProjection}
+         onPrev={goPrev}
+         onNext={goNext}
+         onBlackout={toggleBlack}
+         onWhiteout={toggleWhite}
++        onLaser={toggleLaser}
++        jump={<PresenterJumpControl total={total} current={index} onJump={goTo} />}
++      />
++    </div>
++  );
++}
++
++// User-arrangeable presenter panes. The first visible pane in `order` fills
++// the main column; the others stack in the side column. `main` is the main
++// column's share of the row width (lg+ only — narrower windows stack every
++// pane); `side` is the top side pane's share of the side column's height, or
++// null for its natural size (up-next keeps the slide's aspect ratio, anything
++// else takes half).
++type PaneId = 'now' | 'next' | 'notes';
++type PresenterLayout = {
++  order: PaneId[];
++  hidden: PaneId[];
++  mainRight: boolean;
++  main: number;
++  side: number | null;
++};
++
++const PANE_IDS: PaneId[] = ['now', 'next', 'notes'];
++const PRESENTER_LAYOUT_STORAGE_KEY = 'open-slide:presenter-layout';
++const DEFAULT_PRESENTER_LAYOUT: PresenterLayout = {
++  order: PANE_IDS,
++  hidden: [],
++  mainRight: false,
++  main: 200 / 3,
++  side: null,
++};
++const MIN_MAIN_PCT = 20;
++const MAX_MAIN_PCT = 85;
++const MIN_SIDE_PCT = 0;
++const MAX_SIDE_PCT = 85;
++
++const clamp = (v: number, min: number, max: number) => Math.min(max, Math.max(min, v));
++
++function readPresenterLayout(): PresenterLayout {
++  if (typeof window === 'undefined') return DEFAULT_PRESENTER_LAYOUT;
++  try {
++    const raw = JSON.parse(window.localStorage.getItem(PRESENTER_LAYOUT_STORAGE_KEY) ?? 'null');
++    if (!raw || typeof raw !== 'object') return DEFAULT_PRESENTER_LAYOUT;
++    const isPermutation =
++      Array.isArray(raw.order) &&
++      raw.order.length === PANE_IDS.length &&
++      PANE_IDS.every((id) => raw.order.includes(id));
++    // `next` is the pre-arrangement name of `side`.
++    const side = raw.side ?? raw.next;
++    return {
++      order: isPermutation ? raw.order : PANE_IDS,
++      hidden: Array.isArray(raw.hidden) ? PANE_IDS.filter((id) => raw.hidden.includes(id)) : [],
++      mainRight: raw.mainRight === true,
++      main: Number.isFinite(raw.main)
++        ? clamp(raw.main, MIN_MAIN_PCT, MAX_MAIN_PCT)
++        : DEFAULT_PRESENTER_LAYOUT.main,
++      side: Number.isFinite(side) ? clamp(side, MIN_SIDE_PCT, MAX_SIDE_PCT) : null,
++    };
++  } catch {
++    return DEFAULT_PRESENTER_LAYOUT;
++  }
++}
++
++type SetPresenterLayout = (update: (layout: PresenterLayout) => PresenterLayout) => void;
++
++function usePresenterLayout(): [PresenterLayout, SetPresenterLayout] {
++  const [layout, setLayout] = useState(readPresenterLayout);
++  useEffect(() => {
++    try {
++      window.localStorage.setItem(PRESENTER_LAYOUT_STORAGE_KEY, JSON.stringify(layout));
++    } catch {}
++  }, [layout]);
++  return [layout, setLayout];
++}
++
++const swapPanes = (order: PaneId[], a: PaneId, b: PaneId) =>
++  order.map((id) => (id === a ? b : id === b ? a : id));
++
++function usePaneTitles(): Record<PaneId, string> {
++  const t = useLocale();
++  return { now: t.presenter.nowShowing, next: t.presenter.upNext, notes: t.presenter.speakerNotes };
++}
++
++function PresenterPanels({
++  layout,
++  setLayout,
++  nowSurfaceRef,
++  laser,
++  nowContent,
++  nextTitle,
++  nextContent,
++  note,
++}: {
++  layout: PresenterLayout;
++  setLayout: SetPresenterLayout;
++  nowSurfaceRef: RefObject<HTMLDivElement | null>;
++  laser: boolean;
++  nowContent: ReactNode;
++  nextTitle: string;
++  nextContent: ReactNode;
++  note: string | undefined;
++}) {
++  const t = useLocale();
++  const titles = usePaneTitles();
++  const [notesSize, setNotesSize] = useNotesFontSize();
++  const [dragging, setDragging] = useState<PaneId | null>(null);
++  const [dropTarget, setDropTarget] = useState<PaneId | null>(null);
++  const rowRef = useRef<HTMLDivElement | null>(null);
++  const mainRef = useRef<HTMLElement | null>(null);
++  const sideRef = useRef<HTMLDivElement | null>(null);
++  const sideTopRef = useRef<HTMLElement | null>(null);
++  const dragStartRef = useRef(0);
++
++  const visible = layout.order.filter((id) => !layout.hidden.includes(id));
++  const [mainId, ...sideIds] = visible;
++  const twoSide = sideIds.length === 2;
++  // Natural sizing only makes sense for the up-next preview.
++  const sideTopAuto = twoSide && layout.side === null && sideIds[0] === 'next';
++
++  const sizeOf = (el: HTMLElement | null, axis: 'width' | 'height') =>
++    el?.getBoundingClientRect()[axis] ?? 0;
++  const setMain = (pct: number) =>
++    setLayout((l) => ({ ...l, main: clamp(pct, MIN_MAIN_PCT, MAX_MAIN_PCT) }));
++  const setSide = (pct: number) =>
++    setLayout((l) => ({ ...l, side: clamp(pct, MIN_SIDE_PCT, MAX_SIDE_PCT) }));
++  // The top side pane may still be naturally sized, so read its live size.
++  const currentSidePct = () => {
++    const total = sizeOf(sideRef.current, 'height');
++    return total > 0 ? (sizeOf(sideTopRef.current, 'height') / total) * 100 : 0;
++  };
++  // Dragging the column divider right grows the main column only when it is
++  // on the left.
++  const mainSign = layout.mainRight ? -1 : 1;
++  const hide = (id: PaneId) =>
++    setLayout((l) => ({ ...l, hidden: l.hidden.includes(id) ? l.hidden : [...l.hidden, id] }));
++
++  const endDrag = () => {
++    setDragging(null);
++    setDropTarget(null);
++  };
++
++  const renderPane = (
++    id: PaneId,
++    {
++      className,
++      style,
++      paneRef,
++      autoNext = false,
++    }: {
++      className?: string;
++      style?: CSSProperties;
++      paneRef?: RefObject<HTMLElement | null>;
++      autoNext?: boolean;
++    },
++  ) => {
++    const boxClass = 'relative w-full overflow-hidden rounded-[8px] bg-black ring-1 ring-border';
++    let body: ReactNode;
++    let actions: ReactNode = null;
++    if (id === 'now') {
++      body = (
++        <div ref={nowSurfaceRef} className={cn(boxClass, 'min-h-0 flex-1', laser && 'cursor-none')}>
++          {nowContent}
++        </div>
++      );
++    } else if (id === 'next') {
++      body = (
++        <div
++          className={cn(boxClass, !autoNext && 'min-h-0 flex-1')}
++          style={autoNext ? { aspectRatio: `${CANVAS_WIDTH}/${CANVAS_HEIGHT}` } : undefined}
++        >
++          {nextContent}
++        </div>
++      );
++    } else {
++      body = <NotesBody note={note} sizeIndex={notesSize} />;
++      actions = <NotesFontControls sizeIndex={notesSize} onChange={setNotesSize} />;
++    }
++    return (
++      <PaneFrame
++        key={id}
++        id={id}
++        title={id === 'next' ? nextTitle : titles[id]}
++        actions={actions}
++        onHide={() => hide(id)}
++        dragging={dragging}
++        dropTarget={dropTarget}
++        onDragStart={() => setDragging(id)}
++        onDragTarget={setDropTarget}
++        onDrop={(from) => {
++          setLayout((l) => ({ ...l, order: swapPanes(l.order, from, id) }));
++          endDrag();
++        }}
++        onDragEnd={endDrag}
++        className={className}
++        style={style}
++        paneRef={paneRef}
++      >
++        {body}
++      </PaneFrame>
++    );
++  };
++
++  if (!mainId) {
++    return (
++      <div className="mx-6 mb-4 grid min-h-0 flex-1 place-items-center rounded-[8px] border border-dashed border-border">
++        <div className="flex flex-col items-center gap-3 text-[12px] text-muted-foreground">
++          {t.presenter.allPanesHidden}
++          <Button
++            variant="outline"
++            size="sm"
++            onClick={() => setLayout((l) => ({ ...l, hidden: [] }))}
++          >
++            <Eye className="size-3.5" /> {t.presenter.showAllPanes}
++          </Button>
++        </div>
++      </div>
++    );
++  }
++
++  return (
++    <div
++      ref={rowRef}
++      className={cn(
++        'mx-6 mb-4 flex min-h-0 flex-1 flex-col gap-6 lg:gap-0',
++        layout.mainRight ? 'lg:flex-row-reverse' : 'lg:flex-row',
++      )}
++      style={{ '--presenter-main': `${layout.main}%` } as CSSProperties}
++    >
++      {renderPane(mainId, {
++        className: cn('flex-1', sideIds.length > 0 && 'lg:w-[var(--presenter-main)] lg:flex-none'),
++        paneRef: mainRef,
++      })}
++
++      {sideIds.length > 0 && (
++        <>
++          <PresenterSplitter
++            orientation="vertical"
++            label={t.presenter.resizeColumns}
++            value={layout.main}
++            min={MIN_MAIN_PCT}
++            max={MAX_MAIN_PCT}
++            className="hidden w-6 lg:block"
++            onResizeStart={() => {
++              dragStartRef.current = sizeOf(mainRef.current, 'width');
++            }}
++            onResize={(delta) => {
++              const total = sizeOf(rowRef.current, 'width');
++              if (total > 0) setMain(((dragStartRef.current + mainSign * delta) / total) * 100);
++            }}
++            onStep={(step) => setMain(layout.main + mainSign * step)}
++            onReset={() => setLayout((l) => ({ ...l, main: DEFAULT_PRESENTER_LAYOUT.main }))}
++          />
++
++          <div ref={sideRef} className="flex min-h-0 flex-1 flex-col">
++            {twoSide ? (
++              <>
++                {renderPane(sideIds[0], {
++                  className: 'shrink-0 overflow-hidden',
++                  style: sideTopAuto ? undefined : { height: `${layout.side ?? 50}%` },
++                  paneRef: sideTopRef,
++                  autoNext: sideTopAuto,
++                })}
++                <PresenterSplitter
++                  orientation="horizontal"
++                  label={t.presenter.resizeNotes}
++                  value={layout.side}
++                  min={MIN_SIDE_PCT}
++                  max={MAX_SIDE_PCT}
++                  className="h-4"
++                  onResizeStart={() => {
++                    dragStartRef.current = sizeOf(sideTopRef.current, 'height');
++                  }}
++                  onResize={(delta) => {
++                    const total = sizeOf(sideRef.current, 'height');
++                    if (total > 0) setSide(((dragStartRef.current + delta) / total) * 100);
++                  }}
++                  onStep={(step) => setSide((layout.side ?? currentSidePct()) + step)}
++                  onReset={() => setLayout((l) => ({ ...l, side: DEFAULT_PRESENTER_LAYOUT.side }))}
++                />
++                {renderPane(sideIds[1], { className: 'flex-1' })}
++              </>
++            ) : (
++              renderPane(sideIds[0], { className: 'flex-1' })
++            )}
++          </div>
++        </>
++      )}
++    </div>
++  );
++}
++
++const PANE_DRAG_TYPE = 'application/x-open-slide-pane';
++
++function PaneFrame({
++  id,
++  title,
++  actions,
++  onHide,
++  dragging,
++  dropTarget,
++  onDragStart,
++  onDragTarget,
++  onDrop,
++  onDragEnd,
++  className,
++  style,
++  paneRef,
++  children,
++}: {
++  id: PaneId;
++  title: string;
++  actions?: ReactNode;
++  onHide: () => void;
++  dragging: PaneId | null;
++  dropTarget: PaneId | null;
++  onDragStart: () => void;
++  onDragTarget: (id: PaneId | null) => void;
++  onDrop: (from: PaneId) => void;
++  onDragEnd: () => void;
++  className?: string;
++  style?: CSSProperties;
++  paneRef?: RefObject<HTMLElement | null>;
++  children: ReactNode;
++}) {
++  const t = useLocale();
++  const accepts = dragging !== null && dragging !== id;
++  const hideLabel = format(t.presenter.hidePane, { pane: title });
++  return (
++    <section
++      ref={paneRef}
++      className={cn(
++        'relative flex min-h-0 flex-col gap-2 rounded-[8px] transition-opacity duration-150',
++        dragging === id && 'opacity-40',
++        className,
++      )}
++      style={style}
++      onDragOver={(e) => {
++        if (!accepts) return;
++        e.preventDefault();
++        e.dataTransfer.dropEffect = 'move';
++        if (dropTarget !== id) onDragTarget(id);
++      }}
++      onDragLeave={(e) => {
++        if (dropTarget === id && !e.currentTarget.contains(e.relatedTarget as Node | null)) {
++          onDragTarget(null);
++        }
++      }}
++      onDrop={(e) => {
++        if (!accepts || !dragging) return;
++        e.preventDefault();
++        onDrop(dragging);
++      }}
++    >
++      <div className="flex h-6 shrink-0 items-center justify-between gap-2">
++        {/* biome-ignore lint/a11y/noStaticElementInteractions: drag handle; the Layout menu is the keyboard path */}
++        <div
++          draggable
++          onDragStart={(e) => {
++            e.dataTransfer.effectAllowed = 'move';
++            e.dataTransfer.setData(PANE_DRAG_TYPE, id);
++            onDragStart();
++          }}
++          onDragEnd={onDragEnd}
++          title={t.presenter.dragPane}
++          className="-ml-1 flex min-w-0 cursor-grab items-center gap-1 rounded-[4px] px-1 py-0.5 hover:bg-muted active:cursor-grabbing"
++        >
++          <GripVertical className="size-3.5 shrink-0 text-muted-foreground/60" />
++          <SectionLabel>{title}</SectionLabel>
++        </div>
++        <div className="flex items-center gap-1">
++          {actions}
++          <Button
++            variant="ghost"
++            size="icon-xs"
++            onClick={onHide}
++            title={hideLabel}
++            aria-label={hideLabel}
++          >
++            <EyeOff className="size-3.5" />
++          </Button>
++        </div>
++      </div>
++      {children}
++      {accepts && dropTarget === id && (
++        <div
++          aria-hidden
++          className="pointer-events-none absolute inset-0 grid place-items-center rounded-[8px] bg-brand/10 ring-2 ring-brand"
++        >
++          <span className="rounded-[4px] bg-background/85 px-2 py-1 text-[11.5px] text-foreground">
++            {t.presenter.dropToSwap}
++          </span>
++        </div>
++      )}
++    </section>
++  );
++}
++
++function PresenterLayoutMenu({
++  layout,
++  setLayout,
++}: {
++  layout: PresenterLayout;
++  setLayout: SetPresenterLayout;
++}) {
++  const t = useLocale();
++  const titles = usePaneTitles();
++  const move = (i: number, delta: -1 | 1) =>
++    setLayout((l) => {
++      const j = i + delta;
++      if (j < 0 || j >= l.order.length) return l;
++      return { ...l, order: swapPanes(l.order, l.order[i], l.order[j]) };
++    });
++  const toggle = (id: PaneId) =>
++    setLayout((l) => ({
++      ...l,
++      hidden: l.hidden.includes(id) ? l.hidden.filter((h) => h !== id) : [...l.hidden, id],
++    }));
++
++  return (
++    <Popover>
++      <PopoverTrigger
++        render={
++          <Button variant="ghost" size="sm" title={t.presenter.layout}>
++            <LayoutPanelLeft className="size-4" /> {t.presenter.layout}
++          </Button>
++        }
++      />
++      <PopoverContent align="end" className="dark w-80 p-2">
++        <div className="px-1.5 pt-1 pb-2 text-[11.5px] leading-snug text-muted-foreground">
++          {t.presenter.layoutHint}
++        </div>
++        <ul className="flex flex-col gap-0.5">
++          {layout.order.map((id, i) => {
++            const hidden = layout.hidden.includes(id);
++            const toggleLabel = format(hidden ? t.presenter.showPane : t.presenter.hidePane, {
++              pane: titles[id],
++            });
++            return (
++              <li
++                key={id}
++                className="flex items-center gap-1 rounded-[5px] px-1 py-0.5 hover:bg-muted/60"
++              >
++                <Button
++                  variant="ghost"
++                  size="icon-xs"
++                  onClick={() => toggle(id)}
++                  aria-pressed={!hidden}
++                  title={toggleLabel}
++                  aria-label={toggleLabel}
++                >
++                  {hidden ? <EyeOff className="size-3.5" /> : <Eye className="size-3.5" />}
++                </Button>
++                <span
++                  className={cn(
++                    'flex-1 truncate text-[12.5px]',
++                    hidden ? 'text-muted-foreground line-through' : 'text-foreground',
++                  )}
++                >
++                  {titles[id]}
++                </span>
++                <Button
++                  variant="ghost"
++                  size="icon-xs"
++                  onClick={() => move(i, -1)}
++                  disabled={i === 0}
++                  title={t.presenter.moveUp}
++                  aria-label={`${t.presenter.moveUp} · ${titles[id]}`}
++                >
++                  <ArrowUp className="size-3.5" />
++                </Button>
++                <Button
++                  variant="ghost"
++                  size="icon-xs"
++                  onClick={() => move(i, 1)}
++                  disabled={i === layout.order.length - 1}
++                  title={t.presenter.moveDown}
++                  aria-label={`${t.presenter.moveDown} · ${titles[id]}`}
++                >
++                  <ArrowDown className="size-3.5" />
++                </Button>
++              </li>
++            );
++          })}
++        </ul>
++        <div className="mt-2 flex items-center justify-between gap-2 border-t border-hairline px-0.5 pt-2">
++          <Button
++            variant="outline"
++            size="xs"
++            onClick={() => setLayout((l) => ({ ...l, mainRight: !l.mainRight }))}
++            aria-pressed={layout.mainRight}
++          >
++            <ArrowLeftRight className="size-3.5" /> {t.presenter.swapSides}
++          </Button>
++          <Button variant="ghost" size="xs" onClick={() => setLayout(() => DEFAULT_PRESENTER_LAYOUT)}>
++            <RotateCcw className="size-3.5" /> {t.presenter.resetLayout}
++          </Button>
++        </div>
++      </PopoverContent>
++    </Popover>
++  );
++}
++
++function PresenterSplitter({
++  orientation,
++  label,
++  value,
++  min,
++  max,
++  className,
++  onResizeStart,
++  onResize,
++  onStep,
++  onReset,
++}: {
++  // `vertical` is a column divider (drag left/right); `horizontal` a row divider.
++  orientation: 'vertical' | 'horizontal';
++  label: string;
++  // null while the pane is auto-sized.
++  value: number | null;
++  min: number;
++  max: number;
++  className?: string;
++  onResizeStart: () => void;
++  onResize: (deltaPx: number) => void;
++  onStep: (deltaPct: number) => void;
++  onReset: () => void;
++}) {
++  const t = useLocale();
++  const vertical = orientation === 'vertical';
++  const [resizing, setResizing] = useState(false);
++  const startRef = useRef<number | null>(null);
++
++  useEffect(() => {
++    if (!resizing) return;
++    const prev = {
++      cursor: document.body.style.cursor,
++      userSelect: document.body.style.userSelect,
++    };
++    document.body.style.cursor = vertical ? 'col-resize' : 'row-resize';
++    document.body.style.userSelect = 'none';
++    return () => {
++      document.body.style.cursor = prev.cursor;
++      document.body.style.userSelect = prev.userSelect;
++    };
++  }, [resizing, vertical]);
++
++  const onPointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
++    e.preventDefault();
++    e.currentTarget.setPointerCapture(e.pointerId);
++    startRef.current = vertical ? e.clientX : e.clientY;
++    onResizeStart();
++    setResizing(true);
++  };
++
++  const onPointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
++    if (startRef.current === null) return;
++    onResize((vertical ? e.clientX : e.clientY) - startRef.current);
++  };
++
++  const onPointerUp = (e: React.PointerEvent<HTMLDivElement>) => {
++    if (e.currentTarget.hasPointerCapture(e.pointerId)) {
++      e.currentTarget.releasePointerCapture(e.pointerId);
++    }
++    startRef.current = null;
++    setResizing(false);
++  };
++
++  // Arrow keys would otherwise drive the deck (window listener skips
++  // default-prevented events).
++  const onKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
++    const step = e.shiftKey ? 10 : 2;
++    const back = vertical ? 'ArrowLeft' : 'ArrowUp';
++    const forward = vertical ? 'ArrowRight' : 'ArrowDown';
++    if (e.key === back || e.key === forward) {
++      e.preventDefault();
++      e.stopPropagation();
++      onStep(e.key === back ? -step : step);
++    } else if (e.key === 'Home') {
++      e.preventDefault();
++      e.stopPropagation();
++      onReset();
++    }
++  };
++
++  return (
++    // biome-ignore lint/a11y/useSemanticElements: focusable resize handle (splitter pattern), not a static <hr>
++    <div
++      role="separator"
++      aria-orientation={orientation}
++      aria-label={label}
++      aria-valuenow={value === null ? undefined : Math.round(value)}
++      aria-valuemin={min}
++      aria-valuemax={max}
++      title={t.presenter.resizeHint}
++      tabIndex={0}
++      onPointerDown={onPointerDown}
++      onPointerMove={onPointerMove}
++      onPointerUp={onPointerUp}
++      onPointerCancel={onPointerUp}
++      onKeyDown={onKeyDown}
++      onDoubleClick={onReset}
++      className={cn(
++        'group/resize relative shrink-0 touch-none rounded-[3px] outline-none',
++        vertical ? 'cursor-col-resize' : 'cursor-row-resize',
++        'focus-visible:bg-brand/10',
++        className,
++      )}
++    >
++      <span
++        aria-hidden
++        className={cn(
++          'pointer-events-none absolute rounded-full bg-border transition-[background-color,opacity] duration-150',
++          vertical
++            ? 'inset-y-[30%] left-1/2 w-[3px] -translate-x-1/2'
++            : 'inset-x-[30%] top-1/2 h-[3px] -translate-y-1/2',
++          'opacity-60 group-hover/resize:bg-brand group-hover/resize:opacity-100 group-focus-visible/resize:bg-brand group-focus-visible/resize:opacity-100',
++          resizing && 'bg-brand opacity-100',
++        )}
+       />
+     </div>
+   );
+@@ -289,6 +935,7 @@ function PresenterTopBar({
+   slideTitle,
+   connected,
+   onSwitchDeck,
++  layoutMenu,
+ }: {
+   index: number;
+   total: number;
+@@ -297,6 +944,7 @@ function PresenterTopBar({
+   slideTitle: string;
+   connected: boolean;
+   onSwitchDeck: (slideId: string) => void;
++  layoutMenu: ReactNode;
+ }) {
+   const t = useLocale();
+   return (
+@@ -317,6 +965,7 @@ function PresenterTopBar({
+         )}
+       </div>
+       <div className="flex items-center gap-6">
++        {layoutMenu}
+         <Clock />
+         <ElapsedClock startedAt={startedAt} />
+         <div className="font-mono text-[18px] tabular-nums">
+@@ -362,6 +1011,8 @@ function DeckSwitcher({
  }) {
    const t = useLocale();
    const modules = useDeckModules();
@@ -1265,7 +2334,7 @@ index c29b8b6..bb7a3bd 100644
    const [open, setOpen] = useState(false);
    const [query, setQuery] = useState('');
    const [activeIndex, setActiveIndex] = useState(0);
-@@ -369,6 +373,7 @@ function DeckSwitcher({
+@@ -369,6 +1020,7 @@ function DeckSwitcher({
  
    const trimmed = query.trim().toLowerCase();
    const filtered = slideIds.filter((id) => {
@@ -1273,6 +2342,165 @@ index c29b8b6..bb7a3bd 100644
      if (!trimmed) return true;
      const title = modules[id]?.meta?.title;
      return id.toLowerCase().includes(trimmed) || title?.toLowerCase().includes(trimmed);
+@@ -495,18 +1147,26 @@ function PresenterBottomBar({
+   index,
+   total,
+   blackout,
++  laser,
++  connected,
+   onPrev,
+   onNext,
+   onBlackout,
+   onWhiteout,
++  onLaser,
++  jump,
+ }: {
+   index: number;
+   total: number;
+   blackout: 'black' | 'white' | null;
++  laser: boolean;
++  connected: boolean;
+   onPrev: () => void;
+   onNext: () => void;
+   onBlackout: () => void;
+   onWhiteout: () => void;
++  onLaser: () => void;
++  jump: ReactNode;
+ }) {
+   const t = useLocale();
+   return (
+@@ -518,8 +1178,18 @@ function PresenterBottomBar({
+         <Button variant="outline" onClick={onNext} disabled={index >= total - 1}>
+           {t.presenter.next} <ChevronRight className="size-4" />
+         </Button>
++        <div className="ml-4">{jump}</div>
+       </div>
+       <div className="flex items-center gap-2">
++        <Button
++          variant={laser ? 'brand' : 'outline'}
++          onClick={onLaser}
++          disabled={!connected}
++          aria-pressed={laser}
++          title={t.presenter.laserHint}
++        >
++          <Crosshair className="size-4" /> {t.presenter.laser}
++        </Button>
+         <Button
+           variant={blackout === 'black' ? 'brand' : 'outline'}
+           onClick={onBlackout}
+@@ -550,8 +1220,7 @@ const NOTES_FONT_SIZES = [11, 12, 13.5, 15, 17, 20, 24, 28];
+ const NOTES_FONT_SIZE_DEFAULT_INDEX = 2;
+ const NOTES_FONT_SIZE_STORAGE_KEY = 'open-slide:presenter-notes-font-size';
+ 
+-function SpeakerNotes({ note }: { note: string | undefined }) {
+-  const t = useLocale();
++function useNotesFontSize(): [number, (update: (index: number) => number) => void] {
+   const [sizeIndex, setSizeIndex] = useState(() => {
+     if (typeof window === 'undefined') return NOTES_FONT_SIZE_DEFAULT_INDEX;
+     const stored = Number(window.localStorage.getItem(NOTES_FONT_SIZE_STORAGE_KEY));
+@@ -564,49 +1233,61 @@ function SpeakerNotes({ note }: { note: string | undefined }) {
+     window.localStorage.setItem(NOTES_FONT_SIZE_STORAGE_KEY, String(NOTES_FONT_SIZES[sizeIndex]));
+   }, [sizeIndex]);
+ 
++  return [sizeIndex, setSizeIndex];
++}
++
++function NotesFontControls({
++  sizeIndex,
++  onChange,
++}: {
++  sizeIndex: number;
++  onChange: (update: (index: number) => number) => void;
++}) {
++  const t = useLocale();
+   return (
+-    <div className="flex min-h-0 flex-1 flex-col gap-2">
+-      <div className="flex items-center justify-between">
+-        <SectionLabel>{t.presenter.speakerNotes}</SectionLabel>
+-        <div className="flex items-center gap-1">
+-          <Button
+-            variant="ghost"
+-            size="icon-xs"
+-            onClick={() => setSizeIndex((i) => Math.max(0, i - 1))}
+-            disabled={sizeIndex === 0}
+-            title={t.presenter.notesTextSmaller}
+-            aria-label={t.presenter.notesTextSmaller}
+-          >
+-            <AArrowDown className="size-4" />
+-          </Button>
+-          <Button
+-            variant="ghost"
+-            size="icon-xs"
+-            onClick={() => setSizeIndex((i) => Math.min(NOTES_FONT_SIZES.length - 1, i + 1))}
+-            disabled={sizeIndex === NOTES_FONT_SIZES.length - 1}
+-            title={t.presenter.notesTextLarger}
+-            aria-label={t.presenter.notesTextLarger}
+-          >
+-            <AArrowUp className="size-4" />
+-          </Button>
+-        </div>
+-      </div>
+-      <div
+-        className="min-h-0 flex-1 overflow-y-auto rounded-[6px] border border-border bg-card p-3 leading-relaxed text-card-foreground"
+-        style={{ fontSize: NOTES_FONT_SIZES[sizeIndex] }}
++    <>
++      <Button
++        variant="ghost"
++        size="icon-xs"
++        onClick={() => onChange((i) => Math.max(0, i - 1))}
++        disabled={sizeIndex === 0}
++        title={t.presenter.notesTextSmaller}
++        aria-label={t.presenter.notesTextSmaller}
+       >
+-        {note?.trim() ? (
+-          <NoteMarkdown text={note} />
+-        ) : (
+-          <span className="text-muted-foreground">
+-            {t.presenter.noNotesPrefix}
+-            <code className="rounded-[3px] bg-muted px-1 py-0.5 font-mono text-[0.9em]">
+-              export const notes = […]
+-            </code>
+-            {t.presenter.noNotesSuffix}
+-          </span>
+-        )}
+-      </div>
++        <AArrowDown className="size-4" />
++      </Button>
++      <Button
++        variant="ghost"
++        size="icon-xs"
++        onClick={() => onChange((i) => Math.min(NOTES_FONT_SIZES.length - 1, i + 1))}
++        disabled={sizeIndex === NOTES_FONT_SIZES.length - 1}
++        title={t.presenter.notesTextLarger}
++        aria-label={t.presenter.notesTextLarger}
++      >
++        <AArrowUp className="size-4" />
++      </Button>
++    </>
++  );
++}
++
++function NotesBody({ note, sizeIndex }: { note: string | undefined; sizeIndex: number }) {
++  const t = useLocale();
++  return (
++    <div
++      className="min-h-0 flex-1 overflow-y-auto rounded-[6px] border border-border bg-card p-3 leading-relaxed text-card-foreground"
++      style={{ fontSize: NOTES_FONT_SIZES[sizeIndex] }}
++    >
++      {note?.trim() ? (
++        <NoteMarkdown text={note} />
++      ) : (
++        <span className="text-muted-foreground">
++          {t.presenter.noNotesPrefix}
++          <code className="rounded-[3px] bg-muted px-1 py-0.5 font-mono text-[0.9em]">
++            export const notes = […]
++          </code>
++          {t.presenter.noNotesSuffix}
++        </span>
++      )}
+     </div>
+   );
+ }
 diff --git a/src/app/virtual.d.ts b/src/app/virtual.d.ts
 index 2ef0115..454e717 100644
 --- a/src/app/virtual.d.ts
@@ -1286,7 +2514,7 @@ index 2ef0115..454e717 100644
      build: {
        showSlideBrowser: boolean;
 diff --git a/src/locale/en.ts b/src/locale/en.ts
-index 9a2525a..bd2cd9b 100644
+index 9a2525a..44c102d 100644
 --- a/src/locale/en.ts
 +++ b/src/locale/en.ts
 @@ -95,6 +95,36 @@ export const en: Locale = {
@@ -1326,8 +2554,32 @@ index 9a2525a..bd2cd9b 100644
    slide: {
      home: 'Home',
      backToHome: 'Back to home',
+@@ -144,6 +174,23 @@ export const en: Locale = {
+     speakerNotes: 'Speaker notes',
+     notesTextSmaller: 'Make notes text smaller',
+     notesTextLarger: 'Make notes text larger',
++    resizeColumns: 'Resize the columns',
++    resizeNotes: 'Resize the side panes',
++    resizeHint: 'Drag to resize · double-click to reset',
++    layout: 'Layout',
++    layoutHint: 'The first visible pane fills the large column, the others stack beside it. You can also drag a pane by its title onto another to swap them.',
++    hidePane: 'Hide {pane}',
++    showPane: 'Show {pane}',
++    moveUp: 'Move up',
++    moveDown: 'Move down',
++    swapSides: 'Swap sides',
++    resetLayout: 'Reset layout',
++    allPanesHidden: 'All panes are hidden.',
++    showAllPanes: 'Show all panes',
++    dragPane: 'Drag onto another pane to swap them',
++    dropToSwap: 'Drop to swap',
++    laser: 'Laser',
++    laserHint: 'Laser pointer (L) — point at “Now showing” to show it on the projection too',
+     noNotesPrefix: 'No speaker notes for this slide. Add ',
+     noNotesSuffix: ' to your slide module to see notes here.',
+     blackScreen: 'Black screen',
 diff --git a/src/locale/ja.ts b/src/locale/ja.ts
-index a39090f..3e0a3d8 100644
+index a39090f..3de1258 100644
 --- a/src/locale/ja.ts
 +++ b/src/locale/ja.ts
 @@ -95,6 +95,36 @@ export const ja: Locale = {
@@ -1367,8 +2619,32 @@ index a39090f..3e0a3d8 100644
    slide: {
      agentConnected: 'エージェント接続中',
      agentConnectedTooltip:
+@@ -144,6 +174,23 @@ export const ja: Locale = {
+     speakerNotes: '発表者ノート',
+     notesTextSmaller: 'ノートの文字を小さく',
+     notesTextLarger: 'ノートの文字を大きく',
++    resizeColumns: 'スライドとサイドパネルのサイズを変更',
++    resizeNotes: 'サイドパネルのサイズを変更',
++    resizeHint: 'ドラッグでサイズ変更・ダブルクリックでリセット',
++    layout: 'レイアウト',
++    layoutHint: '表示中の最初のパネルが大きい列に、残りは横に並びます。タイトルをドラッグして別のパネルにドロップすると入れ替えられます。',
++    hidePane: '{pane}を非表示',
++    showPane: '{pane}を表示',
++    moveUp: '上へ移動',
++    moveDown: '下へ移動',
++    swapSides: '左右を入れ替え',
++    resetLayout: 'レイアウトをリセット',
++    allPanesHidden: 'すべてのパネルが非表示です。',
++    showAllPanes: 'すべてのパネルを表示',
++    dragPane: '別のパネルにドラッグして入れ替え',
++    dropToSwap: 'ドロップして入れ替え',
++    laser: 'レーザー',
++    laserHint: 'レーザーポインター (L) — 「現在のスライド」を指すと投影画面にも表示されます',
+     noNotesPrefix: 'このスライドには発表者ノートがありません。スライドモジュールに ',
+     noNotesSuffix: ' を追加するとここに表示されます。',
+     blackScreen: '黒い画面',
 diff --git a/src/locale/types.ts b/src/locale/types.ts
-index e05bfe3..8db13da 100644
+index e05bfe3..f7b47c1 100644
 --- a/src/locale/types.ts
 +++ b/src/locale/types.ts
 @@ -99,6 +99,36 @@ export type Locale = {
@@ -1408,8 +2684,32 @@ index e05bfe3..8db13da 100644
    slide: {
      home: string;
      backToHome: string;
+@@ -145,6 +175,23 @@ export type Locale = {
+     speakerNotes: string;
+     notesTextSmaller: string;
+     notesTextLarger: string;
++    resizeColumns: string;
++    resizeNotes: string;
++    resizeHint: string;
++    layout: string;
++    layoutHint: string;
++    hidePane: string;
++    showPane: string;
++    moveUp: string;
++    moveDown: string;
++    swapSides: string;
++    resetLayout: string;
++    allPanesHidden: string;
++    showAllPanes: string;
++    dragPane: string;
++    dropToSwap: string;
++    laser: string;
++    laserHint: string;
+     noNotesPrefix: string;
+     noNotesSuffix: string;
+     blackScreen: string;
 diff --git a/src/locale/zh-cn.ts b/src/locale/zh-cn.ts
-index 7fdf60b..6956613 100644
+index 7fdf60b..d843a7b 100644
 --- a/src/locale/zh-cn.ts
 +++ b/src/locale/zh-cn.ts
 @@ -95,6 +95,36 @@ export const zhCN: Locale = {
@@ -1449,8 +2749,32 @@ index 7fdf60b..6956613 100644
    slide: {
      agentConnected: 'Agent 已连接',
      agentConnectedTooltip: '目前的 slide 与 Inspector 选择会即时同步给 agent。',
+@@ -143,6 +173,23 @@ export const zhCN: Locale = {
+     speakerNotes: '演讲备注',
+     notesTextSmaller: '缩小备注文字',
+     notesTextLarger: '放大备注文字',
++    resizeColumns: '调整幻灯片与侧边栏的大小',
++    resizeNotes: '调整侧边面板的大小',
++    resizeHint: '拖动以调整大小 · 双击重置',
++    layout: '布局',
++    layoutHint: '第一个可见面板占据大栏，其余面板在旁边堆叠。也可以拖动面板标题到另一个面板上以交换位置。',
++    hidePane: '隐藏{pane}',
++    showPane: '显示{pane}',
++    moveUp: '上移',
++    moveDown: '下移',
++    swapSides: '左右互换',
++    resetLayout: '重置布局',
++    allPanesHidden: '所有面板均已隐藏。',
++    showAllPanes: '显示所有面板',
++    dragPane: '拖到另一个面板上以交换',
++    dropToSwap: '放下以交换',
++    laser: '激光',
++    laserHint: '激光笔 (L) — 指向“当前幻灯片”时，投影画面上也会显示',
+     noNotesPrefix: '该幻灯片没有演讲备注。在你的幻灯片模块中添加 ',
+     noNotesSuffix: ' 即可在此查看备注。',
+     blackScreen: '黑屏',
 diff --git a/src/locale/zh-tw.ts b/src/locale/zh-tw.ts
-index 62297df..9553916 100644
+index 62297df..1b9e103 100644
 --- a/src/locale/zh-tw.ts
 +++ b/src/locale/zh-tw.ts
 @@ -95,6 +95,36 @@ export const zhTW: Locale = {
@@ -1490,3 +2814,27 @@ index 62297df..9553916 100644
    slide: {
      agentConnected: 'Agent 已連線',
      agentConnectedTooltip: '目前的 slide 與 Inspector 選擇會即時同步給 agent。',
+@@ -143,6 +173,23 @@ export const zhTW: Locale = {
+     speakerNotes: '演講備忘',
+     notesTextSmaller: '縮小備忘文字',
+     notesTextLarger: '放大備忘文字',
++    resizeColumns: '調整投影片與側邊欄的大小',
++    resizeNotes: '調整側邊面板的大小',
++    resizeHint: '拖曳以調整大小 · 按兩下重設',
++    layout: '版面',
++    layoutHint: '第一個可見面板佔據大欄，其餘面板在旁邊堆疊。也可以拖曳面板標題到另一個面板上以交換位置。',
++    hidePane: '隱藏{pane}',
++    showPane: '顯示{pane}',
++    moveUp: '上移',
++    moveDown: '下移',
++    swapSides: '左右互換',
++    resetLayout: '重設版面',
++    allPanesHidden: '所有面板皆已隱藏。',
++    showAllPanes: '顯示所有面板',
++    dragPane: '拖曳到另一個面板上以交換',
++    dropToSwap: '放開以交換',
++    laser: '雷射',
++    laserHint: '雷射筆 (L) — 指向「目前投影片」時，投影畫面上也會顯示',
+     noNotesPrefix: '此投影片沒有演講備忘。在你的投影片模組中加入 ',
+     noNotesSuffix: ' 即可在此查看備忘。',
+     blackScreen: '黑屏',

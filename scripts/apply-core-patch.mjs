@@ -1,8 +1,9 @@
 #!/usr/bin/env node
 // Re-applies this project's customisations of @open-slide/core (folder
 // password protection, always-visible "New folder", create-a-folder from the
-// Move dialog). node_modules is rebuilt by every `npm install` / `npm ci`, so
-// run this afterwards:
+// Move dialog, resizable/arrangeable presenter-view panes, laser pointer
+// mirrored between the projection and presenter windows). node_modules is
+// rebuilt by every `npm install` / `npm ci`, so run this afterwards:
 //
 //   node scripts/apply-core-patch.mjs
 //
