@@ -27,10 +27,12 @@ if (version !== EXPECTED_VERSION) {
 }
 
 const gitApply = (...args) =>
-  execFileSync('git', ['apply', '-p1', `--directory=${PKG_DIR}`, ...args, PATCH], {
-    cwd: ROOT,
-    stdio: 'pipe',
-  });
+  // autocrlf off: npm ships LF files, so keep them LF on Windows too.
+  execFileSync(
+    'git',
+    ['-c', 'core.autocrlf=false', 'apply', '-p1', `--directory=${PKG_DIR}`, ...args, PATCH],
+    { cwd: ROOT, stdio: 'pipe' },
+  );
 
 try {
   gitApply('--reverse', '--check');

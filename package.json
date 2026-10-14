@@ -7,10 +7,12 @@
     "dev": "open-slide dev",
     "build": "open-slide build",
     "preview": "open-slide preview",
-    "sync:skills": "open-slide sync:skills"
+    "sync:skills": "open-slide sync:skills",
+    "patch:core": "node scripts/apply-core-patch.mjs",
+    "postinstall": "node scripts/apply-core-patch.mjs"
   },
   "dependencies": {
-    "@open-slide/core": "^2.0.0",
+    "@open-slide/core": "2.0.1",
     "react": "^19.2.8",
     "react-dom": "^19.2.8"
   },

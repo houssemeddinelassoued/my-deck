@@ -1,3 +1,20 @@
+diff --git a/dist/config-GMR1QUlM.d.ts b/dist/config-GMR1QUlM.d.ts
+index a0596a6..bf077db 100644
+--- a/dist/config-GMR1QUlM.d.ts
++++ b/dist/config-GMR1QUlM.d.ts
+@@ -19,6 +19,11 @@ type OpenSlideConfig = {
+    */
+   locale?: Locale;
+   build?: OpenSlideBuildConfig;
++  /** Folder password protection (project patch, see patches/ in the deck repo). */
++  folderLock?: {
++    /** Pre-filled when protecting a folder. Defaults to '0999'. */
++    defaultPassword?: string;
++  };
+ };
+ //#endregion
+ export { OpenSlideConfig as t };
+\ No newline at end of file
 diff --git a/dist/config-hT1o6Jct.js b/dist/config-hT1o6Jct.js
 index 76f82bc..944bf66 100644
 --- a/dist/config-hT1o6Jct.js
@@ -592,10 +609,11 @@ index 2e82c52..1375477 100644
  }
 diff --git b/src/app/lib/folder-lock.ts b/src/app/lib/folder-lock.ts
 new file mode 100644
-index 0000000..5d355f5
+index 0000000..cda84bd
 --- /dev/null
 +++ b/src/app/lib/folder-lock.ts
-@@ -0,0 +1,166 @@
+@@ -0,0 +1,168 @@
++import config from 'virtual:open-slide/config';
 +import { useMemo, useSyncExternalStore } from 'react';
 +import type { Folder, FoldersManifest } from './sdk';
 +
@@ -608,7 +626,8 @@ index 0000000..5d355f5
 + * every tab. This is a client-side gate: it keeps casual viewers out of the
 + * browser UI, but the deck code still ships in the static bundle.
 + */
-+export const DEFAULT_FOLDER_PASSWORD = '0999';
++// Overridable from open-slide.config.ts → `folderLock.defaultPassword`.
++export const DEFAULT_FOLDER_PASSWORD = config.folderLock?.defaultPassword || '0999';
 +
 +const STORAGE_KEY = 'open-slide:unlocked-folders';
 +
@@ -1254,6 +1273,18 @@ index c29b8b6..bb7a3bd 100644
      if (!trimmed) return true;
      const title = modules[id]?.meta?.title;
      return id.toLowerCase().includes(trimmed) || title?.toLowerCase().includes(trimmed);
+diff --git a/src/app/virtual.d.ts b/src/app/virtual.d.ts
+index 2ef0115..454e717 100644
+--- a/src/app/virtual.d.ts
++++ b/src/app/virtual.d.ts
+@@ -14,6 +14,7 @@ declare module 'virtual:open-slide/config' {
+     slidesDir?: string;
+     port?: number;
+     locale?: Locale;
++    folderLock?: { defaultPassword?: string };
+     version: string;
+     build: {
+       showSlideBrowser: boolean;
 diff --git a/src/locale/en.ts b/src/locale/en.ts
 index 9a2525a..bd2cd9b 100644
 --- a/src/locale/en.ts
