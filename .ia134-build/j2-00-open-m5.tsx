@@ -810,7 +810,7 @@ const M5_Atelier: Page = () => (
     {/* Solution, revealed one quadrant per beat */}
     <M5Sol n={1} x={796} y={516}>
       <M5SolChip id={1} tone="green">FAQ RH</M5SolChip>
-      <M5SolChip id={2} tone="green">Accès TI</M5SolChip>
+      <M5SolChip id={2} tone="green">Accès IT</M5SolChip>
       <M5SolChip id={7} tone="green">Ventes</M5SolChip>
     </M5Sol>
     <M5Sol n={2} x={1311} y={516}>
@@ -855,7 +855,7 @@ const M5_Atelier: Page = () => (
     </Drag>
     <Drag x={120} y={340} size={22}>
       <M5Id n={2} />
-      Mots de passe et accès TI
+      Mots de passe et accès IT
     </Drag>
     <Drag x={120} y={400} size={22}>
       <M5Id n={3} />
@@ -959,7 +959,7 @@ const M5_QuickWins: Page = () => (
         Chez Boréal
       </Eyebrow>
       <div style={{ marginTop: 12, display: 'flex', flexDirection: 'column', gap: 18 }}>
-        <M5Ex n={1} icon="key" team="TI" title="Mots de passe et accès" stat="≈ 630 billets/mois">
+        <M5Ex n={1} icon="key" team="IT" title="Mots de passe et accès" stat="≈ 630 billets/mois">
           Vérifie l’identité, réinitialise, escalade si doute.
         </M5Ex>
         <M5Ex n={2} icon="chat" team="RH" title="FAQ RH" stat="300 demandes/mois">
@@ -1093,7 +1093,7 @@ const M5_Choose: Page = () => (
       </M5Line>
       <M5Line h={70} ex>
         <M5Cell w={340} ex>
-          Ex. : accès TI
+          Ex. : accès IT
         </M5Cell>
         <M5Cell w={130} ex>
           4,5
@@ -1102,7 +1102,7 @@ const M5_Choose: Page = () => (
           1,5
         </M5Cell>
         <M5Cell w={180} ex>
-          Dir. TI
+          Dir. IT
         </M5Cell>
       </M5Line>
       <M5Row id="Cas A" />
@@ -1180,7 +1180,7 @@ const M5_Roi: Page = () => {
   return (
     <Frame mod={5} kind="atelier" label="Calculateur de ROI">
       <Title>Calculateur de ROI : combien rapporte un agent ?</Title>
-      <Lede>Bougez les curseurs. Point de départ : les billets « mot de passe » du TI de Boréal.</Lede>
+      <Lede>Bougez les curseurs. Point de départ : les billets « mot de passe » de l’IT de Boréal.</Lede>
       <div
         className={A.in}
         style={{
@@ -1421,7 +1421,7 @@ OBJECTIF — Appliquer la matrice sur neuf cas concrets et débattre des cas lim
 CONSIGNE — Équipes de 3 ou 4. Chaque équipe classe les 9 cas sur papier (8 min). Puis un volontaire glisse les cartes à l'écran selon le consensus de la salle (5 min). Double-clic sur une carte : elle revient à sa place.
 
 ANIMATION — Révélez la solution, quadrant par quadrant :
-→ beat 1 : quick wins. FAQ RH (300 demandes/mois), mots de passe et accès (≈ 35 % des 1 800 billets TI), rapport de ventes hebdomadaire.
+→ beat 1 : quick wins. FAQ RH (300 demandes/mois), mots de passe et accès (≈ 35 % des 1 800 billets IT), rapport de ventes hebdomadaire.
 → beat 2 : stratégiques. Courriels clients (5 000/mois, mais ton, escalades, données clients) et factures (2 500/mois, ERP, contrôle). Le RAG est limite : très utile, mais 40 000 documents à nettoyer et des droits d'accès à respecter. « Si vous commencez par un seul dossier propre, il devient un quick win. »
 → beat 3 : gadget (les mèmes) et à éviter (négociation autonome : engage l'entreprise, aucune marge d'erreur, gains incertains).
 → beat 4 : le PIÈGE. « Les tournées de livraison ? Ce n'est pas un problème d'agent ! C'est de l'optimisation classique, résolue depuis des décennies par des solveurs : plus fiables, moins chers et prévisibles. »
@@ -1435,7 +1435,7 @@ OBJECTIF — Rendre reconnaissables les quick wins, pour que les participants sa
 
 DIRE — « Un quick win a cinq signes. La tâche revient souvent et toujours de la même façon. Les données sont déjà là : pas de grand chantier de nettoyage. Une erreur se rattrape facilement. Le gain se mesure en semaines, pas en années. Et surtout, un gestionnaire le réclame : sans parrain, même le meilleur cas meurt dans un tiroir. »
 
-ANIMATION — → beat 1 : TI. « 1 800 billets par mois, dont 35 % pour des mots de passe ou des accès, soit environ 630. L'agent vérifie l'identité, réinitialise et passe la main au moindre doute. »
+ANIMATION — → beat 1 : IT. « 1 800 billets par mois, dont 35 % pour des mots de passe ou des accès, soit environ 630. L'agent vérifie l'identité, réinitialise et passe la main au moindre doute. »
 → beat 2 : RH. « 300 demandes par mois sur les vacances, les avantages sociaux, le télétravail. L'agent répond à partir de la politique, en citant la section. »
 → beat 3 : Ventes. « Chaque lundi, quelqu'un passe deux heures à compiler des chiffres. L'agent le fait avant 8 h. »
 → beat 4 : à retenir.
@@ -1467,7 +1467,7 @@ TRANSITION — « Vous avez vos cas. Reste la question que posera votre directri
 
 OBJECTIF — Montrer qu'un ROI se calcule en cinq minutes, et que quelques hypothèses font basculer la décision.
 
-DIRE — « Prenons les billets "mot de passe" du TI : environ 630 par mois, 8 minutes gagnées chacun, un taux chargé de 45 $ de l'heure, un agent à 1 500 $ par mois. Résultat : environ 1 000 heures libérées et 27 000 $ nets par an, rentabilisés en moins de 9 mois. »
+DIRE — « Prenons les billets "mot de passe" de l'IT : environ 630 par mois, 8 minutes gagnées chacun, un taux chargé de 45 $ de l'heure, un agent à 1 500 $ par mois. Résultat : environ 1 000 heures libérées et 27 000 $ nets par an, rentabilisés en moins de 9 mois. »
 
 INTERACTION — Faites bouger les curseurs en direct :
 • Baissez le temps gagné à 3 minutes : le gain net s'effondre. « Mesurez le temps réel avant de promettre. »

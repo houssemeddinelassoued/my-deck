@@ -184,7 +184,7 @@ const M23AutoSq = ({ l, on, d }: { l: number; on: boolean; d: number }) => (
 const M23_IdCard: Page = () => (
   <Frame mod={2} kind="atelier" beats={4}>
     <Title>Carte d’identité d’un agent · exemple Boréal</Title>
-    <Lede>L’agent « Aide-accès TI » traite les mots de passe oubliés et les demandes d’accès.</Lede>
+    <Lede>L’agent « Aide-accès IT » traite les mots de passe oubliés et les demandes d’accès.</Lede>
     <div style={{ position: 'absolute', left: 120, top: 280, width: 1680, display: 'flex', gap: 30, alignItems: 'stretch' }}>
       <div
         className={A.left}
@@ -204,7 +204,7 @@ const M23_IdCard: Page = () => (
           <Eyebrow c="#fff" size={22}>
             Carte d’identité · agent
           </Eyebrow>
-          <div style={{ marginTop: 2, fontSize: 20, color: 'rgba(255,255,255,.85)' }}>Boréal Distribution · Soutien TI</div>
+          <div style={{ marginTop: 2, fontSize: 20, color: 'rgba(255,255,255,.85)' }}>Boréal Distribution · Soutien IT</div>
         </div>
         <div
           style={{
@@ -222,8 +222,8 @@ const M23_IdCard: Page = () => (
         >
           <Icon name="bot" size={64} color={C.blue} sw={1.8} />
         </div>
-        <div style={{ marginTop: 16, fontFamily: display, fontWeight: 700, fontSize: 48, lineHeight: 1.05, color: C.ink }}>Aide-accès TI</div>
-        <div style={{ marginTop: 4, fontSize: 22, color: C.muted }}>Agent multi-outils, canal Teams et portail TI</div>
+        <div style={{ marginTop: 16, fontFamily: display, fontWeight: 700, fontSize: 48, lineHeight: 1.05, color: C.ink }}>Aide-accès IT</div>
+        <div style={{ marginTop: 4, fontSize: 22, color: C.muted }}>Agent multi-outils, canal Teams et portail IT</div>
         <div style={{ marginTop: 22, height: 2, background: C.rule }} />
         <Eyebrow c={C.muted} size={20} style={{ marginTop: 20 }}>
           Volume ciblé
@@ -234,7 +234,7 @@ const M23_IdCard: Page = () => (
           </span>
           <span style={{ fontSize: 24, fontWeight: 600, color: C.soft }}>billets / mois</span>
         </div>
-        <div style={{ fontSize: 22, lineHeight: 1.35, color: C.muted }}>≈ 35 % des 1 800 billets TI mensuels</div>
+        <div style={{ fontSize: 22, lineHeight: 1.35, color: C.muted }}>≈ 35 % des 1 800 billets IT mensuels</div>
         <Eyebrow c={C.muted} size={20} style={{ marginTop: 22 }}>
           Niveau d’autonomie visé
         </Eyebrow>
@@ -253,7 +253,7 @@ const M23_IdCard: Page = () => (
           Régler en moins de 5 min les mots de passe oubliés et les accès courants
         </M23Rubric>
         <M23Rubric n={1} d={150} icon="users" tone="blue" label="Utilisateurs">
-          Les 1 200 employés, via Teams ou le portail du soutien TI
+          Les 1 200 employés, via Teams ou le portail du soutien IT
         </M23Rubric>
         <M23Rubric n={2} icon="bolt" tone="teal" label="Déclencheur">
           Un nouveau billet ou un message « J’ai oublié mon mot de passe »
@@ -333,7 +333,7 @@ const M23_Candidate: Page = () => (
       size={25}
       style={{ position: 'absolute', left: 1220, top: 640, width: 580, ...dl(500) }}
     >
-      Aide-accès TI : 15 / 16. Seul bémol, les comptes d’accès sont des données sensibles.
+      Aide-accès IT : 15 / 16. Seul bémol, les comptes d’accès sont des données sensibles.
     </Callout>
     <Callout
       cls={A.in}
@@ -1349,7 +1349,7 @@ const M23_Compare: Page = () => (
         Retrouver une procédure parmi 40 000 documents
       </M23Row>
       <M23Row icon="plug" tone="violet" name="Multi-outils" a={3} c={3} r={3} d={400}>
-        Aide-accès TI : ≈ 630 billets / mois
+        Aide-accès IT : ≈ 630 billets / mois
       </M23Row>
       <M23Row icon="loop" tone="coral" name="Autonome" a={4} c={3} r={4} d={550}>
         Veille nocturne des fournisseurs
@@ -1624,7 +1624,7 @@ const M23_Synthesis: Page = () => (
       size={28}
       style={{ position: 'absolute', left: 120, top: 836, width: 1680, ...dl(1300) }}
     >
-      Module 4 : trois cas réels (RH, soutien TI, documentaire), avec leur type d’agent, leurs outils et leurs garde-fous.
+      Module 4 : trois cas réels (RH, soutien IT, documentaire), avec leur type d’agent, leurs outils et leurs garde-fous.
     </Callout>
   </Frame>
 );
@@ -1686,7 +1686,7 @@ TRANSITION — « Voici à quoi ressemble une carte d'identité bien remplie. »
 
 OBJECTIF — Montrer un exemple complet et réaliste de carte d'identité, pour que les duos aient un modèle à imiter.
 
-DIRE — « Voici l'agent Aide-accès TI de Boréal. Il cible environ 630 billets par mois : les 35 % de mots de passe oubliés et de demandes d'accès parmi les 1 800 billets TI. Niveau d'autonomie visé : L3, il agit seul, mais dans un cadre strict. »
+DIRE — « Voici l'agent Aide-accès IT de Boréal. Il cible environ 630 billets par mois : les 35 % de mots de passe oubliés et de demandes d'accès parmi les 1 800 billets IT. Niveau d'autonomie visé : L3, il agit seul, mais dans un cadre strict. »
 
 ANIMATION — Quatre clics, deux rubriques à la fois :
 → beat 1 : Objectif et utilisateurs. « L'objectif est chiffré : moins de 5 minutes. Un objectif sans chiffre ne se mesure pas. »
@@ -1705,7 +1705,7 @@ OBJECTIF — Donner une grille d'évaluation simple et pondérée, que les parti
 
 DIRE — « Huit critères, avec des poids différents. Les deux plus lourds, ×3 : le volume — un agent coûte cher à concevoir, il doit servir souvent — et l'erreur récupérable. Si une erreur de l'agent est irréversible, on change de catégorie de risque. »
 
-ANIMATION — Faites la démonstration avec Aide-accès TI : cochez tous les critères sauf le dernier (les comptes d'accès sont sensibles). Le score monte à 15 sur 16 : « excellent candidat ». Puis décochez tout et lancez le minuteur de l'atelier.
+ANIMATION — Faites la démonstration avec Aide-accès IT : cochez tous les critères sauf le dernier (les comptes d'accès sont sensibles). Le score monte à 15 sur 16 : « excellent candidat ». Puis décochez tout et lancez le minuteur de l'atelier.
 
 PARTAGES — Après le travail en duo, deux ou trois duos présentent leur agent en deux minutes. Cochez la grille en direct avec le groupe. Questions utiles : « Combien de fois par mois ? », « Que se passe-t-il si l'agent se trompe ? », « Qui est votre parrain ? »
 
@@ -1868,7 +1868,7 @@ DIRE — « Une ligne par type, trois jauges : autonomie, complexité de constru
 ANIMATION — Les lignes et les jauges se remplissent d'elles-mêmes. Lisez-les de haut en bas :
 • Conversationnel : tout au minimum. FAQ RH.
 • Assistant RAG : un cran plus haut. Le défi, c'est la qualité documentaire.
-• Multi-outils : niveau moyen partout. Aide-accès TI, 630 billets par mois.
+• Multi-outils : niveau moyen partout. Aide-accès IT, 630 billets par mois.
 • Autonome : autonomie et risque élevés. Veille des fournisseurs.
 • Multi-agents : complexité maximale. Appels d'offres.
 
@@ -1950,6 +1950,6 @@ INTERACTION — « Repassez votre agent de l'atelier dans cet arbre. Où s'arrê
 
 À NOTER — Si le module a pris du retard, réduisez cette page à l'arbre de décision seulement.
 
-TRANSITION — « Pause de 15 minutes. Au retour, trois cas concrets chez Boréal — RH, soutien TI et assistant documentaire — avec leurs garde-fous. »`,
+TRANSITION — « Pause de 15 minutes. Au retour, trois cas concrets chez Boréal — RH, soutien IT et assistant documentaire — avec leurs garde-fous. »`,
 ];
 // @@NOTES-END

@@ -619,7 +619,7 @@ const J1_Boreal: Page = () => (
       <DeptTile icon="users" tone="blue" dept="Ressources humaines" value={300} unit="demandes / mois" d={200}>
         Congés, attestations, avantages sociaux : souvent les mêmes questions
       </DeptTile>
-      <DeptTile icon="ticket" tone="violet" dept="Soutien TI" value={1800} unit="billets / mois" d={320}>
+      <DeptTile icon="ticket" tone="violet" dept="Soutien IT" value={1800} unit="billets / mois" d={320}>
         Dont ≈ 35 % de mots de passe oubliés et de demandes d’accès
       </DeptTile>
       <DeptTile icon="mail" tone="green" dept="Service à la clientèle" value={5000} unit="courriels / mois" d={440}>
@@ -647,7 +647,7 @@ const J1_Quiz0: Page = () => (
       explain="Un agent agit à travers des outils : c’est sa force. Mais il reste probabiliste, et les décisions à fort impact restent humaines. Puissance + garde-fous : c’est le fil de ces 2 jours."
     >
       <Opt ok why="Oui : il perçoit (le courriel), raisonne (comprendre la demande) et agit (créer le billet). C’est l’usage typique d’un agent outillé.">
-        Lire un courriel, comprendre la demande et créer le billet dans l’outil TI
+        Lire un courriel, comprendre la demande et créer le billet dans l’outil IT
       </Opt>
       <Opt why="Piège ! Techniquement faisable, mais inacceptable : une décision à fort impact sur une personne exige un humain. La Loi 25 encadre d’ailleurs les décisions entièrement automatisées.">
         Décider seul de congédier un employé à partir de ses indicateurs
@@ -727,7 +727,7 @@ OBJECTIF — Présenter les cinq objectifs d'apprentissage comme une progression
 
 DIRE — « Regardez la forme : c'est un escalier. Chaque marche s'appuie sur la précédente. »
 1. COMPRENDRE — « Ce matin : qu'est-ce qu'un agent, et en quoi est-ce différent d'un ChatGPT qui répond à vos questions ? »
-2. RECONNAÎTRE — « Cet après-midi : les grandes familles d'agents, et des cas réels en RH, en TI et en gestion documentaire. »
+2. RECONNAÎTRE — « Cet après-midi : les grandes familles d'agents, et des cas réels en RH, en IT et en gestion documentaire. »
 3. PRIORISER — « Demain matin : comment choisir les bons cas d'usage, ceux qui rapportent vite sans prendre de risques démesurés. »
 4. CONCEVOIR — « Cadrer un agent : ce qu'il fait, ce qu'il ne fait pas, ses outils, ses garde-fous. On prototypera ensemble. »
 5. DÉPLOYER — « Passer du prototype à la production, et mesurer si ça marche vraiment. »
@@ -776,7 +776,7 @@ DIRE — « Boréal Distribution est une entreprise fictive, mais ses chiffres s
 
 Parcourir les cinq services (les compteurs s'animent) :
 • RH — 300 demandes par mois, souvent répétitives : congés, attestations, avantages sociaux.
-• Soutien TI — 1 800 billets par mois, dont environ 35 % de mots de passe oubliés et de demandes d'accès.
+• Soutien IT — 1 800 billets par mois, dont environ 35 % de mots de passe oubliés et de demandes d'accès.
 • Service à la clientèle — 5 000 courriels par mois : suivi de commande, facturation, retours… et quelques clients très mécontents.
 • Finance — 2 500 factures fournisseurs par mois, dans tous les formats possibles.
 • Documentation — 40 000 documents dispersés entre trois outils. « Personne ne sait où se trouve la dernière version de la procédure. »

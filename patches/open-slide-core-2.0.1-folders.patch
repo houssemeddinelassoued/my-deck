@@ -373,6 +373,287 @@ index 0000000..40c13c0
 +    </div>
 +  );
 +}
+diff --git a/src/app/components/note-markdown.tsx b/src/app/components/note-markdown.tsx
+index cd55fd8..7f5cd53 100644
+--- a/src/app/components/note-markdown.tsx
++++ b/src/app/components/note-markdown.tsx
+@@ -1,4 +1,4 @@
+-import { Fragment, type ReactNode, useMemo } from 'react';
++import { type CSSProperties, Fragment, type ReactNode, useMemo } from 'react';
+ import { type NoteBlock, type NoteInline, parseNoteMarkdown } from '@/lib/note-markdown';
+ 
+ const CODE_CLASS = 'rounded-[3px] bg-foreground/12 px-[0.3em] py-[0.1em] font-mono text-[0.9em]';
+@@ -79,7 +79,270 @@ function renderBlock(block: NoteBlock, key: number): ReactNode {
+   }
+ }
+ 
++// ─── Cue colouring ──────────────────────────────────────────────────────────
++// Notes written as labelled sections (`DIRE — …`, `ANIMATION — …`,
++// `INTERACTION — …`) are rendered as colour-coded blocks so the presenter
++// sees at a glance what to read aloud and what to click:
++//   • each section gets the colour of its kind (read / click / interact /
++//     answer / info) and a pill with its label;
++//   • « quoted text » is what to say — highlighted in the "read" colour;
++//   • `→`, `→ beat N` (shown as `→ Clic N`) and stage directions (cliquez,
++//     flèche, révélez, pointez…) are click cues.
++// Notes without any `LABEL —` paragraph render exactly as before.
++
++type CueKind = 'read' | 'click' | 'interact' | 'answer' | 'info';
++
++const CUE_META: Record<CueKind, { icon: string; legend: string }> = {
++  read: { icon: '🗣', legend: 'À dire' },
++  click: { icon: '🖱', legend: 'Clic / animation' },
++  interact: { icon: '🙋', legend: 'Interaction' },
++  answer: { icon: '✓', legend: 'Réponses' },
++  info: { icon: 'ℹ', legend: 'Repère' },
++};
++
++const CUE_RULES: [RegExp, CueKind][] = [
++  [/ANIMATION|CLIC|DEMO|MANIP/, 'click'],
++  [/^(DIRE|TRANSITION|MESSAGE CLE|PHRASE CLE|INSIST|RASSURER|FIN$|ACCROCHE|CONCLU|CITATION)/, 'read'],
++  [
++    /^(INTERACTION|QUESTION|SONDAGE|DEBAT|CONSIGNE|ATELIER|DEBRIEF|PARTAGE|EVALUATION|OBJECTION|MISE EN COMMUN|VOTE|TOUR DE TABLE|EXERCICE)/,
++    'interact',
++  ],
++  [/^(REPONSE|LECTURE DU|SOLUTION|CORRIGE)/, 'answer'],
++];
++
++// `LABEL —` or `LABEL (6 min) —` at the very start of a paragraph.
++const CUE_LABEL =
++  /^([A-ZÀ-ÖØ-Ý][A-ZÀ-ÖØ-Ý0-9 '’/&.-]*[A-ZÀ-ÖØ-Ý0-9](?:\s*\([^)\n]*\))?)\s+—\s?/;
++
++function cueKind(label: string): CueKind {
++  const norm = label
++    .normalize('NFD')
++    .replace(/[̀-ͯ]/g, '')
++    .replace(/\s*\(.*$/, '')
++    .toUpperCase();
++  return CUE_RULES.find(([re]) => re.test(norm))?.[1] ?? 'info';
++}
++
++const CUE_CSS = `
++.osn-cues{--osn-read:#1d4ed8;--osn-read-bg:rgba(59,130,246,.08);--osn-click:#c2410c;--osn-click-bg:rgba(249,115,22,.10);--osn-interact:#047857;--osn-interact-bg:rgba(16,185,129,.09);--osn-answer:#7c3aed;--osn-answer-bg:rgba(139,92,246,.09);--osn-info:#64748b;--osn-info-bg:transparent}
++.dark .osn-cues{--osn-read:#8ab8ff;--osn-read-bg:rgba(59,130,246,.15);--osn-click:#ffa45c;--osn-click-bg:rgba(249,115,22,.16);--osn-interact:#5fdcaa;--osn-interact-bg:rgba(16,185,129,.14);--osn-answer:#c5a8ff;--osn-answer-bg:rgba(139,92,246,.17);--osn-info:#94a3b8;--osn-info-bg:transparent}
++.osn-cues .osn-sec{border-left:3px solid var(--osn-k);background:var(--osn-kbg);border-radius:4px;padding:.35em .65em;display:flex;flex-direction:column;gap:.4em}
++.osn-cues .osn-sec[data-kind=info]{border-left-color:color-mix(in srgb,var(--osn-info) 45%,transparent);opacity:.82}
++.osn-cues .osn-pill{display:inline-block;margin-right:.45em;padding:0 .45em;border-radius:999px;background:var(--osn-k);color:var(--card);font-size:.78em;font-weight:700;letter-spacing:.02em;line-height:1.55;white-space:nowrap;vertical-align:.08em}
++.osn-cues .osn-say{color:var(--osn-read);font-weight:600}
++.osn-cues .osn-ui{display:inline-block;border:1px solid var(--osn-click);color:var(--osn-click);border-radius:4px;padding:0 .3em;font-size:.92em;font-weight:600;line-height:1.35}
++.osn-cues .osn-arrow{display:inline-block;background:var(--osn-click);color:var(--card);border-radius:4px;padding:0 .35em;font-weight:700;font-size:.9em;line-height:1.45;white-space:nowrap}
++.osn-cues .osn-verb{color:var(--osn-click);font-weight:700}
++.osn-cues .osn-time{color:var(--osn-info);font-weight:600;font-size:.9em}
++.osn-cues .osn-legend{display:flex;flex-wrap:wrap;gap:.3em .9em;font-size:.72em;color:var(--osn-info);padding-bottom:.3em;border-bottom:1px solid color-mix(in srgb,var(--osn-info) 30%,transparent)}
++.osn-cues .osn-legend i{display:inline-block;width:.75em;height:.75em;border-radius:2px;background:var(--osn-k);margin-right:.35em;vertical-align:-.05em}
++`;
++
++const kindVars = (kind: CueKind): CSSProperties =>
++  ({ '--osn-k': `var(--osn-${kind})`, '--osn-kbg': `var(--osn-${kind}-bg)` }) as CSSProperties;
++
++// « speech » | → / → beat N / → 1–3 | click verbs
++const CUE_INLINE =
++  /(«[^«»\n]*»)|(→(?:\s+(?:beat\s+\d+|\d+(?:\s*[–-]\s*\d+)?))?)|((?<!\p{L})(?:cliqu\p{L}*|clics?|beats?|flèches?|révél\p{L}*|révèl\p{L}*|retournez|montrer l'animation|montrez|pointez|pointer|avancez|lancez|cochez|faites défiler)(?!\p{L}))/giu;
++
++// Notes say "beat" (one press = one step); the presenter reads "Clic":
++// `→ beat 3` → `→ Clic 3`, loose "beats 1 à 6" → "clics 1 à 6".
++const clicChip = (text: string) => text.replace(/beat/i, 'Clic');
++const clicWord = (word: string) =>
++  word.replace(/^(b)eat/i, (_, b: string) => (b === 'B' ? 'Clic' : 'clic'));
++
++// A short quote with no sentence punctuation inside a click/interaction
++// section is a button or option label (« Valider ma sélection »), not speech.
++const isUiLabel = (quote: string, kind: CueKind) =>
++  (kind === 'click' || kind === 'interact') &&
++  !/[.?!…:;]/.test(quote) &&
++  quote.slice(1, -1).trim().split(/\s+/).length <= 3;
++
++function decorateText(text: string, kind: CueKind): ReactNode[] {
++  const out: ReactNode[] = [];
++  let last = 0;
++  let k = 0;
++  for (const m of text.matchAll(CUE_INLINE)) {
++    if (m.index > last) out.push(text.slice(last, m.index));
++    if (m[1]) {
++      out.push(
++        <span key={k++} className={isUiLabel(m[1], kind) ? 'osn-ui' : 'osn-say'}>
++          {m[1]}
++        </span>,
++      );
++    } else if (m[2]) {
++      out.push(
++        <span key={k++} className="osn-arrow">
++          {clicChip(m[2])}
++        </span>,
++      );
++    } else {
++      out.push(
++        <span key={k++} className="osn-verb">
++          {clicWord(m[3])}
++        </span>,
++      );
++    }
++    last = m.index + m[0].length;
++  }
++  if (last < text.length) out.push(text.slice(last));
++  return out;
++}
++
++function renderCueInline(nodes: NoteInline[], kind: CueKind): ReactNode {
++  return nodes.map((node, i) => {
++    switch (node.type) {
++      case 'text':
++        // biome-ignore lint/suspicious/noArrayIndexKey: static parse output, never reordered
++        return <Fragment key={i}>{decorateText(node.text, kind)}</Fragment>;
++      case 'strong':
++        return (
++          // biome-ignore lint/suspicious/noArrayIndexKey: static parse output, never reordered
++          <strong key={i} className="font-semibold">
++            {renderCueInline(node.children, kind)}
++          </strong>
++        );
++      case 'em':
++        return (
++          // biome-ignore lint/suspicious/noArrayIndexKey: static parse output, never reordered
++          <em key={i}>{renderCueInline(node.children, kind)}</em>
++        );
++      case 'code':
++        return (
++          // biome-ignore lint/suspicious/noArrayIndexKey: static parse output, never reordered
++          <code key={i} className={CODE_CLASS}>
++            {node.text}
++          </code>
++        );
++      default:
++        return node satisfies never;
++    }
++  });
++}
++
++type CueSection = { kind: CueKind | 'time' | 'plain'; label?: string; blocks: NoteBlock[] };
++
++function firstText(block: NoteBlock): string | null {
++  if (block.type !== 'paragraph') return null;
++  const head = block.lines[0]?.[0];
++  return head?.type === 'text' ? head.text : null;
++}
++
++function cueSections(blocks: NoteBlock[]): CueSection[] | null {
++  const sections: CueSection[] = [];
++  let labelled = false;
++  for (const block of blocks) {
++    const head = firstText(block);
++    const m = head !== null ? CUE_LABEL.exec(head) : null;
++    if (m && head !== null && block.type === 'paragraph') {
++      labelled = true;
++      const trimmed: NoteInline[] = [
++        { type: 'text', text: head.slice(m[0].length) },
++        ...block.lines[0].slice(1),
++      ];
++      sections.push({
++        kind: cueKind(m[1]),
++        label: m[1],
++        blocks: [{ ...block, lines: [trimmed, ...block.lines.slice(1)] }],
++      });
++    } else if (sections.length === 0 && head?.trimStart().startsWith('⏱')) {
++      sections.push({ kind: 'time', blocks: [block] });
++    } else {
++      const cur = sections[sections.length - 1];
++      if (cur && cur.kind !== 'time') cur.blocks.push(block);
++      else sections.push({ kind: 'plain', blocks: [block] });
++    }
++  }
++  return labelled ? sections : null;
++}
++
++function renderCueBlock(block: NoteBlock, kind: CueKind, key: number, pill?: ReactNode): ReactNode {
++  switch (block.type) {
++    case 'heading': {
++      const Tag = `h${block.level + 3}` as 'h4' | 'h5' | 'h6';
++      return (
++        <Tag key={key} className={`font-semibold ${HEADING_SIZES[block.level]}`}>
++          {renderCueInline(block.children, kind)}
++        </Tag>
++      );
++    }
++    case 'list': {
++      const Tag = block.ordered ? 'ol' : 'ul';
++      return (
++        <Tag
++          key={key}
++          className={`space-y-[0.2em] pl-[1.4em] ${block.ordered ? 'list-decimal' : 'list-disc'}`}
++        >
++          {block.items.map((item, i) => (
++            // biome-ignore lint/suspicious/noArrayIndexKey: static parse output, never reordered
++            <li key={i}>{renderCueInline(item, kind)}</li>
++          ))}
++        </Tag>
++      );
++    }
++    case 'paragraph':
++      return (
++        <p key={key}>
++          {pill}
++          {block.lines.map((line, i) => (
++            // biome-ignore lint/suspicious/noArrayIndexKey: static parse output, never reordered
++            <Fragment key={i}>
++              {i > 0 && <br />}
++              {renderCueInline(line, kind)}
++            </Fragment>
++          ))}
++        </p>
++      );
++    default:
++      return block satisfies never;
++  }
++}
++
++function CueNotes({ sections }: { sections: CueSection[] }) {
++  const used = new Set(sections.map((s) => s.kind));
++  return (
++    <div className="osn-cues space-y-[0.55em] whitespace-pre-wrap">
++      <style>{CUE_CSS}</style>
++      <div className="osn-legend" aria-hidden="true">
++        {(Object.keys(CUE_META) as CueKind[])
++          .filter((kind) => kind === 'read' || kind === 'click' || used.has(kind))
++          .map((kind) => (
++            <span key={kind} style={kindVars(kind)}>
++              <i />
++              {CUE_META[kind].icon} {CUE_META[kind].legend}
++            </span>
++          ))}
++      </div>
++      {sections.map((section, si) => {
++        if (section.kind === 'time') {
++          return (
++            // biome-ignore lint/suspicious/noArrayIndexKey: static parse output, never reordered
++            <div key={si} className="osn-time">
++              {section.blocks.map((b, bi) => renderCueBlock(b, 'info', bi))}
++            </div>
++          );
++        }
++        const kind: CueKind = section.kind === 'plain' ? 'info' : section.kind;
++        const pill =
++          section.label !== undefined ? (
++            <span className="osn-pill">
++              {CUE_META[kind].icon} {section.label}
++            </span>
++          ) : undefined;
++        return (
++          // biome-ignore lint/suspicious/noArrayIndexKey: static parse output, never reordered
++          <div key={si} className="osn-sec" data-kind={kind} style={kindVars(kind)}>
++            {section.blocks.map((b, bi) => renderCueBlock(b, kind, bi, bi === 0 ? pill : undefined))}
++          </div>
++        );
++      })}
++    </div>
++  );
++}
++
+ export function NoteMarkdown({ text }: { text: string }) {
+   const blocks = useMemo(() => parseNoteMarkdown(text), [text]);
++  const sections = useMemo(() => cueSections(blocks), [blocks]);
++  if (sections) return <CueNotes sections={sections} />;
+   return <div className="space-y-[0.65em] whitespace-pre-wrap">{blocks.map(renderBlock)}</div>;
+ }
 diff --git a/src/app/components/player.tsx b/src/app/components/player.tsx
 index 6814ecb..3cb85ec 100644
 --- a/src/app/components/player.tsx
@@ -1487,7 +1768,7 @@ index 21936c3..f809db4 100644
          <span className="ml-auto inline-flex items-center gap-1 text-[10.5px] text-brand">
            <span className="inline-block size-1 rounded-full bg-brand" aria-hidden />
 diff --git a/src/app/routes/presenter.tsx b/src/app/routes/presenter.tsx
-index c29b8b6..41bbaf6 100644
+index c29b8b6..fef6442 100644
 --- a/src/app/routes/presenter.tsx
 +++ b/src/app/routes/presenter.tsx
 @@ -1,17 +1,27 @@
@@ -1518,7 +1799,7 @@ index c29b8b6..41bbaf6 100644
    useCallback,
    useEffect,
    useRef,
-@@ -20,11 +30,15 @@ import {
+@@ -20,17 +30,20 @@ import {
  import { useNavigate, useParams } from 'react-router-dom';
  import { Button } from '@/components/ui/button';
  import { Dialog, DialogContent, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
@@ -1534,15 +1815,27 @@ index c29b8b6..41bbaf6 100644
  import {
    type PresenterState,
    usePresenterChannel,
-@@ -58,10 +72,17 @@ export function Presenter() {
-     setWarmedTick((n) => n + 1);
-   }, [slideId]);
- 
+ } from '../components/present/use-presenter-channel';
+ import { SlideCanvas } from '../components/slide-canvas';
+-import { isDeckWarmed, markDeckWarmed, SlidePreloadLayer } from '../components/slide-preload-layer';
+ import { SlidePageProvider } from '../lib/page-context';
+ import { CANVAS_HEIGHT, CANVAS_WIDTH, type SlideModule } from '../lib/sdk';
+ import { loadSlide, slideIds } from '../lib/slides';
+@@ -52,16 +65,18 @@ export function Presenter() {
+   const [hasProjection, setHasProjection] = useState(false);
+   const requestedRef = useRef(false);
+   const t = useLocale();
+-  const [, setWarmedTick] = useState(0);
+-  const handleAssetsWarmed = useCallback(() => {
+-    markDeckWarmed(slideId);
+-    setWarmedTick((n) => n + 1);
+-  }, [slideId]);
++
 +  const [layout, setLayout] = usePresenterLayout();
 +  // The now-showing preview box; the laser maps slide coordinates onto it.
 +  const nowSurfaceRef = useRef<HTMLDivElement | null>(null);
 +  const laserRemoteRef = useRef<LaserRemote | null>(null);
-+
+ 
    const channel = usePresenterChannel(slideId, (msg) => {
      if (msg.type === 'state') {
        setState(msg.state);
@@ -1552,7 +1845,7 @@ index c29b8b6..41bbaf6 100644
      }
    });
  
-@@ -99,6 +120,7 @@ export function Presenter() {
+@@ -99,6 +114,7 @@ export function Presenter() {
    const goTo = useCallback((i: number) => send({ type: 'goto', index: i }), [send]);
    const toggleBlack = useCallback(() => send({ type: 'toggle-blackout', mode: 'black' }), [send]);
    const toggleWhite = useCallback(() => send({ type: 'toggle-blackout', mode: 'white' }), [send]);
@@ -1560,7 +1853,7 @@ index c29b8b6..41bbaf6 100644
  
    // Local-window key bindings mirror the projection's main shortcuts so the
    // presenter can drive without the mouse.
-@@ -120,11 +142,14 @@ export function Presenter() {
+@@ -120,11 +136,14 @@ export function Presenter() {
        } else if (e.key === 'w' || e.key === 'W') {
          e.preventDefault();
          toggleWhite();
@@ -1576,7 +1869,7 @@ index c29b8b6..41bbaf6 100644
  
    if (error) {
      return (
-@@ -164,6 +189,7 @@ export function Presenter() {
+@@ -164,6 +183,7 @@ export function Presenter() {
    const startedAt = state?.startedAt ?? localStart;
    const stepIndex = Math.max(0, state?.stepIndex ?? 0);
    const stepCount = Math.max(0, state?.stepCount ?? 0);
@@ -1584,7 +1877,43 @@ index c29b8b6..41bbaf6 100644
  
    const stepsRemaining = stepIndex < stepCount;
    const hasNextSlide = index < total - 1;
-@@ -209,13 +235,16 @@ export function Presenter() {
+@@ -174,31 +194,10 @@ export function Presenter() {
+   const CurrentPage = pages[index];
+   const NextPage = hasNext ? pages[nextPageIndex] : null;
+ 
+-  // Hold the loader while a hidden layer warms the whole deck's images and
+-  // fonts, so the previews first paint with every asset already in cache.
+-  if (!isDeckWarmed(slideId)) {
+-    return (
+-      <div className="dark grid h-dvh place-items-center bg-background text-muted-foreground">
+-        <div className="flex flex-col items-center gap-4">
+-          <div className="relative h-px w-56 overflow-hidden bg-border">
+-            <span
+-              aria-hidden
+-              className="line-loader-bar absolute inset-y-[-0.5px] left-0 w-1/4 bg-foreground"
+-            />
+-          </div>
+-          <div className="text-[11.5px]">{t.presenter.loadingAssets}</div>
+-        </div>
+-        <SlidePreloadLayer
+-          pages={pages}
+-          index={index}
+-          design={slide.design}
+-          includeCurrent
+-          onDone={handleAssetsWarmed}
+-        />
+-      </div>
+-    );
+-  }
+-
++  // No whole-deck warm-up gate here: this window is a fresh document, so it
++  // would re-mount every page before showing anything (~25 s of loader on a
++  // 100+ page deck, longer when the popup opens behind the projection). The
++  // projection window already warms the deck into the shared HTTP cache.
+   return (
+     <div className="dark flex h-dvh w-screen flex-col overflow-hidden bg-background text-foreground">
+       <PresenterTopBar
+@@ -209,13 +208,16 @@ export function Presenter() {
          slideTitle={slide.meta?.title ?? slideId}
          connected={hasProjection}
          onSwitchDeck={switchDeck}
@@ -1606,7 +1935,7 @@ index c29b8b6..41bbaf6 100644
              <SlideCanvas flat design={slide.design}>
                <SlidePageProvider index={index} total={total}>
                  <PreviewStepHost revealed={stepIndex}>
-@@ -235,47 +264,664 @@ export function Presenter() {
+@@ -235,47 +237,664 @@ export function Presenter() {
                  {blackout === 'black' ? t.presenter.blackScreen : t.presenter.whiteScreen}
                </div>
              )}
@@ -2301,7 +2630,7 @@ index c29b8b6..41bbaf6 100644
        />
      </div>
    );
-@@ -289,6 +935,7 @@ function PresenterTopBar({
+@@ -289,6 +908,7 @@ function PresenterTopBar({
    slideTitle,
    connected,
    onSwitchDeck,
@@ -2309,7 +2638,7 @@ index c29b8b6..41bbaf6 100644
  }: {
    index: number;
    total: number;
-@@ -297,6 +944,7 @@ function PresenterTopBar({
+@@ -297,6 +917,7 @@ function PresenterTopBar({
    slideTitle: string;
    connected: boolean;
    onSwitchDeck: (slideId: string) => void;
@@ -2317,7 +2646,7 @@ index c29b8b6..41bbaf6 100644
  }) {
    const t = useLocale();
    return (
-@@ -317,6 +965,7 @@ function PresenterTopBar({
+@@ -317,6 +938,7 @@ function PresenterTopBar({
          )}
        </div>
        <div className="flex items-center gap-6">
@@ -2325,7 +2654,7 @@ index c29b8b6..41bbaf6 100644
          <Clock />
          <ElapsedClock startedAt={startedAt} />
          <div className="font-mono text-[18px] tabular-nums">
-@@ -362,6 +1011,8 @@ function DeckSwitcher({
+@@ -362,6 +984,8 @@ function DeckSwitcher({
  }) {
    const t = useLocale();
    const modules = useDeckModules();
@@ -2334,7 +2663,7 @@ index c29b8b6..41bbaf6 100644
    const [open, setOpen] = useState(false);
    const [query, setQuery] = useState('');
    const [activeIndex, setActiveIndex] = useState(0);
-@@ -369,6 +1020,7 @@ function DeckSwitcher({
+@@ -369,6 +993,7 @@ function DeckSwitcher({
  
    const trimmed = query.trim().toLowerCase();
    const filtered = slideIds.filter((id) => {
@@ -2342,7 +2671,7 @@ index c29b8b6..41bbaf6 100644
      if (!trimmed) return true;
      const title = modules[id]?.meta?.title;
      return id.toLowerCase().includes(trimmed) || title?.toLowerCase().includes(trimmed);
-@@ -495,18 +1147,26 @@ function PresenterBottomBar({
+@@ -495,18 +1120,26 @@ function PresenterBottomBar({
    index,
    total,
    blackout,
@@ -2369,7 +2698,7 @@ index c29b8b6..41bbaf6 100644
  }) {
    const t = useLocale();
    return (
-@@ -518,8 +1178,18 @@ function PresenterBottomBar({
+@@ -518,8 +1151,18 @@ function PresenterBottomBar({
          <Button variant="outline" onClick={onNext} disabled={index >= total - 1}>
            {t.presenter.next} <ChevronRight className="size-4" />
          </Button>
@@ -2388,7 +2717,7 @@ index c29b8b6..41bbaf6 100644
          <Button
            variant={blackout === 'black' ? 'brand' : 'outline'}
            onClick={onBlackout}
-@@ -550,8 +1220,7 @@ const NOTES_FONT_SIZES = [11, 12, 13.5, 15, 17, 20, 24, 28];
+@@ -550,8 +1193,7 @@ const NOTES_FONT_SIZES = [11, 12, 13.5, 15, 17, 20, 24, 28];
  const NOTES_FONT_SIZE_DEFAULT_INDEX = 2;
  const NOTES_FONT_SIZE_STORAGE_KEY = 'open-slide:presenter-notes-font-size';
  
@@ -2398,7 +2727,7 @@ index c29b8b6..41bbaf6 100644
    const [sizeIndex, setSizeIndex] = useState(() => {
      if (typeof window === 'undefined') return NOTES_FONT_SIZE_DEFAULT_INDEX;
      const stored = Number(window.localStorage.getItem(NOTES_FONT_SIZE_STORAGE_KEY));
-@@ -564,49 +1233,61 @@ function SpeakerNotes({ note }: { note: string | undefined }) {
+@@ -564,49 +1206,61 @@ function SpeakerNotes({ note }: { note: string | undefined }) {
      window.localStorage.setItem(NOTES_FONT_SIZE_STORAGE_KEY, String(NOTES_FONT_SIZES[sizeIndex]));
    }, [sizeIndex]);
  

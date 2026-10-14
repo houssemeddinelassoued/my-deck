@@ -420,9 +420,9 @@ DIRE — « Trois méthodes, du plus automatique au plus humain. »
 → beat 3 : « L'évaluation humaine : des experts relisent un échantillon chaque semaine. C'est la vérité terrain, qui calibre les deux autres. »
 → beat 4 : un cas concret du jeu doré, tiré du simulateur de l'atelier.
 → beat 5 : « Le ton est à 4 sur 5 : rien de grave, mais c'est le genre de signal qu'on suit dans le temps. »
-→ beat 6 : « RAGAS pour les assistants documentaires, DeepEval et promptfoo pour automatiser les tests : vos équipes TI les adopteront vite. »
+→ beat 6 : « RAGAS pour les assistants documentaires, DeepEval et promptfoo pour automatiser les tests : vos équipes IT les adopteront vite. »
 
-INTERACTION — « Qui, chez vous, pourrait valider les réponses du jeu doré ? » Faire ressortir le rôle des experts métier, pas seulement des TI.
+INTERACTION — « Qui, chez vous, pourrait valider les réponses du jeu doré ? » Faire ressortir le rôle des experts métier, pas seulement de l'IT.
 
 TRANSITION — « Évaluer avant de déployer, c'est bien. Mais en production, il faut voir ce que l'agent fait vraiment. »`,
   `⏱ 4 min

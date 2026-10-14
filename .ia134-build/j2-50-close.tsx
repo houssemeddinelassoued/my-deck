@@ -106,7 +106,7 @@ const Cl2_Roadmap: Page = () => (
     <div style={{ position: 'absolute', left: 120, top: 372, width: 1680, display: 'flex', gap: 36 }}>
       <Cl2Phase n={1} tone="blue" days="Jours 0 à 30" verb="CADRER" gate="charte approuvée, données prêtes">
         <Bullet size={28} tone="blue">
-          Choisir un quick win dans votre matrice (ex. FAQ RH, accès TI)
+          Choisir un quick win dans votre matrice (ex. FAQ RH, accès IT)
         </Bullet>
         <Bullet size={28} tone="blue">
           Rédiger la charte d’agent : objectifs, limites, KPI
@@ -401,7 +401,7 @@ OBJECTIF — Transformer deux jours de contenu en un plan d'action daté. C'est 
 DIRE — « Le mandat de Boréal était clair : une feuille de route IA agentique réaliste, sur 90 jours. La voici, et elle vaut aussi pour votre organisation. Remarquez que chaque phase se termine par un jalon : une décision écrite, pas une impression. »
 
 ANIMATION —
-→ beat 1 : Jours 0 à 30, CADRER. « On choisit UN quick win de la matrice — pour Boréal, la FAQ RH ou les accès TI. On rédige la charte d'agent, on nomme un parrain métier et on lance l'EFVP si des renseignements personnels sont en jeu. »
+→ beat 1 : Jours 0 à 30, CADRER. « On choisit UN quick win de la matrice — pour Boréal, la FAQ RH ou les accès IT. On rédige la charte d'agent, on nomme un parrain métier et on lance l'EFVP si des renseignements personnels sont en jeu. »
 → beat 2 : Jours 31 à 60, PROTOTYPER ET PILOTER. « Prototype évalué sur des cas de référence, puis petit groupe pilote, avec un humain qui valide. Au jour 60 : go ou no-go, selon la checklist du module 9. »
 → beat 3 : Jours 61 à 90, MESURER ET DÉCIDER. « Les KPI du module 10. Trois issues : déployer, ajuster ou arrêter — arrêter est légitime. Et on prépare le deuxième cas. »
 

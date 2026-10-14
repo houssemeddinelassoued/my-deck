@@ -133,7 +133,7 @@ const M1b_ReAct: Page = () => {
     <Frame mod={1} kind="demo" beats={M1B_STEPS} label="Module 01 · Le cycle ReAct">
       <Title>Simulateur : l’agent pense, agit, observe</Title>
       <Lede>
-        Tâche confiée à l’agent : <Strong>« Envoie à l’équipe un résumé des billets TI critiques de la semaine. »</Strong>
+        Tâche confiée à l’agent : <Strong>« Envoie à l’équipe un résumé des billets IT critiques de la semaine. »</Strong>
       </Lede>
 
       {/* Left: the loop */}
@@ -233,7 +233,7 @@ const M1b_ReAct: Page = () => {
         </M1bTour>
         <M1bTour n={3} step={step}>
           <M1bRow kind="pensee" at={7} step={step}>
-            « Il reste à l’envoyer à la liste de l’équipe TI. »
+            « Il reste à l’envoyer à la liste de l’équipe IT. »
           </M1bRow>
           <M1bRow kind="action" at={8} step={step}>
             envoyer_courriel(a="equipe-ti@boreal.ca", …)
@@ -244,7 +244,7 @@ const M1b_ReAct: Page = () => {
         </M1bTour>
         <div style={{ paddingLeft: 58 }}>
           <M1bRow kind="final" at={10} step={step}>
-            « C’est fait : le résumé des 5 billets critiques encore ouverts a été envoyé à l’équipe TI (12 personnes). »
+            « C’est fait : le résumé des 5 billets critiques encore ouverts a été envoyé à l’équipe IT (12 personnes). »
           </M1bRow>
         </div>
       </div>
@@ -628,7 +628,7 @@ const M1b_Protocols: Page = () => (
             Assistant RH
           </M1bSys>
           <M1bSys x={20} y={168} w={210} h={64} icon="ticket" tone="violet">
-            Agent TI
+            Agent IT
           </M1bSys>
           <M1bSys x={20} y={298} w={210} h={64} icon="chart" tone="violet">
             Copilote ventes
@@ -1083,7 +1083,7 @@ const M1b_Qcm2: Page = () => (
     n={2}
     multi
     title="Mémoire et autonomie"
-    q="Boréal déploie un agent de soutien TI. Quelles affirmations sont justes ?"
+    q="Boréal déploie un agent de soutien IT. Quelles affirmations sont justes ?"
     explain="La mémoire se conçoit : court terme (le contexte) et long terme (stockage + récupération). L’autonomie se dose action par action : le juste niveau, souvent L2–L3, avec un humain aux étapes critiques."
   >
     <Opt ok why="Oui : la fenêtre de contexte, c’est la mémoire de travail. Ce qui doit durer (préférences, historique) va dans une mémoire à long terme.">
@@ -1196,7 +1196,7 @@ export const __notes = [
 
 OBJECTIF — Rendre concret le fonctionnement interne d'un agent : il n'exécute pas un plan figé, il alterne raisonnement et action, et s'ajuste à ce qu'il observe.
 
-DIRE — « On vient de voir qu'un agent appelle des outils. Mais comment décide-t-il lequel, et quand ? La méthode la plus répandue s'appelle ReAct, pour Reason + Act : raisonner, puis agir, puis observer le résultat… et recommencer. Prenons une tâche banale chez Boréal : envoyer à l'équipe un résumé des billets TI critiques de la semaine. »
+DIRE — « On vient de voir qu'un agent appelle des outils. Mais comment décide-t-il lequel, et quand ? La méthode la plus répandue s'appelle ReAct, pour Reason + Act : raisonner, puis agir, puis observer le résultat… et recommencer. Prenons une tâche banale chez Boréal : envoyer à l'équipe un résumé des billets IT critiques de la semaine. »
 
 ANIMATION — Avancez avec → (ou le bouton « Étape suivante »). Commentez chaque ligne :
 → 1–3 : premier tour. « Il pense d'abord : il lui faut les billets. Il appelle l'outil de recherche. Il observe : 7 billets, dont 2 déjà résolus. »
@@ -1233,7 +1233,7 @@ DIRE — « Le marché bouge chaque mois. Plutôt que de retenir des noms, reten
 ANIMATION —
 → beat 1 : les Modèles, à la base. « Le cerveau : GPT d'OpenAI, Claude d'Anthropic, Gemini de Google, Mistral en France, Llama de Meta avec des poids ouverts… et Cohere, une entreprise canadienne, souvent citée pour les enjeux de souveraineté. On les loue à l'usage par API. »
 → beat 2 : les Frameworks. « Pour les équipes de développement : LangGraph, Microsoft Agent Framework, qui réunit AutoGen et Semantic Kernel, CrewAI pour les équipes d'agents, LlamaIndex pour le RAG, et les SDK d'OpenAI, d'Anthropic et de Google. Plus de contrôle, plus de code. »
-→ beat 3 : les Plateformes. « Clés en main : Copilot Studio si vous êtes sur Microsoft 365, Agentforce dans Salesforce, ServiceNow pour les TI, Gemini Enterprise, Bedrock AgentCore chez AWS… et des outils d'automatisation comme n8n, Make ou Zapier. »
+→ beat 3 : les Plateformes. « Clés en main : Copilot Studio si vous êtes sur Microsoft 365, Agentforce dans Salesforce, ServiceNow pour l'IT, Gemini Enterprise, Bedrock AgentCore chez AWS… et des outils d'automatisation comme n8n, Make ou Zapier. »
 → beat 4 : le bon réflexe. « Le cas d'usage d'abord, l'outil ensuite. »
 
 INTERACTION — « Quelle couche votre organisation utilise-t-elle déjà ? » Souvent : Copilot ou Microsoft 365. « C'est un critère de choix très fort : on y reviendra demain. »
@@ -1245,7 +1245,7 @@ TRANSITION — « Pour brancher ces agents sur vos systèmes, deux standards son
 
 OBJECTIF — Expliquer simplement pourquoi MCP et A2A comptent : ils réduisent le coût d'intégration, le vrai frein des projets d'agents.
 
-DIRE — « Imaginez Boréal avec trois assistants : RH, TI, ventes. Et quatre systèmes : SharePoint, l'ERP, le CRM, le courriel. »
+DIRE — « Imaginez Boréal avec trois assistants : RH, IT, ventes. Et quatre systèmes : SharePoint, l'ERP, le CRM, le courriel. »
 
 ANIMATION —
 → beat 1 : le spaghetti. « Sans standard, chaque assistant a besoin de son propre branchement vers chaque système : 3 × 4 = 12 intégrations à développer et à maintenir. Et chaque nouveau système multiplie le travail. »

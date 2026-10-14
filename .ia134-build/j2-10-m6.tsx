@@ -375,7 +375,7 @@ const M6_Limits: Page = () => (
           <M6RaciHead w={190}>Agent IA</M6RaciHead>
           <M6RaciHead w={190}>Conseiller·ère</M6RaciHead>
           <M6RaciHead w={190}>Gestion. SC</M6RaciHead>
-          <M6RaciHead w={190}>TI</M6RaciHead>
+          <M6RaciHead w={190}>IT</M6RaciHead>
         </div>
         <M6RaciRow act="Suivi de commande" a="R" c="I" g="A" t="—" />
         <M6RaciRow act="Crédit de retard < 500 $" a="R" c="I" g="A" t="—" />
@@ -1327,7 +1327,7 @@ ANIMATION / INTERACTION — Passer les beats rapidement, environ 10 secondes cha
 
 Puis lancer le minuteur de 12 minutes (clic sur Démarrer). Consignes : un cas par équipe, un scribe. Commencer par les cases 1 et 3 : si l'objectif et le périmètre ne sont pas clairs, le reste ne tiendra pas.
 
-Pendant l'atelier : circuler. Pièges fréquents : un objectif sans métrique de qualité ; une case 3 sans « ne fait jamais » ; une case 8 où le responsable est « l'équipe TI » ou « l'agent ». Relancer avec : « Qui perd son bonus si ça tourne mal ? »
+Pendant l'atelier : circuler. Pièges fréquents : un objectif sans métrique de qualité ; une case 3 sans « ne fait jamais » ; une case 8 où le responsable est « l'équipe IT » ou « l'agent ». Relancer avec : « Qui perd son bonus si ça tourne mal ? »
 
 À 2 minutes de la fin, l'annoncer. Si le temps manque, une ou deux équipes présentent ; les autres, après le dîner.
 

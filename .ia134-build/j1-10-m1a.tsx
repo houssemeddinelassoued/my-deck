@@ -218,7 +218,7 @@ const M1a_Definition: Page = () => (
         Un agent IA <Hl>poursuit un objectif</Hl> en percevant son environnement, en raisonnant et en agissant avec des outils — en boucle.
       </Quote>
       <Eyebrow cls={A.in} c={C.teal} size={22} style={{ marginTop: 44, ...dl(260) }}>
-        Exemple Boréal · soutien TI
+        Exemple Boréal · soutien IT
       </Eyebrow>
       <div style={{ marginTop: 12, display: 'flex', flexDirection: 'column', gap: 8 }}>
         <M1aExRow n={1} tone="blue">
@@ -375,7 +375,7 @@ const M1a_Anatomy: Page = () => (
         le cerveau : comprend et décide
       </Tag>
     </div>
-    <M1aPart x={120} y={290} n={1} icon="target" tone="blue" title="Instructions et objectif" ex="« Aide les employés de Boréal pour leurs accès TI. »">
+    <M1aPart x={120} y={290} n={1} icon="target" tone="blue" title="Instructions et objectif" ex="« Aide les employés de Boréal pour leurs accès IT. »">
       Rôle, mission, règles : le prompt système.
     </M1aPart>
     <M1aPart x={120} y={510} n={2} icon="archive" tone="violet" title="Mémoire" ex="« Cet employé a déjà demandé un VPN mardi. »">
@@ -384,7 +384,7 @@ const M1a_Anatomy: Page = () => (
     <M1aPart x={1300} y={290} n={3} icon="tool" tone="teal" title="Outils (API)" ex="Billetterie, annuaire, courriel, calendrier, ERP…">
       Ses mains : les actions dans vos systèmes.
     </M1aPart>
-    <M1aPart x={1300} y={510} n={4} icon="database" tone="green" title="Données et connaissances" ex="Procédures TI, politiques RH, fiches produits (RAG)">
+    <M1aPart x={1300} y={510} n={4} icon="database" tone="green" title="Données et connaissances" ex="Procédures IT, politiques RH, fiches produits (RAG)">
       Ce qu’il consulte pour répondre juste.
     </M1aPart>
     <M1aPart x={560} y={772} w={800} n={5} icon="shieldCheck" tone="coral" title="Garde-fous + humain dans la boucle" ex="Ex. : tout accès administrateur doit être approuvé par un technicien.">
@@ -423,7 +423,7 @@ OBJECTIF — Donner une définition simple, mémorisable, et la rendre concrète
 DIRE — Lisez la définition lentement. « Retenez trois mots : objectif, outils, boucle. Un agent poursuit un but, il agit avec des outils, et il recommence tant que le but n'est pas atteint. »
 
 ANIMATION — Chaque clic ajoute une étape de la boucle ET la ligne correspondante de l'exemple Boréal, à gauche :
-→ beat 1 : PERCEVOIR. « Un courriel arrive au soutien TI : "Je n'ai plus accès à mon compte". »
+→ beat 1 : PERCEVOIR. « Un courriel arrive au soutien IT : "Je n'ai plus accès à mon compte". »
 → beat 2 : RAISONNER. « L'agent comprend qu'il s'agit d'une demande d'accès, et il planifie : d'abord vérifier l'identité. »
 → beat 3 : AGIR. « Il appelle l'outil de réinitialisation du mot de passe. »
 → beat 4 : OBSERVER, la boucle se ferme et le point jaune se met à tourner. « Il vérifie le résultat. Le compte est débloqué ? Il confirme à l'employé. Sinon, il recommence ou passe la main à un technicien. »

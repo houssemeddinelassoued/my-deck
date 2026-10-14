@@ -103,7 +103,7 @@ const M1c_Compare: Page = () => (
       </Eyebrow>
     </div>
     <M1cColHead x={470} w={600} icon="chat" tone="grey" title="LLM classique" sub="ex. : ChatGPT en clavardage" d={100} />
-    <M1cColHead x={1140} w={660} icon="bot" tone="blue" title="Agent IA" sub="ex. : agent de soutien TI" d={220} />
+    <M1cColHead x={1140} w={660} icon="bot" tone="blue" title="Agent IA" sub="ex. : agent de soutien IT" d={220} />
     <M1cRow n={1} icon="play" label="Posture" llm={<span><b>Réactif</b> : attend votre question</span>} agent={<span><b>Proactif</b> : poursuit un objectif</span>} />
     <M1cRow n={2} icon="loop" label="Déroulement" llm={<span><b>Un seul tour</b> : question → réponse</span>} agent={<span><b>Plusieurs étapes</b>, en boucle, jusqu’au but</span>} />
     <M1cRow n={3} icon="bolt" label="Ce qu’il produit" llm={<span><b>Du texte</b> que vous copiez-collez</span>} agent={<span><b>Des actions</b> dans vos systèmes</span>} />
@@ -412,7 +412,7 @@ const M1cLevels: { name: string; tone: Tone; does: string; ex: string; sup: stri
     name: 'Autonome encadré',
     tone: 'green',
     does: 'Agit seul dans un périmètre défini ; escalade les exceptions.',
-    ex: 'Réinitialise les mots de passe après MFA, transfère le reste au TI.',
+    ex: 'Réinitialise les mots de passe après MFA, transfère le reste à l’IT.',
     sup: 'Règles, escalade, journal',
     supPct: 45,
   },

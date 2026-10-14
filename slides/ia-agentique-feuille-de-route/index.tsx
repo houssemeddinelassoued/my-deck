@@ -3398,7 +3398,7 @@ const J1_Boreal: Page = () => (
       <DeptTile icon="users" tone="blue" dept="Ressources humaines" value={300} unit="demandes / mois" d={200}>
         Congés, attestations, avantages sociaux : souvent les mêmes questions
       </DeptTile>
-      <DeptTile icon="ticket" tone="violet" dept="Soutien TI" value={1800} unit="billets / mois" d={320}>
+      <DeptTile icon="ticket" tone="violet" dept="Soutien IT" value={1800} unit="billets / mois" d={320}>
         Dont ≈ 35 % de mots de passe oubliés et de demandes d’accès
       </DeptTile>
       <DeptTile icon="mail" tone="green" dept="Service à la clientèle" value={5000} unit="courriels / mois" d={440}>
@@ -3426,7 +3426,7 @@ const J1_Quiz0: Page = () => (
       explain="Un agent agit à travers des outils : c’est sa force. Mais il reste probabiliste, et les décisions à fort impact restent humaines. Puissance + garde-fous : c’est le fil de ces 2 jours."
     >
       <Opt ok why="Oui : il perçoit (le courriel), raisonne (comprendre la demande) et agit (créer le billet). C’est l’usage typique d’un agent outillé.">
-        Lire un courriel, comprendre la demande et créer le billet dans l’outil TI
+        Lire un courriel, comprendre la demande et créer le billet dans l’outil IT
       </Opt>
       <Opt why="Piège ! Techniquement faisable, mais inacceptable : une décision à fort impact sur une personne exige un humain. La Loi 25 encadre d’ailleurs les décisions entièrement automatisées.">
         Décider seul de congédier un employé à partir de ses indicateurs
@@ -3674,7 +3674,7 @@ const M1a_Definition: Page = () => (
         Un agent IA <Hl>poursuit un objectif</Hl> en percevant son environnement, en raisonnant et en agissant avec des outils — en boucle.
       </Quote>
       <Eyebrow cls={A.in} c={C.teal} size={22} style={{ marginTop: 44, ...dl(260) }}>
-        Exemple Boréal · soutien TI
+        Exemple Boréal · soutien IT
       </Eyebrow>
       <div style={{ marginTop: 12, display: 'flex', flexDirection: 'column', gap: 8 }}>
         <M1aExRow n={1} tone="blue">
@@ -3831,7 +3831,7 @@ const M1a_Anatomy: Page = () => (
         le cerveau : comprend et décide
       </Tag>
     </div>
-    <M1aPart x={120} y={290} n={1} icon="target" tone="blue" title="Instructions et objectif" ex="« Aide les employés de Boréal pour leurs accès TI. »">
+    <M1aPart x={120} y={290} n={1} icon="target" tone="blue" title="Instructions et objectif" ex="« Aide les employés de Boréal pour leurs accès IT. »">
       Rôle, mission, règles : le prompt système.
     </M1aPart>
     <M1aPart x={120} y={510} n={2} icon="archive" tone="violet" title="Mémoire" ex="« Cet employé a déjà demandé un VPN mardi. »">
@@ -3840,7 +3840,7 @@ const M1a_Anatomy: Page = () => (
     <M1aPart x={1300} y={290} n={3} icon="tool" tone="teal" title="Outils (API)" ex="Billetterie, annuaire, courriel, calendrier, ERP…">
       Ses mains : les actions dans vos systèmes.
     </M1aPart>
-    <M1aPart x={1300} y={510} n={4} icon="database" tone="green" title="Données et connaissances" ex="Procédures TI, politiques RH, fiches produits (RAG)">
+    <M1aPart x={1300} y={510} n={4} icon="database" tone="green" title="Données et connaissances" ex="Procédures IT, politiques RH, fiches produits (RAG)">
       Ce qu’il consulte pour répondre juste.
     </M1aPart>
     <M1aPart x={560} y={772} w={800} n={5} icon="shieldCheck" tone="coral" title="Garde-fous + humain dans la boucle" ex="Ex. : tout accès administrateur doit être approuvé par un technicien.">
@@ -3956,7 +3956,7 @@ const M1c_Compare: Page = () => (
       </Eyebrow>
     </div>
     <M1cColHead x={470} w={600} icon="chat" tone="grey" title="LLM classique" sub="ex. : ChatGPT en clavardage" d={100} />
-    <M1cColHead x={1140} w={660} icon="bot" tone="blue" title="Agent IA" sub="ex. : agent de soutien TI" d={220} />
+    <M1cColHead x={1140} w={660} icon="bot" tone="blue" title="Agent IA" sub="ex. : agent de soutien IT" d={220} />
     <M1cRow n={1} icon="play" label="Posture" llm={<span><b>Réactif</b> : attend votre question</span>} agent={<span><b>Proactif</b> : poursuit un objectif</span>} />
     <M1cRow n={2} icon="loop" label="Déroulement" llm={<span><b>Un seul tour</b> : question → réponse</span>} agent={<span><b>Plusieurs étapes</b>, en boucle, jusqu’au but</span>} />
     <M1cRow n={3} icon="bolt" label="Ce qu’il produit" llm={<span><b>Du texte</b> que vous copiez-collez</span>} agent={<span><b>Des actions</b> dans vos systèmes</span>} />
@@ -4265,7 +4265,7 @@ const M1cLevels: { name: string; tone: Tone; does: string; ex: string; sup: stri
     name: 'Autonome encadré',
     tone: 'green',
     does: 'Agit seul dans un périmètre défini ; escalade les exceptions.',
-    ex: 'Réinitialise les mots de passe après MFA, transfère le reste au TI.',
+    ex: 'Réinitialise les mots de passe après MFA, transfère le reste à l’IT.',
     sup: 'Règles, escalade, journal',
     supPct: 45,
   },
@@ -4555,7 +4555,7 @@ const M1d_Goals: Page = () => (
       >
         <Icon name="target" size={48} color="#fff" sw={2} />
         <span style={{ fontFamily: display, fontWeight: 700, fontSize: 36, lineHeight: 1.05, color: '#fff' }}>
-          Réduire de 30 % le temps de traitement des billets TI
+          Réduire de 30 % le temps de traitement des billets IT
         </span>
       </div>
     </div>
@@ -4742,7 +4742,7 @@ const M1d_Memory: Page = () => (
       <M1dFact k="langue">français</M1dFact>
       <M1dFact k="service">Finance · Montréal</M1dFact>
       <M1dFact k="poste">portable, Windows 11</M1dFact>
-      <M1dFact k="savoirs">procédures TI (base RAG)</M1dFact>
+      <M1dFact k="savoirs">procédures IT (base RAG)</M1dFact>
     </M1dMemCol>
     <M1dMemCol
       x={1260}
@@ -5029,7 +5029,7 @@ const M1b_ReAct: Page = () => {
     <Frame mod={1} kind="demo" beats={M1B_STEPS} label="Module 01 · Le cycle ReAct">
       <Title>Simulateur : l’agent pense, agit, observe</Title>
       <Lede>
-        Tâche confiée à l’agent : <Strong>« Envoie à l’équipe un résumé des billets TI critiques de la semaine. »</Strong>
+        Tâche confiée à l’agent : <Strong>« Envoie à l’équipe un résumé des billets IT critiques de la semaine. »</Strong>
       </Lede>
 
       {/* Left: the loop */}
@@ -5129,7 +5129,7 @@ const M1b_ReAct: Page = () => {
         </M1bTour>
         <M1bTour n={3} step={step}>
           <M1bRow kind="pensee" at={7} step={step}>
-            « Il reste à l’envoyer à la liste de l’équipe TI. »
+            « Il reste à l’envoyer à la liste de l’équipe IT. »
           </M1bRow>
           <M1bRow kind="action" at={8} step={step}>
             envoyer_courriel(a="equipe-ti@boreal.ca", …)
@@ -5140,7 +5140,7 @@ const M1b_ReAct: Page = () => {
         </M1bTour>
         <div style={{ paddingLeft: 58 }}>
           <M1bRow kind="final" at={10} step={step}>
-            « C’est fait : le résumé des 5 billets critiques encore ouverts a été envoyé à l’équipe TI (12 personnes). »
+            « C’est fait : le résumé des 5 billets critiques encore ouverts a été envoyé à l’équipe IT (12 personnes). »
           </M1bRow>
         </div>
       </div>
@@ -5524,7 +5524,7 @@ const M1b_Protocols: Page = () => (
             Assistant RH
           </M1bSys>
           <M1bSys x={20} y={168} w={210} h={64} icon="ticket" tone="violet">
-            Agent TI
+            Agent IT
           </M1bSys>
           <M1bSys x={20} y={298} w={210} h={64} icon="chart" tone="violet">
             Copilote ventes
@@ -5979,7 +5979,7 @@ const M1b_Qcm2: Page = () => (
     n={2}
     multi
     title="Mémoire et autonomie"
-    q="Boréal déploie un agent de soutien TI. Quelles affirmations sont justes ?"
+    q="Boréal déploie un agent de soutien IT. Quelles affirmations sont justes ?"
     explain="La mémoire se conçoit : court terme (le contexte) et long terme (stockage + récupération). L’autonomie se dose action par action : le juste niveau, souvent L2–L3, avec un humain aux étapes critiques."
   >
     <Opt ok why="Oui : la fenêtre de contexte, c’est la mémoire de travail. Ce qui doit durer (préférences, historique) va dans une mémoire à long terme.">
@@ -6270,7 +6270,7 @@ const M23AutoSq = ({ l, on, d }: { l: number; on: boolean; d: number }) => (
 const M23_IdCard: Page = () => (
   <Frame mod={2} kind="atelier" beats={4}>
     <Title>Carte d’identité d’un agent · exemple Boréal</Title>
-    <Lede>L’agent « Aide-accès TI » traite les mots de passe oubliés et les demandes d’accès.</Lede>
+    <Lede>L’agent « Aide-accès IT » traite les mots de passe oubliés et les demandes d’accès.</Lede>
     <div style={{ position: 'absolute', left: 120, top: 280, width: 1680, display: 'flex', gap: 30, alignItems: 'stretch' }}>
       <div
         className={A.left}
@@ -6290,7 +6290,7 @@ const M23_IdCard: Page = () => (
           <Eyebrow c="#fff" size={22}>
             Carte d’identité · agent
           </Eyebrow>
-          <div style={{ marginTop: 2, fontSize: 20, color: 'rgba(255,255,255,.85)' }}>Boréal Distribution · Soutien TI</div>
+          <div style={{ marginTop: 2, fontSize: 20, color: 'rgba(255,255,255,.85)' }}>Boréal Distribution · Soutien IT</div>
         </div>
         <div
           style={{
@@ -6308,8 +6308,8 @@ const M23_IdCard: Page = () => (
         >
           <Icon name="bot" size={64} color={C.blue} sw={1.8} />
         </div>
-        <div style={{ marginTop: 16, fontFamily: display, fontWeight: 700, fontSize: 48, lineHeight: 1.05, color: C.ink }}>Aide-accès TI</div>
-        <div style={{ marginTop: 4, fontSize: 22, color: C.muted }}>Agent multi-outils, canal Teams et portail TI</div>
+        <div style={{ marginTop: 16, fontFamily: display, fontWeight: 700, fontSize: 48, lineHeight: 1.05, color: C.ink }}>Aide-accès IT</div>
+        <div style={{ marginTop: 4, fontSize: 22, color: C.muted }}>Agent multi-outils, canal Teams et portail IT</div>
         <div style={{ marginTop: 22, height: 2, background: C.rule }} />
         <Eyebrow c={C.muted} size={20} style={{ marginTop: 20 }}>
           Volume ciblé
@@ -6320,7 +6320,7 @@ const M23_IdCard: Page = () => (
           </span>
           <span style={{ fontSize: 24, fontWeight: 600, color: C.soft }}>billets / mois</span>
         </div>
-        <div style={{ fontSize: 22, lineHeight: 1.35, color: C.muted }}>≈ 35 % des 1 800 billets TI mensuels</div>
+        <div style={{ fontSize: 22, lineHeight: 1.35, color: C.muted }}>≈ 35 % des 1 800 billets IT mensuels</div>
         <Eyebrow c={C.muted} size={20} style={{ marginTop: 22 }}>
           Niveau d’autonomie visé
         </Eyebrow>
@@ -6339,7 +6339,7 @@ const M23_IdCard: Page = () => (
           Régler en moins de 5 min les mots de passe oubliés et les accès courants
         </M23Rubric>
         <M23Rubric n={1} d={150} icon="users" tone="blue" label="Utilisateurs">
-          Les 1 200 employés, via Teams ou le portail du soutien TI
+          Les 1 200 employés, via Teams ou le portail du soutien IT
         </M23Rubric>
         <M23Rubric n={2} icon="bolt" tone="teal" label="Déclencheur">
           Un nouveau billet ou un message « J’ai oublié mon mot de passe »
@@ -6419,7 +6419,7 @@ const M23_Candidate: Page = () => (
       size={25}
       style={{ position: 'absolute', left: 1220, top: 640, width: 580, ...dl(500) }}
     >
-      Aide-accès TI : 15 / 16. Seul bémol, les comptes d’accès sont des données sensibles.
+      Aide-accès IT : 15 / 16. Seul bémol, les comptes d’accès sont des données sensibles.
     </Callout>
     <Callout
       cls={A.in}
@@ -7435,7 +7435,7 @@ const M23_Compare: Page = () => (
         Retrouver une procédure parmi 40 000 documents
       </M23Row>
       <M23Row icon="plug" tone="violet" name="Multi-outils" a={3} c={3} r={3} d={400}>
-        Aide-accès TI : ≈ 630 billets / mois
+        Aide-accès IT : ≈ 630 billets / mois
       </M23Row>
       <M23Row icon="loop" tone="coral" name="Autonome" a={4} c={3} r={4} d={550}>
         Veille nocturne des fournisseurs
@@ -7710,7 +7710,7 @@ const M23_Synthesis: Page = () => (
       size={28}
       style={{ position: 'absolute', left: 120, top: 836, width: 1680, ...dl(1300) }}
     >
-      Module 4 : trois cas réels (RH, soutien TI, documentaire), avec leur type d’agent, leurs outils et leurs garde-fous.
+      Module 4 : trois cas réels (RH, soutien IT, documentaire), avec leur type d’agent, leurs outils et leurs garde-fous.
     </Callout>
   </Frame>
 );
@@ -7727,7 +7727,7 @@ const M4_Divider: Page = () => (
     kind="cas"
   >
     <SecItem n={1}>Cas RH : l’assistant qui répond aux employés</SecItem>
-    <SecItem n={2}>Cas TI : l’agent qui traite les billets</SecItem>
+    <SecItem n={2}>Cas IT : l’agent qui traite les billets</SecItem>
     <SecItem n={3}>Cas documentaire : l’assistant qui cite ses sources</SecItem>
     <SecItem n={4}>Leçons du terrain et exercice « repérez les failles »</SecItem>
   </Section>
@@ -8082,7 +8082,7 @@ const M4_RhArchi: Page = () => (
   </Frame>
 );
 
-// ─── Cas TI : flux d'un billet ──────────────────────────────────────────────
+// ─── Cas IT : flux d'un billet ──────────────────────────────────────────────
 const M4FlowNode = ({
   x,
   y,
@@ -8150,7 +8150,7 @@ const M4Kpi = ({ value, tone, d, children }: { value: string; tone: Tone; d: num
 
 const M4_TiFlow: Page = () => (
   <Frame mod={4} kind="cas" beats={5}>
-    <Title>Cas TI : le parcours d’un billet</Title>
+    <Title>Cas IT : le parcours d’un billet</Title>
     <Lede>≈ 35 % des 1 800 billets mensuels sont des mots de passe et des accès : un flux idéal.</Lede>
 
     <svg width={1920} height={1080} style={{ position: 'absolute', left: 0, top: 0, pointerEvents: 'none', overflow: 'visible' }}>
@@ -8221,7 +8221,7 @@ const M4_TiFlow: Page = () => (
 
     <div style={{ position: 'absolute', left: 120, top: 806, width: 1680, display: 'flex', gap: 20 }}>
       <M4Kpi value="1 800" tone="blue" d={0}>
-        billets par mois au soutien TI
+        billets par mois au soutien IT
       </M4Kpi>
       <M4Kpi value="≈ 35 %" tone="violet" d={150}>
         mots de passe et demandes d’accès
@@ -8236,7 +8236,7 @@ const M4_TiFlow: Page = () => (
   </Frame>
 );
 
-// ─── Cas TI : moindre privilège ─────────────────────────────────────────────
+// ─── Cas IT : moindre privilège ─────────────────────────────────────────────
 const M4Perm = ({ ok, children }: { ok: boolean; children: ReactNode }) => (
   <div style={{ display: 'flex', gap: 14, alignItems: 'flex-start', fontSize: 23, lineHeight: 1.35, color: C.ink }}>
     <span
@@ -8288,7 +8288,7 @@ const M4TlStep = ({ n, d, last = false, children }: { n: number; d: number; last
 
 const M4_TiPrivilege: Page = () => (
   <Frame mod={4} kind="cas" beats={3}>
-    <Title>Cas TI : le principe du moindre privilège</Title>
+    <Title>Cas IT : le principe du moindre privilège</Title>
     <Lede>Donner à l’agent le strict nécessaire, et rendre l’irréversible impossible sans un humain.</Lede>
     <div style={{ position: 'absolute', left: 120, top: 280, width: 940, display: 'flex', gap: 30, alignItems: 'flex-start' }}>
       <M4PermCol tone="green" icon="key" title="Droits accordés" cls={A.in}>
@@ -8679,7 +8679,7 @@ const M4_Compare: Page = () => (
     <div style={{ position: 'absolute', left: 120, top: 282, width: 1680, display: 'flex', gap: 20 }}>
       <div style={{ width: 360 }} />
       <M4CaseHead icon="users" tone="blue" title="Assistant RH" d={100} />
-      <M4CaseHead icon="ticket" tone="violet" title="Agent soutien TI" d={200} />
+      <M4CaseHead icon="ticket" tone="violet" title="Agent soutien IT" d={200} />
       <M4CaseHead icon="book" tone="teal" title="Assistant documentaire" d={300} />
     </div>
     <div style={{ position: 'absolute', left: 120, top: 362, width: 1680, display: 'flex', flexDirection: 'column', gap: 10 }}>
@@ -9089,7 +9089,7 @@ const M4_DaySynth: Page = () => (
       </M4DayCard>
       <M4DayCard n={4} tone="green" title="Études de cas réels" d={550}>
         <Bullet size={23} tone="green">
-          RH, TI, documents : même logique, risques différents
+          RH, IT, documents : même logique, risques différents
         </Bullet>
         <Bullet size={23} tone="green">
           Moindre privilège, plafonds, journal, humain
@@ -10013,7 +10013,7 @@ const M5_Atelier: Page = () => (
     {/* Solution, revealed one quadrant per beat */}
     <M5Sol n={1} x={796} y={516}>
       <M5SolChip id={1} tone="green">FAQ RH</M5SolChip>
-      <M5SolChip id={2} tone="green">Accès TI</M5SolChip>
+      <M5SolChip id={2} tone="green">Accès IT</M5SolChip>
       <M5SolChip id={7} tone="green">Ventes</M5SolChip>
     </M5Sol>
     <M5Sol n={2} x={1311} y={516}>
@@ -10058,7 +10058,7 @@ const M5_Atelier: Page = () => (
     </Drag>
     <Drag x={120} y={340} size={22}>
       <M5Id n={2} />
-      Mots de passe et accès TI
+      Mots de passe et accès IT
     </Drag>
     <Drag x={120} y={400} size={22}>
       <M5Id n={3} />
@@ -10162,7 +10162,7 @@ const M5_QuickWins: Page = () => (
         Chez Boréal
       </Eyebrow>
       <div style={{ marginTop: 12, display: 'flex', flexDirection: 'column', gap: 18 }}>
-        <M5Ex n={1} icon="key" team="TI" title="Mots de passe et accès" stat="≈ 630 billets/mois">
+        <M5Ex n={1} icon="key" team="IT" title="Mots de passe et accès" stat="≈ 630 billets/mois">
           Vérifie l’identité, réinitialise, escalade si doute.
         </M5Ex>
         <M5Ex n={2} icon="chat" team="RH" title="FAQ RH" stat="300 demandes/mois">
@@ -10296,7 +10296,7 @@ const M5_Choose: Page = () => (
       </M5Line>
       <M5Line h={70} ex>
         <M5Cell w={340} ex>
-          Ex. : accès TI
+          Ex. : accès IT
         </M5Cell>
         <M5Cell w={130} ex>
           4,5
@@ -10305,7 +10305,7 @@ const M5_Choose: Page = () => (
           1,5
         </M5Cell>
         <M5Cell w={180} ex>
-          Dir. TI
+          Dir. IT
         </M5Cell>
       </M5Line>
       <M5Row id="Cas A" />
@@ -10383,7 +10383,7 @@ const M5_Roi: Page = () => {
   return (
     <Frame mod={5} kind="atelier" label="Calculateur de ROI">
       <Title>Calculateur de ROI : combien rapporte un agent ?</Title>
-      <Lede>Bougez les curseurs. Point de départ : les billets « mot de passe » du TI de Boréal.</Lede>
+      <Lede>Bougez les curseurs. Point de départ : les billets « mot de passe » de l’IT de Boréal.</Lede>
       <div
         className={A.in}
         style={{
@@ -10876,7 +10876,7 @@ const M6_Limits: Page = () => (
           <M6RaciHead w={190}>Agent IA</M6RaciHead>
           <M6RaciHead w={190}>Conseiller·ère</M6RaciHead>
           <M6RaciHead w={190}>Gestion. SC</M6RaciHead>
-          <M6RaciHead w={190}>TI</M6RaciHead>
+          <M6RaciHead w={190}>IT</M6RaciHead>
         </div>
         <M6RaciRow act="Suivi de commande" a="R" c="I" g="A" t="—" />
         <M6RaciRow act="Crédit de retard < 500 $" a="R" c="I" g="A" t="—" />
@@ -14960,7 +14960,7 @@ const Cl2_Roadmap: Page = () => (
     <div style={{ position: 'absolute', left: 120, top: 372, width: 1680, display: 'flex', gap: 36 }}>
       <Cl2Phase n={1} tone="blue" days="Jours 0 à 30" verb="CADRER" gate="charte approuvée, données prêtes">
         <Bullet size={28} tone="blue">
-          Choisir un quick win dans votre matrice (ex. FAQ RH, accès TI)
+          Choisir un quick win dans votre matrice (ex. FAQ RH, accès IT)
         </Bullet>
         <Bullet size={28} tone="blue">
           Rédiger la charte d’agent : objectifs, limites, KPI
@@ -15425,7 +15425,7 @@ OBJECTIF — Présenter les cinq objectifs d'apprentissage comme une progression
 
 DIRE — « Regardez la forme : c'est un escalier. Chaque marche s'appuie sur la précédente. »
 1. COMPRENDRE — « Ce matin : qu'est-ce qu'un agent, et en quoi est-ce différent d'un ChatGPT qui répond à vos questions ? »
-2. RECONNAÎTRE — « Cet après-midi : les grandes familles d'agents, et des cas réels en RH, en TI et en gestion documentaire. »
+2. RECONNAÎTRE — « Cet après-midi : les grandes familles d'agents, et des cas réels en RH, en IT et en gestion documentaire. »
 3. PRIORISER — « Demain matin : comment choisir les bons cas d'usage, ceux qui rapportent vite sans prendre de risques démesurés. »
 4. CONCEVOIR — « Cadrer un agent : ce qu'il fait, ce qu'il ne fait pas, ses outils, ses garde-fous. On prototypera ensemble. »
 5. DÉPLOYER — « Passer du prototype à la production, et mesurer si ça marche vraiment. »
@@ -15474,7 +15474,7 @@ DIRE — « Boréal Distribution est une entreprise fictive, mais ses chiffres s
 
 Parcourir les cinq services (les compteurs s'animent) :
 • RH — 300 demandes par mois, souvent répétitives : congés, attestations, avantages sociaux.
-• Soutien TI — 1 800 billets par mois, dont environ 35 % de mots de passe oubliés et de demandes d'accès.
+• Soutien IT — 1 800 billets par mois, dont environ 35 % de mots de passe oubliés et de demandes d'accès.
 • Service à la clientèle — 5 000 courriels par mois : suivi de commande, facturation, retours… et quelques clients très mécontents.
 • Finance — 2 500 factures fournisseurs par mois, dans tous les formats possibles.
 • Documentation — 40 000 documents dispersés entre trois outils. « Personne ne sait où se trouve la dernière version de la procédure. »
@@ -15536,7 +15536,7 @@ OBJECTIF — Donner une définition simple, mémorisable, et la rendre concrète
 DIRE — Lisez la définition lentement. « Retenez trois mots : objectif, outils, boucle. Un agent poursuit un but, il agit avec des outils, et il recommence tant que le but n'est pas atteint. »
 
 ANIMATION — Chaque clic ajoute une étape de la boucle ET la ligne correspondante de l'exemple Boréal, à gauche :
-→ beat 1 : PERCEVOIR. « Un courriel arrive au soutien TI : "Je n'ai plus accès à mon compte". »
+→ beat 1 : PERCEVOIR. « Un courriel arrive au soutien IT : "Je n'ai plus accès à mon compte". »
 → beat 2 : RAISONNER. « L'agent comprend qu'il s'agit d'une demande d'accès, et il planifie : d'abord vérifier l'identité. »
 → beat 3 : AGIR. « Il appelle l'outil de réinitialisation du mot de passe. »
 → beat 4 : OBSERVER, la boucle se ferme et le point jaune se met à tourner. « Il vérifie le résultat. Le compte est débloqué ? Il confirme à l'employé. Sinon, il recommence ou passe la main à un technicien. »
@@ -15633,7 +15633,7 @@ TRANSITION — « Reprenons maintenant chacune des trois notions en détail, en 
 
 OBJECTIF — Première notion clé : l'objectif. Un agent ne reçoit pas une recette pas à pas, mais un but qu'il découpe en sous-objectifs, en tâches, puis en appels d'outils.
 
-DIRE — « Le soutien TI de Boréal reçoit environ 1 800 billets par mois. La direction fixe un objectif mesurable : réduire de 30 % le temps de traitement. Ce n'est pas une tâche, c'est un but. »
+DIRE — « Le soutien IT de Boréal reçoit environ 1 800 billets par mois. La direction fixe un objectif mesurable : réduire de 30 % le temps de traitement. Ce n'est pas une tâche, c'est un but. »
 
 ANIMATION —
 → beat 1 : SOUS-OBJECTIFS. « Trois chantiers : trier, régler seul les accès simples, préparer les cas complexes. Environ 35 % des billets touchent les mots de passe et les accès : c'est là qu'est le gros du gain. »
@@ -15641,7 +15641,7 @@ ANIMATION —
 → beat 3 : OUTILS. « Chaque tâche s'appuie sur un outil. Pas d'outil, pas d'action. »
 → beat 4 : « Votre travail, c'est le haut de l'arbre et les limites. Celui de l'agent, c'est le bas. »
 
-À SOULIGNER — Un objectif flou donne un agent flou : « améliorer le soutien TI » ne se décompose pas ; « −30 % du temps de traitement », oui (module 6).
+À SOULIGNER — Un objectif flou donne un agent flou : « améliorer le soutien IT » ne se décompose pas ; « −30 % du temps de traitement », oui (module 6).
 
 INTERACTION — « Quel sous-objectif confieriez-vous à un agent dès demain ? » Attendu : les accès simples, volumineux et à faible risque.
 
@@ -15665,7 +15665,7 @@ TRANSITION — « Un objectif, une mémoire… il reste le plus important : la c
 
 OBJECTIF — Troisième notion clé : la capacité d'agir. Démystifier l'appel d'outil : le modèle ne « fait » rien lui-même, il produit une demande structurée que votre système exécute.
 
-DIRE — « La demande : envoyer à l'équipe un résumé des billets TI critiques de la semaine. Regardez ce que l'agent produit réellement : pas une phrase, un petit bloc JSON. »
+DIRE — « La demande : envoyer à l'équipe un résumé des billets IT critiques de la semaine. Regardez ce que l'agent produit réellement : pas une phrase, un petit bloc JSON. »
 
 ANIMATION —
 → beat 1 : APPEL 1. « Il choisit l'outil rechercher_billets et remplit lui-même les paramètres : priorité critique, sept derniers jours. »
@@ -15685,7 +15685,7 @@ TRANSITION — « Voyons maintenant le raisonnement complet de l'agent, pas à p
 
 OBJECTIF — Rendre concret le fonctionnement interne d'un agent : il n'exécute pas un plan figé, il alterne raisonnement et action, et s'ajuste à ce qu'il observe.
 
-DIRE — « On vient de voir qu'un agent appelle des outils. Mais comment décide-t-il lequel, et quand ? La méthode la plus répandue s'appelle ReAct, pour Reason + Act : raisonner, puis agir, puis observer le résultat… et recommencer. Prenons une tâche banale chez Boréal : envoyer à l'équipe un résumé des billets TI critiques de la semaine. »
+DIRE — « On vient de voir qu'un agent appelle des outils. Mais comment décide-t-il lequel, et quand ? La méthode la plus répandue s'appelle ReAct, pour Reason + Act : raisonner, puis agir, puis observer le résultat… et recommencer. Prenons une tâche banale chez Boréal : envoyer à l'équipe un résumé des billets IT critiques de la semaine. »
 
 ANIMATION — Avancez avec → (ou le bouton « Étape suivante »). Commentez chaque ligne :
 → 1–3 : premier tour. « Il pense d'abord : il lui faut les billets. Il appelle l'outil de recherche. Il observe : 7 billets, dont 2 déjà résolus. »
@@ -15722,7 +15722,7 @@ DIRE — « Le marché bouge chaque mois. Plutôt que de retenir des noms, reten
 ANIMATION —
 → beat 1 : les Modèles, à la base. « Le cerveau : GPT d'OpenAI, Claude d'Anthropic, Gemini de Google, Mistral en France, Llama de Meta avec des poids ouverts… et Cohere, une entreprise canadienne, souvent citée pour les enjeux de souveraineté. On les loue à l'usage par API. »
 → beat 2 : les Frameworks. « Pour les équipes de développement : LangGraph, Microsoft Agent Framework, qui réunit AutoGen et Semantic Kernel, CrewAI pour les équipes d'agents, LlamaIndex pour le RAG, et les SDK d'OpenAI, d'Anthropic et de Google. Plus de contrôle, plus de code. »
-→ beat 3 : les Plateformes. « Clés en main : Copilot Studio si vous êtes sur Microsoft 365, Agentforce dans Salesforce, ServiceNow pour les TI, Gemini Enterprise, Bedrock AgentCore chez AWS… et des outils d'automatisation comme n8n, Make ou Zapier. »
+→ beat 3 : les Plateformes. « Clés en main : Copilot Studio si vous êtes sur Microsoft 365, Agentforce dans Salesforce, ServiceNow pour l'IT, Gemini Enterprise, Bedrock AgentCore chez AWS… et des outils d'automatisation comme n8n, Make ou Zapier. »
 → beat 4 : le bon réflexe. « Le cas d'usage d'abord, l'outil ensuite. »
 
 INTERACTION — « Quelle couche votre organisation utilise-t-elle déjà ? » Souvent : Copilot ou Microsoft 365. « C'est un critère de choix très fort : on y reviendra demain. »
@@ -15734,7 +15734,7 @@ TRANSITION — « Pour brancher ces agents sur vos systèmes, deux standards son
 
 OBJECTIF — Expliquer simplement pourquoi MCP et A2A comptent : ils réduisent le coût d'intégration, le vrai frein des projets d'agents.
 
-DIRE — « Imaginez Boréal avec trois assistants : RH, TI, ventes. Et quatre systèmes : SharePoint, l'ERP, le CRM, le courriel. »
+DIRE — « Imaginez Boréal avec trois assistants : RH, IT, ventes. Et quatre systèmes : SharePoint, l'ERP, le CRM, le courriel. »
 
 ANIMATION —
 → beat 1 : le spaghetti. « Sans standard, chaque assistant a besoin de son propre branchement vers chaque système : 3 × 4 = 12 intégrations à développer et à maintenir. Et chaque nouveau système multiplie le travail. »
@@ -15864,7 +15864,7 @@ TRANSITION — « Voici à quoi ressemble une carte d'identité bien remplie. »
 
 OBJECTIF — Montrer un exemple complet et réaliste de carte d'identité, pour que les duos aient un modèle à imiter.
 
-DIRE — « Voici l'agent Aide-accès TI de Boréal. Il cible environ 630 billets par mois : les 35 % de mots de passe oubliés et de demandes d'accès parmi les 1 800 billets TI. Niveau d'autonomie visé : L3, il agit seul, mais dans un cadre strict. »
+DIRE — « Voici l'agent Aide-accès IT de Boréal. Il cible environ 630 billets par mois : les 35 % de mots de passe oubliés et de demandes d'accès parmi les 1 800 billets IT. Niveau d'autonomie visé : L3, il agit seul, mais dans un cadre strict. »
 
 ANIMATION — Quatre clics, deux rubriques à la fois :
 → beat 1 : Objectif et utilisateurs. « L'objectif est chiffré : moins de 5 minutes. Un objectif sans chiffre ne se mesure pas. »
@@ -15883,7 +15883,7 @@ OBJECTIF — Donner une grille d'évaluation simple et pondérée, que les parti
 
 DIRE — « Huit critères, avec des poids différents. Les deux plus lourds, ×3 : le volume — un agent coûte cher à concevoir, il doit servir souvent — et l'erreur récupérable. Si une erreur de l'agent est irréversible, on change de catégorie de risque. »
 
-ANIMATION — Faites la démonstration avec Aide-accès TI : cochez tous les critères sauf le dernier (les comptes d'accès sont sensibles). Le score monte à 15 sur 16 : « excellent candidat ». Puis décochez tout et lancez le minuteur de l'atelier.
+ANIMATION — Faites la démonstration avec Aide-accès IT : cochez tous les critères sauf le dernier (les comptes d'accès sont sensibles). Le score monte à 15 sur 16 : « excellent candidat ». Puis décochez tout et lancez le minuteur de l'atelier.
 
 PARTAGES — Après le travail en duo, deux ou trois duos présentent leur agent en deux minutes. Cochez la grille en direct avec le groupe. Questions utiles : « Combien de fois par mois ? », « Que se passe-t-il si l'agent se trompe ? », « Qui est votre parrain ? »
 
@@ -16046,7 +16046,7 @@ DIRE — « Une ligne par type, trois jauges : autonomie, complexité de constru
 ANIMATION — Les lignes et les jauges se remplissent d'elles-mêmes. Lisez-les de haut en bas :
 • Conversationnel : tout au minimum. FAQ RH.
 • Assistant RAG : un cran plus haut. Le défi, c'est la qualité documentaire.
-• Multi-outils : niveau moyen partout. Aide-accès TI, 630 billets par mois.
+• Multi-outils : niveau moyen partout. Aide-accès IT, 630 billets par mois.
 • Autonome : autonomie et risque élevés. Veille des fournisseurs.
 • Multi-agents : complexité maximale. Appels d'offres.
 
@@ -16128,14 +16128,14 @@ INTERACTION — « Repassez votre agent de l'atelier dans cet arbre. Où s'arrê
 
 À NOTER — Si le module a pris du retard, réduisez cette page à l'arbre de décision seulement.
 
-TRANSITION — « Pause de 15 minutes. Au retour, trois cas concrets chez Boréal — RH, soutien TI et assistant documentaire — avec leurs garde-fous. »`,
+TRANSITION — « Pause de 15 minutes. Au retour, trois cas concrets chez Boréal — RH, soutien IT et assistant documentaire — avec leurs garde-fous. »`,
   `⏱ 1 min · DÉBUT DU MODULE 4 (≈ 14 h 30, retour de la pause)
 
 OBJECTIF — Relancer l'énergie après la pause et annoncer un module très concret.
 
 DIRE — « Ce matin, on a défini ce qu'est un agent ; tout à l'heure, on a vu les grandes familles. Maintenant, on passe au concret : trois agents chez Boréal, un par service, du plus simple au plus délicat. »
 
-« Premier cas : les RH, avec un assistant qui répond aux employés. Deuxième cas : le soutien TI, avec un agent qui traite les billets de mots de passe et d'accès. Troisième cas : l'assistant documentaire, qui cherche dans 40 000 documents et cite ses sources. »
+« Premier cas : les RH, avec un assistant qui répond aux employés. Deuxième cas : le soutien IT, avec un agent qui traite les billets de mots de passe et d'accès. Troisième cas : l'assistant documentaire, qui cherche dans 40 000 documents et cite ses sources. »
 
 « Pour chacun, on regardera trois choses : le parcours de l'utilisateur, l'architecture, et surtout les garde-fous. Puis on sortira de Boréal pour regarder de vrais échecs publics : Klarna, Air Canada, un concessionnaire Chevrolet. Et vous terminerez par un exercice où c'est vous qui chassez les failles. »
 
@@ -16172,12 +16172,12 @@ ANIMATION — Chaque clic révèle une exigence et allume la partie du schéma q
 
 QUESTION — « Dans vos organisations, qui est le responsable de la protection des renseignements personnels ? »
 
-TRANSITION — « Passons au soutien TI, où l'agent ne se contente plus de répondre : il agit. »`,
-  `⏱ 8 min · ÉTUDE DE CAS TI
+TRANSITION — « Passons au soutien IT, où l'agent ne se contente plus de répondre : il agit. »`,
+  `⏱ 8 min · ÉTUDE DE CAS IT
 
 OBJECTIF — Montrer un flux où l'agent agit réellement, avec une vérification avant l'action et une sortie de secours vers l'humain.
 
-DIRE — « Chez Boréal, le soutien TI reçoit 1 800 billets par mois. Environ un tiers, ce sont des mots de passe oubliés et des demandes d'accès : répétitif, bien défini, mesurable. Le candidat parfait. »
+DIRE — « Chez Boréal, le soutien IT reçoit 1 800 billets par mois. Environ un tiers, ce sont des mots de passe oubliés et des demandes d'accès : répétitif, bien défini, mesurable. Le candidat parfait. »
 
 ANIMATION —
 → Au départ : la demande arrive, l'agent la classe (intention, urgence, catégorie).
@@ -16190,7 +16190,7 @@ ANIMATION —
 QUESTION — « Combien de temps prend une réinitialisation chez vous, de la demande à la résolution ? »
 
 TRANSITION — « Un agent qui agit sur des comptes, ça demande une discipline précise : le moindre privilège. »`,
-  `⏱ 7 min · ÉTUDE DE CAS TI (suite)
+  `⏱ 7 min · ÉTUDE DE CAS IT (suite)
 
 OBJECTIF — Faire comprendre le principe du moindre privilège, et qu'une consigne écrite dans un prompt n'est jamais une barrière technique.
 
@@ -16230,16 +16230,16 @@ OBJECTIF — Comparer les trois cas sur cinq critères et préparer la logique d
 DIRE — « Même famille d'agents, mais des profils très différents. On les compare critère par critère. »
 
 ANIMATION — Un critère par clic. Laissez le groupe deviner avant de révéler.
-→ beat 1 : autonomie. L'agent TI agit sur des comptes ; l'assistant documentaire ne modifie rien.
+→ beat 1 : autonomie. L'agent IT agit sur des comptes ; l'assistant documentaire ne modifie rien.
 → beat 2 : sensibilité des données. Les RH sont au maximum : dossiers d'employés.
 → beat 3 : risque principal. « Chaque cas a son risque : fuite, usurpation, réponse périmée. »
-→ beat 4 : gain attendu. Le TI l'emporte : environ 630 billets par mois.
+→ beat 4 : gain attendu. L'IT l'emporte : environ 630 billets par mois.
 → beat 5 : effort. Le documentaire est le plus lourd, pas à cause de l'IA, mais à cause du ménage des 40 000 documents.
-→ beat 6 : verdict. TI = quick win. RH = quick win à condition de commencer par la FAQ, sans données sensibles. Documentaire = projet stratégique.
+→ beat 6 : verdict. IT = quick win. RH = quick win à condition de commencer par la FAQ, sans données sensibles. Documentaire = projet stratégique.
 
 À SOULIGNER — Les jauges sont des estimations pour la discussion, pas des mesures. Demain, on fera ce même exercice avec une vraie matrice impact/complexité.
 
-QUESTION — « Si vous deviez n'en lancer qu'un lundi, lequel ? » La majorité choisit le TI : parfait, c'est la logique du quick win.
+QUESTION — « Si vous deviez n'en lancer qu'un lundi, lequel ? » La majorité choisit l'IT : parfait, c'est la logique du quick win.
 
 TRANSITION — « Ces cas sont fictifs. Regardons maintenant de vrais déploiements, et ce qu'ils nous ont appris. »`,
   `⏱ 9 min · LEÇONS DU TERRAIN
@@ -16435,7 +16435,7 @@ OBJECTIF — Appliquer la matrice sur neuf cas concrets et débattre des cas lim
 CONSIGNE — Équipes de 3 ou 4. Chaque équipe classe les 9 cas sur papier (8 min). Puis un volontaire glisse les cartes à l'écran selon le consensus de la salle (5 min). Double-clic sur une carte : elle revient à sa place.
 
 ANIMATION — Révélez la solution, quadrant par quadrant :
-→ beat 1 : quick wins. FAQ RH (300 demandes/mois), mots de passe et accès (≈ 35 % des 1 800 billets TI), rapport de ventes hebdomadaire.
+→ beat 1 : quick wins. FAQ RH (300 demandes/mois), mots de passe et accès (≈ 35 % des 1 800 billets IT), rapport de ventes hebdomadaire.
 → beat 2 : stratégiques. Courriels clients (5 000/mois, mais ton, escalades, données clients) et factures (2 500/mois, ERP, contrôle). Le RAG est limite : très utile, mais 40 000 documents à nettoyer et des droits d'accès à respecter. « Si vous commencez par un seul dossier propre, il devient un quick win. »
 → beat 3 : gadget (les mèmes) et à éviter (négociation autonome : engage l'entreprise, aucune marge d'erreur, gains incertains).
 → beat 4 : le PIÈGE. « Les tournées de livraison ? Ce n'est pas un problème d'agent ! C'est de l'optimisation classique, résolue depuis des décennies par des solveurs : plus fiables, moins chers et prévisibles. »
@@ -16449,7 +16449,7 @@ OBJECTIF — Rendre reconnaissables les quick wins, pour que les participants sa
 
 DIRE — « Un quick win a cinq signes. La tâche revient souvent et toujours de la même façon. Les données sont déjà là : pas de grand chantier de nettoyage. Une erreur se rattrape facilement. Le gain se mesure en semaines, pas en années. Et surtout, un gestionnaire le réclame : sans parrain, même le meilleur cas meurt dans un tiroir. »
 
-ANIMATION — → beat 1 : TI. « 1 800 billets par mois, dont 35 % pour des mots de passe ou des accès, soit environ 630. L'agent vérifie l'identité, réinitialise et passe la main au moindre doute. »
+ANIMATION — → beat 1 : IT. « 1 800 billets par mois, dont 35 % pour des mots de passe ou des accès, soit environ 630. L'agent vérifie l'identité, réinitialise et passe la main au moindre doute. »
 → beat 2 : RH. « 300 demandes par mois sur les vacances, les avantages sociaux, le télétravail. L'agent répond à partir de la politique, en citant la section. »
 → beat 3 : Ventes. « Chaque lundi, quelqu'un passe deux heures à compiler des chiffres. L'agent le fait avant 8 h. »
 → beat 4 : à retenir.
@@ -16481,7 +16481,7 @@ TRANSITION — « Vous avez vos cas. Reste la question que posera votre directri
 
 OBJECTIF — Montrer qu'un ROI se calcule en cinq minutes, et que quelques hypothèses font basculer la décision.
 
-DIRE — « Prenons les billets "mot de passe" du TI : environ 630 par mois, 8 minutes gagnées chacun, un taux chargé de 45 $ de l'heure, un agent à 1 500 $ par mois. Résultat : environ 1 000 heures libérées et 27 000 $ nets par an, rentabilisés en moins de 9 mois. »
+DIRE — « Prenons les billets "mot de passe" de l'IT : environ 630 par mois, 8 minutes gagnées chacun, un taux chargé de 45 $ de l'heure, un agent à 1 500 $ par mois. Résultat : environ 1 000 heures libérées et 27 000 $ nets par an, rentabilisés en moins de 9 mois. »
 
 INTERACTION — Faites bouger les curseurs en direct :
 • Baissez le temps gagné à 3 minutes : le gain net s'effondre. « Mesurez le temps réel avant de promettre. »
@@ -16607,7 +16607,7 @@ ANIMATION / INTERACTION — Passer les beats rapidement, environ 10 secondes cha
 
 Puis lancer le minuteur de 12 minutes (clic sur Démarrer). Consignes : un cas par équipe, un scribe. Commencer par les cases 1 et 3 : si l'objectif et le périmètre ne sont pas clairs, le reste ne tiendra pas.
 
-Pendant l'atelier : circuler. Pièges fréquents : un objectif sans métrique de qualité ; une case 3 sans « ne fait jamais » ; une case 8 où le responsable est « l'équipe TI » ou « l'agent ». Relancer avec : « Qui perd son bonus si ça tourne mal ? »
+Pendant l'atelier : circuler. Pièges fréquents : un objectif sans métrique de qualité ; une case 3 sans « ne fait jamais » ; une case 8 où le responsable est « l'équipe IT » ou « l'agent ». Relancer avec : « Qui perd son bonus si ça tourne mal ? »
 
 À 2 minutes de la fin, l'annoncer. Si le temps manque, une ou deux équipes présentent ; les autres, après le dîner.
 
@@ -16856,7 +16856,7 @@ ASTUCE — Proposer aux participants de photographier la grille : elle s'adapte 
 TRANSITION — « Plusieurs de ces critères touchent l'infrastructure. Regardons-la de plus près. »`,
   `⏱ 4 min
 
-OBJECTIF — Donner les cinq pratiques d'infrastructure non négociables, sans jargon excessif, pour que les gestionnaires sachent quoi exiger des TI ou du fournisseur.
+OBJECTIF — Donner les cinq pratiques d'infrastructure non négociables, sans jargon excessif, pour que les gestionnaires sachent quoi exiger de l'IT ou du fournisseur.
 
 DIRE — « Un agent, c'est un employé à privilèges qui travaille 24 heures sur 24 et qui peut se faire manipuler par un courriel piégé. On le sécurise en conséquence. »
 → beat 1 : « Les clés d'API et les mots de passe vivent dans un coffre-fort de secrets. Jamais dans le code, jamais dans le prompt : un prompt peut fuiter. »
@@ -16962,9 +16962,9 @@ DIRE — « Trois méthodes, du plus automatique au plus humain. »
 → beat 3 : « L'évaluation humaine : des experts relisent un échantillon chaque semaine. C'est la vérité terrain, qui calibre les deux autres. »
 → beat 4 : un cas concret du jeu doré, tiré du simulateur de l'atelier.
 → beat 5 : « Le ton est à 4 sur 5 : rien de grave, mais c'est le genre de signal qu'on suit dans le temps. »
-→ beat 6 : « RAGAS pour les assistants documentaires, DeepEval et promptfoo pour automatiser les tests : vos équipes TI les adopteront vite. »
+→ beat 6 : « RAGAS pour les assistants documentaires, DeepEval et promptfoo pour automatiser les tests : vos équipes IT les adopteront vite. »
 
-INTERACTION — « Qui, chez vous, pourrait valider les réponses du jeu doré ? » Faire ressortir le rôle des experts métier, pas seulement des TI.
+INTERACTION — « Qui, chez vous, pourrait valider les réponses du jeu doré ? » Faire ressortir le rôle des experts métier, pas seulement de l'IT.
 
 TRANSITION — « Évaluer avant de déployer, c'est bien. Mais en production, il faut voir ce que l'agent fait vraiment. »`,
   `⏱ 4 min
@@ -17038,7 +17038,7 @@ OBJECTIF — Transformer deux jours de contenu en un plan d'action daté. C'est 
 DIRE — « Le mandat de Boréal était clair : une feuille de route IA agentique réaliste, sur 90 jours. La voici, et elle vaut aussi pour votre organisation. Remarquez que chaque phase se termine par un jalon : une décision écrite, pas une impression. »
 
 ANIMATION —
-→ beat 1 : Jours 0 à 30, CADRER. « On choisit UN quick win de la matrice — pour Boréal, la FAQ RH ou les accès TI. On rédige la charte d'agent, on nomme un parrain métier et on lance l'EFVP si des renseignements personnels sont en jeu. »
+→ beat 1 : Jours 0 à 30, CADRER. « On choisit UN quick win de la matrice — pour Boréal, la FAQ RH ou les accès IT. On rédige la charte d'agent, on nomme un parrain métier et on lance l'EFVP si des renseignements personnels sont en jeu. »
 → beat 2 : Jours 31 à 60, PROTOTYPER ET PILOTER. « Prototype évalué sur des cas de référence, puis petit groupe pilote, avec un humain qui valide. Au jour 60 : go ou no-go, selon la checklist du module 9. »
 → beat 3 : Jours 61 à 90, MESURER ET DÉCIDER. « Les KPI du module 10. Trois issues : déployer, ajuster ou arrêter — arrêter est légitime. Et on prépare le deuxième cas. »
 

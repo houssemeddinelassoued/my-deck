@@ -8,7 +8,7 @@ const M4_Divider: Page = () => (
     kind="cas"
   >
     <SecItem n={1}>Cas RH : l’assistant qui répond aux employés</SecItem>
-    <SecItem n={2}>Cas TI : l’agent qui traite les billets</SecItem>
+    <SecItem n={2}>Cas IT : l’agent qui traite les billets</SecItem>
     <SecItem n={3}>Cas documentaire : l’assistant qui cite ses sources</SecItem>
     <SecItem n={4}>Leçons du terrain et exercice « repérez les failles »</SecItem>
   </Section>
@@ -363,7 +363,7 @@ const M4_RhArchi: Page = () => (
   </Frame>
 );
 
-// ─── Cas TI : flux d'un billet ──────────────────────────────────────────────
+// ─── Cas IT : flux d'un billet ──────────────────────────────────────────────
 const M4FlowNode = ({
   x,
   y,
@@ -431,7 +431,7 @@ const M4Kpi = ({ value, tone, d, children }: { value: string; tone: Tone; d: num
 
 const M4_TiFlow: Page = () => (
   <Frame mod={4} kind="cas" beats={5}>
-    <Title>Cas TI : le parcours d’un billet</Title>
+    <Title>Cas IT : le parcours d’un billet</Title>
     <Lede>≈ 35 % des 1 800 billets mensuels sont des mots de passe et des accès : un flux idéal.</Lede>
 
     <svg width={1920} height={1080} style={{ position: 'absolute', left: 0, top: 0, pointerEvents: 'none', overflow: 'visible' }}>
@@ -502,7 +502,7 @@ const M4_TiFlow: Page = () => (
 
     <div style={{ position: 'absolute', left: 120, top: 806, width: 1680, display: 'flex', gap: 20 }}>
       <M4Kpi value="1 800" tone="blue" d={0}>
-        billets par mois au soutien TI
+        billets par mois au soutien IT
       </M4Kpi>
       <M4Kpi value="≈ 35 %" tone="violet" d={150}>
         mots de passe et demandes d’accès
@@ -517,7 +517,7 @@ const M4_TiFlow: Page = () => (
   </Frame>
 );
 
-// ─── Cas TI : moindre privilège ─────────────────────────────────────────────
+// ─── Cas IT : moindre privilège ─────────────────────────────────────────────
 const M4Perm = ({ ok, children }: { ok: boolean; children: ReactNode }) => (
   <div style={{ display: 'flex', gap: 14, alignItems: 'flex-start', fontSize: 23, lineHeight: 1.35, color: C.ink }}>
     <span
@@ -569,7 +569,7 @@ const M4TlStep = ({ n, d, last = false, children }: { n: number; d: number; last
 
 const M4_TiPrivilege: Page = () => (
   <Frame mod={4} kind="cas" beats={3}>
-    <Title>Cas TI : le principe du moindre privilège</Title>
+    <Title>Cas IT : le principe du moindre privilège</Title>
     <Lede>Donner à l’agent le strict nécessaire, et rendre l’irréversible impossible sans un humain.</Lede>
     <div style={{ position: 'absolute', left: 120, top: 280, width: 940, display: 'flex', gap: 30, alignItems: 'flex-start' }}>
       <M4PermCol tone="green" icon="key" title="Droits accordés" cls={A.in}>
@@ -960,7 +960,7 @@ const M4_Compare: Page = () => (
     <div style={{ position: 'absolute', left: 120, top: 282, width: 1680, display: 'flex', gap: 20 }}>
       <div style={{ width: 360 }} />
       <M4CaseHead icon="users" tone="blue" title="Assistant RH" d={100} />
-      <M4CaseHead icon="ticket" tone="violet" title="Agent soutien TI" d={200} />
+      <M4CaseHead icon="ticket" tone="violet" title="Agent soutien IT" d={200} />
       <M4CaseHead icon="book" tone="teal" title="Assistant documentaire" d={300} />
     </div>
     <div style={{ position: 'absolute', left: 120, top: 362, width: 1680, display: 'flex', flexDirection: 'column', gap: 10 }}>
@@ -1370,7 +1370,7 @@ const M4_DaySynth: Page = () => (
       </M4DayCard>
       <M4DayCard n={4} tone="green" title="Études de cas réels" d={550}>
         <Bullet size={23} tone="green">
-          RH, TI, documents : même logique, risques différents
+          RH, IT, documents : même logique, risques différents
         </Bullet>
         <Bullet size={23} tone="green">
           Moindre privilège, plafonds, journal, humain
@@ -1505,7 +1505,7 @@ OBJECTIF — Relancer l'énergie après la pause et annoncer un module très con
 
 DIRE — « Ce matin, on a défini ce qu'est un agent ; tout à l'heure, on a vu les grandes familles. Maintenant, on passe au concret : trois agents chez Boréal, un par service, du plus simple au plus délicat. »
 
-« Premier cas : les RH, avec un assistant qui répond aux employés. Deuxième cas : le soutien TI, avec un agent qui traite les billets de mots de passe et d'accès. Troisième cas : l'assistant documentaire, qui cherche dans 40 000 documents et cite ses sources. »
+« Premier cas : les RH, avec un assistant qui répond aux employés. Deuxième cas : le soutien IT, avec un agent qui traite les billets de mots de passe et d'accès. Troisième cas : l'assistant documentaire, qui cherche dans 40 000 documents et cite ses sources. »
 
 « Pour chacun, on regardera trois choses : le parcours de l'utilisateur, l'architecture, et surtout les garde-fous. Puis on sortira de Boréal pour regarder de vrais échecs publics : Klarna, Air Canada, un concessionnaire Chevrolet. Et vous terminerez par un exercice où c'est vous qui chassez les failles. »
 
@@ -1542,12 +1542,12 @@ ANIMATION — Chaque clic révèle une exigence et allume la partie du schéma q
 
 QUESTION — « Dans vos organisations, qui est le responsable de la protection des renseignements personnels ? »
 
-TRANSITION — « Passons au soutien TI, où l'agent ne se contente plus de répondre : il agit. »`,
-  `⏱ 8 min · ÉTUDE DE CAS TI
+TRANSITION — « Passons au soutien IT, où l'agent ne se contente plus de répondre : il agit. »`,
+  `⏱ 8 min · ÉTUDE DE CAS IT
 
 OBJECTIF — Montrer un flux où l'agent agit réellement, avec une vérification avant l'action et une sortie de secours vers l'humain.
 
-DIRE — « Chez Boréal, le soutien TI reçoit 1 800 billets par mois. Environ un tiers, ce sont des mots de passe oubliés et des demandes d'accès : répétitif, bien défini, mesurable. Le candidat parfait. »
+DIRE — « Chez Boréal, le soutien IT reçoit 1 800 billets par mois. Environ un tiers, ce sont des mots de passe oubliés et des demandes d'accès : répétitif, bien défini, mesurable. Le candidat parfait. »
 
 ANIMATION —
 → Au départ : la demande arrive, l'agent la classe (intention, urgence, catégorie).
@@ -1560,7 +1560,7 @@ ANIMATION —
 QUESTION — « Combien de temps prend une réinitialisation chez vous, de la demande à la résolution ? »
 
 TRANSITION — « Un agent qui agit sur des comptes, ça demande une discipline précise : le moindre privilège. »`,
-  `⏱ 7 min · ÉTUDE DE CAS TI (suite)
+  `⏱ 7 min · ÉTUDE DE CAS IT (suite)
 
 OBJECTIF — Faire comprendre le principe du moindre privilège, et qu'une consigne écrite dans un prompt n'est jamais une barrière technique.
 
@@ -1600,16 +1600,16 @@ OBJECTIF — Comparer les trois cas sur cinq critères et préparer la logique d
 DIRE — « Même famille d'agents, mais des profils très différents. On les compare critère par critère. »
 
 ANIMATION — Un critère par clic. Laissez le groupe deviner avant de révéler.
-→ beat 1 : autonomie. L'agent TI agit sur des comptes ; l'assistant documentaire ne modifie rien.
+→ beat 1 : autonomie. L'agent IT agit sur des comptes ; l'assistant documentaire ne modifie rien.
 → beat 2 : sensibilité des données. Les RH sont au maximum : dossiers d'employés.
 → beat 3 : risque principal. « Chaque cas a son risque : fuite, usurpation, réponse périmée. »
-→ beat 4 : gain attendu. Le TI l'emporte : environ 630 billets par mois.
+→ beat 4 : gain attendu. L'IT l'emporte : environ 630 billets par mois.
 → beat 5 : effort. Le documentaire est le plus lourd, pas à cause de l'IA, mais à cause du ménage des 40 000 documents.
-→ beat 6 : verdict. TI = quick win. RH = quick win à condition de commencer par la FAQ, sans données sensibles. Documentaire = projet stratégique.
+→ beat 6 : verdict. IT = quick win. RH = quick win à condition de commencer par la FAQ, sans données sensibles. Documentaire = projet stratégique.
 
 À SOULIGNER — Les jauges sont des estimations pour la discussion, pas des mesures. Demain, on fera ce même exercice avec une vraie matrice impact/complexité.
 
-QUESTION — « Si vous deviez n'en lancer qu'un lundi, lequel ? » La majorité choisit le TI : parfait, c'est la logique du quick win.
+QUESTION — « Si vous deviez n'en lancer qu'un lundi, lequel ? » La majorité choisit l'IT : parfait, c'est la logique du quick win.
 
 TRANSITION — « Ces cas sont fictifs. Regardons maintenant de vrais déploiements, et ce qu'ils nous ont appris. »`,
   `⏱ 9 min · LEÇONS DU TERRAIN

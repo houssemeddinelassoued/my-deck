@@ -137,7 +137,7 @@ const M1d_Goals: Page = () => (
       >
         <Icon name="target" size={48} color="#fff" sw={2} />
         <span style={{ fontFamily: display, fontWeight: 700, fontSize: 36, lineHeight: 1.05, color: '#fff' }}>
-          Réduire de 30 % le temps de traitement des billets TI
+          Réduire de 30 % le temps de traitement des billets IT
         </span>
       </div>
     </div>
@@ -324,7 +324,7 @@ const M1d_Memory: Page = () => (
       <M1dFact k="langue">français</M1dFact>
       <M1dFact k="service">Finance · Montréal</M1dFact>
       <M1dFact k="poste">portable, Windows 11</M1dFact>
-      <M1dFact k="savoirs">procédures TI (base RAG)</M1dFact>
+      <M1dFact k="savoirs">procédures IT (base RAG)</M1dFact>
     </M1dMemCol>
     <M1dMemCol
       x={1260}
@@ -484,7 +484,7 @@ export const __notes = [
 
 OBJECTIF — Première notion clé : l'objectif. Un agent ne reçoit pas une recette pas à pas, mais un but qu'il découpe en sous-objectifs, en tâches, puis en appels d'outils.
 
-DIRE — « Le soutien TI de Boréal reçoit environ 1 800 billets par mois. La direction fixe un objectif mesurable : réduire de 30 % le temps de traitement. Ce n'est pas une tâche, c'est un but. »
+DIRE — « Le soutien IT de Boréal reçoit environ 1 800 billets par mois. La direction fixe un objectif mesurable : réduire de 30 % le temps de traitement. Ce n'est pas une tâche, c'est un but. »
 
 ANIMATION —
 → beat 1 : SOUS-OBJECTIFS. « Trois chantiers : trier, régler seul les accès simples, préparer les cas complexes. Environ 35 % des billets touchent les mots de passe et les accès : c'est là qu'est le gros du gain. »
@@ -492,7 +492,7 @@ ANIMATION —
 → beat 3 : OUTILS. « Chaque tâche s'appuie sur un outil. Pas d'outil, pas d'action. »
 → beat 4 : « Votre travail, c'est le haut de l'arbre et les limites. Celui de l'agent, c'est le bas. »
 
-À SOULIGNER — Un objectif flou donne un agent flou : « améliorer le soutien TI » ne se décompose pas ; « −30 % du temps de traitement », oui (module 6).
+À SOULIGNER — Un objectif flou donne un agent flou : « améliorer le soutien IT » ne se décompose pas ; « −30 % du temps de traitement », oui (module 6).
 
 INTERACTION — « Quel sous-objectif confieriez-vous à un agent dès demain ? » Attendu : les accès simples, volumineux et à faible risque.
 
@@ -516,7 +516,7 @@ TRANSITION — « Un objectif, une mémoire… il reste le plus important : la c
 
 OBJECTIF — Troisième notion clé : la capacité d'agir. Démystifier l'appel d'outil : le modèle ne « fait » rien lui-même, il produit une demande structurée que votre système exécute.
 
-DIRE — « La demande : envoyer à l'équipe un résumé des billets TI critiques de la semaine. Regardez ce que l'agent produit réellement : pas une phrase, un petit bloc JSON. »
+DIRE — « La demande : envoyer à l'équipe un résumé des billets IT critiques de la semaine. Regardez ce que l'agent produit réellement : pas une phrase, un petit bloc JSON. »
 
 ANIMATION —
 → beat 1 : APPEL 1. « Il choisit l'outil rechercher_billets et remplit lui-même les paramètres : priorité critique, sept derniers jours. »

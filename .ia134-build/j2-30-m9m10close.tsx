@@ -692,7 +692,7 @@ ASTUCE — Proposer aux participants de photographier la grille : elle s'adapte 
 TRANSITION — « Plusieurs de ces critères touchent l'infrastructure. Regardons-la de plus près. »`,
   `⏱ 4 min
 
-OBJECTIF — Donner les cinq pratiques d'infrastructure non négociables, sans jargon excessif, pour que les gestionnaires sachent quoi exiger des TI ou du fournisseur.
+OBJECTIF — Donner les cinq pratiques d'infrastructure non négociables, sans jargon excessif, pour que les gestionnaires sachent quoi exiger de l'IT ou du fournisseur.
 
 DIRE — « Un agent, c'est un employé à privilèges qui travaille 24 heures sur 24 et qui peut se faire manipuler par un courriel piégé. On le sécurise en conséquence. »
 → beat 1 : « Les clés d'API et les mots de passe vivent dans un coffre-fort de secrets. Jamais dans le code, jamais dans le prompt : un prompt peut fuiter. »
