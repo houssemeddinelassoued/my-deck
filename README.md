@@ -190,6 +190,5 @@ Le dépôt est configuré pour **Claude Code** : demandez « fais une présentat
 <div align="center">
 
 Créé par **Houssem Eddine Lassoued** · [LinkedIn](https://www.linkedin.com/in/houssemeddinelassoued)<br>
-<sub>Construit avec <a href="https://open-slide.dev">open-slide</a>.</sub>
 
 </div>
