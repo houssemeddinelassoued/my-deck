@@ -32,7 +32,7 @@ index 76f82bc..944bf66 100644
  					return json(res, 200, folder);
  				}
 diff --git a/src/app/app.tsx b/src/app/app.tsx
-index 650f670..f0d3684 100644
+index 650f670..732afd6 100644
 --- a/src/app/app.tsx
 +++ b/src/app/app.tsx
 @@ -1,5 +1,6 @@
@@ -42,7 +42,15 @@ index 650f670..f0d3684 100644
  import { Toaster } from './components/ui/sonner';
  import { TooltipProvider } from './components/ui/tooltip';
  import { useLocale } from './lib/use-locale';
-@@ -25,8 +26,22 @@ export function App() {
+@@ -7,6 +8,7 @@ import { AssetsPage } from './routes/assets';
+ import { Home } from './routes/home';
+ import { HomeShell } from './routes/home-shell';
+ import { Presenter } from './routes/presenter';
++import { ShareViewer } from './routes/share-viewer';
+ import { Slide } from './routes/slide';
+ import { ThemeDetailPage, ThemesGalleryPage } from './routes/themes';
+ 
+@@ -25,8 +27,25 @@ export function App() {
                <Route path="/assets" element={<AssetsPage />} />
              </Route>
            )}
@@ -64,6 +72,9 @@ index 650f670..f0d3684 100644
 +              </SlideLockGate>
 +            }
 +          />
++          {/* Read-only share links: play-only viewer, outside the folder lock
++              (sharing the link is the owner's explicit grant). */}
++          <Route path="/v/:code" element={<ShareViewer />} />
            <Route path="*" element={<NotFound />} />
          </Routes>
        </TooltipProvider>
@@ -374,19 +385,20 @@ index 0000000..40c13c0
 +  );
 +}
 diff --git a/src/app/components/note-markdown.tsx b/src/app/components/note-markdown.tsx
-index cd55fd8..7f5cd53 100644
+index cd55fd8..a7ed8a6 100644
 --- a/src/app/components/note-markdown.tsx
 +++ b/src/app/components/note-markdown.tsx
 @@ -1,4 +1,4 @@
 -import { Fragment, type ReactNode, useMemo } from 'react';
-+import { type CSSProperties, Fragment, type ReactNode, useMemo } from 'react';
++import { type CSSProperties, Fragment, type ReactNode, useEffect, useMemo, useRef } from 'react';
  import { type NoteBlock, type NoteInline, parseNoteMarkdown } from '@/lib/note-markdown';
  
  const CODE_CLASS = 'rounded-[3px] bg-foreground/12 px-[0.3em] py-[0.1em] font-mono text-[0.9em]';
-@@ -79,7 +79,270 @@ function renderBlock(block: NoteBlock, key: number): ReactNode {
+@@ -79,7 +79,385 @@ function renderBlock(block: NoteBlock, key: number): ReactNode {
    }
  }
  
+-export function NoteMarkdown({ text }: { text: string }) {
 +// ─── Cue colouring ──────────────────────────────────────────────────────────
 +// Notes written as labelled sections (`DIRE — …`, `ANIMATION — …`,
 +// `INTERACTION — …`) are rendered as colour-coded blocks so the presenter
@@ -444,7 +456,49 @@ index cd55fd8..7f5cd53 100644
 +.osn-cues .osn-time{color:var(--osn-info);font-weight:600;font-size:.9em}
 +.osn-cues .osn-legend{display:flex;flex-wrap:wrap;gap:.3em .9em;font-size:.72em;color:var(--osn-info);padding-bottom:.3em;border-bottom:1px solid color-mix(in srgb,var(--osn-info) 30%,transparent)}
 +.osn-cues .osn-legend i{display:inline-block;width:.75em;height:.75em;border-radius:2px;background:var(--osn-k);margin-right:.35em;vertical-align:-.05em}
++.osn-cues .osn-progress{margin-left:auto;color:var(--osn-click);font-weight:700}
++.osn-cues .osn-step{display:block;margin:0 -.35em;padding:.05em .35em;border-radius:4px;transition:background-color .2s,opacity .2s}
++.osn-cues .osn-step[data-state=done]{opacity:.45}
++.osn-cues .osn-step[data-state=now]{background:color-mix(in srgb,var(--osn-click) 24%,transparent);box-shadow:inset 3px 0 0 var(--osn-click)}
++.osn-cues .osn-arrow[data-state=done]{opacity:.6}
++.osn-cues .osn-arrow[data-state=now]{outline:2px solid var(--osn-click);outline-offset:2px}
++.osn-cues .osn-arrow[data-state=next]{background:transparent;color:var(--osn-click);box-shadow:inset 0 0 0 1.5px var(--osn-click)}
++.osn-cues .osn-here{display:inline-block;margin-left:.4em;padding:0 .4em;border-radius:999px;background:var(--osn-click);color:var(--card);font-size:.7em;font-weight:800;letter-spacing:.04em;line-height:1.6;vertical-align:.1em;white-space:nowrap}
++.osn-cues .osn-here[data-state=next]{background:transparent;color:var(--osn-click);box-shadow:inset 0 0 0 1px var(--osn-click)}
 +`;
++
++// Presenter step tracking: `→ beat N` / `→ 3–5` cues are compared with the
++// number of reveals already shown on the projection (`step`).
++type StepState = 'done' | 'now' | 'next' | 'todo';
++
++function cueRange(text: string): [number, number] | null {
++  const m = /(\d+)(?:\s*[–-]\s*(\d+))?/.exec(text);
++  return m ? [Number(m[1]), Number(m[2] ?? m[1])] : null;
++}
++
++function stepState(range: [number, number] | null, step: number | null): StepState | undefined {
++  if (!range || step === null) return undefined;
++  const [from, to] = range;
++  if (to < step) return 'done';
++  if (from <= step) return 'now';
++  return from === step + 1 ? 'next' : 'todo';
++}
++
++// A paragraph line that opens with a click cue (`→ beat 2 : …`).
++const STEP_LINE = /^\s*→\s+(?:beat\s+)?\d/i;
++
++function lineRange(line: NoteInline[]): [number, number] | null {
++  const head = line[0];
++  if (head?.type !== 'text' || !STEP_LINE.test(head.text)) return null;
++  return cueRange(head.text.slice(0, 24));
++}
++
++function maxCue(text: string): number {
++  let max = 0;
++  for (const m of text.matchAll(/→\s+(?:beat\s+)?(\d+)(?:\s*[–-]\s*(\d+))?/gi))
++    max = Math.max(max, Number(m[2] ?? m[1]));
++  return max;
++}
 +
 +const kindVars = (kind: CueKind): CSSProperties =>
 +  ({ '--osn-k': `var(--osn-${kind})`, '--osn-kbg': `var(--osn-${kind}-bg)` }) as CSSProperties;
@@ -466,7 +520,7 @@ index cd55fd8..7f5cd53 100644
 +  !/[.?!…:;]/.test(quote) &&
 +  quote.slice(1, -1).trim().split(/\s+/).length <= 3;
 +
-+function decorateText(text: string, kind: CueKind): ReactNode[] {
++function decorateText(text: string, kind: CueKind, step: number | null): ReactNode[] {
 +  const out: ReactNode[] = [];
 +  let last = 0;
 +  let k = 0;
@@ -479,11 +533,20 @@ index cd55fd8..7f5cd53 100644
 +        </span>,
 +      );
 +    } else if (m[2]) {
++      const state = stepState(cueRange(m[2]), step);
 +      out.push(
-+        <span key={k++} className="osn-arrow">
++        <span key={k++} className="osn-arrow" data-state={state}>
++          {state === 'done' ? '✓ ' : ''}
 +          {clicChip(m[2])}
 +        </span>,
 +      );
++      if (state === 'now' || state === 'next') {
++        out.push(
++          <span key={k++} className="osn-here" data-state={state}>
++            {state === 'now' ? '● À L’ÉCRAN' : 'PROCHAIN CLIC'}
++          </span>,
++        );
++      }
 +    } else {
 +      out.push(
 +        <span key={k++} className="osn-verb">
@@ -497,23 +560,23 @@ index cd55fd8..7f5cd53 100644
 +  return out;
 +}
 +
-+function renderCueInline(nodes: NoteInline[], kind: CueKind): ReactNode {
++function renderCueInline(nodes: NoteInline[], kind: CueKind, step: number | null): ReactNode {
 +  return nodes.map((node, i) => {
 +    switch (node.type) {
 +      case 'text':
 +        // biome-ignore lint/suspicious/noArrayIndexKey: static parse output, never reordered
-+        return <Fragment key={i}>{decorateText(node.text, kind)}</Fragment>;
++        return <Fragment key={i}>{decorateText(node.text, kind, step)}</Fragment>;
 +      case 'strong':
 +        return (
 +          // biome-ignore lint/suspicious/noArrayIndexKey: static parse output, never reordered
 +          <strong key={i} className="font-semibold">
-+            {renderCueInline(node.children, kind)}
++            {renderCueInline(node.children, kind, step)}
 +          </strong>
 +        );
 +      case 'em':
 +        return (
 +          // biome-ignore lint/suspicious/noArrayIndexKey: static parse output, never reordered
-+          <em key={i}>{renderCueInline(node.children, kind)}</em>
++          <em key={i}>{renderCueInline(node.children, kind, step)}</em>
 +        );
 +      case 'code':
 +        return (
@@ -564,13 +627,19 @@ index cd55fd8..7f5cd53 100644
 +  return labelled ? sections : null;
 +}
 +
-+function renderCueBlock(block: NoteBlock, kind: CueKind, key: number, pill?: ReactNode): ReactNode {
++function renderCueBlock(
++  block: NoteBlock,
++  kind: CueKind,
++  key: number,
++  step: number | null,
++  pill?: ReactNode,
++): ReactNode {
 +  switch (block.type) {
 +    case 'heading': {
 +      const Tag = `h${block.level + 3}` as 'h4' | 'h5' | 'h6';
 +      return (
 +        <Tag key={key} className={`font-semibold ${HEADING_SIZES[block.level]}`}>
-+          {renderCueInline(block.children, kind)}
++          {renderCueInline(block.children, kind, step)}
 +        </Tag>
 +      );
 +    }
@@ -583,33 +652,68 @@ index cd55fd8..7f5cd53 100644
 +        >
 +          {block.items.map((item, i) => (
 +            // biome-ignore lint/suspicious/noArrayIndexKey: static parse output, never reordered
-+            <li key={i}>{renderCueInline(item, kind)}</li>
++            <li key={i}>{renderCueInline(item, kind, step)}</li>
 +          ))}
 +        </Tag>
 +      );
 +    }
-+    case 'paragraph':
++    case 'paragraph': {
++      // Lines opening with a click cue become their own highlightable row;
++      // the first line stays inline when it follows the section pill.
++      const ranges = block.lines.map(lineRange);
 +      return (
 +        <p key={key}>
 +          {pill}
-+          {block.lines.map((line, i) => (
-+            // biome-ignore lint/suspicious/noArrayIndexKey: static parse output, never reordered
-+            <Fragment key={i}>
-+              {i > 0 && <br />}
-+              {renderCueInline(line, kind)}
-+            </Fragment>
-+          ))}
++          {block.lines.map((line, i) => {
++            const range = ranges[i];
++            const row = range !== null && !(i === 0 && pill);
++            const prevRow = i > 0 && ranges[i - 1] !== null && !(i === 1 && pill);
++            const body = renderCueInline(line, kind, step);
++            return (
++              // biome-ignore lint/suspicious/noArrayIndexKey: static parse output, never reordered
++              <Fragment key={i}>
++                {i > 0 && !row && !prevRow && <br />}
++                {row ? (
++                  <span className="osn-step" data-state={stepState(range, step)}>
++                    {body}
++                  </span>
++                ) : (
++                  body
++                )}
++              </Fragment>
++            );
++          })}
 +        </p>
 +      );
++    }
 +    default:
 +      return block satisfies never;
 +  }
 +}
 +
-+function CueNotes({ sections }: { sections: CueSection[] }) {
++function CueNotes({
++  sections,
++  step,
++  clicks,
++}: {
++  sections: CueSection[];
++  step: number | null;
++  clicks: number;
++}) {
 +  const used = new Set(sections.map((s) => s.kind));
++  const rootRef = useRef<HTMLDivElement | null>(null);
++  // Keep the current (or next) click cue in view as the presenter advances.
++  // biome-ignore lint/correctness/useExhaustiveDependencies: re-run on step / note change
++  useEffect(() => {
++    const root = rootRef.current;
++    if (!root || step === null) return;
++    const target =
++      root.querySelector('.osn-step[data-state=now], .osn-arrow[data-state=now]') ??
++      root.querySelector('.osn-step[data-state=next], .osn-arrow[data-state=next]');
++    target?.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
++  }, [step, sections]);
 +  return (
-+    <div className="osn-cues space-y-[0.55em] whitespace-pre-wrap">
++    <div ref={rootRef} className="osn-cues space-y-[0.55em] whitespace-pre-wrap">
 +      <style>{CUE_CSS}</style>
 +      <div className="osn-legend" aria-hidden="true">
 +        {(Object.keys(CUE_META) as CueKind[])
@@ -620,13 +724,20 @@ index cd55fd8..7f5cd53 100644
 +              {CUE_META[kind].icon} {CUE_META[kind].legend}
 +            </span>
 +          ))}
++        {step !== null && clicks > 0 && (
++          <span className="osn-progress">
++            {step === 0
++              ? `Avant le clic 1 / ${clicks}`
++              : `🖱 Clic ${Math.min(step, clicks)} / ${clicks}`}
++          </span>
++        )}
 +      </div>
 +      {sections.map((section, si) => {
 +        if (section.kind === 'time') {
 +          return (
 +            // biome-ignore lint/suspicious/noArrayIndexKey: static parse output, never reordered
 +            <div key={si} className="osn-time">
-+              {section.blocks.map((b, bi) => renderCueBlock(b, 'info', bi))}
++              {section.blocks.map((b, bi) => renderCueBlock(b, 'info', bi, step))}
 +            </div>
 +          );
 +        }
@@ -640,7 +751,9 @@ index cd55fd8..7f5cd53 100644
 +        return (
 +          // biome-ignore lint/suspicious/noArrayIndexKey: static parse output, never reordered
 +          <div key={si} className="osn-sec" data-kind={kind} style={kindVars(kind)}>
-+            {section.blocks.map((b, bi) => renderCueBlock(b, kind, bi, bi === 0 ? pill : undefined))}
++            {section.blocks.map((b, bi) =>
++              renderCueBlock(b, kind, bi, step, bi === 0 ? pill : undefined),
++            )}
 +          </div>
 +        );
 +      })}
@@ -648,26 +761,45 @@ index cd55fd8..7f5cd53 100644
 +  );
 +}
 +
- export function NoteMarkdown({ text }: { text: string }) {
++// `step` = reveals already shown on the projection, `stepCount` = reveals on
++// the page (presenter view only); when given, click cues show their state
++// (done / on screen / next) and a « Clic n / N » counter tops the notes.
++export function NoteMarkdown({
++  text,
++  step,
++  stepCount,
++}: {
++  text: string;
++  step?: number;
++  stepCount?: number;
++}) {
    const blocks = useMemo(() => parseNoteMarkdown(text), [text]);
 +  const sections = useMemo(() => cueSections(blocks), [blocks]);
-+  if (sections) return <CueNotes sections={sections} />;
++  const cues = useMemo(() => maxCue(text), [text]);
++  // The slide's real reveal count wins; the notes' highest cue is a fallback.
++  const clicks = stepCount || cues;
++  if (sections) return <CueNotes sections={sections} step={step ?? null} clicks={clicks} />;
    return <div className="space-y-[0.65em] whitespace-pre-wrap">{blocks.map(renderBlock)}</div>;
  }
 diff --git a/src/app/components/player.tsx b/src/app/components/player.tsx
-index 6814ecb..3cb85ec 100644
+index 6814ecb..2d2a230 100644
 --- a/src/app/components/player.tsx
 +++ b/src/app/components/player.tsx
-@@ -14,7 +14,7 @@ import { PresentBlackoutOverlay } from './present/blackout-overlay';
+@@ -14,7 +14,12 @@ import { PresentBlackoutOverlay } from './present/blackout-overlay';
  import { PresentControlBar } from './present/control-bar';
  import { PresentHelpOverlay } from './present/help-overlay';
  import { PresentJumpInput } from './present/jump-input';
 -import { PresentLaserPointer } from './present/laser-pointer';
-+import { type LaserRemote, SyncedLaserPointer } from './present/laser-pointer';
++import {
++  type LaserRemote,
++  replaySlideClick,
++  SyncedLaserPointer,
++  useSlideClickMirror,
++} from './present/laser-pointer';
  import { PresentProgressBar } from './present/progress-bar';
  import { useIdle } from './present/use-idle';
  import { usePointerNearBottom } from './present/use-pointer-near-bottom';
-@@ -79,6 +79,7 @@ export function Player({
+@@ -79,6 +84,7 @@ export function Player({
    const [helpOpen, setHelpOpen] = useState(false);
    const [blackout, setBlackout] = useState<'black' | 'white' | null>(null);
    const [laser, setLaser] = useState(false);
@@ -675,7 +807,7 @@ index 6814ecb..3cb85ec 100644
    const [keyboardDriven, setKeyboardDriven] = useState(false);
    const [mobileChromeVisible, setMobileChromeVisible] = useState(false);
    const [mobileChromeDeadline, setMobileChromeDeadline] = useState(0);
-@@ -237,8 +238,9 @@ export function Player({
+@@ -237,8 +243,9 @@ export function Player({
        startedAt,
        stepIndex: stepAggregate.revealed,
        stepCount: stepAggregate.stepCount,
@@ -686,7 +818,7 @@ index 6814ecb..3cb85ec 100644
    );
    const presenterStateRef = useRef(presenterState);
    presenterStateRef.current = presenterState;
-@@ -255,6 +257,10 @@ export function Player({
+@@ -255,6 +262,12 @@ export function Player({
          send({ type: 'state', state: presenterStateRef.current });
        } else if (msg.type === 'switch-slide') {
          if (msg.slideId !== slideId) onSwitchSlide?.(msg.slideId);
@@ -694,10 +826,27 @@ index 6814ecb..3cb85ec 100644
 +        setLaser((v) => !v);
 +      } else if (msg.type === 'laser' && msg.from === 'presenter') {
 +        laserRemoteRef.current?.show(msg.point);
++      } else if (msg.type === 'click' && msg.from === 'presenter') {
++        replaySlideClick(rootRef.current, msg.point);
        }
      },
      [goNext, goPrev, handleIndexChange, pages.length, slideId, onSwitchSlide],
-@@ -425,7 +431,13 @@ export function Player({
+@@ -270,6 +283,14 @@ export function Player({
+     channel.send({ type: 'state', state: presenterState });
+   }, [controls, channel, presenterState]);
+ 
++  // Mirror slide clicks to the presenter's "Now showing" preview so its
++  // interactive state (QCM picks, flipped cards…) follows the projection.
++  useSlideClickMirror({
++    enabled: controls && channel.available,
++    surfaceRef: rootRef,
++    onLocalClick: (point) => channel.send({ type: 'click', from: 'projection', point }),
++  });
++
+   useEffect(() => {
+     const onKey = (e: KeyboardEvent) => {
+       if (isTypingTarget(e.target)) return;
+@@ -425,7 +446,13 @@ export function Player({
            <PresentProgressBar index={index} total={pages.length} visible={chromeVisible} />
            <PresentBlackoutOverlay mode={blackout} />
            <PresentJumpInput pageCount={pages.length} onJump={handleIndexChange} />
@@ -713,7 +862,7 @@ index 6814ecb..3cb85ec 100644
              tooltipContainer={rootEl}
              index={index}
 diff --git a/src/app/components/present/laser-pointer.tsx b/src/app/components/present/laser-pointer.tsx
-index 3507376..bcc10b6 100644
+index 3507376..ddf1224 100644
 --- a/src/app/components/present/laser-pointer.tsx
 +++ b/src/app/components/present/laser-pointer.tsx
 @@ -1,5 +1,6 @@
@@ -724,7 +873,7 @@ index 3507376..bcc10b6 100644
  
  /**
   * Soft red dot that follows the cursor when the laser tool is active.
-@@ -60,3 +61,142 @@ export function PresentLaserPointer({ enabled }: { enabled: boolean }) {
+@@ -60,3 +61,208 @@ export function PresentLaserPointer({ enabled }: { enabled: boolean }) {
      />
    );
  }
@@ -776,21 +925,7 @@ index 3507376..bcc10b6 100644
 +    let outgoing: LaserPoint | undefined;
 +    let lastSent: LaserPoint | undefined;
 +
-+    const slideRect = () => {
-+      const el = surfaceRef.current;
-+      if (!el) return null;
-+      const r = el.getBoundingClientRect();
-+      const s = Math.min(r.width / CANVAS_WIDTH, r.height / CANVAS_HEIGHT);
-+      if (!(s > 0)) return null;
-+      const width = CANVAS_WIDTH * s;
-+      const height = CANVAS_HEIGHT * s;
-+      return {
-+        left: r.left + (r.width - width) / 2,
-+        top: r.top + (r.height - height) / 2,
-+        width,
-+        height,
-+      };
-+    };
++    const slideRect = () => (surfaceRef.current ? fittedSlideRect(surfaceRef.current) : null);
 +
 +    // Position is written straight to the element inside rAF — routing it
 +    // through React state would re-render at pointer rate and lag the hand.
@@ -867,13 +1002,93 @@ index 3507376..bcc10b6 100644
 +    />
 +  );
 +}
++
++export type SlidePoint = { x: number; y: number };
++
++/** The slide canvas as fitted (letterboxed) inside `el`, in client pixels. */
++export function fittedSlideRect(el: HTMLElement) {
++  const r = el.getBoundingClientRect();
++  const s = Math.min(r.width / CANVAS_WIDTH, r.height / CANVAS_HEIGHT);
++  if (!(s > 0)) return null;
++  const width = CANVAS_WIDTH * s;
++  const height = CANVAS_HEIGHT * s;
++  return {
++    left: r.left + (r.width - width) / 2,
++    top: r.top + (r.height - height) / 2,
++    width,
++    height,
++  };
++}
++
++/**
++ * Clicks mirrored between the projection and presenter windows, in the same
++ * slide-canvas fractions as the laser. Only real (trusted) clicks landing on
++ * the slide are reported, so a replayed click is never echoed back. Listens
++ * in the capture phase: slide content that stops propagation still counts.
++ */
++export function useSlideClickMirror({
++  enabled,
++  surfaceRef,
++  onLocalClick,
++}: {
++  enabled: boolean;
++  surfaceRef: RefObject<HTMLElement | null>;
++  onLocalClick: (point: SlidePoint) => void;
++}) {
++  const onLocalClickRef = useRef(onLocalClick);
++  onLocalClickRef.current = onLocalClick;
++
++  useEffect(() => {
++    if (!enabled) return;
++    const onClick = (e: MouseEvent) => {
++      const surface = surfaceRef.current;
++      if (!e.isTrusted || e.button !== 0 || !surface) return;
++      const target = e.target;
++      if (!(target instanceof Node) || !surface.contains(target)) return;
++      if (target instanceof Element && target.closest('[data-osd-chrome]')) return;
++      const r = fittedSlideRect(surface);
++      if (!r) return;
++      const x = (e.clientX - r.left) / r.width;
++      const y = (e.clientY - r.top) / r.height;
++      if (x < 0 || x > 1 || y < 0 || y > 1) return;
++      onLocalClickRef.current({ x, y });
++    };
++    window.addEventListener('click', onClick, true);
++    return () => window.removeEventListener('click', onClick, true);
++  }, [enabled, surfaceRef]);
++}
++
++/**
++ * Replays a mirrored click on whatever sits at `point` of the slide fitted in
++ * `surface`: the full pointer → mouse → click sequence, so slide widgets and
++ * the projection's click-to-navigate edges react exactly as to a real click.
++ */
++export function replaySlideClick(surface: HTMLElement | null, point: SlidePoint) {
++  if (!surface) return;
++  const r = fittedSlideRect(surface);
++  if (!r) return;
++  const clientX = r.left + point.x * r.width;
++  const clientY = r.top + point.y * r.height;
++  // Skip present chrome (control bar, progress strip) layered over the slide.
++  const target = document
++    .elementsFromPoint(clientX, clientY)
++    .find((el) => !el.closest('[data-osd-chrome]'));
++  if (!target || !surface.contains(target)) return;
++  const init = { bubbles: true, cancelable: true, composed: true, view: window, clientX, clientY, button: 0 };
++  const pointer = { ...init, pointerId: 1, pointerType: 'mouse', isPrimary: true };
++  target.dispatchEvent(new PointerEvent('pointerdown', { ...pointer, buttons: 1 }));
++  target.dispatchEvent(new MouseEvent('mousedown', { ...init, buttons: 1 }));
++  target.dispatchEvent(new PointerEvent('pointerup', pointer));
++  target.dispatchEvent(new MouseEvent('mouseup', init));
++  target.dispatchEvent(new MouseEvent('click', init));
++}
 diff --git a/src/app/components/present/use-presenter-channel.ts b/src/app/components/present/use-presenter-channel.ts
-index 2541a74..0a3a5a4 100644
+index 2541a74..e5aa292 100644
 --- a/src/app/components/present/use-presenter-channel.ts
 +++ b/src/app/components/present/use-presenter-channel.ts
 @@ -1,4 +1,5 @@
  import { useEffect, useMemo, useRef, useState } from 'react';
-+import type { LaserPoint } from './laser-pointer';
++import type { LaserPoint, SlidePoint } from './laser-pointer';
  
  export type PresenterState = {
    index: number;
@@ -885,7 +1100,7 @@ index 2541a74..0a3a5a4 100644
  };
  
  export type PresenterCommand =
-@@ -16,7 +18,10 @@ export type PresenterCommand =
+@@ -16,7 +18,12 @@ export type PresenterCommand =
    | { type: 'prev' }
    | { type: 'request-state' }
    | { type: 'toggle-blackout'; mode: 'black' | 'white' }
@@ -893,7 +1108,9 @@ index 2541a74..0a3a5a4 100644
 +  | { type: 'switch-slide'; slideId: string }
 +  | { type: 'toggle-laser' }
 +  // Laser position, mirrored to the other window(s).
-+  | { type: 'laser'; from: 'projection' | 'presenter'; point: LaserPoint };
++  | { type: 'laser'; from: 'projection' | 'presenter'; point: LaserPoint }
++  // A click on the slide, replayed at the same spot in the other window.
++  | { type: 'click'; from: 'projection' | 'presenter'; point: SlidePoint };
  
  type Handler = (msg: PresenterCommand) => void;
  
@@ -1768,7 +1985,7 @@ index 21936c3..f809db4 100644
          <span className="ml-auto inline-flex items-center gap-1 text-[10.5px] text-brand">
            <span className="inline-block size-1 rounded-full bg-brand" aria-hidden />
 diff --git a/src/app/routes/presenter.tsx b/src/app/routes/presenter.tsx
-index c29b8b6..fef6442 100644
+index c29b8b6..e596933 100644
 --- a/src/app/routes/presenter.tsx
 +++ b/src/app/routes/presenter.tsx
 @@ -1,17 +1,27 @@
@@ -1799,7 +2016,7 @@ index c29b8b6..fef6442 100644
    useCallback,
    useEffect,
    useRef,
-@@ -20,17 +30,20 @@ import {
+@@ -20,17 +30,25 @@ import {
  import { useNavigate, useParams } from 'react-router-dom';
  import { Button } from '@/components/ui/button';
  import { Dialog, DialogContent, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
@@ -1811,7 +2028,12 @@ index c29b8b6..fef6442 100644
  import { format, useLocale } from '@/lib/use-locale';
  import { cn, pad2 } from '@/lib/utils';
  import { NoteMarkdown } from '../components/note-markdown';
-+import { type LaserRemote, SyncedLaserPointer } from '../components/present/laser-pointer';
++import {
++  type LaserRemote,
++  replaySlideClick,
++  SyncedLaserPointer,
++  useSlideClickMirror,
++} from '../components/present/laser-pointer';
  import {
    type PresenterState,
    usePresenterChannel,
@@ -1821,7 +2043,7 @@ index c29b8b6..fef6442 100644
  import { SlidePageProvider } from '../lib/page-context';
  import { CANVAS_HEIGHT, CANVAS_WIDTH, type SlideModule } from '../lib/sdk';
  import { loadSlide, slideIds } from '../lib/slides';
-@@ -52,16 +65,18 @@ export function Presenter() {
+@@ -52,19 +70,31 @@ export function Presenter() {
    const [hasProjection, setHasProjection] = useState(false);
    const requestedRef = useRef(false);
    const t = useLocale();
@@ -1842,10 +2064,23 @@ index c29b8b6..fef6442 100644
        setHasProjection(true);
 +    } else if (msg.type === 'laser' && msg.from === 'projection') {
 +      laserRemoteRef.current?.show(msg.point);
++    } else if (msg.type === 'click' && msg.from === 'projection') {
++      replaySlideClick(nowSurfaceRef.current, msg.point);
      }
    });
  
-@@ -99,6 +114,7 @@ export function Presenter() {
++  // A click on the "Now showing" preview acts on the projection too (slide
++  // widgets, click-to-navigate edges); the preview keeps its own click.
++  useSlideClickMirror({
++    enabled: channel.available,
++    surfaceRef: nowSurfaceRef,
++    onLocalClick: (point) => channel.send({ type: 'click', from: 'presenter', point }),
++  });
++
+   // A deck switch reuses this route instance, so the handshake state from
+   // the previous deck must be dropped before rejoining on the new channel.
+   // Render-phase reset so the new deck never renders with the old state.
+@@ -99,6 +129,7 @@ export function Presenter() {
    const goTo = useCallback((i: number) => send({ type: 'goto', index: i }), [send]);
    const toggleBlack = useCallback(() => send({ type: 'toggle-blackout', mode: 'black' }), [send]);
    const toggleWhite = useCallback(() => send({ type: 'toggle-blackout', mode: 'white' }), [send]);
@@ -1853,7 +2088,7 @@ index c29b8b6..fef6442 100644
  
    // Local-window key bindings mirror the projection's main shortcuts so the
    // presenter can drive without the mouse.
-@@ -120,11 +136,14 @@ export function Presenter() {
+@@ -120,11 +151,14 @@ export function Presenter() {
        } else if (e.key === 'w' || e.key === 'W') {
          e.preventDefault();
          toggleWhite();
@@ -1869,7 +2104,7 @@ index c29b8b6..fef6442 100644
  
    if (error) {
      return (
-@@ -164,6 +183,7 @@ export function Presenter() {
+@@ -164,6 +198,7 @@ export function Presenter() {
    const startedAt = state?.startedAt ?? localStart;
    const stepIndex = Math.max(0, state?.stepIndex ?? 0);
    const stepCount = Math.max(0, state?.stepCount ?? 0);
@@ -1877,7 +2112,7 @@ index c29b8b6..fef6442 100644
  
    const stepsRemaining = stepIndex < stepCount;
    const hasNextSlide = index < total - 1;
-@@ -174,31 +194,10 @@ export function Presenter() {
+@@ -174,31 +209,10 @@ export function Presenter() {
    const CurrentPage = pages[index];
    const NextPage = hasNext ? pages[nextPageIndex] : null;
  
@@ -1913,7 +2148,7 @@ index c29b8b6..fef6442 100644
    return (
      <div className="dark flex h-dvh w-screen flex-col overflow-hidden bg-background text-foreground">
        <PresenterTopBar
-@@ -209,13 +208,16 @@ export function Presenter() {
+@@ -209,13 +223,16 @@ export function Presenter() {
          slideTitle={slide.meta?.title ?? slideId}
          connected={hasProjection}
          onSwitchDeck={switchDeck}
@@ -1935,7 +2170,7 @@ index c29b8b6..fef6442 100644
              <SlideCanvas flat design={slide.design}>
                <SlidePageProvider index={index} total={total}>
                  <PreviewStepHost revealed={stepIndex}>
-@@ -235,47 +237,664 @@ export function Presenter() {
+@@ -235,47 +252,670 @@ export function Presenter() {
                  {blackout === 'black' ? t.presenter.blackScreen : t.presenter.whiteScreen}
                </div>
              )}
@@ -1985,6 +2220,8 @@ index c29b8b6..fef6442 100644
 +          )
 +        }
 +        note={note}
++        step={stepIndex}
++        stepCount={stepCount}
 +      />
  
 -          <PresenterJumpControl total={total} current={index} onJump={goTo} />
@@ -2101,6 +2338,8 @@ index c29b8b6..fef6442 100644
 +  nextTitle,
 +  nextContent,
 +  note,
++  step,
++  stepCount,
 +}: {
 +  layout: PresenterLayout;
 +  setLayout: SetPresenterLayout;
@@ -2110,6 +2349,8 @@ index c29b8b6..fef6442 100644
 +  nextTitle: string;
 +  nextContent: ReactNode;
 +  note: string | undefined;
++  step: number;
++  stepCount: number;
 +}) {
 +  const t = useLocale();
 +  const titles = usePaneTitles();
@@ -2183,7 +2424,7 @@ index c29b8b6..fef6442 100644
 +        </div>
 +      );
 +    } else {
-+      body = <NotesBody note={note} sizeIndex={notesSize} />;
++      body = <NotesBody note={note} step={step} stepCount={stepCount} sizeIndex={notesSize} />;
 +      actions = <NotesFontControls sizeIndex={notesSize} onChange={setNotesSize} />;
 +    }
 +    return (
@@ -2630,7 +2871,7 @@ index c29b8b6..fef6442 100644
        />
      </div>
    );
-@@ -289,6 +908,7 @@ function PresenterTopBar({
+@@ -289,6 +929,7 @@ function PresenterTopBar({
    slideTitle,
    connected,
    onSwitchDeck,
@@ -2638,7 +2879,7 @@ index c29b8b6..fef6442 100644
  }: {
    index: number;
    total: number;
-@@ -297,6 +917,7 @@ function PresenterTopBar({
+@@ -297,6 +938,7 @@ function PresenterTopBar({
    slideTitle: string;
    connected: boolean;
    onSwitchDeck: (slideId: string) => void;
@@ -2646,7 +2887,7 @@ index c29b8b6..fef6442 100644
  }) {
    const t = useLocale();
    return (
-@@ -317,6 +938,7 @@ function PresenterTopBar({
+@@ -317,6 +959,7 @@ function PresenterTopBar({
          )}
        </div>
        <div className="flex items-center gap-6">
@@ -2654,7 +2895,7 @@ index c29b8b6..fef6442 100644
          <Clock />
          <ElapsedClock startedAt={startedAt} />
          <div className="font-mono text-[18px] tabular-nums">
-@@ -362,6 +984,8 @@ function DeckSwitcher({
+@@ -362,6 +1005,8 @@ function DeckSwitcher({
  }) {
    const t = useLocale();
    const modules = useDeckModules();
@@ -2663,7 +2904,7 @@ index c29b8b6..fef6442 100644
    const [open, setOpen] = useState(false);
    const [query, setQuery] = useState('');
    const [activeIndex, setActiveIndex] = useState(0);
-@@ -369,6 +993,7 @@ function DeckSwitcher({
+@@ -369,6 +1014,7 @@ function DeckSwitcher({
  
    const trimmed = query.trim().toLowerCase();
    const filtered = slideIds.filter((id) => {
@@ -2671,7 +2912,7 @@ index c29b8b6..fef6442 100644
      if (!trimmed) return true;
      const title = modules[id]?.meta?.title;
      return id.toLowerCase().includes(trimmed) || title?.toLowerCase().includes(trimmed);
-@@ -495,18 +1120,26 @@ function PresenterBottomBar({
+@@ -495,18 +1141,26 @@ function PresenterBottomBar({
    index,
    total,
    blackout,
@@ -2698,7 +2939,7 @@ index c29b8b6..fef6442 100644
  }) {
    const t = useLocale();
    return (
-@@ -518,8 +1151,18 @@ function PresenterBottomBar({
+@@ -518,8 +1172,18 @@ function PresenterBottomBar({
          <Button variant="outline" onClick={onNext} disabled={index >= total - 1}>
            {t.presenter.next} <ChevronRight className="size-4" />
          </Button>
@@ -2717,7 +2958,7 @@ index c29b8b6..fef6442 100644
          <Button
            variant={blackout === 'black' ? 'brand' : 'outline'}
            onClick={onBlackout}
-@@ -550,8 +1193,7 @@ const NOTES_FONT_SIZES = [11, 12, 13.5, 15, 17, 20, 24, 28];
+@@ -550,8 +1214,7 @@ const NOTES_FONT_SIZES = [11, 12, 13.5, 15, 17, 20, 24, 28];
  const NOTES_FONT_SIZE_DEFAULT_INDEX = 2;
  const NOTES_FONT_SIZE_STORAGE_KEY = 'open-slide:presenter-notes-font-size';
  
@@ -2727,7 +2968,7 @@ index c29b8b6..fef6442 100644
    const [sizeIndex, setSizeIndex] = useState(() => {
      if (typeof window === 'undefined') return NOTES_FONT_SIZE_DEFAULT_INDEX;
      const stored = Number(window.localStorage.getItem(NOTES_FONT_SIZE_STORAGE_KEY));
-@@ -564,49 +1206,61 @@ function SpeakerNotes({ note }: { note: string | undefined }) {
+@@ -564,49 +1227,71 @@ function SpeakerNotes({ note }: { note: string | undefined }) {
      window.localStorage.setItem(NOTES_FONT_SIZE_STORAGE_KEY, String(NOTES_FONT_SIZES[sizeIndex]));
    }, [sizeIndex]);
  
@@ -2809,7 +3050,17 @@ index c29b8b6..fef6442 100644
 +  );
 +}
 +
-+function NotesBody({ note, sizeIndex }: { note: string | undefined; sizeIndex: number }) {
++function NotesBody({
++  note,
++  step,
++  stepCount,
++  sizeIndex,
++}: {
++  note: string | undefined;
++  step: number;
++  stepCount: number;
++  sizeIndex: number;
++}) {
 +  const t = useLocale();
 +  return (
 +    <div
@@ -2817,7 +3068,7 @@ index c29b8b6..fef6442 100644
 +      style={{ fontSize: NOTES_FONT_SIZES[sizeIndex] }}
 +    >
 +      {note?.trim() ? (
-+        <NoteMarkdown text={note} />
++        <NoteMarkdown text={note} step={step} stepCount={stepCount} />
 +      ) : (
 +        <span className="text-muted-foreground">
 +          {t.presenter.noNotesPrefix}
@@ -2843,10 +3094,10 @@ index 2ef0115..454e717 100644
      build: {
        showSlideBrowser: boolean;
 diff --git a/src/locale/en.ts b/src/locale/en.ts
-index 9a2525a..44c102d 100644
+index 9a2525a..98b16fc 100644
 --- a/src/locale/en.ts
 +++ b/src/locale/en.ts
-@@ -95,6 +95,36 @@ export const en: Locale = {
+@@ -95,6 +95,53 @@ export const en: Locale = {
      pickIcon: 'Pick icon',
    },
  
@@ -2880,10 +3131,27 @@ index 9a2525a..44c102d 100644
 +    newFolderPlaceholder: 'New folder name',
 +  },
 +
++  share: {
++    menu: 'Share',
++    copyDeck: 'Share link — whole presentation',
++    copyPage: 'Share link — this page only',
++    copyEditor: 'Copy editor link (private)',
++    copied: 'Read-only share link copied',
++    copiedLocal: 'Link copied — it points to this computer: copy it from the published site to share it',
++    start: 'Start presentation',
++    resume: 'Resume',
++    pageOnly: 'Page {n} of {total}',
++    hintDeck: 'Full screen · ← → or click the edges to move · Esc to leave',
++    hintPage: 'Full screen · → to reveal · Esc to leave',
++    unavailableTitle: 'This link is not available',
++    unavailableBody: 'Check that it was copied in full, or ask the person who shared it for a new one.',
++  },
++
++
    slide: {
      home: 'Home',
      backToHome: 'Back to home',
-@@ -144,6 +174,23 @@ export const en: Locale = {
+@@ -144,6 +191,23 @@ export const en: Locale = {
      speakerNotes: 'Speaker notes',
      notesTextSmaller: 'Make notes text smaller',
      notesTextLarger: 'Make notes text larger',
@@ -2908,10 +3176,10 @@ index 9a2525a..44c102d 100644
      noNotesSuffix: ' to your slide module to see notes here.',
      blackScreen: 'Black screen',
 diff --git a/src/locale/ja.ts b/src/locale/ja.ts
-index a39090f..3de1258 100644
+index a39090f..276845a 100644
 --- a/src/locale/ja.ts
 +++ b/src/locale/ja.ts
-@@ -95,6 +95,36 @@ export const ja: Locale = {
+@@ -95,6 +95,53 @@ export const ja: Locale = {
      pickIcon: 'アイコンを選択',
    },
  
@@ -2945,10 +3213,27 @@ index a39090f..3de1258 100644
 +    newFolderPlaceholder: '新しいフォルダ名',
 +  },
 +
++  share: {
++    menu: '共有',
++    copyDeck: '共有リンク — プレゼンテーション全体',
++    copyPage: '共有リンク — このページのみ',
++    copyEditor: '編集用リンクをコピー（非公開）',
++    copied: '閲覧専用の共有リンクをコピーしました',
++    copiedLocal: 'リンクをコピーしました — このコンピューター用です。共有するには公開サイトからコピーしてください',
++    start: 'プレゼンテーションを開始',
++    resume: '再開',
++    pageOnly: '{total} ページ中 {n} ページ',
++    hintDeck: '全画面 · ← → または端をクリックで移動 · Esc で終了',
++    hintPage: '全画面 · → で表示 · Esc で終了',
++    unavailableTitle: 'このリンクは利用できません',
++    unavailableBody: 'リンクが完全にコピーされているか確認するか、共有した人に新しいリンクを依頼してください。',
++  },
++
++
    slide: {
      agentConnected: 'エージェント接続中',
      agentConnectedTooltip:
-@@ -144,6 +174,23 @@ export const ja: Locale = {
+@@ -144,6 +191,23 @@ export const ja: Locale = {
      speakerNotes: '発表者ノート',
      notesTextSmaller: 'ノートの文字を小さく',
      notesTextLarger: 'ノートの文字を大きく',
@@ -2973,10 +3258,10 @@ index a39090f..3de1258 100644
      noNotesSuffix: ' を追加するとここに表示されます。',
      blackScreen: '黒い画面',
 diff --git a/src/locale/types.ts b/src/locale/types.ts
-index e05bfe3..f7b47c1 100644
+index e05bfe3..703a629 100644
 --- a/src/locale/types.ts
 +++ b/src/locale/types.ts
-@@ -99,6 +99,36 @@ export type Locale = {
+@@ -99,6 +99,53 @@ export type Locale = {
      pickIcon: string;
    };
  
@@ -3010,10 +3295,27 @@ index e05bfe3..f7b47c1 100644
 +    newFolderPlaceholder: string;
 +  };
 +
++  share: {
++    menu: string;
++    copyDeck: string;
++    copyPage: string;
++    copyEditor: string;
++    copied: string;
++    copiedLocal: string;
++    start: string;
++    resume: string;
++    pageOnly: string;
++    hintDeck: string;
++    hintPage: string;
++    unavailableTitle: string;
++    unavailableBody: string;
++  };
++
++
    slide: {
      home: string;
      backToHome: string;
-@@ -145,6 +175,23 @@ export type Locale = {
+@@ -145,6 +192,23 @@ export type Locale = {
      speakerNotes: string;
      notesTextSmaller: string;
      notesTextLarger: string;
@@ -3038,10 +3340,10 @@ index e05bfe3..f7b47c1 100644
      noNotesSuffix: string;
      blackScreen: string;
 diff --git a/src/locale/zh-cn.ts b/src/locale/zh-cn.ts
-index 7fdf60b..d843a7b 100644
+index 7fdf60b..f99c699 100644
 --- a/src/locale/zh-cn.ts
 +++ b/src/locale/zh-cn.ts
-@@ -95,6 +95,36 @@ export const zhCN: Locale = {
+@@ -95,6 +95,53 @@ export const zhCN: Locale = {
      pickIcon: '选择图标',
    },
  
@@ -3075,10 +3377,27 @@ index 7fdf60b..d843a7b 100644
 +    newFolderPlaceholder: '新文件夹名称',
 +  },
 +
++  share: {
++    menu: '分享',
++    copyDeck: '分享链接 — 整个演示文稿',
++    copyPage: '分享链接 — 仅此页',
++    copyEditor: '复制编辑链接（私有）',
++    copied: '已复制只读分享链接',
++    copiedLocal: '已复制链接 — 它指向本机：请从已发布的网站复制后再分享',
++    start: '开始演示',
++    resume: '继续',
++    pageOnly: '第 {n} 页，共 {total} 页',
++    hintDeck: '全屏 · ← → 或点击两侧翻页 · Esc 退出',
++    hintPage: '全屏 · → 逐步显示 · Esc 退出',
++    unavailableTitle: '此链接不可用',
++    unavailableBody: '请确认链接已完整复制，或向分享者索取新链接。',
++  },
++
++
    slide: {
      agentConnected: 'Agent 已连接',
      agentConnectedTooltip: '目前的 slide 与 Inspector 选择会即时同步给 agent。',
-@@ -143,6 +173,23 @@ export const zhCN: Locale = {
+@@ -143,6 +190,23 @@ export const zhCN: Locale = {
      speakerNotes: '演讲备注',
      notesTextSmaller: '缩小备注文字',
      notesTextLarger: '放大备注文字',
@@ -3103,10 +3422,10 @@ index 7fdf60b..d843a7b 100644
      noNotesSuffix: ' 即可在此查看备注。',
      blackScreen: '黑屏',
 diff --git a/src/locale/zh-tw.ts b/src/locale/zh-tw.ts
-index 62297df..1b9e103 100644
+index 62297df..664354b 100644
 --- a/src/locale/zh-tw.ts
 +++ b/src/locale/zh-tw.ts
-@@ -95,6 +95,36 @@ export const zhTW: Locale = {
+@@ -95,6 +95,53 @@ export const zhTW: Locale = {
      pickIcon: '選擇圖示',
    },
  
@@ -3140,10 +3459,27 @@ index 62297df..1b9e103 100644
 +    newFolderPlaceholder: '新資料夾名稱',
 +  },
 +
++  share: {
++    menu: '分享',
++    copyDeck: '分享連結 — 整份簡報',
++    copyPage: '分享連結 — 僅此頁',
++    copyEditor: '複製編輯連結（私人）',
++    copied: '已複製唯讀分享連結',
++    copiedLocal: '已複製連結 — 它指向本機：請從已發布的網站複製後再分享',
++    start: '開始簡報',
++    resume: '繼續',
++    pageOnly: '第 {n} 頁，共 {total} 頁',
++    hintDeck: '全螢幕 · ← → 或點擊兩側翻頁 · Esc 離開',
++    hintPage: '全螢幕 · → 逐步顯示 · Esc 離開',
++    unavailableTitle: '此連結無法使用',
++    unavailableBody: '請確認連結已完整複製，或向分享者索取新連結。',
++  },
++
++
    slide: {
      agentConnected: 'Agent 已連線',
      agentConnectedTooltip: '目前的 slide 與 Inspector 選擇會即時同步給 agent。',
-@@ -143,6 +173,23 @@ export const zhTW: Locale = {
+@@ -143,6 +190,23 @@ export const zhTW: Locale = {
      speakerNotes: '演講備忘',
      notesTextSmaller: '縮小備忘文字',
      notesTextLarger: '放大備忘文字',
@@ -3167,3 +3503,317 @@ index 62297df..1b9e103 100644
      noNotesPrefix: '此投影片沒有演講備忘。在你的投影片模組中加入 ',
      noNotesSuffix: ' 即可在此查看備忘。',
      blackScreen: '黑屏',
+diff --git a/src/app/routes/slide.tsx b/src/app/routes/slide.tsx
+index 009bde3..c3c0ece 100644
+--- a/src/app/routes/slide.tsx
++++ b/src/app/routes/slide.tsx
+@@ -89,6 +89,7 @@ import { remapNotesSessionCacheAfterReorder } from '../lib/inspector/use-notes';
+ import type { SlideModule } from '../lib/sdk';
+ import { usePrefersReducedMotion } from '../lib/use-prefers-reduced-motion';
+ import { useSlideModule } from '../lib/use-slide-module';
++import { shareUrl } from './share-viewer';
+ 
+ const { showSlideUi, showSlideBrowser, allowHtmlDownload } = config.build;
+ 
+@@ -497,10 +498,23 @@ export function Slide() {
+ 
+   const title = slide.meta?.title ?? slideId;
+ 
+-  const copyLink = async () => {
++  // Default: the editor URL. Share links (`share-viewer.tsx`) are read-only,
++  // play-only and carry an opaque code instead of the deck id.
++  const copyLink = async (kind: 'editor' | 'deck' | 'page' = 'editor') => {
+     try {
+-      await navigator.clipboard.writeText(window.location.href);
+-      toast.success(t.slide.toastCopyLinkSuccess);
++      const url =
++        kind === 'editor'
++          ? window.location.href
++          : shareUrl(slideId, kind === 'page' ? index : undefined);
++      await navigator.clipboard.writeText(url);
++      const local = /^(localhost|127\.0\.0\.1|\[::1\])$/.test(window.location.hostname);
++      toast.success(
++        kind === 'editor'
++          ? t.slide.toastCopyLinkSuccess
++          : local
++            ? t.share.copiedLocal
++            : t.share.copied,
++      );
+       setLinkCopied(true);
+       if (linkCopiedTimerRef.current) clearTimeout(linkCopiedTimerRef.current);
+       linkCopiedTimerRef.current = setTimeout(() => setLinkCopied(false), 1200);
+@@ -671,16 +685,16 @@ export function Slide() {
+                 <span aria-hidden className="mx-0.5 hidden h-5 w-px bg-hairline md:block" />
+               )}
+               {view === 'slides' && (
+-                <button
+-                  type="button"
+-                  aria-label={t.slide.copyLink}
+-                  title={t.slide.copyLink}
+-                  className={cn(
+-                    buttonVariants({ variant: 'ghost', size: 'icon-sm' }),
+-                    'hidden md:inline-flex',
+-                  )}
+-                  onClick={copyLink}
+-                >
++                <DropdownMenu>
++                  <DropdownMenuTrigger
++                    type="button"
++                    aria-label={t.share.menu}
++                    title={t.share.menu}
++                    className={cn(
++                      buttonVariants({ variant: 'ghost', size: 'icon-sm' }),
++                      'hidden md:inline-flex',
++                    )}
++                  >
+                   <span className="relative grid size-4 place-items-center">
+                     <Link2
+                       className={cn(
+@@ -695,7 +709,23 @@ export function Slide() {
+                       )}
+                     />
+                   </span>
+-                </button>
++                  </DropdownMenuTrigger>
++                  <DropdownMenuContent align="end" className="min-w-[260px]">
++                    <DropdownMenuItem onClick={() => copyLink('deck')}>
++                      <Presentation className="size-4" />
++                      {t.share.copyDeck}
++                    </DropdownMenuItem>
++                    <DropdownMenuItem onClick={() => copyLink('page')}>
++                      <FileImage className="size-4" />
++                      {t.share.copyPage}
++                    </DropdownMenuItem>
++                    <DropdownMenuSeparator />
++                    <DropdownMenuItem onClick={() => copyLink('editor')}>
++                      <Link2 className="size-4" />
++                      {t.share.copyEditor}
++                    </DropdownMenuItem>
++                  </DropdownMenuContent>
++                </DropdownMenu>
+               )}
+               {view === 'slides' && allowHtmlDownload && (
+                 <DropdownMenu>
+@@ -743,9 +773,9 @@ export function Slide() {
+                       <Terminal />
+                       {t.commandMenu.trigger}
+                     </DropdownMenuItem>
+-                    <DropdownMenuItem onClick={copyLink}>
++                    <DropdownMenuItem onClick={() => copyLink('deck')}>
+                       <Link2 />
+-                      {t.slide.copyLink}
++                      {t.share.copyDeck}
+                     </DropdownMenuItem>
+                     {allowHtmlDownload && <DropdownMenuSeparator />}
+                     {allowHtmlDownload && exportMenuItems}
+@@ -909,7 +939,7 @@ export function Slide() {
+                   if (slideId) openPresenterWindow(slideId);
+                   setPlayMode('window');
+                 },
+-                onCopyLink: copyLink,
++                onCopyLink: () => copyLink('editor'),
+                 onOverview: () => setOverviewOpen(true),
+                 onToggleDesignPanel: () => setDesignOpen((v) => !v),
+                 onExportHtml: exportHtml,
+diff --git a/src/app/routes/share-viewer.tsx b/src/app/routes/share-viewer.tsx
+new file mode 100644
+index 0000000..aba1288
+--- /dev/null
++++ b/src/app/routes/share-viewer.tsx
+@@ -0,0 +1,196 @@
++import { Play } from 'lucide-react';
++import { type ReactNode, useCallback, useMemo, useRef, useState } from 'react';
++import { useParams } from 'react-router-dom';
++import { Player } from '../components/player';
++import { SlideCanvas } from '../components/slide-canvas';
++import { SlidePageProvider } from '../lib/page-context';
++import { slideIds } from '../lib/slides';
++import { type StepController, StepHost } from '../lib/step-context';
++import { useDocumentTitle } from '../lib/use-document-title';
++import { format, useLocale } from '../lib/use-locale';
++import { useSlideModule } from '../lib/use-slide-module';
++
++// ─── Share links ──────────────────────────────────────────────────────────
++// A share link is `<base>v/<code>`: an opaque code instead of the deck id, so
++// the URL says nothing about the deck or the rest of the site. It opens a
++// play-only, fullscreen viewer — no editor, no speaker notes, no presenter
++// view, no home. The code is a salted hash of the deck id (11 chars), plus 4
++// chars for "this page only" links; it is deterministic, so a link keeps
++// working across deploys for as long as the deck keeps its id.
++//
++// This hides, it does not protect: the deployed bundle still contains every
++// deck (and its notes) for anyone who goes looking in the JavaScript.
++
++const SALT = 'open-slide/share/v1:';
++const DECK_LEN = 11;
++const PAGE_LEN = 4;
++const PAGE_SPACE = 36 ** PAGE_LEN;
++
++// cyrb53 — small, well-distributed 53-bit string hash (public domain).
++function cyrb53(str: string, seed = 0): number {
++  let h1 = 0xdeadbeef ^ seed;
++  let h2 = 0x41c6ce57 ^ seed;
++  for (let i = 0; i < str.length; i++) {
++    const ch = str.charCodeAt(i);
++    h1 = Math.imul(h1 ^ ch, 2654435761);
++    h2 = Math.imul(h2 ^ ch, 1597334677);
++  }
++  h1 = Math.imul(h1 ^ (h1 >>> 16), 2246822507) ^ Math.imul(h2 ^ (h2 >>> 13), 3266489909);
++  h2 = Math.imul(h2 ^ (h2 >>> 16), 2246822507) ^ Math.imul(h1 ^ (h1 >>> 13), 3266489909);
++  return 4294967296 * (2097151 & h2) + (h1 >>> 0);
++}
++
++const deckCode = (slideId: string) =>
++  cyrb53(SALT + slideId).toString(36).padStart(DECK_LEN, '0').slice(-DECK_LEN);
++
++const pageMask = (slideId: string) => cyrb53(`${SALT}page:${slideId}`) % PAGE_SPACE;
++
++/** Share code for a deck, or for one page of it (0-based `page`). */
++export function shareCode(slideId: string, page?: number): string {
++  const deck = deckCode(slideId);
++  if (page === undefined) return deck;
++  const code = (page + 1 + pageMask(slideId)) % PAGE_SPACE;
++  return deck + code.toString(36).padStart(PAGE_LEN, '0');
++}
++
++/** Absolute share URL for the current origin + deploy base. */
++export function shareUrl(slideId: string, page?: number): string {
++  return `${window.location.origin}${import.meta.env.BASE_URL}v/${shareCode(slideId, page)}`;
++}
++
++function resolveShareCode(code: string): { slideId: string; page: number | null } | null {
++  const lower = code.toLowerCase();
++  if (lower.length !== DECK_LEN && lower.length !== DECK_LEN + PAGE_LEN) return null;
++  const slideId = slideIds.find((id) => deckCode(id) === lower.slice(0, DECK_LEN));
++  if (!slideId) return null;
++  if (lower.length === DECK_LEN) return { slideId, page: null };
++  const value = Number.parseInt(lower.slice(DECK_LEN), 36);
++  if (!Number.isFinite(value)) return null;
++  const page = ((value - pageMask(slideId) + PAGE_SPACE) % PAGE_SPACE) - 1;
++  return page >= 0 ? { slideId, page } : null;
++}
++
++export function ShareViewer() {
++  const { code = '' } = useParams();
++  const target = useMemo(() => resolveShareCode(code), [code]);
++  if (!target) return <ShareUnavailable />;
++  return <SharedDeck slideId={target.slideId} lockedPage={target.page} />;
++}
++
++function SharedDeck({ slideId, lockedPage }: { slideId: string; lockedPage: number | null }) {
++  const t = useLocale();
++  const { slide, error } = useSlideModule(slideId);
++  useDocumentTitle(slide?.meta?.title);
++  const pages = slide?.default ?? [];
++  const [index, setIndex] = useState(0);
++  const [playing, setPlaying] = useState(false);
++  const [started, setStarted] = useState(false);
++
++  // "This page only" links keep the whole deck mounted (so in-slide page
++  // numbers stay right) but pin the index: reveals still step, pages don't.
++  const shown = lockedPage ?? index;
++  const onIndexChange = useCallback(
++    (next: number) => {
++      if (lockedPage === null) setIndex(next);
++    },
++    [lockedPage],
++  );
++  // Esc (or leaving fullscreen) drops back to the start screen: the deck is
++  // only ever shown full screen.
++  const onExit = useCallback(() => setPlaying(false), []);
++
++  if (error || (slide && (pages.length === 0 || shown >= pages.length))) {
++    return <ShareUnavailable />;
++  }
++  if (!slide) return <ShareShell>{null}</ShareShell>;
++
++  if (playing) {
++    return (
++      <Player
++        pages={pages}
++        design={slide.design}
++        transition={slide.transition}
++        index={shown}
++        onIndexChange={onIndexChange}
++        onExit={onExit}
++        fullscreen
++      />
++    );
++  }
++
++  const Poster = pages[shown];
++  return (
++    <ShareShell>
++      <div className="w-full max-w-[min(960px,92vw)]">
++        <div className="pointer-events-none aspect-video w-full overflow-hidden rounded-[8px] shadow-floating ring-1 ring-white/10">
++          <SlideCanvas flat design={slide.design}>
++            <SlidePageProvider index={shown} total={pages.length}>
++              <PosterStepHost>
++                <Poster />
++              </PosterStepHost>
++            </SlidePageProvider>
++          </SlideCanvas>
++        </div>
++      </div>
++      <div className="flex flex-col items-center gap-3 text-center">
++        <h1 className="max-w-[48rem] text-balance font-heading text-lg font-semibold tracking-tight text-white">
++          {slide.meta?.title ?? ''}
++        </h1>
++        {lockedPage !== null && (
++          <p className="text-[12px] text-white/50">
++            {format(t.share.pageOnly, { n: lockedPage + 1, total: pages.length })}
++          </p>
++        )}
++        <button
++          type="button"
++          autoFocus
++          onClick={() => {
++            setStarted(true);
++            setPlaying(true);
++          }}
++          className="mt-1 inline-flex items-center gap-2 rounded-full bg-white px-6 py-2.5 text-[15px] font-semibold text-black shadow-floating transition-transform hover:scale-[1.03] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white active:scale-[0.98]"
++        >
++          <Play className="size-4 fill-current" />
++          {started ? t.share.resume : t.share.start}
++        </button>
++        <p className="text-[11.5px] text-white/45">
++          {lockedPage === null ? t.share.hintDeck : t.share.hintPage}
++        </p>
++      </div>
++    </ShareShell>
++  );
++}
++
++function PosterStepHost({ children }: { children: ReactNode }) {
++  const noopControllerRef = useRef<StepController | null>(null);
++  return (
++    <StepHost
++      isActivePage={false}
++      entryDirection="jump"
++      controllerRef={noopControllerRef}
++      controlledRevealed={0}
++    >
++      {children}
++    </StepHost>
++  );
++}
++
++function ShareShell({ children }: { children: ReactNode }) {
++  return (
++    <div className="flex min-h-dvh w-full flex-col items-center justify-center gap-7 bg-[#0b0b0d] px-4 py-10 text-white">
++      {children}
++    </div>
++  );
++}
++
++function ShareUnavailable() {
++  const t = useLocale();
++  return (
++    <ShareShell>
++      <div className="max-w-md text-center">
++        <h1 className="font-heading text-xl font-semibold tracking-tight">{t.share.unavailableTitle}</h1>
++        <p className="mt-2 text-[13px] text-white/55">{t.share.unavailableBody}</p>
++      </div>
++    </ShareShell>
++  );
++}
