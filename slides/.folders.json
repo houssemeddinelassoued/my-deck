@@ -4,28 +4,77 @@
       "id": "f-cda573a4",
       "name": "FORMATIONS IA",
       "icon": {
-        "type": "emoji",
-        "value": "❇️"
+        "type": "color",
+        "value": "#60646c"
       }
     },
     {
       "id": "f-7a2a39b0",
       "name": "Hela",
       "icon": {
-        "type": "emoji",
-        "value": "🖍️"
+        "type": "color",
+        "value": "#e5484d"
+      }
+    },
+    {
+      "id": "f-3b8bd4bc",
+      "name": "Docaposte Institute",
+      "icon": {
+        "type": "color",
+        "value": "#0091ff"
+      }
+    },
+    {
+      "id": "f-f60ec6cd",
+      "name": "Technologia",
+      "icon": {
+        "type": "color",
+        "value": "#30a46c"
+      }
+    },
+    {
+      "id": "f-9d7fbf87",
+      "name": "FCIT",
+      "icon": {
+        "type": "color",
+        "value": "#0091ff"
+      }
+    },
+    {
+      "id": "f-74edf8ee",
+      "name": "Intelligence Artificielle",
+      "icon": {
+        "type": "color",
+        "value": "#0091ff"
       }
     }
   ],
   "assignments": {
     "fenetre-de-contexte": "f-cda573a4",
     "meet-my-classmates": "f-7a2a39b0",
-    "docaposte-dev-ia": "f-cda573a4",
-    "ia-agentique-feuille-de-route": "f-cda573a4",
-    "copilot-avance": "f-cda573a4",
-    "ia-avancee-automatisation": "f-cda573a4",
-    "ia-pour-les-rh": "f-cda573a4",
-    "outils-ia-gain-de-temps": "f-cda573a4",
-    "ia-relation-client": "f-cda573a4"
+    "docaposte-dev-ia": "f-3b8bd4bc",
+    "ia-agentique-feuille-de-route": "f-f60ec6cd",
+    "copilot-avance": "f-3b8bd4bc",
+    "ia-product-owner": "f-3b8bd4bc",
+    "ia-avancee-automatisation": "f-9d7fbf87",
+    "ia-pour-les-rh": "f-9d7fbf87",
+    "outils-ia-gain-de-temps": "f-9d7fbf87",
+    "ia-relation-client": "f-9d7fbf87",
+    "ia-assistant-administratif": "f-9d7fbf87",
+    "ia-marketing-communication": "f-9d7fbf87",
+    "ai-history-sommaire": "f-74edf8ee",
+    "ai-history-00-neurone-formel": "f-74edf8ee",
+    "ai-history-03-ia-symbolique": "f-74edf8ee",
+    "ai-history-01-perceptron": "f-74edf8ee",
+    "ai-history-02-retropropagation": "f-74edf8ee",
+    "ai-history-04-reseaux-convolutifs": "f-74edf8ee",
+    "ai-history-05-deep-blue": "f-74edf8ee",
+    "ai-history-06-alexnet": "f-74edf8ee",
+    "ai-history-07-word2vec": "f-74edf8ee",
+    "ai-history-08-alphago": "f-74edf8ee",
+    "ai-history-09-transformer": "f-74edf8ee",
+    "ai-history-10-chatgpt": "f-74edf8ee",
+    "ml-explique": "f-74edf8ee",
+    "llm-explique": "f-74edf8ee"
   }
 }

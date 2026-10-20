@@ -1,0 +1,108 @@
+:root {
+  color-scheme: light dark;
+  --bg: #f6f5f1;
+  --card: #ffffff;
+  --ink: #1d1d1f;
+  --muted: #5f6368;
+  --rule: #d9d6cf;
+  --focus: #1a5fd6;
+  --late: #b3261e;
+  --late-bg: #fbe4e2;
+  --early: #1d6b3a;
+  --early-bg: #dff3e6;
+  --slack: #c9c4b8;
+  --break: #8a8578;
+  --slate: #5c6b7a;
+  --blue: #2f6fdf;
+  --yellow: #c99a06;
+  --violet: #7a4fd1;
+  --teal: #11857f;
+  --coral: #d9573b;
+  --green: #3c8d3f;
+  font: 15px/1.45 system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #17181a;
+    --card: #222428;
+    --ink: #ececec;
+    --muted: #a7abb2;
+    --rule: #3a3d42;
+    --focus: #7fb0ff;
+    --late: #ff8a80;
+    --late-bg: #4a2220;
+    --early: #8fd9a8;
+    --early-bg: #1f3a2a;
+    --slack: #4b4740;
+    --break: #77736a;
+  }
+}
+* { box-sizing: border-box; }
+body { margin: 0; padding: 20px 24px 40px; background: var(--bg); color: var(--ink); }
+h1 { font-size: 1.5rem; margin: 0; }
+h2 { font-size: 1.2rem; margin: 0 0 12px; }
+h3 { font-size: 1rem; margin: 18px 0 8px; }
+code { font-size: 0.9em; }
+:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; border-radius: 3px; }
+.skip { position: absolute; left: -9999px; }
+.skip:focus { left: 12px; top: 8px; background: var(--card); padding: 6px 10px; z-index: 10; }
+.top { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; flex-wrap: wrap; }
+.sub { margin: 4px 0 0; color: var(--muted); }
+.top-actions { display: flex; gap: 8px; }
+.btn {
+  font: inherit; padding: 6px 12px; border-radius: 6px; cursor: pointer;
+  border: 1px solid var(--rule); background: var(--card); color: var(--ink);
+}
+.btn:hover { border-color: var(--muted); }
+.btn-ghost { background: transparent; }
+.btn-mini { padding: 1px 7px; font-size: 0.85em; }
+.status { color: var(--muted); min-height: 1.4em; margin: 10px 0; }
+.error { background: var(--late-bg); color: var(--late); padding: 10px 14px; border-radius: 6px; margin: 10px 0; }
+.warnings { background: var(--card); border-left: 4px solid var(--yellow); padding: 10px 16px; margin: 12px 0; border-radius: 6px; }
+.warnings h2 { font-size: 1rem; margin-bottom: 4px; }
+.warnings ul { margin: 0; padding-left: 18px; }
+.day { background: var(--card); border-radius: 10px; padding: 18px 20px; margin: 18px 0; box-shadow: 0 1px 3px rgba(0,0,0,.08); }
+.day-head { display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 12px; }
+.stats { display: flex; flex-wrap: wrap; gap: 10px; margin: 12px 0; padding: 0; list-style: none; }
+.stats li { border: 1px solid var(--rule); border-radius: 8px; padding: 6px 12px; min-width: 120px; }
+.stats .k { display: block; color: var(--muted); font-size: 0.8rem; }
+.stats .v { font-size: 1.15rem; font-weight: 600; font-variant-numeric: tabular-nums; }
+.hours { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+.hours label { display: flex; gap: 6px; align-items: center; color: var(--muted); }
+input[type='time'], input[type='number'], select {
+  font: inherit; color: var(--ink); background: var(--bg); border: 1px solid var(--rule);
+  border-radius: 5px; padding: 3px 6px;
+}
+input[type='number'] { width: 4.5em; text-align: right; }
+select { max-width: 16em; }
+.timeline { position: relative; height: 46px; margin: 14px 16px 26px 0; background: var(--bg); border-radius: 6px; }
+.tl-block { position: absolute; top: 6px; bottom: 6px; border-radius: 4px; overflow: hidden; color: #fff; font-size: 0.72rem; padding: 2px 4px; white-space: nowrap; }
+.tl-break { background: repeating-linear-gradient(45deg, var(--break), var(--break) 5px, transparent 5px, transparent 9px); border: 1px solid var(--break); color: var(--ink); }
+.tl-slack { background: repeating-linear-gradient(-45deg, var(--slack), var(--slack) 2px, transparent 2px, transparent 6px); }
+.tl-over { position: absolute; top: 0; bottom: 0; background: var(--late-bg); border-left: 2px solid var(--late); }
+.tl-end { position: absolute; top: -4px; bottom: -4px; border-left: 2px dashed var(--ink); }
+.tl-tick { position: absolute; bottom: -20px; font-size: 0.72rem; color: var(--muted); transform: translateX(-50%); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.tone-slate { background: var(--slate); } .tone-blue { background: var(--blue); } .tone-yellow { background: var(--yellow); }
+.tone-violet { background: var(--violet); } .tone-teal { background: var(--teal); } .tone-coral { background: var(--coral); }
+.tone-green { background: var(--green); }
+.swatch { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 6px; vertical-align: baseline; }
+table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
+caption { text-align: left; font-weight: 600; padding: 4px 0 6px; }
+th, td { text-align: left; padding: 5px 8px; border-bottom: 1px solid var(--rule); vertical-align: middle; }
+th { font-size: 0.8rem; color: var(--muted); font-weight: 600; }
+td.num, th.num { text-align: right; }
+.delta-late { color: var(--late); font-weight: 600; }
+.delta-early { color: var(--early); }
+.delta-ok { color: var(--muted); }
+.pill { display: inline-block; padding: 0 7px; border-radius: 99px; font-size: 0.8rem; }
+.pill-late { background: var(--late-bg); color: var(--late); }
+.pill-early { background: var(--early-bg); color: var(--early); }
+details { margin: 6px 0; border: 1px solid var(--rule); border-radius: 8px; }
+summary { cursor: pointer; padding: 8px 12px; font-weight: 600; }
+details > div { padding: 0 12px 10px; overflow-x: auto; }
+tr.break-row td { background: var(--bg); font-style: italic; color: var(--muted); }
+tr.overridden td.dur input { border-color: var(--focus); font-weight: 600; }
+.hint { color: var(--muted); font-size: 0.8rem; margin-left: 4px; }
+.page-name { font-family: ui-monospace, Consolas, monospace; font-size: 0.85em; }
+.foot { color: var(--muted); font-size: 0.85rem; margin-top: 24px; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
