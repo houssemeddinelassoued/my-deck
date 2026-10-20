@@ -70,40 +70,6 @@ const C_Keys: Page = () => (
   </Frame>
 );
 
-// ─── Auto-positionnement final ──────────────────────────────────────────────
-const C_AutoPos: Page = () => (
-  <Frame mod={7} kind="exercice">
-    <Title>Auto-positionnement final : mesurez le chemin parcouru</Title>
-    <Lede>Les huit mêmes affirmations que ce matin. Comparez avec le score noté à 9:15.</Lede>
-    <Checklist>
-      <div className={A.in} style={{ position: 'absolute', left: 120, top: 270, width: 1150, display: 'flex', flexDirection: 'column', gap: 14 }}>
-        <CheckItem id="af1" size={27}>Expliquer la différence entre IA, machine learning et IA générative</CheckItem>
-        <CheckItem id="af2" size={27}>Associer un besoin produit à la bonne famille de modèles</CheckItem>
-        <CheckItem id="af3" size={27}>Expliquer pourquoi un modèle se trompe, et ce que ça change pour le produit</CheckItem>
-        <CheckItem id="af4" size={27}>Repérer un risque de biais, de fuite de données ou de non-conformité</CheckItem>
-        <CheckItem id="af5" size={27}>Dire si une idée du backlog mérite vraiment de l’IA</CheckItem>
-        <CheckItem id="af6" size={27}>Prioriser des cas d’usage IA avec des critères explicites</CheckItem>
-        <CheckItem id="af7" size={27}>Décrire les étapes données → modèle → intégration → UX</CheckItem>
-        <CheckItem id="af8" size={27}>Écrire des critères d’acceptation testables pour une feature IA</CheckItem>
-      </div>
-      <div className={A.right} style={{ position: 'absolute', left: 1330, top: 270, width: 470, ...dl(300) }}>
-        <CheckScore
-          max={8}
-          label="Mon niveau ce soir"
-          levels={[
-            { min: 0, text: 'Reprenez les pages « À retenir » de chaque module.', tone: 'coral' },
-            { min: 4, text: 'Bonne progression : passez au plan d’action.', tone: 'blue' },
-            { min: 7, text: 'Prêt à cadrer votre première feature IA.', tone: 'green' },
-          ]}
-        />
-        <div style={{ marginTop: 20, fontSize: 22, lineHeight: 1.45, color: C.muted }}>
-          L’écart avec ce matin est la mesure de votre journée. Partagez-le dans le questionnaire d’évaluation.
-        </div>
-      </div>
-    </Checklist>
-  </Frame>
-);
-
 // ─── Plan d’action 30 jours ─────────────────────────────────────────────────
 const CWeek = ({ n, tone, icon, title, children, d }: { n: number; tone: Tone; icon: IconName; title: string; children: ReactNode; d: number }) => (
   <div className={A.left} style={{ display: 'flex', alignItems: 'center', gap: 22, background: C.card, borderRadius: 18, boxShadow: SHADOW_SM, padding: '18px 24px', ...dl(d) }}>
@@ -228,7 +194,7 @@ const C_Thanks: Page = () => (
 C_Thanks.transition = BLOOM;
 
 // @@PAGES-BEGIN
-export const __pages = [C_Quiz, C_Keys, C_AutoPos, C_Plan, C_Resources, C_Thanks];
+export const __pages = [C_Quiz, C_Keys, C_Plan, C_Resources, C_Thanks];
 // @@PAGES-END
 
 // @@NOTES-BEGIN
@@ -250,16 +216,7 @@ DIRE — « Un : les bases IA utiles au PO. Apprendre plutôt que programmer, le
 
 INSIST — Relire la citation : « On ne priorise pas de l’IA. On priorise un problème… que l’IA résout parfois. »
 
-TRANSITION — « Mesurons le chemin parcouru. »`,
-  `⏱ 3 min · AUTO-POSITIONNEMENT FINAL
-
-OBJECTIF — Mesurer la progression, exigence du dispositif d’évaluation.
-
-CONSIGNE — « Les huit mêmes affirmations que ce matin. Cochez honnêtement, et comparez avec le score que vous aviez noté. »
-
-ANIMATION — Faire cocher un volontaire à l’écran. Demander à deux ou trois personnes leur écart : « De combien avez-vous progressé ? Sur quel point ? »
-
-TRANSITION — « Pour que cette progression serve, un plan d’action. »`,
+TRANSITION — « Pour que ces trois points servent dès lundi, un plan d’action. »`,
   `⏱ 3 min · PLAN D’ACTION 30 JOURS
 
 OBJECTIF — Transformer la formation en actions datées.

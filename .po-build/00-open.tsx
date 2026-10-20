@@ -174,7 +174,7 @@ const O_Objectifs: Page = () => (
       </div>
       <div style={{ marginTop: 22, height: 2, background: C.rule }} />
       <div style={{ marginTop: 20, fontSize: 22, lineHeight: 1.45, color: C.muted }}>
-        Évaluation continue : QCM à chaque module, atelier, TP noté par les pairs. Auto-positionnement au début et à la fin.
+        Évaluation continue : QCM à chaque module, atelier, TP noté par les pairs, quiz final.
       </div>
     </div>
   </Frame>
@@ -234,40 +234,6 @@ const O_Programme: Page = () => (
   </Frame>
 );
 
-// ─── Auto-positionnement ────────────────────────────────────────────────────
-const O_AutoPos: Page = () => (
-  <Frame mod={0} kind="exercice">
-    <Title>Auto-positionnement : votre point de départ</Title>
-    <Lede>Cochez ce que vous sauriez faire demain matin, sans aide. On refera l’exercice en fin de journée.</Lede>
-    <Checklist>
-      <div className={A.in} style={{ position: 'absolute', left: 120, top: 270, width: 1150, display: 'flex', flexDirection: 'column', gap: 14 }}>
-        <CheckItem id="ap1" size={27}>Expliquer la différence entre IA, machine learning et IA générative</CheckItem>
-        <CheckItem id="ap2" size={27}>Associer un besoin produit à la bonne famille de modèles</CheckItem>
-        <CheckItem id="ap3" size={27}>Expliquer pourquoi un modèle se trompe, et ce que ça change pour le produit</CheckItem>
-        <CheckItem id="ap4" size={27}>Repérer un risque de biais, de fuite de données ou de non-conformité</CheckItem>
-        <CheckItem id="ap5" size={27}>Dire si une idée du backlog mérite vraiment de l’IA</CheckItem>
-        <CheckItem id="ap6" size={27}>Prioriser des cas d’usage IA avec des critères explicites</CheckItem>
-        <CheckItem id="ap7" size={27}>Décrire les étapes données → modèle → intégration → UX</CheckItem>
-        <CheckItem id="ap8" size={27}>Écrire des critères d’acceptation testables pour une feature IA</CheckItem>
-      </div>
-      <div className={A.right} style={{ position: 'absolute', left: 1330, top: 270, width: 470, ...dl(300) }}>
-        <CheckScore
-          max={8}
-          label="Mon niveau de départ"
-          levels={[
-            { min: 0, text: 'Découverte : la journée est faite pour vous.', tone: 'grey' },
-            { min: 3, text: 'Bases posées : on va structurer.', tone: 'blue' },
-            { min: 6, text: 'Avancé : visez les bonus et aidez votre groupe.', tone: 'green' },
-          ]}
-        />
-        <div style={{ marginTop: 20, fontSize: 22, lineHeight: 1.45, color: C.muted }}>
-          Notez votre score sur un papier : il servira de référence à 16:50.
-        </div>
-      </div>
-    </Checklist>
-  </Frame>
-);
-
 // ─── Le fil rouge Spendo ────────────────────────────────────────────────────
 const OFact = ({ value, label, tone, d }: { value: ReactNode; label: string; tone: Tone; d: number }) => (
   <div className={A.in} style={{ flex: 1, background: C.card, borderRadius: 16, boxShadow: SHADOW_SM, padding: '18px 22px', ...dl(d) }}>
@@ -323,7 +289,7 @@ const O_FilRouge: Page = () => (
         <div style={{ display: 'flex', gap: 14, alignItems: 'center' }}>
           <IconTile name="target" tone="green" size={46} solid />
           <span>
-            <strong style={{ color: C.ink }}>Camille</strong>, Product Owner… c’est vous
+            <strong style={{ color: C.ink }}>Natalie</strong>, Product Owner… c’est vous
           </span>
         </div>
         <div style={{ display: 'flex', gap: 14, alignItems: 'center' }}>
@@ -376,7 +342,7 @@ const BacklogItem = ({ it, size = 22, cls, style }: { it: (typeof BACKLOG)[numbe
 
 const O_Backlog: Page = () => (
   <Frame mod={0}>
-    <Title>Le backlog de Camille : dix idées, combien d’IA ?</Title>
+    <Title>Le backlog de Natalie : dix idées, combien d’IA ?</Title>
     <Lede>Tout ce qui suit a été demandé par un client, un utilisateur ou la direction. Rien n’est encore priorisé.</Lede>
     <div style={{ position: 'absolute', left: 120, top: 262, width: 1680, display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14 }}>
       {BACKLOG.map((it, i) => (
@@ -393,7 +359,7 @@ const O_Backlog: Page = () => (
 );
 
 // @@PAGES-BEGIN
-export const __pages = [O_Cover, O_Welcome, O_Poll, O_Objectifs, O_Programme, O_AutoPos, O_FilRouge, O_Backlog];
+export const __pages = [O_Cover, O_Welcome, O_Poll, O_Objectifs, O_Programme, O_FilRouge, O_Backlog];
 // @@PAGES-END
 
 // @@NOTES-BEGIN
@@ -442,15 +408,6 @@ DIRE — « Le matin, on comprend et on repère : les fondamentaux, les limites,
 
 ANIMATION — Les horaires sont indicatifs : ajuster selon le rythme du groupe.
 
-TRANSITION — « Avant de commencer, mesurons votre point de départ. »`,
-  `⏱ 4 min · AUTO-POSITIONNEMENT (exercice)
-
-OBJECTIF — Mesurer le niveau de départ, exigence du dispositif d’évaluation.
-
-CONSIGNE — « Huit affirmations, une par compétence visée. Cochez seulement ce que vous sauriez faire demain matin, sans aide. Notez votre score : on refera exactement le même exercice en fin de journée. »
-
-ANIMATION — Faire cocher un volontaire à l’écran, ou laisser chacun noter sur papier. Repérer les scores élevés : leur proposer les bonus et le rôle de « référent » dans les ateliers.
-
 TRANSITION — « Parlons du produit sur lequel vous allez travailler toute la journée. »`,
   `⏱ 4 min · FIL ROUGE SPENDO
 
@@ -458,7 +415,7 @@ OBJECTIF — Installer le produit fil rouge, ses utilisateurs et ses irritants.
 
 DIRE — « Spendo est une application SaaS de notes de frais pour les PME et ETI. 1 200 entreprises clientes, 85 000 salariés, 180 000 justificatifs déposés chaque mois. Quatre populations, quatre irritants. Les salariés recopient chaque ticket : 4 minutes par justificatif. Les managers valident en bloc sans regarder. Les comptables contrôlent tout à la main, et les doublons passent quand même. Le support croule sous les questions de politique de voyage. »
 
-DIRE — « La squad : Camille, la PO — c’est vous —, trois développeurs, une ou un designer, un data scientist partagé, et un DPO et un RSSI qu’on consulte “quand il faut”. Et la direction veut “de l’IA dans Spendo avant la fin de l’année”. Ça vous rappelle quelque chose ? »
+DIRE — « La squad : Natalie, la PO — c’est vous —, trois développeurs, une ou un designer, un data scientist partagé, et un DPO et un RSSI qu’on consulte “quand il faut”. Et la direction veut “de l’IA dans Spendo avant la fin de l’année”. Ça vous rappelle quelque chose ? »
 
 INTERACTION — Laisser réagir. La pression « mettez de l’IA » est presque universelle : c’est le point de départ de la journée.
 
