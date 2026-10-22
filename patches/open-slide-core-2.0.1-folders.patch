@@ -3325,7 +3325,7 @@ index 0000000..aba1288
 +  );
 +}
 diff --git a/src/app/routes/slide.tsx b/src/app/routes/slide.tsx
-index 009bde3..8e6f590 100644
+index 009bde3..71d3043 100644
 --- a/src/app/routes/slide.tsx
 +++ b/src/app/routes/slide.tsx
 @@ -7,6 +7,7 @@ import {
@@ -3344,7 +3344,15 @@ index 009bde3..8e6f590 100644
  
  const { showSlideUi, showSlideBrowser, allowHtmlDownload } = config.build;
  
-@@ -497,10 +499,23 @@ export function Slide() {
+@@ -123,6 +125,7 @@ export function Slide() {
+   } | null>(null);
+   const [exporting, setExporting] = useState(false);
+   const [linkCopied, setLinkCopied] = useState(false);
++  const [labsCopied, setLabsCopied] = useState(false);
+   const linkCopiedTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+   const [designOpen, setDesignOpen] = useState(false);
+   const [overviewOpen, setOverviewOpen] = useState(false);
+@@ -497,10 +500,23 @@ export function Slide() {
  
    const title = slide.meta?.title ?? slideId;
  
@@ -3371,7 +3379,37 @@ index 009bde3..8e6f590 100644
        setLinkCopied(true);
        if (linkCopiedTimerRef.current) clearTimeout(linkCopiedTimerRef.current);
        linkCopiedTimerRef.current = setTimeout(() => setLinkCopied(false), 1200);
-@@ -671,16 +686,16 @@ export function Slide() {
+@@ -510,6 +526,29 @@ export function Slide() {
+     }
+   };
+ 
++  // Absolute URL of the deck's lab pack (meta.labs), to hand to participants.
++  const copyLabsLink = async () => {
++    const href = slide?.meta?.labs;
++    if (!href) return;
++    try {
++      await navigator.clipboard.writeText(new URL(href, window.location.href).toString());
++      const local = /^(localhost|127\.0\.0\.1|\[::1\])$/.test(window.location.hostname);
++      toast.success(local ? t.share.copiedLocal : t.slide.labsLinkCopied);
++      setLabsCopied(true);
++      setTimeout(() => setLabsCopied(false), 1200);
++    } catch (err) {
++      console.error('[open-slide] copy labs link failed', err);
++      toast.error(t.slide.toastCopyLinkFailed);
++    }
++  };
++
++  const downloadLabs = () => {
++    const a = document.createElement('a');
++    a.href = slide?.meta?.labs ?? '';
++    a.download = '';
++    a.click();
++  };
++
+   const exportHtml = async () => {
+     if (!slide || exporting) return;
+     setExporting(true);
+@@ -671,16 +710,16 @@ export function Slide() {
                  <span aria-hidden className="mx-0.5 hidden h-5 w-px bg-hairline md:block" />
                )}
                {view === 'slides' && (
@@ -3398,7 +3436,7 @@ index 009bde3..8e6f590 100644
                    <span className="relative grid size-4 place-items-center">
                      <Link2
                        className={cn(
-@@ -695,7 +710,35 @@ export function Slide() {
+@@ -695,7 +734,49 @@ export function Slide() {
                        )}
                      />
                    </span>
@@ -3422,20 +3460,34 @@ index 009bde3..8e6f590 100644
 +                </DropdownMenu>
 +              )}
 +              {view === 'slides' && slide.meta?.labs && (
-+                <a
-+                  href={slide.meta.labs}
-+                  download
-+                  aria-label={t.slide.downloadLabs}
-+                  title={t.slide.downloadLabs}
-+                  className={cn(buttonVariants({ variant: 'ghost', size: 'sm' }), 'hidden gap-1.5 px-2 md:inline-flex')}
-+                >
-+                  <FlaskConical className="size-4" />
-+                  Labs
-+                </a>
++                <div className="mx-1 hidden items-center gap-0.5 rounded-lg border border-hairline bg-muted/40 py-0.5 pr-0.5 pl-2 md:inline-flex">
++                  <FlaskConical className="size-3.5 opacity-70" aria-hidden />
++                  <span className="mr-1 text-[12px] font-medium">{t.slide.labs}</span>
++                  <button
++                    type="button"
++                    onClick={copyLabsLink}
++                    aria-label={t.slide.labsCopyLinkTitle}
++                    title={t.slide.labsCopyLinkTitle}
++                    className={cn(buttonVariants({ variant: 'ghost', size: 'sm' }), 'h-7 gap-1.5 rounded-md px-2 text-[12px]')}
++                  >
++                    {labsCopied ? <Check className="size-3.5" /> : <Link2 className="size-3.5" />}
++                    {t.slide.labsCopyLink}
++                  </button>
++                  <a
++                    href={slide.meta.labs}
++                    download
++                    aria-label={t.slide.downloadLabs}
++                    title={t.slide.downloadLabs}
++                    className={cn(buttonVariants({ variant: 'ghost', size: 'sm' }), 'h-7 gap-1.5 rounded-md px-2 text-[12px]')}
++                  >
++                    <Download className="size-3.5" />
++                    {t.slide.labsDownload}
++                  </a>
++                </div>
                )}
                {view === 'slides' && allowHtmlDownload && (
                  <DropdownMenu>
-@@ -743,10 +786,23 @@ export function Slide() {
+@@ -743,10 +824,22 @@ export function Slide() {
                        <Terminal />
                        {t.commandMenu.trigger}
                      </DropdownMenuItem>
@@ -3446,22 +3498,21 @@ index 009bde3..8e6f590 100644
 +                      {t.share.copyDeck}
                      </DropdownMenuItem>
 +                    {slide.meta?.labs && (
-+                      <DropdownMenuItem
-+                        onClick={() => {
-+                          const a = document.createElement('a');
-+                          a.href = slide.meta?.labs ?? '';
-+                          a.download = '';
-+                          a.click();
-+                        }}
-+                      >
++                      <DropdownMenuItem onClick={copyLabsLink}>
 +                        <FlaskConical />
++                        {t.slide.labsCopyLinkTitle}
++                      </DropdownMenuItem>
++                    )}
++                    {slide.meta?.labs && (
++                      <DropdownMenuItem onClick={downloadLabs}>
++                        <Download />
 +                        {t.slide.downloadLabs}
 +                      </DropdownMenuItem>
 +                    )}
                      {allowHtmlDownload && <DropdownMenuSeparator />}
                      {allowHtmlDownload && exportMenuItems}
                    </DropdownMenuContent>
-@@ -909,7 +965,7 @@ export function Slide() {
+@@ -909,7 +1002,7 @@ export function Slide() {
                    if (slideId) openPresenterWindow(slideId);
                    setPlayMode('window');
                  },
@@ -3483,7 +3534,7 @@ index 2ef0115..454e717 100644
      build: {
        showSlideBrowser: boolean;
 diff --git a/src/locale/en.ts b/src/locale/en.ts
-index 9a2525a..1c57bdf 100644
+index 9a2525a..991e054 100644
 --- a/src/locale/en.ts
 +++ b/src/locale/en.ts
 @@ -95,6 +95,53 @@ export const en: Locale = {
@@ -3540,15 +3591,20 @@ index 9a2525a..1c57bdf 100644
    slide: {
      home: 'Home',
      backToHome: 'Back to home',
-@@ -105,6 +152,7 @@ export const en: Locale = {
+@@ -105,6 +152,12 @@ export const en: Locale = {
      agentDisconnectedTooltip:
        'Lost connection to the dev server, so your agent can no longer see the current slide or inspector selection. Restart the dev server to restore the connection.',
      download: 'Download',
 +    downloadLabs: 'Download the lab files',
++    labs: 'Labs',
++    labsCopyLink: 'Copy link',
++    labsCopyLinkTitle: 'Copy the lab files link to give to participants',
++    labsLinkCopied: 'Labs link copied: share it with the participants',
++    labsDownload: 'Download',
      copyLink: 'Copy link',
      moreActions: 'More actions',
      toastCopyLinkSuccess: 'Link copied to clipboard',
-@@ -144,6 +192,23 @@ export const en: Locale = {
+@@ -144,6 +197,23 @@ export const en: Locale = {
      speakerNotes: 'Speaker notes',
      notesTextSmaller: 'Make notes text smaller',
      notesTextLarger: 'Make notes text larger',
@@ -3573,7 +3629,7 @@ index 9a2525a..1c57bdf 100644
      noNotesSuffix: ' to your slide module to see notes here.',
      blackScreen: 'Black screen',
 diff --git a/src/locale/ja.ts b/src/locale/ja.ts
-index a39090f..bb1577f 100644
+index a39090f..b9ec798 100644
 --- a/src/locale/ja.ts
 +++ b/src/locale/ja.ts
 @@ -95,6 +95,53 @@ export const ja: Locale = {
@@ -3630,15 +3686,20 @@ index a39090f..bb1577f 100644
    slide: {
      agentConnected: 'エージェント接続中',
      agentConnectedTooltip:
-@@ -105,6 +152,7 @@ export const ja: Locale = {
+@@ -105,6 +152,12 @@ export const ja: Locale = {
      home: 'ホーム',
      backToHome: 'ホームへ戻る',
      download: 'ダウンロード',
 +    downloadLabs: '演習ファイルをダウンロード',
++    labs: '演習',
++    labsCopyLink: 'リンクをコピー',
++    labsCopyLinkTitle: '参加者に渡す演習ファイルのリンクをコピー',
++    labsLinkCopied: '演習ファイルのリンクをコピーしました',
++    labsDownload: 'ダウンロード',
      copyLink: 'リンクをコピー',
      moreActions: 'その他の操作',
      toastCopyLinkSuccess: 'リンクをクリップボードにコピーしました',
-@@ -144,6 +192,23 @@ export const ja: Locale = {
+@@ -144,6 +197,23 @@ export const ja: Locale = {
      speakerNotes: '発表者ノート',
      notesTextSmaller: 'ノートの文字を小さく',
      notesTextLarger: 'ノートの文字を大きく',
@@ -3663,7 +3724,7 @@ index a39090f..bb1577f 100644
      noNotesSuffix: ' を追加するとここに表示されます。',
      blackScreen: '黒い画面',
 diff --git a/src/locale/types.ts b/src/locale/types.ts
-index e05bfe3..fd33db8 100644
+index e05bfe3..99bd5cd 100644
 --- a/src/locale/types.ts
 +++ b/src/locale/types.ts
 @@ -99,6 +99,53 @@ export type Locale = {
@@ -3720,15 +3781,20 @@ index e05bfe3..fd33db8 100644
    slide: {
      home: string;
      backToHome: string;
-@@ -107,6 +154,7 @@ export type Locale = {
+@@ -107,6 +154,12 @@ export type Locale = {
      agentDisconnected: string;
      agentDisconnectedTooltip: string;
      download: string;
 +    downloadLabs: string;
++    labs: string;
++    labsCopyLink: string;
++    labsCopyLinkTitle: string;
++    labsLinkCopied: string;
++    labsDownload: string;
      copyLink: string;
      moreActions: string;
      toastCopyLinkSuccess: string;
-@@ -145,6 +193,23 @@ export type Locale = {
+@@ -145,6 +198,23 @@ export type Locale = {
      speakerNotes: string;
      notesTextSmaller: string;
      notesTextLarger: string;
@@ -3753,7 +3819,7 @@ index e05bfe3..fd33db8 100644
      noNotesSuffix: string;
      blackScreen: string;
 diff --git a/src/locale/zh-cn.ts b/src/locale/zh-cn.ts
-index 7fdf60b..93f6168 100644
+index 7fdf60b..5538be7 100644
 --- a/src/locale/zh-cn.ts
 +++ b/src/locale/zh-cn.ts
 @@ -95,6 +95,53 @@ export const zhCN: Locale = {
@@ -3810,15 +3876,20 @@ index 7fdf60b..93f6168 100644
    slide: {
      agentConnected: 'Agent 已连接',
      agentConnectedTooltip: '目前的 slide 与 Inspector 选择会即时同步给 agent。',
-@@ -104,6 +151,7 @@ export const zhCN: Locale = {
+@@ -104,6 +151,12 @@ export const zhCN: Locale = {
      home: '首页',
      backToHome: '返回首页',
      download: '下载',
 +    downloadLabs: '下载实验文件',
++    labs: '实验',
++    labsCopyLink: '复制链接',
++    labsCopyLinkTitle: '复制实验文件链接，分享给学员',
++    labsLinkCopied: '已复制实验文件链接',
++    labsDownload: '下载',
      copyLink: '复制链接',
      moreActions: '更多操作',
      toastCopyLinkSuccess: '已复制链接到剪贴板',
-@@ -143,6 +191,23 @@ export const zhCN: Locale = {
+@@ -143,6 +196,23 @@ export const zhCN: Locale = {
      speakerNotes: '演讲备注',
      notesTextSmaller: '缩小备注文字',
      notesTextLarger: '放大备注文字',
@@ -3843,7 +3914,7 @@ index 7fdf60b..93f6168 100644
      noNotesSuffix: ' 即可在此查看备注。',
      blackScreen: '黑屏',
 diff --git a/src/locale/zh-tw.ts b/src/locale/zh-tw.ts
-index 62297df..8e5e34c 100644
+index 62297df..22ff329 100644
 --- a/src/locale/zh-tw.ts
 +++ b/src/locale/zh-tw.ts
 @@ -95,6 +95,53 @@ export const zhTW: Locale = {
@@ -3900,15 +3971,20 @@ index 62297df..8e5e34c 100644
    slide: {
      agentConnected: 'Agent 已連線',
      agentConnectedTooltip: '目前的 slide 與 Inspector 選擇會即時同步給 agent。',
-@@ -104,6 +151,7 @@ export const zhTW: Locale = {
+@@ -104,6 +151,12 @@ export const zhTW: Locale = {
      home: '首頁',
      backToHome: '返回首頁',
      download: '下載',
 +    downloadLabs: '下載實作檔案',
++    labs: '實作',
++    labsCopyLink: '複製連結',
++    labsCopyLinkTitle: '複製實作檔案連結，分享給學員',
++    labsLinkCopied: '已複製實作檔案連結',
++    labsDownload: '下載',
      copyLink: '複製連結',
      moreActions: '更多動作',
      toastCopyLinkSuccess: '已複製連結到剪貼簿',
-@@ -143,6 +191,23 @@ export const zhTW: Locale = {
+@@ -143,6 +196,23 @@ export const zhTW: Locale = {
      speakerNotes: '演講備忘',
      notesTextSmaller: '縮小備忘文字',
      notesTextLarger: '放大備忘文字',
