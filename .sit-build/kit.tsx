@@ -22,6 +22,7 @@ import {
   useState,
 } from 'react';
 import formateur from '@assets/houssem-formateur.png';
+import labsPack from './assets/labs-support-infrastructure.zip?url';
 
 export const design: DesignSystem = {
   palette: { bg: '#F6F8FC', text: '#101828', accent: '#0A62D0' },

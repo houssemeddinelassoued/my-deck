@@ -31,6 +31,35 @@ index 76f82bc..944bf66 100644
  					await writeManifest(ctx.manifestPath, manifest);
  					return json(res, 200, folder);
  				}
+diff --git a/dist/index.d.ts b/dist/index.d.ts
+index 6879713..7290fb7 100644
+--- a/dist/index.d.ts
++++ b/dist/index.d.ts
+@@ -80,6 +80,11 @@ type SlideMeta = {
+   theme?: string;
+   /** ISO 8601 timestamp. Set once at scaffold time; used to sort the slide list. */
+   createdAt?: string;
++  /**
++   * URL of a downloadable lab pack (zip, PDF…) for this deck — shown as a
++   * « Labs » button in the slide toolbar. Import the file with `?url`.
++   */
++  labs?: string;
+ };
+ type SlideModule = {
+   default: Page[];
+diff --git a/env.d.ts b/env.d.ts
+index dd895a5..bdaac94 100644
+--- a/env.d.ts
++++ b/env.d.ts
+@@ -57,3 +57,8 @@ declare module '*.otf' {
+   const src: string;
+   export default src;
+ }
++// Any file imported with `?url` (lab packs: .zip, .pdf…) resolves to its URL.
++declare module '*?url' {
++  const src: string;
++  export default src;
++}
 diff --git a/src/app/app.tsx b/src/app/app.tsx
 index 650f670..732afd6 100644
 --- a/src/app/app.tsx
@@ -1566,10 +1595,22 @@ index 32d34ef..be39317 100644
        await refresh();
      },
 diff --git a/src/app/lib/sdk.ts b/src/app/lib/sdk.ts
-index 082e3c4..61ef31b 100644
+index 082e3c4..cbbdd58 100644
 --- a/src/app/lib/sdk.ts
 +++ b/src/app/lib/sdk.ts
-@@ -22,10 +22,14 @@ export type SlideModule = {
+@@ -9,6 +9,11 @@ export type SlideMeta = {
+   theme?: string;
+   /** ISO 8601 timestamp. Set once at scaffold time; used to sort the slide list. */
+   createdAt?: string;
++  /**
++   * URL of a downloadable lab pack (zip, PDF…) for this deck — shown as a
++   * « Labs » button in the slide toolbar. Import the file with `?url`.
++   */
++  labs?: string;
+ };
+ 
+ export type SlideModule = {
+@@ -22,10 +27,14 @@ export type SlideModule = {
  
  export type FolderIcon = { type: 'emoji'; value: string } | { type: 'color'; value: string };
  
@@ -3081,541 +3122,7 @@ index c29b8b6..e596933 100644
      </div>
    );
  }
-diff --git a/src/app/virtual.d.ts b/src/app/virtual.d.ts
-index 2ef0115..454e717 100644
---- a/src/app/virtual.d.ts
-+++ b/src/app/virtual.d.ts
-@@ -14,6 +14,7 @@ declare module 'virtual:open-slide/config' {
-     slidesDir?: string;
-     port?: number;
-     locale?: Locale;
-+    folderLock?: { defaultPassword?: string };
-     version: string;
-     build: {
-       showSlideBrowser: boolean;
-diff --git a/src/locale/en.ts b/src/locale/en.ts
-index 9a2525a..98b16fc 100644
---- a/src/locale/en.ts
-+++ b/src/locale/en.ts
-@@ -95,6 +95,53 @@ export const en: Locale = {
-     pickIcon: 'Pick icon',
-   },
- 
-+  folderLock: {
-+    protect: 'Protect with password…',
-+    changePassword: 'Change password…',
-+    removePassword: 'Remove password',
-+    lockNow: 'Lock now',
-+    unlockAction: 'Unlock…',
-+    protectedBadge: 'Password protected',
-+    lockedTitle: '“{name}” is locked',
-+    lockedFolderHint: 'Enter the password to see the decks in this folder.',
-+    lockedSlideHint: 'This deck is in a protected folder. Enter the password to open it.',
-+    passwordPlaceholder: 'Password',
-+    unlock: 'Unlock',
-+    wrongPassword: 'Wrong password',
-+    showPassword: 'Show password',
-+    hidePassword: 'Hide password',
-+    dialogEyebrow: 'Folder · protection',
-+    dialogTitle: 'Protect “{name}”',
-+    dialogChangeTitle: 'Change password of “{name}”',
-+    dialogDescription: 'Decks in this folder stay hidden — in the grid, in “Slides” and in search — until the password is entered.',
-+    dialogDefaultHint: 'Default password: {password}',
-+    dialogClientSideNote: 'Client-side lock: it keeps casual viewers out of the UI, it is not encryption.',
-+    toastProtected: 'Protected “{name}”',
-+    toastUnprotected: 'Removed the password from “{name}”',
-+    toastLocked: 'Locked “{name}”',
-+    toastUnlocked: 'Unlocked “{name}”',
-+    toastFailed: 'Could not update the folder password',
-+    newFolderInMove: 'New folder…',
-+    newFolderPlaceholder: 'New folder name',
-+  },
-+
-+  share: {
-+    menu: 'Share',
-+    copyDeck: 'Share link — whole presentation',
-+    copyPage: 'Share link — this page only',
-+    copyEditor: 'Copy editor link (private)',
-+    copied: 'Read-only share link copied',
-+    copiedLocal: 'Link copied — it points to this computer: copy it from the published site to share it',
-+    start: 'Start presentation',
-+    resume: 'Resume',
-+    pageOnly: 'Page {n} of {total}',
-+    hintDeck: 'Full screen · ← → or click the edges to move · Esc to leave',
-+    hintPage: 'Full screen · → to reveal · Esc to leave',
-+    unavailableTitle: 'This link is not available',
-+    unavailableBody: 'Check that it was copied in full, or ask the person who shared it for a new one.',
-+  },
-+
-+
-   slide: {
-     home: 'Home',
-     backToHome: 'Back to home',
-@@ -144,6 +191,23 @@ export const en: Locale = {
-     speakerNotes: 'Speaker notes',
-     notesTextSmaller: 'Make notes text smaller',
-     notesTextLarger: 'Make notes text larger',
-+    resizeColumns: 'Resize the columns',
-+    resizeNotes: 'Resize the side panes',
-+    resizeHint: 'Drag to resize · double-click to reset',
-+    layout: 'Layout',
-+    layoutHint: 'The first visible pane fills the large column, the others stack beside it. You can also drag a pane by its title onto another to swap them.',
-+    hidePane: 'Hide {pane}',
-+    showPane: 'Show {pane}',
-+    moveUp: 'Move up',
-+    moveDown: 'Move down',
-+    swapSides: 'Swap sides',
-+    resetLayout: 'Reset layout',
-+    allPanesHidden: 'All panes are hidden.',
-+    showAllPanes: 'Show all panes',
-+    dragPane: 'Drag onto another pane to swap them',
-+    dropToSwap: 'Drop to swap',
-+    laser: 'Laser',
-+    laserHint: 'Laser pointer (L) — point at “Now showing” to show it on the projection too',
-     noNotesPrefix: 'No speaker notes for this slide. Add ',
-     noNotesSuffix: ' to your slide module to see notes here.',
-     blackScreen: 'Black screen',
-diff --git a/src/locale/ja.ts b/src/locale/ja.ts
-index a39090f..276845a 100644
---- a/src/locale/ja.ts
-+++ b/src/locale/ja.ts
-@@ -95,6 +95,53 @@ export const ja: Locale = {
-     pickIcon: 'アイコンを選択',
-   },
- 
-+  folderLock: {
-+    protect: 'パスワードで保護…',
-+    changePassword: 'パスワードを変更…',
-+    removePassword: 'パスワードを解除',
-+    lockNow: '今すぐロック',
-+    unlockAction: 'ロック解除…',
-+    protectedBadge: 'パスワード保護',
-+    lockedTitle: '「{name}」はロックされています',
-+    lockedFolderHint: 'このフォルダのスライドを見るにはパスワードを入力してください。',
-+    lockedSlideHint: 'このスライドは保護されたフォルダにあります。開くにはパスワードを入力してください。',
-+    passwordPlaceholder: 'パスワード',
-+    unlock: 'ロック解除',
-+    wrongPassword: 'パスワードが違います',
-+    showPassword: 'パスワードを表示',
-+    hidePassword: 'パスワードを隠す',
-+    dialogEyebrow: 'フォルダ · 保護',
-+    dialogTitle: '「{name}」を保護',
-+    dialogChangeTitle: '「{name}」のパスワードを変更',
-+    dialogDescription: 'パスワードが入力されるまで、このフォルダのスライドは一覧・検索に表示されません。',
-+    dialogDefaultHint: '既定のパスワード: {password}',
-+    dialogClientSideNote: 'クライアント側のロックです。暗号化ではありません。',
-+    toastProtected: '「{name}」を保護しました',
-+    toastUnprotected: '「{name}」のパスワードを解除しました',
-+    toastLocked: '「{name}」をロックしました',
-+    toastUnlocked: '「{name}」のロックを解除しました',
-+    toastFailed: 'フォルダのパスワードを更新できませんでした',
-+    newFolderInMove: '新規フォルダ…',
-+    newFolderPlaceholder: '新しいフォルダ名',
-+  },
-+
-+  share: {
-+    menu: '共有',
-+    copyDeck: '共有リンク — プレゼンテーション全体',
-+    copyPage: '共有リンク — このページのみ',
-+    copyEditor: '編集用リンクをコピー（非公開）',
-+    copied: '閲覧専用の共有リンクをコピーしました',
-+    copiedLocal: 'リンクをコピーしました — このコンピューター用です。共有するには公開サイトからコピーしてください',
-+    start: 'プレゼンテーションを開始',
-+    resume: '再開',
-+    pageOnly: '{total} ページ中 {n} ページ',
-+    hintDeck: '全画面 · ← → または端をクリックで移動 · Esc で終了',
-+    hintPage: '全画面 · → で表示 · Esc で終了',
-+    unavailableTitle: 'このリンクは利用できません',
-+    unavailableBody: 'リンクが完全にコピーされているか確認するか、共有した人に新しいリンクを依頼してください。',
-+  },
-+
-+
-   slide: {
-     agentConnected: 'エージェント接続中',
-     agentConnectedTooltip:
-@@ -144,6 +191,23 @@ export const ja: Locale = {
-     speakerNotes: '発表者ノート',
-     notesTextSmaller: 'ノートの文字を小さく',
-     notesTextLarger: 'ノートの文字を大きく',
-+    resizeColumns: 'スライドとサイドパネルのサイズを変更',
-+    resizeNotes: 'サイドパネルのサイズを変更',
-+    resizeHint: 'ドラッグでサイズ変更・ダブルクリックでリセット',
-+    layout: 'レイアウト',
-+    layoutHint: '表示中の最初のパネルが大きい列に、残りは横に並びます。タイトルをドラッグして別のパネルにドロップすると入れ替えられます。',
-+    hidePane: '{pane}を非表示',
-+    showPane: '{pane}を表示',
-+    moveUp: '上へ移動',
-+    moveDown: '下へ移動',
-+    swapSides: '左右を入れ替え',
-+    resetLayout: 'レイアウトをリセット',
-+    allPanesHidden: 'すべてのパネルが非表示です。',
-+    showAllPanes: 'すべてのパネルを表示',
-+    dragPane: '別のパネルにドラッグして入れ替え',
-+    dropToSwap: 'ドロップして入れ替え',
-+    laser: 'レーザー',
-+    laserHint: 'レーザーポインター (L) — 「現在のスライド」を指すと投影画面にも表示されます',
-     noNotesPrefix: 'このスライドには発表者ノートがありません。スライドモジュールに ',
-     noNotesSuffix: ' を追加するとここに表示されます。',
-     blackScreen: '黒い画面',
-diff --git a/src/locale/types.ts b/src/locale/types.ts
-index e05bfe3..703a629 100644
---- a/src/locale/types.ts
-+++ b/src/locale/types.ts
-@@ -99,6 +99,53 @@ export type Locale = {
-     pickIcon: string;
-   };
- 
-+  folderLock: {
-+    protect: string;
-+    changePassword: string;
-+    removePassword: string;
-+    lockNow: string;
-+    unlockAction: string;
-+    protectedBadge: string;
-+    lockedTitle: string;
-+    lockedFolderHint: string;
-+    lockedSlideHint: string;
-+    passwordPlaceholder: string;
-+    unlock: string;
-+    wrongPassword: string;
-+    showPassword: string;
-+    hidePassword: string;
-+    dialogEyebrow: string;
-+    dialogTitle: string;
-+    dialogChangeTitle: string;
-+    dialogDescription: string;
-+    dialogDefaultHint: string;
-+    dialogClientSideNote: string;
-+    toastProtected: string;
-+    toastUnprotected: string;
-+    toastLocked: string;
-+    toastUnlocked: string;
-+    toastFailed: string;
-+    newFolderInMove: string;
-+    newFolderPlaceholder: string;
-+  };
-+
-+  share: {
-+    menu: string;
-+    copyDeck: string;
-+    copyPage: string;
-+    copyEditor: string;
-+    copied: string;
-+    copiedLocal: string;
-+    start: string;
-+    resume: string;
-+    pageOnly: string;
-+    hintDeck: string;
-+    hintPage: string;
-+    unavailableTitle: string;
-+    unavailableBody: string;
-+  };
-+
-+
-   slide: {
-     home: string;
-     backToHome: string;
-@@ -145,6 +192,23 @@ export type Locale = {
-     speakerNotes: string;
-     notesTextSmaller: string;
-     notesTextLarger: string;
-+    resizeColumns: string;
-+    resizeNotes: string;
-+    resizeHint: string;
-+    layout: string;
-+    layoutHint: string;
-+    hidePane: string;
-+    showPane: string;
-+    moveUp: string;
-+    moveDown: string;
-+    swapSides: string;
-+    resetLayout: string;
-+    allPanesHidden: string;
-+    showAllPanes: string;
-+    dragPane: string;
-+    dropToSwap: string;
-+    laser: string;
-+    laserHint: string;
-     noNotesPrefix: string;
-     noNotesSuffix: string;
-     blackScreen: string;
-diff --git a/src/locale/zh-cn.ts b/src/locale/zh-cn.ts
-index 7fdf60b..f99c699 100644
---- a/src/locale/zh-cn.ts
-+++ b/src/locale/zh-cn.ts
-@@ -95,6 +95,53 @@ export const zhCN: Locale = {
-     pickIcon: '选择图标',
-   },
- 
-+  folderLock: {
-+    protect: '设置密码保护…',
-+    changePassword: '修改密码…',
-+    removePassword: '移除密码',
-+    lockNow: '立即锁定',
-+    unlockAction: '解锁…',
-+    protectedBadge: '密码保护',
-+    lockedTitle: '“{name}”已锁定',
-+    lockedFolderHint: '输入密码以查看此文件夹中的幻灯片。',
-+    lockedSlideHint: '此幻灯片位于受保护的文件夹中。请输入密码打开。',
-+    passwordPlaceholder: '密码',
-+    unlock: '解锁',
-+    wrongPassword: '密码错误',
-+    showPassword: '显示密码',
-+    hidePassword: '隐藏密码',
-+    dialogEyebrow: '文件夹 · 保护',
-+    dialogTitle: '保护“{name}”',
-+    dialogChangeTitle: '修改“{name}”的密码',
-+    dialogDescription: '在输入密码之前，此文件夹中的幻灯片不会出现在列表和搜索中。',
-+    dialogDefaultHint: '默认密码：{password}',
-+    dialogClientSideNote: '这是客户端锁定，并非加密。',
-+    toastProtected: '已保护“{name}”',
-+    toastUnprotected: '已移除“{name}”的密码',
-+    toastLocked: '已锁定“{name}”',
-+    toastUnlocked: '已解锁“{name}”',
-+    toastFailed: '无法更新文件夹密码',
-+    newFolderInMove: '新建文件夹…',
-+    newFolderPlaceholder: '新文件夹名称',
-+  },
-+
-+  share: {
-+    menu: '分享',
-+    copyDeck: '分享链接 — 整个演示文稿',
-+    copyPage: '分享链接 — 仅此页',
-+    copyEditor: '复制编辑链接（私有）',
-+    copied: '已复制只读分享链接',
-+    copiedLocal: '已复制链接 — 它指向本机：请从已发布的网站复制后再分享',
-+    start: '开始演示',
-+    resume: '继续',
-+    pageOnly: '第 {n} 页，共 {total} 页',
-+    hintDeck: '全屏 · ← → 或点击两侧翻页 · Esc 退出',
-+    hintPage: '全屏 · → 逐步显示 · Esc 退出',
-+    unavailableTitle: '此链接不可用',
-+    unavailableBody: '请确认链接已完整复制，或向分享者索取新链接。',
-+  },
-+
-+
-   slide: {
-     agentConnected: 'Agent 已连接',
-     agentConnectedTooltip: '目前的 slide 与 Inspector 选择会即时同步给 agent。',
-@@ -143,6 +190,23 @@ export const zhCN: Locale = {
-     speakerNotes: '演讲备注',
-     notesTextSmaller: '缩小备注文字',
-     notesTextLarger: '放大备注文字',
-+    resizeColumns: '调整幻灯片与侧边栏的大小',
-+    resizeNotes: '调整侧边面板的大小',
-+    resizeHint: '拖动以调整大小 · 双击重置',
-+    layout: '布局',
-+    layoutHint: '第一个可见面板占据大栏，其余面板在旁边堆叠。也可以拖动面板标题到另一个面板上以交换位置。',
-+    hidePane: '隐藏{pane}',
-+    showPane: '显示{pane}',
-+    moveUp: '上移',
-+    moveDown: '下移',
-+    swapSides: '左右互换',
-+    resetLayout: '重置布局',
-+    allPanesHidden: '所有面板均已隐藏。',
-+    showAllPanes: '显示所有面板',
-+    dragPane: '拖到另一个面板上以交换',
-+    dropToSwap: '放下以交换',
-+    laser: '激光',
-+    laserHint: '激光笔 (L) — 指向“当前幻灯片”时，投影画面上也会显示',
-     noNotesPrefix: '该幻灯片没有演讲备注。在你的幻灯片模块中添加 ',
-     noNotesSuffix: ' 即可在此查看备注。',
-     blackScreen: '黑屏',
-diff --git a/src/locale/zh-tw.ts b/src/locale/zh-tw.ts
-index 62297df..664354b 100644
---- a/src/locale/zh-tw.ts
-+++ b/src/locale/zh-tw.ts
-@@ -95,6 +95,53 @@ export const zhTW: Locale = {
-     pickIcon: '選擇圖示',
-   },
- 
-+  folderLock: {
-+    protect: '設定密碼保護…',
-+    changePassword: '變更密碼…',
-+    removePassword: '移除密碼',
-+    lockNow: '立即鎖定',
-+    unlockAction: '解鎖…',
-+    protectedBadge: '密碼保護',
-+    lockedTitle: '「{name}」已鎖定',
-+    lockedFolderHint: '輸入密碼以檢視此資料夾中的投影片。',
-+    lockedSlideHint: '此投影片位於受保護的資料夾中。請輸入密碼開啟。',
-+    passwordPlaceholder: '密碼',
-+    unlock: '解鎖',
-+    wrongPassword: '密碼錯誤',
-+    showPassword: '顯示密碼',
-+    hidePassword: '隱藏密碼',
-+    dialogEyebrow: '資料夾 · 保護',
-+    dialogTitle: '保護「{name}」',
-+    dialogChangeTitle: '變更「{name}」的密碼',
-+    dialogDescription: '在輸入密碼之前，此資料夾中的投影片不會出現在列表與搜尋中。',
-+    dialogDefaultHint: '預設密碼：{password}',
-+    dialogClientSideNote: '這是用戶端鎖定，並非加密。',
-+    toastProtected: '已保護「{name}」',
-+    toastUnprotected: '已移除「{name}」的密碼',
-+    toastLocked: '已鎖定「{name}」',
-+    toastUnlocked: '已解鎖「{name}」',
-+    toastFailed: '無法更新資料夾密碼',
-+    newFolderInMove: '新增資料夾…',
-+    newFolderPlaceholder: '新資料夾名稱',
-+  },
-+
-+  share: {
-+    menu: '分享',
-+    copyDeck: '分享連結 — 整份簡報',
-+    copyPage: '分享連結 — 僅此頁',
-+    copyEditor: '複製編輯連結（私人）',
-+    copied: '已複製唯讀分享連結',
-+    copiedLocal: '已複製連結 — 它指向本機：請從已發布的網站複製後再分享',
-+    start: '開始簡報',
-+    resume: '繼續',
-+    pageOnly: '第 {n} 頁，共 {total} 頁',
-+    hintDeck: '全螢幕 · ← → 或點擊兩側翻頁 · Esc 離開',
-+    hintPage: '全螢幕 · → 逐步顯示 · Esc 離開',
-+    unavailableTitle: '此連結無法使用',
-+    unavailableBody: '請確認連結已完整複製，或向分享者索取新連結。',
-+  },
-+
-+
-   slide: {
-     agentConnected: 'Agent 已連線',
-     agentConnectedTooltip: '目前的 slide 與 Inspector 選擇會即時同步給 agent。',
-@@ -143,6 +190,23 @@ export const zhTW: Locale = {
-     speakerNotes: '演講備忘',
-     notesTextSmaller: '縮小備忘文字',
-     notesTextLarger: '放大備忘文字',
-+    resizeColumns: '調整投影片與側邊欄的大小',
-+    resizeNotes: '調整側邊面板的大小',
-+    resizeHint: '拖曳以調整大小 · 按兩下重設',
-+    layout: '版面',
-+    layoutHint: '第一個可見面板佔據大欄，其餘面板在旁邊堆疊。也可以拖曳面板標題到另一個面板上以交換位置。',
-+    hidePane: '隱藏{pane}',
-+    showPane: '顯示{pane}',
-+    moveUp: '上移',
-+    moveDown: '下移',
-+    swapSides: '左右互換',
-+    resetLayout: '重設版面',
-+    allPanesHidden: '所有面板皆已隱藏。',
-+    showAllPanes: '顯示所有面板',
-+    dragPane: '拖曳到另一個面板上以交換',
-+    dropToSwap: '放開以交換',
-+    laser: '雷射',
-+    laserHint: '雷射筆 (L) — 指向「目前投影片」時，投影畫面上也會顯示',
-     noNotesPrefix: '此投影片沒有演講備忘。在你的投影片模組中加入 ',
-     noNotesSuffix: ' 即可在此查看備忘。',
-     blackScreen: '黑屏',
-diff --git a/src/app/routes/slide.tsx b/src/app/routes/slide.tsx
-index 009bde3..c3c0ece 100644
---- a/src/app/routes/slide.tsx
-+++ b/src/app/routes/slide.tsx
-@@ -89,6 +89,7 @@ import { remapNotesSessionCacheAfterReorder } from '../lib/inspector/use-notes';
- import type { SlideModule } from '../lib/sdk';
- import { usePrefersReducedMotion } from '../lib/use-prefers-reduced-motion';
- import { useSlideModule } from '../lib/use-slide-module';
-+import { shareUrl } from './share-viewer';
- 
- const { showSlideUi, showSlideBrowser, allowHtmlDownload } = config.build;
- 
-@@ -497,10 +498,23 @@ export function Slide() {
- 
-   const title = slide.meta?.title ?? slideId;
- 
--  const copyLink = async () => {
-+  // Default: the editor URL. Share links (`share-viewer.tsx`) are read-only,
-+  // play-only and carry an opaque code instead of the deck id.
-+  const copyLink = async (kind: 'editor' | 'deck' | 'page' = 'editor') => {
-     try {
--      await navigator.clipboard.writeText(window.location.href);
--      toast.success(t.slide.toastCopyLinkSuccess);
-+      const url =
-+        kind === 'editor'
-+          ? window.location.href
-+          : shareUrl(slideId, kind === 'page' ? index : undefined);
-+      await navigator.clipboard.writeText(url);
-+      const local = /^(localhost|127\.0\.0\.1|\[::1\])$/.test(window.location.hostname);
-+      toast.success(
-+        kind === 'editor'
-+          ? t.slide.toastCopyLinkSuccess
-+          : local
-+            ? t.share.copiedLocal
-+            : t.share.copied,
-+      );
-       setLinkCopied(true);
-       if (linkCopiedTimerRef.current) clearTimeout(linkCopiedTimerRef.current);
-       linkCopiedTimerRef.current = setTimeout(() => setLinkCopied(false), 1200);
-@@ -671,16 +685,16 @@ export function Slide() {
-                 <span aria-hidden className="mx-0.5 hidden h-5 w-px bg-hairline md:block" />
-               )}
-               {view === 'slides' && (
--                <button
--                  type="button"
--                  aria-label={t.slide.copyLink}
--                  title={t.slide.copyLink}
--                  className={cn(
--                    buttonVariants({ variant: 'ghost', size: 'icon-sm' }),
--                    'hidden md:inline-flex',
--                  )}
--                  onClick={copyLink}
--                >
-+                <DropdownMenu>
-+                  <DropdownMenuTrigger
-+                    type="button"
-+                    aria-label={t.share.menu}
-+                    title={t.share.menu}
-+                    className={cn(
-+                      buttonVariants({ variant: 'ghost', size: 'icon-sm' }),
-+                      'hidden md:inline-flex',
-+                    )}
-+                  >
-                   <span className="relative grid size-4 place-items-center">
-                     <Link2
-                       className={cn(
-@@ -695,7 +709,23 @@ export function Slide() {
-                       )}
-                     />
-                   </span>
--                </button>
-+                  </DropdownMenuTrigger>
-+                  <DropdownMenuContent align="end" className="min-w-[260px]">
-+                    <DropdownMenuItem onClick={() => copyLink('deck')}>
-+                      <Presentation className="size-4" />
-+                      {t.share.copyDeck}
-+                    </DropdownMenuItem>
-+                    <DropdownMenuItem onClick={() => copyLink('page')}>
-+                      <FileImage className="size-4" />
-+                      {t.share.copyPage}
-+                    </DropdownMenuItem>
-+                    <DropdownMenuSeparator />
-+                    <DropdownMenuItem onClick={() => copyLink('editor')}>
-+                      <Link2 className="size-4" />
-+                      {t.share.copyEditor}
-+                    </DropdownMenuItem>
-+                  </DropdownMenuContent>
-+                </DropdownMenu>
-               )}
-               {view === 'slides' && allowHtmlDownload && (
-                 <DropdownMenu>
-@@ -743,9 +773,9 @@ export function Slide() {
-                       <Terminal />
-                       {t.commandMenu.trigger}
-                     </DropdownMenuItem>
--                    <DropdownMenuItem onClick={copyLink}>
-+                    <DropdownMenuItem onClick={() => copyLink('deck')}>
-                       <Link2 />
--                      {t.slide.copyLink}
-+                      {t.share.copyDeck}
-                     </DropdownMenuItem>
-                     {allowHtmlDownload && <DropdownMenuSeparator />}
-                     {allowHtmlDownload && exportMenuItems}
-@@ -909,7 +939,7 @@ export function Slide() {
-                   if (slideId) openPresenterWindow(slideId);
-                   setPlayMode('window');
-                 },
--                onCopyLink: copyLink,
-+                onCopyLink: () => copyLink('editor'),
-                 onOverview: () => setOverviewOpen(true),
-                 onToggleDesignPanel: () => setDesignOpen((v) => !v),
-                 onExportHtml: exportHtml,
-diff --git a/src/app/routes/share-viewer.tsx b/src/app/routes/share-viewer.tsx
+diff --git b/src/app/routes/share-viewer.tsx b/src/app/routes/share-viewer.tsx
 new file mode 100644
 index 0000000..aba1288
 --- /dev/null
@@ -3817,3 +3324,611 @@ index 0000000..aba1288
 +    </ShareShell>
 +  );
 +}
+diff --git a/src/app/routes/slide.tsx b/src/app/routes/slide.tsx
+index 009bde3..8e6f590 100644
+--- a/src/app/routes/slide.tsx
++++ b/src/app/routes/slide.tsx
+@@ -7,6 +7,7 @@ import {
+   FileCode2,
+   FileImage,
+   FileText,
++  FlaskConical,
+   Link2,
+   Loader2,
+   Maximize,
+@@ -89,6 +90,7 @@ import { remapNotesSessionCacheAfterReorder } from '../lib/inspector/use-notes';
+ import type { SlideModule } from '../lib/sdk';
+ import { usePrefersReducedMotion } from '../lib/use-prefers-reduced-motion';
+ import { useSlideModule } from '../lib/use-slide-module';
++import { shareUrl } from './share-viewer';
+ 
+ const { showSlideUi, showSlideBrowser, allowHtmlDownload } = config.build;
+ 
+@@ -497,10 +499,23 @@ export function Slide() {
+ 
+   const title = slide.meta?.title ?? slideId;
+ 
+-  const copyLink = async () => {
++  // Default: the editor URL. Share links (`share-viewer.tsx`) are read-only,
++  // play-only and carry an opaque code instead of the deck id.
++  const copyLink = async (kind: 'editor' | 'deck' | 'page' = 'editor') => {
+     try {
+-      await navigator.clipboard.writeText(window.location.href);
+-      toast.success(t.slide.toastCopyLinkSuccess);
++      const url =
++        kind === 'editor'
++          ? window.location.href
++          : shareUrl(slideId, kind === 'page' ? index : undefined);
++      await navigator.clipboard.writeText(url);
++      const local = /^(localhost|127\.0\.0\.1|\[::1\])$/.test(window.location.hostname);
++      toast.success(
++        kind === 'editor'
++          ? t.slide.toastCopyLinkSuccess
++          : local
++            ? t.share.copiedLocal
++            : t.share.copied,
++      );
+       setLinkCopied(true);
+       if (linkCopiedTimerRef.current) clearTimeout(linkCopiedTimerRef.current);
+       linkCopiedTimerRef.current = setTimeout(() => setLinkCopied(false), 1200);
+@@ -671,16 +686,16 @@ export function Slide() {
+                 <span aria-hidden className="mx-0.5 hidden h-5 w-px bg-hairline md:block" />
+               )}
+               {view === 'slides' && (
+-                <button
+-                  type="button"
+-                  aria-label={t.slide.copyLink}
+-                  title={t.slide.copyLink}
+-                  className={cn(
+-                    buttonVariants({ variant: 'ghost', size: 'icon-sm' }),
+-                    'hidden md:inline-flex',
+-                  )}
+-                  onClick={copyLink}
+-                >
++                <DropdownMenu>
++                  <DropdownMenuTrigger
++                    type="button"
++                    aria-label={t.share.menu}
++                    title={t.share.menu}
++                    className={cn(
++                      buttonVariants({ variant: 'ghost', size: 'icon-sm' }),
++                      'hidden md:inline-flex',
++                    )}
++                  >
+                   <span className="relative grid size-4 place-items-center">
+                     <Link2
+                       className={cn(
+@@ -695,7 +710,35 @@ export function Slide() {
+                       )}
+                     />
+                   </span>
+-                </button>
++                  </DropdownMenuTrigger>
++                  <DropdownMenuContent align="end" className="min-w-[260px]">
++                    <DropdownMenuItem onClick={() => copyLink('deck')}>
++                      <Presentation className="size-4" />
++                      {t.share.copyDeck}
++                    </DropdownMenuItem>
++                    <DropdownMenuItem onClick={() => copyLink('page')}>
++                      <FileImage className="size-4" />
++                      {t.share.copyPage}
++                    </DropdownMenuItem>
++                    <DropdownMenuSeparator />
++                    <DropdownMenuItem onClick={() => copyLink('editor')}>
++                      <Link2 className="size-4" />
++                      {t.share.copyEditor}
++                    </DropdownMenuItem>
++                  </DropdownMenuContent>
++                </DropdownMenu>
++              )}
++              {view === 'slides' && slide.meta?.labs && (
++                <a
++                  href={slide.meta.labs}
++                  download
++                  aria-label={t.slide.downloadLabs}
++                  title={t.slide.downloadLabs}
++                  className={cn(buttonVariants({ variant: 'ghost', size: 'sm' }), 'hidden gap-1.5 px-2 md:inline-flex')}
++                >
++                  <FlaskConical className="size-4" />
++                  Labs
++                </a>
+               )}
+               {view === 'slides' && allowHtmlDownload && (
+                 <DropdownMenu>
+@@ -743,10 +786,23 @@ export function Slide() {
+                       <Terminal />
+                       {t.commandMenu.trigger}
+                     </DropdownMenuItem>
+-                    <DropdownMenuItem onClick={copyLink}>
++                    <DropdownMenuItem onClick={() => copyLink('deck')}>
+                       <Link2 />
+-                      {t.slide.copyLink}
++                      {t.share.copyDeck}
+                     </DropdownMenuItem>
++                    {slide.meta?.labs && (
++                      <DropdownMenuItem
++                        onClick={() => {
++                          const a = document.createElement('a');
++                          a.href = slide.meta?.labs ?? '';
++                          a.download = '';
++                          a.click();
++                        }}
++                      >
++                        <FlaskConical />
++                        {t.slide.downloadLabs}
++                      </DropdownMenuItem>
++                    )}
+                     {allowHtmlDownload && <DropdownMenuSeparator />}
+                     {allowHtmlDownload && exportMenuItems}
+                   </DropdownMenuContent>
+@@ -909,7 +965,7 @@ export function Slide() {
+                   if (slideId) openPresenterWindow(slideId);
+                   setPlayMode('window');
+                 },
+-                onCopyLink: copyLink,
++                onCopyLink: () => copyLink('editor'),
+                 onOverview: () => setOverviewOpen(true),
+                 onToggleDesignPanel: () => setDesignOpen((v) => !v),
+                 onExportHtml: exportHtml,
+diff --git a/src/app/virtual.d.ts b/src/app/virtual.d.ts
+index 2ef0115..454e717 100644
+--- a/src/app/virtual.d.ts
++++ b/src/app/virtual.d.ts
+@@ -14,6 +14,7 @@ declare module 'virtual:open-slide/config' {
+     slidesDir?: string;
+     port?: number;
+     locale?: Locale;
++    folderLock?: { defaultPassword?: string };
+     version: string;
+     build: {
+       showSlideBrowser: boolean;
+diff --git a/src/locale/en.ts b/src/locale/en.ts
+index 9a2525a..1c57bdf 100644
+--- a/src/locale/en.ts
++++ b/src/locale/en.ts
+@@ -95,6 +95,53 @@ export const en: Locale = {
+     pickIcon: 'Pick icon',
+   },
+ 
++  folderLock: {
++    protect: 'Protect with password…',
++    changePassword: 'Change password…',
++    removePassword: 'Remove password',
++    lockNow: 'Lock now',
++    unlockAction: 'Unlock…',
++    protectedBadge: 'Password protected',
++    lockedTitle: '“{name}” is locked',
++    lockedFolderHint: 'Enter the password to see the decks in this folder.',
++    lockedSlideHint: 'This deck is in a protected folder. Enter the password to open it.',
++    passwordPlaceholder: 'Password',
++    unlock: 'Unlock',
++    wrongPassword: 'Wrong password',
++    showPassword: 'Show password',
++    hidePassword: 'Hide password',
++    dialogEyebrow: 'Folder · protection',
++    dialogTitle: 'Protect “{name}”',
++    dialogChangeTitle: 'Change password of “{name}”',
++    dialogDescription: 'Decks in this folder stay hidden — in the grid, in “Slides” and in search — until the password is entered.',
++    dialogDefaultHint: 'Default password: {password}',
++    dialogClientSideNote: 'Client-side lock: it keeps casual viewers out of the UI, it is not encryption.',
++    toastProtected: 'Protected “{name}”',
++    toastUnprotected: 'Removed the password from “{name}”',
++    toastLocked: 'Locked “{name}”',
++    toastUnlocked: 'Unlocked “{name}”',
++    toastFailed: 'Could not update the folder password',
++    newFolderInMove: 'New folder…',
++    newFolderPlaceholder: 'New folder name',
++  },
++
++  share: {
++    menu: 'Share',
++    copyDeck: 'Share link — whole presentation',
++    copyPage: 'Share link — this page only',
++    copyEditor: 'Copy editor link (private)',
++    copied: 'Read-only share link copied',
++    copiedLocal: 'Link copied — it points to this computer: copy it from the published site to share it',
++    start: 'Start presentation',
++    resume: 'Resume',
++    pageOnly: 'Page {n} of {total}',
++    hintDeck: 'Full screen · ← → or click the edges to move · Esc to leave',
++    hintPage: 'Full screen · → to reveal · Esc to leave',
++    unavailableTitle: 'This link is not available',
++    unavailableBody: 'Check that it was copied in full, or ask the person who shared it for a new one.',
++  },
++
++
+   slide: {
+     home: 'Home',
+     backToHome: 'Back to home',
+@@ -105,6 +152,7 @@ export const en: Locale = {
+     agentDisconnectedTooltip:
+       'Lost connection to the dev server, so your agent can no longer see the current slide or inspector selection. Restart the dev server to restore the connection.',
+     download: 'Download',
++    downloadLabs: 'Download the lab files',
+     copyLink: 'Copy link',
+     moreActions: 'More actions',
+     toastCopyLinkSuccess: 'Link copied to clipboard',
+@@ -144,6 +192,23 @@ export const en: Locale = {
+     speakerNotes: 'Speaker notes',
+     notesTextSmaller: 'Make notes text smaller',
+     notesTextLarger: 'Make notes text larger',
++    resizeColumns: 'Resize the columns',
++    resizeNotes: 'Resize the side panes',
++    resizeHint: 'Drag to resize · double-click to reset',
++    layout: 'Layout',
++    layoutHint: 'The first visible pane fills the large column, the others stack beside it. You can also drag a pane by its title onto another to swap them.',
++    hidePane: 'Hide {pane}',
++    showPane: 'Show {pane}',
++    moveUp: 'Move up',
++    moveDown: 'Move down',
++    swapSides: 'Swap sides',
++    resetLayout: 'Reset layout',
++    allPanesHidden: 'All panes are hidden.',
++    showAllPanes: 'Show all panes',
++    dragPane: 'Drag onto another pane to swap them',
++    dropToSwap: 'Drop to swap',
++    laser: 'Laser',
++    laserHint: 'Laser pointer (L) — point at “Now showing” to show it on the projection too',
+     noNotesPrefix: 'No speaker notes for this slide. Add ',
+     noNotesSuffix: ' to your slide module to see notes here.',
+     blackScreen: 'Black screen',
+diff --git a/src/locale/ja.ts b/src/locale/ja.ts
+index a39090f..bb1577f 100644
+--- a/src/locale/ja.ts
++++ b/src/locale/ja.ts
+@@ -95,6 +95,53 @@ export const ja: Locale = {
+     pickIcon: 'アイコンを選択',
+   },
+ 
++  folderLock: {
++    protect: 'パスワードで保護…',
++    changePassword: 'パスワードを変更…',
++    removePassword: 'パスワードを解除',
++    lockNow: '今すぐロック',
++    unlockAction: 'ロック解除…',
++    protectedBadge: 'パスワード保護',
++    lockedTitle: '「{name}」はロックされています',
++    lockedFolderHint: 'このフォルダのスライドを見るにはパスワードを入力してください。',
++    lockedSlideHint: 'このスライドは保護されたフォルダにあります。開くにはパスワードを入力してください。',
++    passwordPlaceholder: 'パスワード',
++    unlock: 'ロック解除',
++    wrongPassword: 'パスワードが違います',
++    showPassword: 'パスワードを表示',
++    hidePassword: 'パスワードを隠す',
++    dialogEyebrow: 'フォルダ · 保護',
++    dialogTitle: '「{name}」を保護',
++    dialogChangeTitle: '「{name}」のパスワードを変更',
++    dialogDescription: 'パスワードが入力されるまで、このフォルダのスライドは一覧・検索に表示されません。',
++    dialogDefaultHint: '既定のパスワード: {password}',
++    dialogClientSideNote: 'クライアント側のロックです。暗号化ではありません。',
++    toastProtected: '「{name}」を保護しました',
++    toastUnprotected: '「{name}」のパスワードを解除しました',
++    toastLocked: '「{name}」をロックしました',
++    toastUnlocked: '「{name}」のロックを解除しました',
++    toastFailed: 'フォルダのパスワードを更新できませんでした',
++    newFolderInMove: '新規フォルダ…',
++    newFolderPlaceholder: '新しいフォルダ名',
++  },
++
++  share: {
++    menu: '共有',
++    copyDeck: '共有リンク — プレゼンテーション全体',
++    copyPage: '共有リンク — このページのみ',
++    copyEditor: '編集用リンクをコピー（非公開）',
++    copied: '閲覧専用の共有リンクをコピーしました',
++    copiedLocal: 'リンクをコピーしました — このコンピューター用です。共有するには公開サイトからコピーしてください',
++    start: 'プレゼンテーションを開始',
++    resume: '再開',
++    pageOnly: '{total} ページ中 {n} ページ',
++    hintDeck: '全画面 · ← → または端をクリックで移動 · Esc で終了',
++    hintPage: '全画面 · → で表示 · Esc で終了',
++    unavailableTitle: 'このリンクは利用できません',
++    unavailableBody: 'リンクが完全にコピーされているか確認するか、共有した人に新しいリンクを依頼してください。',
++  },
++
++
+   slide: {
+     agentConnected: 'エージェント接続中',
+     agentConnectedTooltip:
+@@ -105,6 +152,7 @@ export const ja: Locale = {
+     home: 'ホーム',
+     backToHome: 'ホームへ戻る',
+     download: 'ダウンロード',
++    downloadLabs: '演習ファイルをダウンロード',
+     copyLink: 'リンクをコピー',
+     moreActions: 'その他の操作',
+     toastCopyLinkSuccess: 'リンクをクリップボードにコピーしました',
+@@ -144,6 +192,23 @@ export const ja: Locale = {
+     speakerNotes: '発表者ノート',
+     notesTextSmaller: 'ノートの文字を小さく',
+     notesTextLarger: 'ノートの文字を大きく',
++    resizeColumns: 'スライドとサイドパネルのサイズを変更',
++    resizeNotes: 'サイドパネルのサイズを変更',
++    resizeHint: 'ドラッグでサイズ変更・ダブルクリックでリセット',
++    layout: 'レイアウト',
++    layoutHint: '表示中の最初のパネルが大きい列に、残りは横に並びます。タイトルをドラッグして別のパネルにドロップすると入れ替えられます。',
++    hidePane: '{pane}を非表示',
++    showPane: '{pane}を表示',
++    moveUp: '上へ移動',
++    moveDown: '下へ移動',
++    swapSides: '左右を入れ替え',
++    resetLayout: 'レイアウトをリセット',
++    allPanesHidden: 'すべてのパネルが非表示です。',
++    showAllPanes: 'すべてのパネルを表示',
++    dragPane: '別のパネルにドラッグして入れ替え',
++    dropToSwap: 'ドロップして入れ替え',
++    laser: 'レーザー',
++    laserHint: 'レーザーポインター (L) — 「現在のスライド」を指すと投影画面にも表示されます',
+     noNotesPrefix: 'このスライドには発表者ノートがありません。スライドモジュールに ',
+     noNotesSuffix: ' を追加するとここに表示されます。',
+     blackScreen: '黒い画面',
+diff --git a/src/locale/types.ts b/src/locale/types.ts
+index e05bfe3..fd33db8 100644
+--- a/src/locale/types.ts
++++ b/src/locale/types.ts
+@@ -99,6 +99,53 @@ export type Locale = {
+     pickIcon: string;
+   };
+ 
++  folderLock: {
++    protect: string;
++    changePassword: string;
++    removePassword: string;
++    lockNow: string;
++    unlockAction: string;
++    protectedBadge: string;
++    lockedTitle: string;
++    lockedFolderHint: string;
++    lockedSlideHint: string;
++    passwordPlaceholder: string;
++    unlock: string;
++    wrongPassword: string;
++    showPassword: string;
++    hidePassword: string;
++    dialogEyebrow: string;
++    dialogTitle: string;
++    dialogChangeTitle: string;
++    dialogDescription: string;
++    dialogDefaultHint: string;
++    dialogClientSideNote: string;
++    toastProtected: string;
++    toastUnprotected: string;
++    toastLocked: string;
++    toastUnlocked: string;
++    toastFailed: string;
++    newFolderInMove: string;
++    newFolderPlaceholder: string;
++  };
++
++  share: {
++    menu: string;
++    copyDeck: string;
++    copyPage: string;
++    copyEditor: string;
++    copied: string;
++    copiedLocal: string;
++    start: string;
++    resume: string;
++    pageOnly: string;
++    hintDeck: string;
++    hintPage: string;
++    unavailableTitle: string;
++    unavailableBody: string;
++  };
++
++
+   slide: {
+     home: string;
+     backToHome: string;
+@@ -107,6 +154,7 @@ export type Locale = {
+     agentDisconnected: string;
+     agentDisconnectedTooltip: string;
+     download: string;
++    downloadLabs: string;
+     copyLink: string;
+     moreActions: string;
+     toastCopyLinkSuccess: string;
+@@ -145,6 +193,23 @@ export type Locale = {
+     speakerNotes: string;
+     notesTextSmaller: string;
+     notesTextLarger: string;
++    resizeColumns: string;
++    resizeNotes: string;
++    resizeHint: string;
++    layout: string;
++    layoutHint: string;
++    hidePane: string;
++    showPane: string;
++    moveUp: string;
++    moveDown: string;
++    swapSides: string;
++    resetLayout: string;
++    allPanesHidden: string;
++    showAllPanes: string;
++    dragPane: string;
++    dropToSwap: string;
++    laser: string;
++    laserHint: string;
+     noNotesPrefix: string;
+     noNotesSuffix: string;
+     blackScreen: string;
+diff --git a/src/locale/zh-cn.ts b/src/locale/zh-cn.ts
+index 7fdf60b..93f6168 100644
+--- a/src/locale/zh-cn.ts
++++ b/src/locale/zh-cn.ts
+@@ -95,6 +95,53 @@ export const zhCN: Locale = {
+     pickIcon: '选择图标',
+   },
+ 
++  folderLock: {
++    protect: '设置密码保护…',
++    changePassword: '修改密码…',
++    removePassword: '移除密码',
++    lockNow: '立即锁定',
++    unlockAction: '解锁…',
++    protectedBadge: '密码保护',
++    lockedTitle: '“{name}”已锁定',
++    lockedFolderHint: '输入密码以查看此文件夹中的幻灯片。',
++    lockedSlideHint: '此幻灯片位于受保护的文件夹中。请输入密码打开。',
++    passwordPlaceholder: '密码',
++    unlock: '解锁',
++    wrongPassword: '密码错误',
++    showPassword: '显示密码',
++    hidePassword: '隐藏密码',
++    dialogEyebrow: '文件夹 · 保护',
++    dialogTitle: '保护“{name}”',
++    dialogChangeTitle: '修改“{name}”的密码',
++    dialogDescription: '在输入密码之前，此文件夹中的幻灯片不会出现在列表和搜索中。',
++    dialogDefaultHint: '默认密码：{password}',
++    dialogClientSideNote: '这是客户端锁定，并非加密。',
++    toastProtected: '已保护“{name}”',
++    toastUnprotected: '已移除“{name}”的密码',
++    toastLocked: '已锁定“{name}”',
++    toastUnlocked: '已解锁“{name}”',
++    toastFailed: '无法更新文件夹密码',
++    newFolderInMove: '新建文件夹…',
++    newFolderPlaceholder: '新文件夹名称',
++  },
++
++  share: {
++    menu: '分享',
++    copyDeck: '分享链接 — 整个演示文稿',
++    copyPage: '分享链接 — 仅此页',
++    copyEditor: '复制编辑链接（私有）',
++    copied: '已复制只读分享链接',
++    copiedLocal: '已复制链接 — 它指向本机：请从已发布的网站复制后再分享',
++    start: '开始演示',
++    resume: '继续',
++    pageOnly: '第 {n} 页，共 {total} 页',
++    hintDeck: '全屏 · ← → 或点击两侧翻页 · Esc 退出',
++    hintPage: '全屏 · → 逐步显示 · Esc 退出',
++    unavailableTitle: '此链接不可用',
++    unavailableBody: '请确认链接已完整复制，或向分享者索取新链接。',
++  },
++
++
+   slide: {
+     agentConnected: 'Agent 已连接',
+     agentConnectedTooltip: '目前的 slide 与 Inspector 选择会即时同步给 agent。',
+@@ -104,6 +151,7 @@ export const zhCN: Locale = {
+     home: '首页',
+     backToHome: '返回首页',
+     download: '下载',
++    downloadLabs: '下载实验文件',
+     copyLink: '复制链接',
+     moreActions: '更多操作',
+     toastCopyLinkSuccess: '已复制链接到剪贴板',
+@@ -143,6 +191,23 @@ export const zhCN: Locale = {
+     speakerNotes: '演讲备注',
+     notesTextSmaller: '缩小备注文字',
+     notesTextLarger: '放大备注文字',
++    resizeColumns: '调整幻灯片与侧边栏的大小',
++    resizeNotes: '调整侧边面板的大小',
++    resizeHint: '拖动以调整大小 · 双击重置',
++    layout: '布局',
++    layoutHint: '第一个可见面板占据大栏，其余面板在旁边堆叠。也可以拖动面板标题到另一个面板上以交换位置。',
++    hidePane: '隐藏{pane}',
++    showPane: '显示{pane}',
++    moveUp: '上移',
++    moveDown: '下移',
++    swapSides: '左右互换',
++    resetLayout: '重置布局',
++    allPanesHidden: '所有面板均已隐藏。',
++    showAllPanes: '显示所有面板',
++    dragPane: '拖到另一个面板上以交换',
++    dropToSwap: '放下以交换',
++    laser: '激光',
++    laserHint: '激光笔 (L) — 指向“当前幻灯片”时，投影画面上也会显示',
+     noNotesPrefix: '该幻灯片没有演讲备注。在你的幻灯片模块中添加 ',
+     noNotesSuffix: ' 即可在此查看备注。',
+     blackScreen: '黑屏',
+diff --git a/src/locale/zh-tw.ts b/src/locale/zh-tw.ts
+index 62297df..8e5e34c 100644
+--- a/src/locale/zh-tw.ts
++++ b/src/locale/zh-tw.ts
+@@ -95,6 +95,53 @@ export const zhTW: Locale = {
+     pickIcon: '選擇圖示',
+   },
+ 
++  folderLock: {
++    protect: '設定密碼保護…',
++    changePassword: '變更密碼…',
++    removePassword: '移除密碼',
++    lockNow: '立即鎖定',
++    unlockAction: '解鎖…',
++    protectedBadge: '密碼保護',
++    lockedTitle: '「{name}」已鎖定',
++    lockedFolderHint: '輸入密碼以檢視此資料夾中的投影片。',
++    lockedSlideHint: '此投影片位於受保護的資料夾中。請輸入密碼開啟。',
++    passwordPlaceholder: '密碼',
++    unlock: '解鎖',
++    wrongPassword: '密碼錯誤',
++    showPassword: '顯示密碼',
++    hidePassword: '隱藏密碼',
++    dialogEyebrow: '資料夾 · 保護',
++    dialogTitle: '保護「{name}」',
++    dialogChangeTitle: '變更「{name}」的密碼',
++    dialogDescription: '在輸入密碼之前，此資料夾中的投影片不會出現在列表與搜尋中。',
++    dialogDefaultHint: '預設密碼：{password}',
++    dialogClientSideNote: '這是用戶端鎖定，並非加密。',
++    toastProtected: '已保護「{name}」',
++    toastUnprotected: '已移除「{name}」的密碼',
++    toastLocked: '已鎖定「{name}」',
++    toastUnlocked: '已解鎖「{name}」',
++    toastFailed: '無法更新資料夾密碼',
++    newFolderInMove: '新增資料夾…',
++    newFolderPlaceholder: '新資料夾名稱',
++  },
++
++  share: {
++    menu: '分享',
++    copyDeck: '分享連結 — 整份簡報',
++    copyPage: '分享連結 — 僅此頁',
++    copyEditor: '複製編輯連結（私人）',
++    copied: '已複製唯讀分享連結',
++    copiedLocal: '已複製連結 — 它指向本機：請從已發布的網站複製後再分享',
++    start: '開始簡報',
++    resume: '繼續',
++    pageOnly: '第 {n} 頁，共 {total} 頁',
++    hintDeck: '全螢幕 · ← → 或點擊兩側翻頁 · Esc 離開',
++    hintPage: '全螢幕 · → 逐步顯示 · Esc 離開',
++    unavailableTitle: '此連結無法使用',
++    unavailableBody: '請確認連結已完整複製，或向分享者索取新連結。',
++  },
++
++
+   slide: {
+     agentConnected: 'Agent 已連線',
+     agentConnectedTooltip: '目前的 slide 與 Inspector 選擇會即時同步給 agent。',
+@@ -104,6 +151,7 @@ export const zhTW: Locale = {
+     home: '首頁',
+     backToHome: '返回首頁',
+     download: '下載',
++    downloadLabs: '下載實作檔案',
+     copyLink: '複製連結',
+     moreActions: '更多動作',
+     toastCopyLinkSuccess: '已複製連結到剪貼簿',
+@@ -143,6 +191,23 @@ export const zhTW: Locale = {
+     speakerNotes: '演講備忘',
+     notesTextSmaller: '縮小備忘文字',
+     notesTextLarger: '放大備忘文字',
++    resizeColumns: '調整投影片與側邊欄的大小',
++    resizeNotes: '調整側邊面板的大小',
++    resizeHint: '拖曳以調整大小 · 按兩下重設',
++    layout: '版面',
++    layoutHint: '第一個可見面板佔據大欄，其餘面板在旁邊堆疊。也可以拖曳面板標題到另一個面板上以交換位置。',
++    hidePane: '隱藏{pane}',
++    showPane: '顯示{pane}',
++    moveUp: '上移',
++    moveDown: '下移',
++    swapSides: '左右互換',
++    resetLayout: '重設版面',
++    allPanesHidden: '所有面板皆已隱藏。',
++    showAllPanes: '顯示所有面板',
++    dragPane: '拖曳到另一個面板上以交換',
++    dropToSwap: '放開以交換',
++    laser: '雷射',
++    laserHint: '雷射筆 (L) — 指向「目前投影片」時，投影畫面上也會顯示',
+     noNotesPrefix: '此投影片沒有演講備忘。在你的投影片模組中加入 ',
+     noNotesSuffix: ' 即可在此查看備忘。',
+     blackScreen: '黑屏',

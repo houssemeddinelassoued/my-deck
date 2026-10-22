@@ -1,0 +1,160 @@
+﻿horodatage;equipement;site;type;severite;valeur;destinataire;acquittee
+01/09/2026 07:40;AP-STR-07;Strasbourg;Borne Wi-Fi injoignable;Mineure;;reseau@orvalis.example;Oui
+01/09/2026 11:59;AP-ORL-11;Orléans;Borne Wi-Fi injoignable;Mineure;;reseau@orvalis.example;Oui
+01/09/2026 15:58;AP-REN-06;Rennes;Borne Wi-Fi injoignable;Majeure;;reseau@orvalis.example;Oui
+01/09/2026 19:23;SQL-02;Siège (Paris);Sauvegarde en échec;Mineure;;supervision@orvalis.example;Oui
+01/09/2026 21:33;AP-BOR-03;Bordeaux;Borne Wi-Fi injoignable;Mineure;;reseau@orvalis.example;Non
+02/09/2026 05:14;FS-03;Siège (Paris);CPU > 90 %;Mineure;;supervision@orvalis.example;Oui
+02/09/2026 15:34;AP-STR-11;Strasbourg;Borne Wi-Fi injoignable;Majeure;;reseau@orvalis.example;Non
+02/09/2026 17:05;AP-TOU-12;Toulouse;Borne Wi-Fi injoignable;Mineure;;reseau@orvalis.example;Oui
+02/09/2026 17:12;AP-BOR-02;Bordeaux;Borne Wi-Fi injoignable;Majeure;;reseau@orvalis.example;Oui
+02/09/2026 17:42;AP-LIL-14;Lille;Borne Wi-Fi injoignable;Majeure;;reseau@orvalis.example;Non
+03/09/2026 10:24;AP-REN-02;Rennes;Borne Wi-Fi injoignable;Mineure;;reseau@orvalis.example;Oui
+03/09/2026 10:52;AP-LIL-14;Lille;Borne Wi-Fi injoignable;Mineure;;reseau@orvalis.example;Oui
+03/09/2026 13:18;AP-ORL-09;Orléans;Borne Wi-Fi injoignable;Majeure;;reseau@orvalis.example;Non
+03/09/2026 14:47;AP-LYO-08;Lyon;Borne Wi-Fi injoignable;Mineure;;reseau@orvalis.example;Oui
+03/09/2026 21:15;AP-NAN-13;Nantes;Borne Wi-Fi injoignable;Majeure;;reseau@orvalis.example;Non
+04/09/2026 06:27;AP-ORL-03;Orléans;Borne Wi-Fi injoignable;Mineure;;reseau@orvalis.example;Oui
+04/09/2026 13:26;AP-MAR-13;Marseille;Borne Wi-Fi injoignable;Majeure;;reseau@orvalis.example;Oui
+05/09/2026 05:13;AP-LYO-03;Lyon;Borne Wi-Fi injoignable;Majeure;;reseau@orvalis.example;Oui
+05/09/2026 12:29;AP-LIL-12;Lille;Borne Wi-Fi injoignable;Majeure;;reseau@orvalis.example;Oui
+05/09/2026 16:18;AP-NAN-13;Nantes;Borne Wi-Fi injoignable;Majeure;;reseau@orvalis.example;Oui
+06/09/2026 08:14;AP-LYO-02;Lyon;Borne Wi-Fi injoignable;Majeure;;reseau@orvalis.example;Oui
+06/09/2026 21:44;AP-STR-11;Strasbourg;Borne Wi-Fi injoignable;Mineure;;reseau@orvalis.example;Oui
+06/09/2026 22:27;SQL-02;Siège (Paris);CPU > 90 %;Mineure;;supervision@orvalis.example;Oui
+07/09/2026 07:35;AP-NAN-11;Nantes;Borne Wi-Fi injoignable;Mineure;;reseau@orvalis.example;Oui
+07/09/2026 17:48;AP-REN-08;Rennes;Borne Wi-Fi injoignable;Mineure;;reseau@orvalis.example;Oui
+07/09/2026 21:38;AP-LYO-12;Lyon;Borne Wi-Fi injoignable;Majeure;;reseau@orvalis.example;Non
+08/09/2026 16:57;AP-BOR-14;Bordeaux;Borne Wi-Fi injoignable;Majeure;;reseau@orvalis.example;Oui
+08/09/2026 21:42;AP-LIL-09;Lille;Borne Wi-Fi injoignable;Mineure;;reseau@orvalis.example;Non
+09/09/2026 05:41;AP-TOU-03;Toulouse;Borne Wi-Fi injoignable;Majeure;;reseau@orvalis.example;Oui
+09/09/2026 08:31;FS-03;Siège (Paris);Mémoire > 85 %;Mineure;;supervision@orvalis.example;Oui
+09/09/2026 15:06;AP-LYO-07;Lyon;Borne Wi-Fi injoignable;Majeure;;reseau@orvalis.example;Non
+09/09/2026 16:17;AP-ORL-01;Orléans;Borne Wi-Fi injoignable;Majeure;;reseau@orvalis.example;Oui
+09/09/2026 16:24;AP-NAN-08;Nantes;Borne Wi-Fi injoignable;Mineure;;reseau@orvalis.example;Oui
+09/09/2026 20:17;AP-REN-12;Rennes;Borne Wi-Fi injoignable;Mineure;;reseau@orvalis.example;Non
+09/09/2026 20:46;AP-LIL-07;Lille;Borne Wi-Fi injoignable;Majeure;;reseau@orvalis.example;Oui
+10/09/2026 17:52;AP-LIL-07;Lille;Borne Wi-Fi injoignable;Mineure;;reseau@orvalis.example;Oui
+10/09/2026 20:32;AP-LYO-09;Lyon;Borne Wi-Fi injoignable;Majeure;;reseau@orvalis.example;Oui
+11/09/2026 10:19;AP-NAN-05;Nantes;Borne Wi-Fi injoignable;Majeure;;reseau@orvalis.example;Oui
+11/09/2026 10:51;AP-LYO-05;Lyon;Borne Wi-Fi injoignable;Mineure;;reseau@orvalis.example;Oui
+11/09/2026 13:15;AP-ORL-02;Orléans;Borne Wi-Fi injoignable;Mineure;;reseau@orvalis.example;Oui
+11/09/2026 18:08;AP-REN-12;Rennes;Borne Wi-Fi injoignable;Mineure;;reseau@orvalis.example;Oui
+12/09/2026 08:34;AP-LIL-10;Lille;Borne Wi-Fi injoignable;Mineure;;reseau@orvalis.example;Oui
+12/09/2026 15:09;AP-REN-07;Rennes;Borne Wi-Fi injoignable;Majeure;;reseau@orvalis.example;Oui
+12/09/2026 15:14;AP-BOR-05;Bordeaux;Borne Wi-Fi injoignable;Mineure;;reseau@orvalis.example;Non
+12/09/2026 20:00;AP-LYO-12;Lyon;Borne Wi-Fi injoignable;Mineure;;reseau@orvalis.example;Oui
+12/09/2026 20:27;AP-NAN-12;Nantes;Borne Wi-Fi injoignable;Majeure;;reseau@orvalis.example;Non
+13/09/2026 03:50;PRT-01;Siège (Paris);CPU > 90 %;Mineure;;supervision@orvalis.example;Oui
+13/09/2026 11:37;AP-STR-04;Strasbourg;Borne Wi-Fi injoignable;Mineure;;reseau@orvalis.example;Non
+13/09/2026 11:38;AP-REN-09;Rennes;Borne Wi-Fi injoignable;Mineure;;reseau@orvalis.example;Oui
+13/09/2026 12:02;AP-LIL-13;Lille;Borne Wi-Fi injoignable;Mineure;;reseau@orvalis.example;Non
+13/09/2026 14:17;AP-NAN-10;Nantes;Borne Wi-Fi injoignable;Majeure;;reseau@orvalis.example;Non
+13/09/2026 15:55;AP-LYO-13;Lyon;Borne Wi-Fi injoignable;Mineure;;reseau@orvalis.example;Oui
+14/09/2026 13:11;AP-LIL-09;Lille;Borne Wi-Fi injoignable;Mineure;;reseau@orvalis.example;Oui
+14/09/2026 13:58;AP-TOU-02;Toulouse;Borne Wi-Fi injoignable;Majeure;;reseau@orvalis.example;Non
+14/09/2026 21:15;AP-ORL-03;Orléans;Borne Wi-Fi injoignable;Mineure;;reseau@orvalis.example;Oui
+16/09/2026 06:51;AP-STR-07;Strasbourg;Borne Wi-Fi injoignable;Mineure;;reseau@orvalis.example;Oui
+16/09/2026 08:59;AP-LYO-12;Lyon;Borne Wi-Fi injoignable;Mineure;;reseau@orvalis.example;Oui
+16/09/2026 11:26;AP-REN-06;Rennes;Borne Wi-Fi injoignable;Mineure;;reseau@orvalis.example;Non
+16/09/2026 22:16;PRT-01;Siège (Paris);CPU > 90 %;Mineure;;supervision@orvalis.example;Oui
+17/09/2026 06:25;AP-LYO-05;Lyon;Borne Wi-Fi injoignable;Mineure;;reseau@orvalis.example;Non
+17/09/2026 07:12;AP-LIL-08;Lille;Borne Wi-Fi injoignable;Majeure;;reseau@orvalis.example;Oui
+17/09/2026 13:52;AP-NAN-04;Nantes;Borne Wi-Fi injoignable;Mineure;;reseau@orvalis.example;Oui
+17/09/2026 18:04;AP-BOR-07;Bordeaux;Borne Wi-Fi injoignable;Mineure;;reseau@orvalis.example;Oui
+18/09/2026 16:06;AP-REN-11;Rennes;Borne Wi-Fi injoignable;Majeure;;reseau@orvalis.example;Oui
+18/09/2026 16:39;AP-MAR-08;Marseille;Borne Wi-Fi injoignable;Mineure;;reseau@orvalis.example;Non
+18/09/2026 17:32;AP-NAN-07;Nantes;Borne Wi-Fi injoignable;Majeure;;reseau@orvalis.example;Non
+18/09/2026 19:49;AP-STR-07;Strasbourg;Borne Wi-Fi injoignable;Mineure;;reseau@orvalis.example;Oui
+19/09/2026 10:15;FS-03;Siège (Paris);Mémoire > 85 %;Mineure;;supervision@orvalis.example;Oui
+19/09/2026 12:19;AP-LYO-03;Lyon;Borne Wi-Fi injoignable;Majeure;;reseau@orvalis.example;Oui
+19/09/2026 12:26;AP-LIL-13;Lille;Borne Wi-Fi injoignable;Mineure;;reseau@orvalis.example;Oui
+20/09/2026 13:00;AP-REN-03;Rennes;Borne Wi-Fi injoignable;Majeure;;reseau@orvalis.example;Oui
+20/09/2026 17:47;AP-NAN-14;Nantes;Borne Wi-Fi injoignable;Majeure;;reseau@orvalis.example;Oui
+20/09/2026 18:25;AP-LIL-03;Lille;Borne Wi-Fi injoignable;Mineure;;reseau@orvalis.example;Oui
+20/09/2026 19:43;AP-LYO-13;Lyon;Borne Wi-Fi injoignable;Mineure;;reseau@orvalis.example;Oui
+21/09/2026 06:03;AP-LIL-05;Lille;Borne Wi-Fi injoignable;Majeure;;reseau@orvalis.example;Oui
+21/09/2026 10:31;AP-LYO-07;Lyon;Borne Wi-Fi injoignable;Majeure;;reseau@orvalis.example;Oui
+21/09/2026 12:50;AP-REN-07;Rennes;Borne Wi-Fi injoignable;Majeure;;reseau@orvalis.example;Oui
+22/09/2026 09:46;AP-LIL-05;Lille;Borne Wi-Fi injoignable;Mineure;;reseau@orvalis.example;Oui
+22/09/2026 11:12;AP-REN-09;Rennes;Borne Wi-Fi injoignable;Majeure;;reseau@orvalis.example;Non
+22/09/2026 21:33;AP-LYO-07;Lyon;Borne Wi-Fi injoignable;Majeure;;reseau@orvalis.example;Non
+23/09/2026 14:02;AP-NAN-04;Nantes;Borne Wi-Fi injoignable;Majeure;;reseau@orvalis.example;Non
+23/09/2026 21:09;AP-BOR-09;Bordeaux;Borne Wi-Fi injoignable;Mineure;;reseau@orvalis.example;Oui
+24/09/2026 05:02;AP-LIL-12;Lille;Borne Wi-Fi injoignable;Majeure;;reseau@orvalis.example;Non
+24/09/2026 14:42;AP-LYO-08;Lyon;Borne Wi-Fi injoignable;Majeure;;reseau@orvalis.example;Non
+25/09/2026 09:08;AP-BOR-13;Bordeaux;Borne Wi-Fi injoignable;Mineure;;reseau@orvalis.example;Oui
+25/09/2026 13:06;AP-NAN-12;Nantes;Borne Wi-Fi injoignable;Majeure;;reseau@orvalis.example;Oui
+25/09/2026 18:43;AP-LIL-07;Lille;Borne Wi-Fi injoignable;Majeure;;reseau@orvalis.example;Non
+26/09/2026 10:10;AP-REN-14;Rennes;Borne Wi-Fi injoignable;Mineure;;reseau@orvalis.example;Oui
+26/09/2026 11:28;AP-LIL-13;Lille;Borne Wi-Fi injoignable;Majeure;;reseau@orvalis.example;Non
+26/09/2026 12:44;AP-LYO-03;Lyon;Borne Wi-Fi injoignable;Mineure;;reseau@orvalis.example;Non
+26/09/2026 18:44;AP-STR-14;Strasbourg;Borne Wi-Fi injoignable;Majeure;;reseau@orvalis.example;Oui
+27/09/2026 12:14;AP-ORL-03;Orléans;Borne Wi-Fi injoignable;Mineure;;reseau@orvalis.example;Oui
+27/09/2026 12:40;AP-BOR-13;Bordeaux;Borne Wi-Fi injoignable;Majeure;;reseau@orvalis.example;Oui
+27/09/2026 16:58;PRT-01;Siège (Paris);CPU > 90 %;Mineure;;supervision@orvalis.example;Oui
+28/09/2026 10:12;AP-LIL-07;Lille;Borne Wi-Fi injoignable;Majeure;;reseau@orvalis.example;Oui
+28/09/2026 13:11;AP-LYO-03;Lyon;Borne Wi-Fi injoignable;Majeure;;reseau@orvalis.example;Oui
+29/09/2026 05:10;AP-LIL-03;Lille;Borne Wi-Fi injoignable;Majeure;;reseau@orvalis.example;Oui
+29/09/2026 07:55;AP-LYO-02;Lyon;Borne Wi-Fi injoignable;Majeure;;reseau@orvalis.example;Oui
+29/09/2026 09:06;AP-ORL-12;Orléans;Borne Wi-Fi injoignable;Mineure;;reseau@orvalis.example;Oui
+29/09/2026 11:12;AP-NAN-11;Nantes;Borne Wi-Fi injoignable;Mineure;;reseau@orvalis.example;Oui
+29/09/2026 15:57;AP-TOU-14;Toulouse;Borne Wi-Fi injoignable;Majeure;;reseau@orvalis.example;Oui
+29/09/2026 19:10;APP-04;Siège (Paris);Sauvegarde en échec;Mineure;;supervision@orvalis.example;Oui
+30/09/2026 05:52;AP-LYO-05;Lyon;Borne Wi-Fi injoignable;Mineure;;reseau@orvalis.example;Non
+30/09/2026 08:35;AP-BOR-05;Bordeaux;Borne Wi-Fi injoignable;Majeure;;reseau@orvalis.example;Oui
+30/09/2026 10:48;AP-STR-11;Strasbourg;Borne Wi-Fi injoignable;Mineure;;reseau@orvalis.example;Non
+01/10/2026 15:14;AP-LIL-01;Lille;Borne Wi-Fi injoignable;Majeure;;reseau@orvalis.example;Non
+01/10/2026 16:22;AP-STR-07;Strasbourg;Borne Wi-Fi injoignable;Majeure;;reseau@orvalis.example;Oui
+01/10/2026 16:56;AP-MAR-14;Marseille;Borne Wi-Fi injoignable;Majeure;;reseau@orvalis.example;Non
+01/10/2026 21:20;AP-BOR-12;Bordeaux;Borne Wi-Fi injoignable;Majeure;;reseau@orvalis.example;Oui
+02/10/2026 09:48;AP-LYO-11;Lyon;Borne Wi-Fi injoignable;Mineure;;reseau@orvalis.example;Non
+02/10/2026 10:49;AP-NAN-01;Nantes;Borne Wi-Fi injoignable;Majeure;;reseau@orvalis.example;Oui
+02/10/2026 20:32;AP-REN-03;Rennes;Borne Wi-Fi injoignable;Majeure;;reseau@orvalis.example;Oui
+03/10/2026 04:10;FS-02;Siège (Paris);Espace disque D:;Avertissement;82 %;supervision@orvalis.example;Non
+03/10/2026 05:06;AP-LYO-06;Lyon;Borne Wi-Fi injoignable;Mineure;;reseau@orvalis.example;Non
+03/10/2026 13:44;AP-LIL-05;Lille;Borne Wi-Fi injoignable;Majeure;;reseau@orvalis.example;Oui
+03/10/2026 16:12;AP-STR-10;Strasbourg;Borne Wi-Fi injoignable;Mineure;;reseau@orvalis.example;Oui
+03/10/2026 16:35;AP-TOU-11;Toulouse;Borne Wi-Fi injoignable;Majeure;;reseau@orvalis.example;Oui
+04/10/2026 07:29;AP-MAR-02;Marseille;Borne Wi-Fi injoignable;Mineure;;reseau@orvalis.example;Oui
+04/10/2026 08:59;AP-ORL-05;Orléans;Borne Wi-Fi injoignable;Mineure;;reseau@orvalis.example;Oui
+04/10/2026 11:14;AP-TOU-14;Toulouse;Borne Wi-Fi injoignable;Mineure;;reseau@orvalis.example;Oui
+04/10/2026 12:27;AP-LYO-11;Lyon;Borne Wi-Fi injoignable;Mineure;;reseau@orvalis.example;Oui
+04/10/2026 18:57;APP-04;Siège (Paris);CPU > 90 %;Mineure;;supervision@orvalis.example;Oui
+04/10/2026 20:54;AP-LIL-08;Lille;Borne Wi-Fi injoignable;Majeure;;reseau@orvalis.example;Oui
+05/10/2026 08:53;AP-REN-12;Rennes;Borne Wi-Fi injoignable;Majeure;;reseau@orvalis.example;Oui
+05/10/2026 16:14;AP-LIL-09;Lille;Borne Wi-Fi injoignable;Majeure;;reseau@orvalis.example;Non
+06/10/2026 08:18;AP-STR-03;Strasbourg;Borne Wi-Fi injoignable;Mineure;;reseau@orvalis.example;Oui
+06/10/2026 09:06;AP-BOR-05;Bordeaux;Borne Wi-Fi injoignable;Mineure;;reseau@orvalis.example;Oui
+06/10/2026 14:04;AP-MAR-13;Marseille;Borne Wi-Fi injoignable;Mineure;;reseau@orvalis.example;Oui
+06/10/2026 15:58;AP-ORL-01;Orléans;Borne Wi-Fi injoignable;Majeure;;reseau@orvalis.example;Oui
+06/10/2026 21:53;AP-NAN-12;Nantes;Borne Wi-Fi injoignable;Majeure;;reseau@orvalis.example;Non
+07/10/2026 04:10;FS-02;Siège (Paris);Espace disque D:;Avertissement;86 %;supervision@orvalis.example;Non
+07/10/2026 08:38;AP-LIL-01;Lille;Borne Wi-Fi injoignable;Majeure;;reseau@orvalis.example;Oui
+07/10/2026 08:50;AP-MAR-07;Marseille;Borne Wi-Fi injoignable;Majeure;;reseau@orvalis.example;Non
+07/10/2026 10:41;AP-REN-01;Rennes;Borne Wi-Fi injoignable;Mineure;;reseau@orvalis.example;Oui
+07/10/2026 14:17;AP-LYO-05;Lyon;Borne Wi-Fi injoignable;Majeure;;reseau@orvalis.example;Oui
+08/10/2026 08:10;AP-STR-05;Strasbourg;Borne Wi-Fi injoignable;Mineure;;reseau@orvalis.example;Oui
+08/10/2026 17:53;AP-REN-10;Rennes;Borne Wi-Fi injoignable;Mineure;;reseau@orvalis.example;Oui
+09/10/2026 06:35;AP-BOR-09;Bordeaux;Borne Wi-Fi injoignable;Mineure;;reseau@orvalis.example;Non
+09/10/2026 09:16;AP-ORL-04;Orléans;Borne Wi-Fi injoignable;Mineure;;reseau@orvalis.example;Non
+09/10/2026 12:10;AP-LYO-07;Lyon;Borne Wi-Fi injoignable;Majeure;;reseau@orvalis.example;Oui
+09/10/2026 18:03;AP-REN-07;Rennes;Borne Wi-Fi injoignable;Mineure;;reseau@orvalis.example;Non
+09/10/2026 18:24;AP-LIL-11;Lille;Borne Wi-Fi injoignable;Mineure;;reseau@orvalis.example;Oui
+09/10/2026 21:23;AP-MAR-07;Marseille;Borne Wi-Fi injoignable;Majeure;;reseau@orvalis.example;Non
+10/10/2026 01:07;FS-01;Siège (Paris);Sauvegarde en échec;Mineure;;supervision@orvalis.example;Oui
+10/10/2026 07:38;AP-TOU-05;Toulouse;Borne Wi-Fi injoignable;Majeure;;reseau@orvalis.example;Non
+10/10/2026 14:05;FS-02;Siège (Paris);Espace disque D:;Majeure;90 %;supervision@orvalis.example;Non
+10/10/2026 15:30;AP-LIL-12;Lille;Borne Wi-Fi injoignable;Mineure;;reseau@orvalis.example;Oui
+10/10/2026 16:26;AP-REN-09;Rennes;Borne Wi-Fi injoignable;Mineure;;reseau@orvalis.example;Oui
+10/10/2026 18:59;AP-NAN-09;Nantes;Borne Wi-Fi injoignable;Majeure;;reseau@orvalis.example;Oui
+10/10/2026 20:24;AP-BOR-02;Bordeaux;Borne Wi-Fi injoignable;Mineure;;reseau@orvalis.example;Oui
+11/10/2026 05:51;AP-STR-04;Strasbourg;Borne Wi-Fi injoignable;Majeure;;reseau@orvalis.example;Oui
+11/10/2026 08:13;AP-ORL-14;Orléans;Borne Wi-Fi injoignable;Mineure;;reseau@orvalis.example;Oui
+11/10/2026 11:30;AP-TOU-07;Toulouse;Borne Wi-Fi injoignable;Mineure;;reseau@orvalis.example;Oui
+11/10/2026 17:51;AP-MAR-07;Marseille;Borne Wi-Fi injoignable;Mineure;;reseau@orvalis.example;Oui
+11/10/2026 18:07;AP-BOR-14;Bordeaux;Borne Wi-Fi injoignable;Mineure;;reseau@orvalis.example;Non
+11/10/2026 23:10;FS-02;Siège (Paris);Espace disque D:;Critique;98 %;supervision@orvalis.example;Non
+12/10/2026 07:52;FS-02;Siège (Paris);Espace disque D:;Critique;100 %;supervision@orvalis.example;Non
+12/10/2026 15:50;AP-MAR-08;Marseille;Borne Wi-Fi injoignable;Majeure;;reseau@orvalis.example;Oui
+12/10/2026 23:38;PRT-01;Siège (Paris);Mémoire > 85 %;Mineure;;supervision@orvalis.example;Oui

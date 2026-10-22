@@ -90,6 +90,7 @@ if (typeof document !== 'undefined') {
 export const meta: SlideMeta = {
   title: ${JSON.stringify(DECK.title)},
   createdAt: '${DECK.createdAt}',
+  labs: labsPack,
 };
 
 export default [

@@ -22,6 +22,7 @@ import {
   useState,
 } from 'react';
 import formateur from '@assets/houssem-formateur.png';
+import labsPack from './assets/labs-support-infrastructure.zip?url';
 
 export const design: DesignSystem = {
   palette: { bg: '#F6F8FC', text: '#101828', accent: '#0A62D0' },
@@ -9074,6 +9075,7 @@ if (typeof document !== 'undefined') {
 export const meta: SlideMeta = {
   title: "Support & infrastructure IT : boostez vos performances grâce à l’IA",
   createdAt: '2026-10-20T14:00:00.000Z',
+  labs: labsPack,
 };
 
 export default [
