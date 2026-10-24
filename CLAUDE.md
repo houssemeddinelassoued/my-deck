@@ -10,11 +10,12 @@ You are authoring **slides** in this repo. Every slide is arbitrary React code t
 - Do **not** touch `package.json`, `open-slide.config.ts`, or other slides by default, but if there is a real need you can request the user to make the change. If you do, please explain why it is necessary.
 - **`@open-slide/core` is locally patched** (folders UI + folder password protection + resizable/arrangeable presenter panes + laser and slide clicks mirrored between projection and presenter + colour-coded speaker notes: `LABEL —` sections, « quotes » = to say, `→ beat N` = click + read-only share links `/v/<code>`, play-only fullscreen, no notes + « Labs » toolbar button when a deck's `meta.labs` holds a file URL imported with `?url`): `patches/open-slide-core-2.0.1-folders.patch`, re-applied by the `postinstall` hook (`npm run patch:core`). The core is pinned to `2.0.1` — don't upgrade it without regenerating the patch. Never edit `node_modules/@open-slide/core` without updating the patch too.
 - Do not add dependencies. Use only `react` and standard web APIs.
+- **All trainings are virtual (Teams/Zoom), never in person; workshops are individual** — no pairs, teams, show of hands, sticky notes. Read the `formation-virtuelle` skill before writing or editing any training deck, exercise or speaker notes.
 - **One press = one step.** Every deck's `index.tsx` must contain the `// ─── One press = one step` block (copy it verbatim from any existing deck, right after the webfont/design block). It stops a held key or presenter-remote button from auto-repeating through several reveals. Keep it identical across decks; if you change it, change it in every deck.
 
 ## Which skill to use
 
-- **Drafting a new deck** — use the `create-slide` skill. It walks through scoping questions, structure, and hand-off.
+- **Drafting a new deck** — use the `create-slide` skill. It walks through scoping questions, structure, and hand-off. For any training deck, also apply the `formation-virtuelle` skill (project-owned, not synced from core).
 - **Applying inspector comments** (`@slide-comment` markers in a page) — use the `apply-comments` skill.
 - **Creating or extracting a theme** — use the `create-theme` skill. Themes live as markdown under `themes/<id>.md` and are read by `create-slide` before authoring.
 - **Resolving "this page" / "this element"** — when the user references the current slide or selection without naming it, consult the `current-slide` skill. It reads the dev server's `node_modules/.open-slide/current.json` to find which slide, page, and inspector-picked element they mean.
