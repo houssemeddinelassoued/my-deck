@@ -785,7 +785,7 @@ const Squares = ({
 }) => {
   const o = Math.round(s * 0.33);
   return (
-    <div className={cls} style={{ position: 'absolute', left: x, top: y, width: s + o, height: s + o, ...style }}>
+    <div className={cls} style={{ position: 'absolute', left: x, top: y, width: s + o, height: s + o, ...style, translate: '52.88px -582.01px' }}>
       <div
         className={anim ? k('sqb') : undefined}
         style={{ position: 'absolute', left: o, top: o, width: s, height: s, background: G.yellow, ...dl(delay) }}
@@ -1968,7 +1968,7 @@ const Qcm = ({
               <Eyebrow c={C.violet}>À vous de jouer</Eyebrow>
               <div style={{ marginTop: 16, display: 'flex', flexDirection: 'column', gap: 14, fontSize: 25, lineHeight: 1.35, color: C.soft }}>
                 <div style={{ display: 'flex', gap: 14 }}>
-                  <Num n={1} tone="violet" size={36} /> Votez dans le clavardage : A, B, C ou D.
+                  <Num n={1} tone="violet" size={36} /> Annoncez votre réponse : A, B, C ou D.
                 </div>
                 <div style={{ display: 'flex', gap: 14 }}>
                   <Num n={2} tone="violet" size={36} /> {multi ? 'Les réponses majoritaires sont cochées, puis validées.' : 'La réponse majoritaire est cliquée.'}
@@ -3073,7 +3073,7 @@ const GP_Cover: Page = () => (
     <Squares s={250} x={1470} y={640} delay={200} />
     <div
       className={A.in}
-      style={{ position: 'absolute', left: 1130, top: 250, width: 680, height: 560, background: C.card, borderRadius: 22, boxShadow: SHADOW, ...dl(300) }}
+      style={{ position: 'absolute', left: 1130, top: 250, width: 680, height: 560, background: C.card, borderRadius: 22, boxShadow: SHADOW, ...dl(300), translate: '46.88px 176.02px' }}
     >
       <div style={{ position: 'absolute', left: 28, top: 26, display: 'flex', alignItems: 'center', gap: 12 }}>
         <Icon name="gantt" size={30} color={C.blue} />
@@ -3091,10 +3091,10 @@ const GP_Cover: Page = () => (
         <div className={A.pop} style={{ width: 26, height: 26, background: C.coral, ...dl(1800) }} />
       </div>
     </div>
-    <div className={A.float} style={{ position: 'absolute', left: 1075, top: 745, width: 150, height: 150 }}>
+    <div className={A.float} style={{ position: 'absolute', left: 1075, top: 745, width: 150, height: 150, translate: '5.01px -39.99px' }}>
       <div
         className={A.pop}
-        style={{ width: 150, height: 150, borderRadius: 32, background: C.card, boxShadow: '0 30px 60px -28px rgba(20,60,100,.55), 0 0 0 1px rgba(0,0,0,.04)', display: 'flex', alignItems: 'center', justifyContent: 'center', ...dl(1900) }}
+        style={{ width: 150, height: 150, borderRadius: 32, background: C.card, boxShadow: '0 30px 60px -28px rgba(20,60,100,.55), 0 0 0 1px rgba(0,0,0,.04)', display: 'flex', alignItems: 'center', justifyContent: 'center', ...dl(1900), translate: '340.86px 172.5px' }}
       >
         <Icon name="sparkles" size={84} color={C.blue} sw={1.8} />
       </div>
@@ -3160,7 +3160,7 @@ const AskCard = ({ n, title, sub, d }: { n: number; title: ReactNode; sub: React
 const GP_Roundtable: Page = () => (
   <Frame mod={0} label="Ouverture · Faisons connaissance">
     <Title>Tour de table</Title>
-    <Lede>Une minute par personne, micro ouvert, trois questions. Puis un sondage éclair dans le clavardage.</Lede>
+    <Lede>Une minute par personne, micro ouvert, trois questions. Puis un sondage éclair.</Lede>
     <div style={{ position: 'absolute', left: 120, top: 290, width: 800, display: 'flex', flexDirection: 'column', gap: 20 }}>
       <AskCard n={1} title="Qui êtes-vous ?" sub="Prénom, rôle, service (RH, marketing, TI…)" d={100} />
       <AskCard n={2} title="Quel projet menez-vous en ce moment ?" sub="Une phrase : son objectif et son échéance" d={220} />
@@ -3172,7 +3172,7 @@ const GP_Roundtable: Page = () => (
         Sondage éclair · votre usage de l’IA
       </Eyebrow>
       <Hint cls={A.in} style={{ marginTop: 8, ...dl(260) }}>
-        Répondez dans le clavardage par le numéro de la ligne
+        Répondez par le numéro de la ligne
       </Hint>
       <Poll cls={A.in} style={{ marginTop: 22, ...dl(360) }}>
         <PollRow id="none" icon="eye" tone="grey" label="1 · Je ne l’ai jamais vraiment essayée" />
@@ -3398,7 +3398,7 @@ const GP_HowWeWork: Page = () => (
     </div>
     <div style={{ position: 'absolute', left: 120, top: 740, width: 1680, display: 'flex', gap: 24 }}>
       <RuleChip icon="chat" d={600}>
-        Questions dans le clavardage, à tout moment
+        Questions bienvenues, à tout moment
       </RuleChip>
       <RuleChip icon="lock" d={700}>
         Aucune donnée confidentielle dans les outils
@@ -3415,7 +3415,7 @@ const GP_HowWeWork: Page = () => (
       size={26}
       style={{ position: 'absolute', left: 120, top: 862, width: 1680, padding: '14px 26px', ...dl(900) }}
     >
-      Caméra si possible, micro coupé hors échanges, clavardage ouvert. Idéal : deux écrans, la formation et l’outil d’IA.
+      Caméra si possible, micro coupé hors échanges. Idéal : deux écrans, la formation et l’outil d’IA.
     </Callout>
   </Frame>
 );
@@ -4057,7 +4057,7 @@ const M1Flip = ({ icon, q, ai, why }: { icon: IconName; q: string; ai: boolean; 
 const M1_AiOrNot: Page = () => (
   <Frame mod={1} kind="exercice">
     <Title>IA… ou pas IA ?</Title>
-    <Lede>Votez dans le clavardage : « IA » ou « pas IA » ? Puis on retourne la carte.</Lede>
+    <Lede>« IA » ou « pas IA » ? Votez, puis on retourne la carte.</Lede>
     <div className={A.in} style={{ position: 'absolute', left: 120, top: 270, width: 1680, display: 'grid', gridTemplateColumns: 'repeat(3, 530px)', rowGap: 30, columnGap: 44, ...dl(150) }}>
       <M1Flip icon="bell" q="Outlook vous rappelle une réunion 15 minutes avant" ai={false} why="Une règle fixe : « 15 min avant, afficher une alerte ». Aucun apprentissage." />
       <M1Flip icon="play" q="Netflix vous propose une série qui vous plaît" ai why="Le système a appris vos goûts et ceux de millions d’abonnés semblables." />
@@ -4273,7 +4273,7 @@ const M1Key = ({ tone, children }: { tone: Tone; children: ReactNode }) => (
 const M1_Sort: Page = () => (
   <Frame mod={1} kind="exercice" beats={1}>
     <Title>À vous : classez ces tâches du projet Limoilou</Title>
-    <Lede>Dites-moi dans le clavardage où va chaque étiquette. Le corrigé apparaît au clic.</Lede>
+    <Lede>Dites-moi où va chaque étiquette. Le corrigé apparaît au clic.</Lede>
     <M1Zone x={120} icon="gear" tone="grey" label="Automatisation" />
     <M1Zone x={690} icon="arm" tone="teal" label="Robotisation" />
     <M1Zone x={1260} icon="brain" tone="blue" label="IA" />
@@ -4854,7 +4854,7 @@ const M2Quad = ({ x, y, tone, title, sub }: { x: number; y: number; tone: Tone; 
 const M2_Matrix: Page = () => (
   <Frame mod={2} kind="exercice">
     <Title>À vous : que confier à l’IA ?</Title>
-    <Lede>Proposez une case dans le clavardage pour chaque tâche. Il y a débat… c’est voulu.</Lede>
+    <Lede>Proposez une case pour chaque tâche. Il y a débat… c’est voulu.</Lede>
     <M2Quad x={540} y={270} tone="yellow" title="Avec relecture attentive" sub="Gain élevé, risque élevé" />
     <M2Quad x={1160} y={270} tone="green" title="À confier en priorité" sub="Gain élevé, risque faible" />
     <M2Quad x={540} y={590} tone="coral" title="À garder pour soi" sub="Gain faible, risque élevé" />
@@ -6094,7 +6094,7 @@ const M3_Work: Page = () => (
       </div>
     </Checklist>
     <Callout cls={A.in} title="Coincés ?" tone="blue" icon="chat" size={25} style={{ position: 'absolute', left: 120, top: 760, width: 460, ...dl(400) }}>
-      Écrivez « bloqué » dans le clavardage, ou demandez à l’IA ses questions.
+      Signalez-le, ou demandez à l’IA de vous poser ses questions.
     </Callout>
   </Frame>
 );
@@ -6103,7 +6103,7 @@ const M3_Work: Page = () => (
 const M3_Debrief: Page = () => (
   <Frame mod={3} kind="atelier" label="Atelier 1 · Débriefing">
     <Title>Débriefing : ce que l’IA a fait… et ce que vous avez fait</Title>
-    <Lede>Quelques volontaires partagent leur écran 2 minutes. Les autres répondent dans le clavardage.</Lede>
+    <Lede>Quelques volontaires partagent leur écran 2 minutes, puis on en discute ensemble.</Lede>
     <div style={{ position: 'absolute', left: 120, top: 280, width: 820, display: 'flex', flexDirection: 'column', gap: 20 }}>
       <AskCard n={1} title="Qu’est-ce que l’IA a bien fait ?" sub="Structure, rapidité, idées de risques…" d={100} />
       <AskCard n={2} title="Qu’avez-vous dû corriger ?" sub="Dates, dépendances, responsables, oublis" d={220} />
@@ -6114,7 +6114,7 @@ const M3_Debrief: Page = () => (
         Sondage · temps gagné par rapport à un plan fait seul
       </Eyebrow>
       <Hint cls={A.in} style={{ marginTop: 8, ...dl(260) }}>
-        Dans le clavardage : un numéro par personne
+        Un numéro par personne, à voix haute
       </Hint>
       <Poll cls={A.in} style={{ marginTop: 22, ...dl(360) }}>
         <PollRow id="lose" icon="clock" tone="coral" label="1 · Aucun, voire du temps perdu" />
@@ -6171,7 +6171,7 @@ const J1Ticket = ({ n, icon, tone, title, children }: { n: number; icon: IconNam
 const J1_Exit: Page = () => (
   <Frame mod={3} label="Fin du jour 1">
     <Title>Billet de sortie</Title>
-    <Lede>Avant de partir : trois réponses courtes, dans le clavardage.</Lede>
+    <Lede>Avant de partir : trois réponses courtes, chacun à son tour.</Lede>
     <div style={{ position: 'absolute', left: 120, top: 290, width: 1680, display: 'flex', gap: 30 }}>
       <J1Ticket n={1} icon="bulb" tone="blue" title="Une chose apprise">
         Ce qui vous a le plus surpris aujourd’hui.
@@ -6259,7 +6259,7 @@ const J2Flip = ({ n, q, a }: { n: number; q: string; a: ReactNode }) => (
 const J2_Recall: Page = () => (
   <Frame mod={0} kind="qcm" label="Jour 2 · Réactivation">
     <Title>Cinq questions pour se réveiller</Title>
-    <Lede>Répondez dans le clavardage, puis on retourne la carte. Et vos questions d’hier ?</Lede>
+    <Lede>Répondez, puis on retourne la carte. Et vos questions d’hier ?</Lede>
     <div className={A.in} style={{ position: 'absolute', left: 120, top: 270, width: 1680, display: 'grid', gridTemplateColumns: 'repeat(3, 530px)', rowGap: 30, columnGap: 45, ...dl(150) }}>
       <J2Flip n={1} q="À partir de quoi une IA apprend-elle ?" a={<>D’<b>exemples</b>, pas de règles écrites à la main. Elle en tire un modèle.</>} />
       <J2Flip n={2} q="Comment un LLM choisit-il ses mots ?" a={<>Il prédit le mot le plus <b>probable</b>, pas le plus vrai. D’où les hallucinations.</>} />
@@ -7238,7 +7238,7 @@ const M5_Data: Page = () => (
 const M5_Traffic: Page = () => (
   <Frame mod={5} kind="exercice" beats={1}>
     <Title>À vous : feu vert, jaune ou rouge ?</Title>
-    <Lede>Pour chaque information, votez dans le clavardage : vert, jaune ou rouge. Le corrigé apparaît au clic.</Lede>
+    <Lede>Pour chaque information, votez : vert, jaune ou rouge. Le corrigé apparaît au clic.</Lede>
     <M1Zone x={120} icon="check" tone="green" label="Vert · tout outil" />
     <M1Zone x={690} icon="shieldCheck" tone="yellow" label="Jaune · outil approuvé" />
     <M1Zone x={1260} icon="lock" tone="coral" label="Rouge · jamais tel quel" />
@@ -7412,7 +7412,7 @@ const M5Persona = ({ id, quote, children }: { id: CastId; quote: string; childre
 const M5_Personas: Page = () => (
   <Frame mod={5} kind="exercice">
     <Title>Accompagner l’équipe : quatre réactions, quatre réponses</Title>
-    <Lede>Que répondriez-vous ? Une idée dans le clavardage, puis on retourne la carte.</Lede>
+    <Lede>Que répondriez-vous ? Vos idées d’abord, puis on retourne la carte.</Lede>
     <div className={A.in} style={{ position: 'absolute', left: 120, top: 270, width: 1680, display: 'grid', gridTemplateColumns: 'repeat(2, 825px)', rowGap: 30, columnGap: 30, ...dl(150) }}>
       <M5Persona id="julie" quote="« L’IA va trier mes candidats à ma place ? »">
         Non. Elle t’aide à rédiger les offres et à préparer les entrevues. Le choix reste le tien, sur des critères écrits.
@@ -7703,7 +7703,7 @@ const M6_Projects: Page = () => (
       <M6Proj d={400} icon="archive" tone="teal" title="L’inventaire d’ouverture" facts="Opérations · 7 semaines · 70 000 $ · Karim">
         Choisir, commander, recevoir et étiqueter 400 produits avant le 10 avril.
       </M6Proj>
-      <M6Proj d={500} icon="star" tone="blue" title="Votre propre projet" facts="À annoncer dans le clavardage">
+      <M6Proj d={500} icon="star" tone="blue" title="Votre propre projet" facts="À annoncer au formateur">
         Un de vos vrais projets, sans nom, chiffre ni donnée confidentielle.
       </M6Proj>
       <div className={A.in} style={{ width: 540, height: 320, boxSizing: 'border-box', borderRadius: 18, border: `3px dashed ${C.rule}`, padding: '24px 26px', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 12, ...dl(600) }}>
@@ -7920,7 +7920,7 @@ const M6_Pitch: Page = () => (
     </div>
     <Timer id="m6-pitch" minutes={3} label="Présentation" cls={A.in} style={{ position: 'absolute', left: 1260, top: 280, width: 540, ...dl(300) }} />
     <Callout cls={A.in} title="Pour le public" tone="blue" icon="note" size={24} style={{ position: 'absolute', left: 1260, top: 620, width: 540, ...dl(500) }}>
-      Dans le clavardage : un point fort et une piste pour chaque présentation.
+      Préparez un point fort et une piste pour chaque présentation.
     </Callout>
   </Frame>
 );
@@ -7929,7 +7929,7 @@ const M6_Pitch: Page = () => (
 const M6_Work: Page = () => (
   <Frame mod={6} kind="atelier" label="Atelier 2 · À vous">
     <Title>À vous de jouer !</Title>
-    <Lede>Un point d’étape dans le clavardage à chaque changement d’étape. L’imprévu tombe après l’étape 1.</Lede>
+    <Lede>Un point d’étape à chaque changement d’étape. L’imprévu tombe après l’étape 1.</Lede>
     <Timer id="m6-work" minutes={75} label="Atelier 2" cls={A.in} style={{ position: 'absolute', left: 120, top: 290, ...dl(100) }} />
     <div style={{ position: 'absolute', left: 640, top: 290, width: 1160, display: 'flex', flexDirection: 'column', gap: 16 }}>
       <SynthRow n={1} tone="teal" d={200}>
@@ -7946,7 +7946,7 @@ const M6_Work: Page = () => (
       </SynthRow>
     </div>
     <Callout cls={A.in} title="Coincés ?" tone="blue" icon="chat" size={25} style={{ position: 'absolute', left: 120, top: 760, width: 460, ...dl(600) }}>
-      Écrivez « bloqué » dans le clavardage, ou demandez à l’IA ses questions.
+      Signalez-le, ou demandez à l’IA de vous poser ses questions.
     </Callout>
   </Frame>
 );
@@ -7995,7 +7995,7 @@ const M6_Feedback: Page = () => {
   return (
     <Frame mod={6} kind="atelier" label="Atelier 2 · Rétroaction collective">
       <Title>Rétroaction collective</Title>
-      <Lede>Après chaque présentation : un point fort et une piste dans le clavardage. Le formateur synthétise la grille.</Lede>
+      <Lede>Après chaque présentation : un point fort et une piste. Le formateur synthétise la grille.</Lede>
       <div className={A.in} style={{ position: 'absolute', left: 120, top: 270, width: 1140, boxSizing: 'border-box', background: C.card, borderRadius: 18, boxShadow: SHADOW, padding: '14px 32px 10px', ...dl(100) }}>
         <M6StarRow label="Un plan réaliste" sub="Dates, dépendances et responsables vérifiés" v={r[0]} set={set(0)} />
         <M6StarRow label="Une réaction à l’imprévu" sub="Le plan et le chemin critique mis à jour" v={r[1]} set={set(1)} />
@@ -8040,7 +8040,7 @@ const M6_Feedback: Page = () => {
 const M6_Debrief: Page = () => (
   <Frame mod={6} kind="atelier" label="Atelier 2 · Débriefing">
     <Title>Ce que l’atelier nous apprend</Title>
-    <Lede>Un dernier sondage dans le clavardage, puis trois questions pour tous.</Lede>
+    <Lede>Un dernier sondage, puis trois questions pour tous.</Lede>
     <div style={{ position: 'absolute', left: 120, top: 280, width: 820, display: 'flex', flexDirection: 'column', gap: 20 }}>
       <AskCard n={1} title="Où l’IA vous a-t-elle le plus aidés ?" sub="Et où vous a-t-elle ralentis ?" d={100} />
       <AskCard n={2} title="Quelle erreur auriez-vous laissé passer ?" sub="Sans la relecture" d={220} />
@@ -8051,7 +8051,7 @@ const M6_Debrief: Page = () => (
         Sondage · le plus grand gain de temps
       </Eyebrow>
       <Hint cls={A.in} style={{ marginTop: 8, ...dl(260) }}>
-        Dans le clavardage : un numéro par personne
+        Un numéro par personne, à voix haute
       </Hint>
       <Poll cls={A.in} style={{ marginTop: 22, ...dl(360) }}>
         <PollRow id="plan" icon="gantt" tone="teal" label="1 · Le plan de départ" />
@@ -8397,7 +8397,7 @@ Puis les quatre engagements :
 3. Des modèles réutilisables — « Vous repartez avec des demandes types : plan de projet, compte rendu, rapport d'avancement. »
 4. Un regard lucide — « L'IA se trompe. On verra quand, pourquoi, et comment s'en protéger. »
 
-INTERACTION — « Qui a déjà demandé quelque chose à ChatGPT ou à Copilot cette semaine ? » Réponses dans le clavardage (« oui » / « non ») : souvent la majorité. « Parfait, on part de là. »
+INTERACTION — « Qui a déjà demandé quelque chose à ChatGPT ou à Copilot cette semaine ? » Réponses à voix haute : souvent la majorité. « Parfait, on part de là. »
 
 TRANSITION — « À votre tour maintenant. »`,
   `⏱ 15 min (1 min par personne, ajuster selon la taille du groupe)
@@ -8406,7 +8406,7 @@ OBJECTIF — Connaître le groupe, ses projets et ses irritants, pour adapter le
 
 ANIMATION — Lancez le minuteur. Appelez chaque personne par son prénom (ordre de la liste des participants) ; elle ouvre son micro et répond aux trois questions. Notez dans un document à vous les tâches qui « prennent le plus de temps » : vous y reviendrez au module 2 (cas d'usage) et à l'atelier 2 (mini-projet).
 
-SONDAGE ÉCLAIR — Chacun écrit dans le clavardage le numéro de la ligne qui le décrit (1 à 5). Cliquez une fois la ligne par réponse (le bouton « − » corrige une erreur). Les barres se comparent automatiquement. Variante : le sondage intégré de Teams ou Zoom.
+SONDAGE ÉCLAIR — Chacun annonce à voix haute le numéro de la ligne qui le décrit (1 à 5). Cliquez une fois la ligne par réponse (le bouton « − » corrige une erreur). Les barres se comparent automatiquement. Variante : le sondage intégré de Teams ou Zoom.
 
 LECTURE DU RÉSULTAT —
 • Majorité « jamais / personnel » : prenez votre temps au module 1, multipliez les démonstrations en direct.
@@ -8436,7 +8436,7 @@ DIRE — « Jour 1 : comprendre et planifier. Module 1, l'IA expliquée simpleme
 
 « Jour 2 : automatiser et adopter. Module 4, comptes rendus, résumés de réunions et suivi des tâches. Module 5, limites, éthique et conduite du changement. Puis l'atelier 2, le gros morceau : un mini-projet complet avec l'IA, que vous présenterez au groupe. »
 
-À SOULIGNER — Les ateliers sont les carrés jaunes (modules 3 et 6). Précisez qu'ils se font en autonomie, chacun sur son poste, avec des points d'étape dans le clavardage.
+À SOULIGNER — Les ateliers sont les carrés jaunes (modules 3 et 6). Précisez qu'ils se font en autonomie, chacun sur son poste, avec des points d'étape réguliers.
 
 TRANSITION — « Parlons de la façon dont on va travailler. »`,
   `⏱ 2 min
@@ -8444,13 +8444,13 @@ TRANSITION — « Parlons de la façon dont on va travailler. »`,
 OBJECTIF — Expliquer les codes visuels et le contrat de participation.
 
 DIRE — « Vous verrez des étiquettes en haut des pages. »
-• QCM (violet) — « Vous votez dans le clavardage, je clique la réponse majoritaire, la rétroaction est immédiate. Les mauvaises réponses sont des pièges volontaires. »
+• QCM (violet) — « Vous votez à voix haute, je clique la réponse majoritaire, la rétroaction est immédiate. Les mauvaises réponses sont des pièges volontaires. »
 • EXERCICE (vert) — « On manipule à l'écran : cartes, glisser-déposer, simulateurs. »
 • DÉMO (bleu) — « Je montre en direct, en partage d'écran. »
 • ATELIER (jaune) — « Chacun sur son poste, guidé pas à pas, avec un minuteur et un livrable. »
 
 LES TROIS RÈGLES —
-1. Questions dans le clavardage, à tout moment ; je les lis aux transitions.
+1. Questions bienvenues à tout moment, au micro ou par écrit.
 2. « Aucune donnée confidentielle dans les outils pendant la formation. » C'est déjà une bonne pratique : on y reviendra au module 5.
 3. Fil rouge : Vélo Fleuve, présenté juste après.
 
@@ -8483,14 +8483,14 @@ DIRE — « 22 semaines pour ouvrir, le samedi 10 avril. 420 000 $ de budget, tr
 
 QUESTION — Pointer l'encadré : « Où l'IA peut-elle faire gagner du temps à Karim, sans lui faire perdre le contrôle ? C'est la question qu'on se posera pendant deux jours. »
 
-INTERACTION — « Lequel de ces quatre irritants vivez-vous en ce moment ? » Réponse dans le clavardage (1 à 4).
+INTERACTION — « Lequel de ces quatre irritants vivez-vous en ce moment ? » Réponses à voix haute (1 à 4).
 
 TRANSITION — « Testons vos intuitions avant de commencer. »`,
   `⏱ 4 min · QCM À RÉPONSES MULTIPLES
 
 OBJECTIF — Faire émerger les représentations initiales sans juger.
 
-ANIMATION — Lisez la question. Les participants écrivent dans le clavardage les lettres qu'ils retiennent (ex. « A C »). Cochez les options choisies par la majorité, puis « Valider ma sélection ». Cliquez ensuite chaque option pour lire l'explication. Avec →, vous révélez les bonnes réponses, puis l'essentiel.
+ANIMATION — Lisez la question. Les participants annoncent les lettres qu'ils retiennent (ex. « A et C »). Cochez les options choisies par la majorité, puis « Valider ma sélection ». Cliquez ensuite chaque option pour lire l'explication. Avec →, vous révélez les bonnes réponses, puis l'essentiel.
 
 RÉPONSES — A et C.
 • A ✓ — Une première découpe des tâches : l'IA est très bonne pour proposer une structure de départ.
@@ -8620,7 +8620,7 @@ TRANSITION — « Vérifions vos réflexes : IA ou pas IA ? »`,
 
 OBJECTIF — Distinguer IA et simple règle programmée.
 
-ANIMATION — Pour chaque carte : lisez-la, faites voter dans le clavardage (« IA » ou « pas IA »), puis cliquez pour retourner.
+ANIMATION — Pour chaque carte : lisez-la, faites voter à voix haute (« IA » ou « pas IA »), puis cliquez pour retourner.
 
 RÉPONSES —
 • Rappel Outlook 15 min avant : pas d'IA, règle fixe.
@@ -8673,7 +8673,7 @@ TRANSITION — « À vous de jouer. »`,
 
 OBJECTIF — Appliquer la distinction sur des tâches du projet Limoilou.
 
-ANIMATION — Pour chaque étiquette, demandez la colonne dans le clavardage (« auto », « robot » ou « IA ») et glissez-la selon la majorité. Double-cliquer une étiquette la remet à sa place.
+ANIMATION — Pour chaque étiquette, demandez la colonne à voix haute (« auto », « robot » ou « IA ») et glissez-la selon la majorité. Double-cliquer une étiquette la remet à sa place.
 → beat 1 : le corrigé apparaît sur chaque étiquette.
 
 CORRIGÉ —
@@ -8723,7 +8723,7 @@ DIRE — « À gauche, ce qu'elle fait très bien : un premier jet en quelques s
 TRANSITION — « Deux questions pour vérifier tout ça. »`,
   `⏱ 3 min · QCM 1
 
-ANIMATION — Votes dans le clavardage (A, B, C ou D). Cliquez l'option majoritaire pour la rétroaction, puis → pour la bonne réponse et → pour l'essentiel.
+ANIMATION — Votes à voix haute (A, B, C ou D). Cliquez l'option majoritaire pour la rétroaction, puis → pour la bonne réponse et → pour l'essentiel.
 
 RÉPONSE — B, une automatisation à base de règles.
 • A ✗ PIÈGE — « Automatique ne veut pas dire intelligent. »
@@ -8844,7 +8844,7 @@ TRANSITION — « À vous de juger : que confier à l'IA ? »`,
 
 OBJECTIF — Développer le jugement : gain de temps versus risque en cas d'erreur.
 
-ANIMATION — Pour chaque étiquette, demandez une case dans le clavardage (« priorité », « relecture », « pour soi », « si le temps ») et glissez-la selon la majorité. Double-cliquer une étiquette la remet à sa place. Laissez débattre au micro : il n'y a pas de corrigé unique.
+ANIMATION — Pour chaque étiquette, demandez une case à voix haute (« priorité », « relecture », « pour soi », « si le temps ») et glissez-la selon la majorité. Double-cliquer une étiquette la remet à sa place. Laissez débattre : il n'y a pas de corrigé unique.
 
 PISTES DE CORRIGÉ —
 • À confier en priorité : compte rendu de réunion, ordre du jour, reformuler une note, premier découpage des tâches.
@@ -8998,7 +8998,7 @@ DIRE — « Atelier 1 : un plan de projet avec l'IA. Vous allez faire ce que Kar
 
 « D'abord une découverte guidée de deux outils : Notion AI et ClickUp. Puis on construit pas à pas : charte, découpage, échéancier, risques, RACI. On transfère les tâches dans l'outil. Et on termine par la partie la plus importante : vérifier ce que l'IA a raté. »
 
-LOGISTIQUE — Atelier individuel : chacun travaille sur son poste, la classe virtuelle ouverte dans une fenêtre et l'outil dans une autre. Vérifiez que chacun a accès à Notion ou ClickUp (versions d'essai gratuites) ou, à défaut, à un assistant générique. Demandez un « prêt » dans le clavardage avant de commencer.
+LOGISTIQUE — Atelier individuel : chacun travaille sur son poste, la classe virtuelle ouverte dans une fenêtre et l'outil dans une autre. Vérifiez que chacun a accès à Notion ou ClickUp (versions d'essai gratuites) ou, à défaut, à un assistant générique. Demandez un « prêt » à chacun avant de commencer.
 
 TRANSITION — « Voici l'atelier en un coup d'œil. »`,
   `⏱ 2 min · CONSIGNES
@@ -9052,7 +9052,7 @@ DIRE — « ClickUp, c'est un outil de tâches. Son IA s'appelle Brain et travai
 
 DÉMO EN DIRECT — Si possible, montrez la génération de sous-tâches dans une vraie tâche.
 
-CHOIX — Chacun choisit son outil et l'écrit dans le clavardage (« Notion » ou « ClickUp »). Laissez 5 minutes d'exploration libre.
+CHOIX — Chacun annonce son outil (« Notion » ou « ClickUp »). Laissez 5 minutes d'exploration libre.
 
 TRANSITION — « On construit le plan. Étape 1 : la charte. »`,
   `⏱ 3 min de démonstration + 10 min en autonomie · CHARTE (5 clics)
@@ -9161,7 +9161,7 @@ TRANSITION — « À vous ! »`,
 
 OBJECTIF — Produire le plan du projet Limoilou dans un outil.
 
-ANIMATION — Démarrez le minuteur (il continue si vous changez de page). Les participants travaillent seuls, micro coupé. Vous ne voyez pas leurs écrans : faites un point d'étape dans le clavardage toutes les 15 minutes (« Où en êtes-vous : étape 1, 2, 3 ou 4 ? »). La pause de 14 h 30 peut être prise pendant l'atelier, selon le rythme.
+ANIMATION — Démarrez le minuteur (il continue si vous changez de page). Les participants travaillent seuls, micro coupé. Vous ne voyez pas leurs écrans : faites un point d'étape toutes les 15 minutes (« Où en êtes-vous : étape 1, 2, 3 ou 4 ? »). La pause de 14 h 30 peut être prise pendant l'atelier, selon le rythme.
 
 QUESTIONS À POSER DANS LE CLAVARDAGE (ou à la personne qui partage son écran) —
 • « Montrez-moi votre demande. Où est le contexte ? »
@@ -9177,7 +9177,7 @@ TRANSITION — « Temps écoulé ! Débriefing. »`,
 
 OBJECTIF — Tirer les leçons de l'atelier.
 
-ANIMATION — Trois ou quatre volontaires partagent leur écran 2 minutes et répondent aux trois questions ; les autres réagissent dans le clavardage ou y déposent une capture de leur plan. Puis sondage : un numéro par personne dans le clavardage, cliquez une ligne par réponse.
+ANIMATION — Trois ou quatre volontaires partagent leur écran 2 minutes et répondent aux trois questions ; les autres réagissent au micro. Puis sondage : un numéro par personne, à voix haute, cliquez une ligne par réponse.
 
 POINTS À FAIRE ÉMERGER —
 • L'IA donne une structure et des idées très vite.
@@ -9200,7 +9200,7 @@ TRANSITION — « Avant de partir, un billet de sortie. »`,
 
 OBJECTIF — Mesurer les acquis et récolter les questions pour demain.
 
-ANIMATION — Dans le clavardage, chacun écrit trois réponses courtes : une chose apprise, une question, un essai à faire ce soir. Enregistrez le clavardage avant de quitter la réunion.
+ANIMATION — Tour rapide au micro : chacun donne trois réponses courtes, une chose apprise, une question, un essai à faire ce soir. Notez les questions pour y répondre demain matin.
 
 DIRE — « Je lirai vos questions ce soir et on commencera par y répondre demain matin. Et ce soir, si vous avez cinq minutes : une demande en cinq ingrédients sur votre vrai projet, sans données confidentielles. »
 
@@ -9222,7 +9222,7 @@ TRANSITION — « D'abord, réveillons ce qu'on a appris hier. »`,
 
 OBJECTIF — Réactiver les notions clés du jour 1 et répondre aux questions des billets de sortie.
 
-ANIMATION — Lisez chaque question, laissez répondre dans le clavardage (ou au micro), puis cliquez pour retourner la carte.
+ANIMATION — Lisez chaque question, laissez répondre au micro, puis cliquez pour retourner la carte.
 
 RÉPONSES —
 1. D'exemples : l'IA en tire un modèle.
@@ -9293,7 +9293,7 @@ TRANSITION — « Et si la demande est trop vague ? Exercice. »`,
 
 OBJECTIF — Entraîner l'œil à repérer les erreurs typiques d'un compte rendu généré.
 
-ANIMATION — Laissez 2 minutes : chacun compare avec la transcription de la page précédente (revenez-y si besoin) et écrit dans le clavardage les erreurs trouvées. Puis un clic par erreur.
+ANIMATION — Laissez 2 minutes : chacun compare avec la transcription de la page précédente (revenez-y si besoin) et repère les erreurs. Faites-les annoncer, puis un clic par erreur.
 → beat 1 : Fausse décision : les portes ouvertes n'ont pas été reportées, on a seulement discuté.
 → beat 2 : Mauvaise personne : c'est Annie qui avance le câblage.
 → beat 3 : Date inventée : Julie a dit « demain », donc le 3 février, pas le 15.
@@ -9539,7 +9539,7 @@ RÈGLE SIMPLE — « Ce que vous ne mettriez pas sur un forum public ne va pas d
 TRANSITION — « Exercice : quelles données, dans quel outil ? »`,
   `⏱ 5 min · EXERCICE FEU TRICOLORE (1 clic pour le corrigé)
 
-ANIMATION — Pour chaque étiquette, demandez la couleur dans le clavardage (« vert », « jaune » ou « rouge ») et glissez-la selon la majorité. Double-clic pour remettre une étiquette à sa place. → révèle le corrigé.
+ANIMATION — Pour chaque étiquette, demandez la couleur à voix haute (« vert », « jaune » ou « rouge ») et glissez-la selon la majorité. Double-clic pour remettre une étiquette à sa place. → révèle le corrigé.
 
 CORRIGÉ —
 • Vert (tout outil) : texte de l'affiche (public), procédure générique.
@@ -9575,7 +9575,7 @@ PRUDENCE — Vous n'êtes pas juriste : pour un cas précis, renvoyez au respons
 TRANSITION — « Faisons le point sur vos propres réflexes. »`,
   `⏱ 3 min · AUTODIAGNOSTIC (cases à cocher)
 
-ANIMATION — Chacun compte pour soi, sur papier ou dans un document, les réflexes qu'il pratique déjà ; ne demandez pas les scores. Cochez la grille à l'écran pour illustrer, puis demandez dans le clavardage le réflexe qui manque le plus.
+ANIMATION — Chacun compte pour soi, sur papier ou dans un document, les réflexes qu'il pratique déjà ; ne demandez pas les scores. Cochez la grille à l'écran pour illustrer, puis demandez le réflexe qui manque le plus.
 
 DIRE — « Huit réflexes. Personne ne voit votre écran : soyez honnêtes. »
 
@@ -9591,7 +9591,7 @@ TRANSITION — « Passons à l'équipe : comment accompagner le changement ? »`
 
 OBJECTIF — Travailler des réponses concrètes aux réactions typiques.
 
-ANIMATION — Pour chaque carte : lisez la phrase, demandez « Que répondriez-vous ? » dans le clavardage, lisez deux réponses, puis retournez la carte.
+ANIMATION — Pour chaque carte : lisez la phrase, demandez « Que répondriez-vous ? », écoutez deux réponses, puis retournez la carte.
 
 DIRE —
 • Julie, l'inquiète : la peur d'être remplacée ou de perdre le contrôle. Réponse : clarifier ce que l'IA fait et ne fait pas.
@@ -9670,7 +9670,7 @@ OBJECTIF — Lancer l'atelier final avec énergie.
 
 DIRE — « Atelier 2 : un mini-projet avec l'IA, de bout en bout, chacun sur son poste. Vous allez tout mobiliser : planifier comme hier, suivre et rédiger des comptes rendus comme ce matin, communiquer, et appliquer les règles du module 5. Avec une surprise en cours de route. »
 
-LOGISTIQUE — Classe virtuelle : chacun garde la réunion ouverte, micro coupé, et travaille dans son outil (Notion, ClickUp ou un assistant générique). Demandez un « prêt » dans le clavardage.
+LOGISTIQUE — Classe virtuelle : chacun garde la réunion ouverte, micro coupé, et travaille dans son outil (Notion, ClickUp ou un assistant générique). Demandez un « prêt » à chacun.
 
 TRANSITION — « Voici la mission. »`,
   `⏱ 3 min · LA MISSION
@@ -9684,14 +9684,14 @@ TRANSITION — « Premier choix : votre projet. »`,
 
 DIRE — « Quatre projets issus de Vélo Fleuve, un par profil : RH, marketing, TI, opérations. Choisissez celui qui ressemble le plus à votre métier, ou l'un de vos vrais projets, anonymisé. »
 
-ANIMATION — Chacun écrit son choix dans le clavardage (« recrues », « portes ouvertes », « rendez-vous », « inventaire » ou « mon projet »). Notez les choix : ils vous serviront pour l'imprévu et l'ordre de passage.
+ANIMATION — Chacun annonce son choix (« recrues », « portes ouvertes », « rendez-vous », « inventaire » ou « mon projet »). Notez les choix : ils vous serviront pour l'imprévu et l'ordre de passage.
 
 PROJET RÉEL — Rappelez le feu tricolore du module 5 : aucun nom, aucun chiffre réel, aucune donnée confidentielle.
 
 TRANSITION — « Étape 1 : planifier. »`,
   `⏱ 30 min · ÉTAPE 1 · PLANIFIER
 
-ANIMATION — Lancez le minuteur. Les livrables restent affichés : laissez cette page en partage pendant le travail. À mi-parcours, point d'étape dans le clavardage : « Où en êtes-vous (1 à 5) ? »
+ANIMATION — Lancez le minuteur. Les livrables restent affichés : laissez cette page en partage pendant le travail. À mi-parcours, point d'étape : « Où en êtes-vous (1 à 5) ? »
 
 DIRE — « Comme hier, mais plus vite. Partez des modèles de la bibliothèque : plan de projet et risques. Et n'oubliez pas : "Signale ce que tu as supposé." »
 
@@ -9717,7 +9717,7 @@ ANIMATION — Lancez le minuteur. Laissez cette page en partage.
 
 DIRE — « Imaginez que vous sortez de la réunion de suivi où l'imprévu a été discuté. Écrivez en 5 minutes 8 à 10 lignes de notes brutes, en vrac : qui a dit quoi, ce qui a été décidé, ce qui reste ouvert. Puis l'IA en fait le compte rendu, avec le modèle de ce matin. Relisez-le avec les quatre erreurs typiques : fausse décision, mauvaise personne, date inventée, point ouvert disparu. Mettez le plan à jour dans l'outil. Et rédigez le rapport au commanditaire, avec une météo que vous assumez. »
 
-POINT D'ÉTAPE — À mi-parcours : « Dans le clavardage, une erreur que l'IA a faite dans votre compte rendu. » Lisez-en deux ou trois à voix haute : c'est très parlant.
+POINT D'ÉTAPE — À mi-parcours : « Une erreur que l'IA a faite dans votre compte rendu ? » Faites-en raconter deux ou trois : c'est très parlant.
 
 TRANSITION — « Étape 3 : communiquer. »`,
   `⏱ 20 min · ÉTAPE 3 · COMMUNIQUER
@@ -9733,11 +9733,11 @@ TRANSITION — « Préparez votre présentation : voici le format. »`,
 
 DIRE — « Trois minutes, cinq temps, en partage d'écran. Le projet en une phrase. Le plan, montré dans l'outil, pas dans des diapositives. L'imprévu et votre réaction. Un message lu à voix haute. Et surtout : ce que l'IA a raté, et ce que vous avez corrigé. »
 
-ORDRE DE PASSAGE — Annoncez-le dans le clavardage (ordre alphabétique ou volontaires d'abord). Rappelez de fermer les onglets personnels avant de partager l'écran.
+ORDRE DE PASSAGE — Annoncez-le (ordre alphabétique ou volontaires d'abord). Rappelez de fermer les onglets personnels avant de partager l'écran.
 
 GRAND GROUPE — Au-delà de 10 participants : 5 ou 6 présentent, les autres déposent une capture de leur plan et leur « ce que l'IA a raté » dans le clavardage.
 
-POUR LE PUBLIC — « Pendant chaque présentation, préparez dans le clavardage un point fort et une piste. »
+POUR LE PUBLIC — « Pendant chaque présentation, préparez un point fort et une piste. »
 
 TRANSITION — « Il vous reste du temps de travail : à vous ! » (Ou passez directement aux présentations après la pause.)`,
   `⏱ 75 min · TRAVAIL INDIVIDUEL (vue d'ensemble)
@@ -9746,25 +9746,25 @@ ANIMATION — Cette page sert de tableau de bord pendant tout l'atelier : le min
 
 RYTHME — Pause de 14 h 30 entre la fin du travail et les présentations. En virtuel, la fatigue d'écran arrive vite : ne sautez pas la pause.
 
-POINTS D'ÉTAPE — À 0:30, tirez les imprévus (page « Coup de théâtre »). À 0:55, annoncez l'étape 3. À 5 minutes de la fin, demandez à chacun de préparer ses 5 temps. À chaque fois, un mot dans le clavardage pour savoir où chacun en est.
+POINTS D'ÉTAPE — À 0:30, tirez les imprévus (page « Coup de théâtre »). À 0:55, annoncez l'étape 3. À 5 minutes de la fin, demandez à chacun de préparer ses 5 temps. À chaque fois, un tour rapide pour savoir où chacun en est.
 
 AIDE — Quelqu'un écrit « bloqué » : partage d'écran 2 minutes, ou « Demandez à l'IA de vous poser ses questions. »
 
 TRANSITION — « Temps écoulé ! Pause, puis présentations. »`,
   `⏱ 3 min par participant + 1 min de rétroaction · RÉTROACTION COLLECTIVE (étoiles interactives)
 
-ANIMATION — Après chaque présentation, reprenez votre partage d'écran sur cette page. Lisez le clavardage : points forts et pistes. Cochez les étoiles en synthétisant ce que vous avez vu et lu (vous pouvez aussi demander une note de 1 à 5 par critère dans le clavardage). « Participant suivant » remet la grille à zéro.
+ANIMATION — Après chaque présentation, reprenez votre partage d'écran sur cette page. Recueillez au micro un point fort et une piste. Cochez les étoiles en synthétisant ce que vous avez vu et entendu (vous pouvez aussi demander une note de 1 à 5 par critère). « Participant suivant » remet la grille à zéro.
 
 LES QUATRE CRITÈRES — plan réaliste ; réaction à l'imprévu ; messages adaptés ; usage lucide de l'IA.
 
-DIRE — « Un point fort d'abord, toujours. Puis une piste, formulée comme une proposition : "Et si vous essayiez…" » Lisez à voix haute un point fort et une piste du clavardage.
+DIRE — « Un point fort d'abord, toujours. Puis une piste, formulée comme une proposition : "Et si vous essayiez…" » Faites dire un point fort et une piste par deux participants.
 
 TON — Bienveillant et concret. Valorisez explicitement ceux qui montrent ce que l'IA a raté : c'est l'objectif de la formation.
 
 TRANSITION — « Merci à toutes et à tous ! Quelques leçons pour finir. »`,
   `⏱ 8 min · DÉBRIEFING DE L'ATELIER
 
-ANIMATION — Sondage dans le clavardage (un numéro par personne, cliquez une ligne par réponse), puis les trois questions : deux ou trois réponses au micro, les autres dans le clavardage.
+ANIMATION — Sondage à voix haute (un numéro par personne, cliquez une ligne par réponse), puis les trois questions : deux ou trois réponses au micro.
 
 LECTURE DU SONDAGE — Souvent : compte rendu ou plan de départ. Si « Aucun » ressort : explorez. La vérification prend du temps au début ; elle devient rapide avec l'habitude et de bonnes demandes.
 
@@ -9800,7 +9800,7 @@ TRANSITION — « Passons de la formation à votre quotidien. »`,
 
 OBJECTIF — Transformer la formation en engagements concrets.
 
-ANIMATION — Chacun écrit ses trois engagements dans un document ou un carnet. Laissez 3 minutes de silence (caméras allumées si possible). Puis invitez 2 ou 3 personnes à en lire un au micro ; les autres peuvent en déposer un dans le clavardage.
+ANIMATION — Chacun écrit ses trois engagements dans un document ou un carnet. Laissez 3 minutes de silence (caméras allumées si possible). Puis invitez 2 ou 3 personnes à en lire un au micro.
 
 DIRE — « Trois engagements. Cette semaine : une demande de la bibliothèque, essayée sur un vrai cas. Ce mois-ci : un usage installé dans votre routine, et le temps gagné mesuré. Dans trois mois : une pratique partagée avec votre équipe, une charte d'usage par exemple. »
 

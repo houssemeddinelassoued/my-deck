@@ -690,7 +690,7 @@ const M3_Work: Page = () => (
       </div>
     </Checklist>
     <Callout cls={A.in} title="Coincés ?" tone="blue" icon="chat" size={25} style={{ position: 'absolute', left: 120, top: 760, width: 460, ...dl(400) }}>
-      Écrivez « bloqué » dans le clavardage, ou demandez à l’IA ses questions.
+      Signalez-le, ou demandez à l’IA de vous poser ses questions.
     </Callout>
   </Frame>
 );
@@ -699,7 +699,7 @@ const M3_Work: Page = () => (
 const M3_Debrief: Page = () => (
   <Frame mod={3} kind="atelier" label="Atelier 1 · Débriefing">
     <Title>Débriefing : ce que l’IA a fait… et ce que vous avez fait</Title>
-    <Lede>Quelques volontaires partagent leur écran 2 minutes. Les autres répondent dans le clavardage.</Lede>
+    <Lede>Quelques volontaires partagent leur écran 2 minutes, puis on en discute ensemble.</Lede>
     <div style={{ position: 'absolute', left: 120, top: 280, width: 820, display: 'flex', flexDirection: 'column', gap: 20 }}>
       <AskCard n={1} title="Qu’est-ce que l’IA a bien fait ?" sub="Structure, rapidité, idées de risques…" d={100} />
       <AskCard n={2} title="Qu’avez-vous dû corriger ?" sub="Dates, dépendances, responsables, oublis" d={220} />
@@ -710,7 +710,7 @@ const M3_Debrief: Page = () => (
         Sondage · temps gagné par rapport à un plan fait seul
       </Eyebrow>
       <Hint cls={A.in} style={{ marginTop: 8, ...dl(260) }}>
-        Dans le clavardage : un numéro par personne
+        Un numéro par personne, à voix haute
       </Hint>
       <Poll cls={A.in} style={{ marginTop: 22, ...dl(360) }}>
         <PollRow id="lose" icon="clock" tone="coral" label="1 · Aucun, voire du temps perdu" />
@@ -767,7 +767,7 @@ const J1Ticket = ({ n, icon, tone, title, children }: { n: number; icon: IconNam
 const J1_Exit: Page = () => (
   <Frame mod={3} label="Fin du jour 1">
     <Title>Billet de sortie</Title>
-    <Lede>Avant de partir : trois réponses courtes, dans le clavardage.</Lede>
+    <Lede>Avant de partir : trois réponses courtes, chacun à son tour.</Lede>
     <div style={{ position: 'absolute', left: 120, top: 290, width: 1680, display: 'flex', gap: 30 }}>
       <J1Ticket n={1} icon="bulb" tone="blue" title="Une chose apprise">
         Ce qui vous a le plus surpris aujourd’hui.
@@ -819,7 +819,7 @@ DIRE — « Atelier 1 : un plan de projet avec l'IA. Vous allez faire ce que Kar
 
 « D'abord une découverte guidée de deux outils : Notion AI et ClickUp. Puis on construit pas à pas : charte, découpage, échéancier, risques, RACI. On transfère les tâches dans l'outil. Et on termine par la partie la plus importante : vérifier ce que l'IA a raté. »
 
-LOGISTIQUE — Atelier individuel : chacun travaille sur son poste, la classe virtuelle ouverte dans une fenêtre et l'outil dans une autre. Vérifiez que chacun a accès à Notion ou ClickUp (versions d'essai gratuites) ou, à défaut, à un assistant générique. Demandez un « prêt » dans le clavardage avant de commencer.
+LOGISTIQUE — Atelier individuel : chacun travaille sur son poste, la classe virtuelle ouverte dans une fenêtre et l'outil dans une autre. Vérifiez que chacun a accès à Notion ou ClickUp (versions d'essai gratuites) ou, à défaut, à un assistant générique. Demandez un « prêt » à chacun avant de commencer.
 
 TRANSITION — « Voici l'atelier en un coup d'œil. »`,
   `⏱ 2 min · CONSIGNES
@@ -873,7 +873,7 @@ DIRE — « ClickUp, c'est un outil de tâches. Son IA s'appelle Brain et travai
 
 DÉMO EN DIRECT — Si possible, montrez la génération de sous-tâches dans une vraie tâche.
 
-CHOIX — Chacun choisit son outil et l'écrit dans le clavardage (« Notion » ou « ClickUp »). Laissez 5 minutes d'exploration libre.
+CHOIX — Chacun annonce son outil (« Notion » ou « ClickUp »). Laissez 5 minutes d'exploration libre.
 
 TRANSITION — « On construit le plan. Étape 1 : la charte. »`,
   `⏱ 3 min de démonstration + 10 min en autonomie · CHARTE (5 clics)
@@ -982,7 +982,7 @@ TRANSITION — « À vous ! »`,
 
 OBJECTIF — Produire le plan du projet Limoilou dans un outil.
 
-ANIMATION — Démarrez le minuteur (il continue si vous changez de page). Les participants travaillent seuls, micro coupé. Vous ne voyez pas leurs écrans : faites un point d'étape dans le clavardage toutes les 15 minutes (« Où en êtes-vous : étape 1, 2, 3 ou 4 ? »). La pause de 14 h 30 peut être prise pendant l'atelier, selon le rythme.
+ANIMATION — Démarrez le minuteur (il continue si vous changez de page). Les participants travaillent seuls, micro coupé. Vous ne voyez pas leurs écrans : faites un point d'étape toutes les 15 minutes (« Où en êtes-vous : étape 1, 2, 3 ou 4 ? »). La pause de 14 h 30 peut être prise pendant l'atelier, selon le rythme.
 
 QUESTIONS À POSER DANS LE CLAVARDAGE (ou à la personne qui partage son écran) —
 • « Montrez-moi votre demande. Où est le contexte ? »
@@ -998,7 +998,7 @@ TRANSITION — « Temps écoulé ! Débriefing. »`,
 
 OBJECTIF — Tirer les leçons de l'atelier.
 
-ANIMATION — Trois ou quatre volontaires partagent leur écran 2 minutes et répondent aux trois questions ; les autres réagissent dans le clavardage ou y déposent une capture de leur plan. Puis sondage : un numéro par personne dans le clavardage, cliquez une ligne par réponse.
+ANIMATION — Trois ou quatre volontaires partagent leur écran 2 minutes et répondent aux trois questions ; les autres réagissent au micro. Puis sondage : un numéro par personne, à voix haute, cliquez une ligne par réponse.
 
 POINTS À FAIRE ÉMERGER —
 • L'IA donne une structure et des idées très vite.
@@ -1021,7 +1021,7 @@ TRANSITION — « Avant de partir, un billet de sortie. »`,
 
 OBJECTIF — Mesurer les acquis et récolter les questions pour demain.
 
-ANIMATION — Dans le clavardage, chacun écrit trois réponses courtes : une chose apprise, une question, un essai à faire ce soir. Enregistrez le clavardage avant de quitter la réunion.
+ANIMATION — Tour rapide au micro : chacun donne trois réponses courtes, une chose apprise, une question, un essai à faire ce soir. Notez les questions pour y répondre demain matin.
 
 DIRE — « Je lirai vos questions ce soir et on commencera par y répondre demain matin. Et ce soir, si vous avez cinq minutes : une demande en cinq ingrédients sur votre vrai projet, sans données confidentielles. »
 

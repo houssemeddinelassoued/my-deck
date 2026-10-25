@@ -82,7 +82,7 @@ const M6_Projects: Page = () => (
       <M6Proj d={400} icon="archive" tone="teal" title="L’inventaire d’ouverture" facts="Opérations · 7 semaines · 70 000 $ · Karim">
         Choisir, commander, recevoir et étiqueter 400 produits avant le 10 avril.
       </M6Proj>
-      <M6Proj d={500} icon="star" tone="blue" title="Votre propre projet" facts="À annoncer dans le clavardage">
+      <M6Proj d={500} icon="star" tone="blue" title="Votre propre projet" facts="À annoncer au formateur">
         Un de vos vrais projets, sans nom, chiffre ni donnée confidentielle.
       </M6Proj>
       <div className={A.in} style={{ width: 540, height: 320, boxSizing: 'border-box', borderRadius: 18, border: `3px dashed ${C.rule}`, padding: '24px 26px', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 12, ...dl(600) }}>
@@ -299,7 +299,7 @@ const M6_Pitch: Page = () => (
     </div>
     <Timer id="m6-pitch" minutes={3} label="Présentation" cls={A.in} style={{ position: 'absolute', left: 1260, top: 280, width: 540, ...dl(300) }} />
     <Callout cls={A.in} title="Pour le public" tone="blue" icon="note" size={24} style={{ position: 'absolute', left: 1260, top: 620, width: 540, ...dl(500) }}>
-      Dans le clavardage : un point fort et une piste pour chaque présentation.
+      Préparez un point fort et une piste pour chaque présentation.
     </Callout>
   </Frame>
 );
@@ -308,7 +308,7 @@ const M6_Pitch: Page = () => (
 const M6_Work: Page = () => (
   <Frame mod={6} kind="atelier" label="Atelier 2 · À vous">
     <Title>À vous de jouer !</Title>
-    <Lede>Un point d’étape dans le clavardage à chaque changement d’étape. L’imprévu tombe après l’étape 1.</Lede>
+    <Lede>Un point d’étape à chaque changement d’étape. L’imprévu tombe après l’étape 1.</Lede>
     <Timer id="m6-work" minutes={75} label="Atelier 2" cls={A.in} style={{ position: 'absolute', left: 120, top: 290, ...dl(100) }} />
     <div style={{ position: 'absolute', left: 640, top: 290, width: 1160, display: 'flex', flexDirection: 'column', gap: 16 }}>
       <SynthRow n={1} tone="teal" d={200}>
@@ -325,7 +325,7 @@ const M6_Work: Page = () => (
       </SynthRow>
     </div>
     <Callout cls={A.in} title="Coincés ?" tone="blue" icon="chat" size={25} style={{ position: 'absolute', left: 120, top: 760, width: 460, ...dl(600) }}>
-      Écrivez « bloqué » dans le clavardage, ou demandez à l’IA ses questions.
+      Signalez-le, ou demandez à l’IA de vous poser ses questions.
     </Callout>
   </Frame>
 );
@@ -374,7 +374,7 @@ const M6_Feedback: Page = () => {
   return (
     <Frame mod={6} kind="atelier" label="Atelier 2 · Rétroaction collective">
       <Title>Rétroaction collective</Title>
-      <Lede>Après chaque présentation : un point fort et une piste dans le clavardage. Le formateur synthétise la grille.</Lede>
+      <Lede>Après chaque présentation : un point fort et une piste. Le formateur synthétise la grille.</Lede>
       <div className={A.in} style={{ position: 'absolute', left: 120, top: 270, width: 1140, boxSizing: 'border-box', background: C.card, borderRadius: 18, boxShadow: SHADOW, padding: '14px 32px 10px', ...dl(100) }}>
         <M6StarRow label="Un plan réaliste" sub="Dates, dépendances et responsables vérifiés" v={r[0]} set={set(0)} />
         <M6StarRow label="Une réaction à l’imprévu" sub="Le plan et le chemin critique mis à jour" v={r[1]} set={set(1)} />
@@ -419,7 +419,7 @@ const M6_Feedback: Page = () => {
 const M6_Debrief: Page = () => (
   <Frame mod={6} kind="atelier" label="Atelier 2 · Débriefing">
     <Title>Ce que l’atelier nous apprend</Title>
-    <Lede>Un dernier sondage dans le clavardage, puis trois questions pour tous.</Lede>
+    <Lede>Un dernier sondage, puis trois questions pour tous.</Lede>
     <div style={{ position: 'absolute', left: 120, top: 280, width: 820, display: 'flex', flexDirection: 'column', gap: 20 }}>
       <AskCard n={1} title="Où l’IA vous a-t-elle le plus aidés ?" sub="Et où vous a-t-elle ralentis ?" d={100} />
       <AskCard n={2} title="Quelle erreur auriez-vous laissé passer ?" sub="Sans la relecture" d={220} />
@@ -430,7 +430,7 @@ const M6_Debrief: Page = () => (
         Sondage · le plus grand gain de temps
       </Eyebrow>
       <Hint cls={A.in} style={{ marginTop: 8, ...dl(260) }}>
-        Dans le clavardage : un numéro par personne
+        Un numéro par personne, à voix haute
       </Hint>
       <Poll cls={A.in} style={{ marginTop: 22, ...dl(360) }}>
         <PollRow id="plan" icon="gantt" tone="teal" label="1 · Le plan de départ" />
@@ -455,7 +455,7 @@ OBJECTIF — Lancer l'atelier final avec énergie.
 
 DIRE — « Atelier 2 : un mini-projet avec l'IA, de bout en bout, chacun sur son poste. Vous allez tout mobiliser : planifier comme hier, suivre et rédiger des comptes rendus comme ce matin, communiquer, et appliquer les règles du module 5. Avec une surprise en cours de route. »
 
-LOGISTIQUE — Classe virtuelle : chacun garde la réunion ouverte, micro coupé, et travaille dans son outil (Notion, ClickUp ou un assistant générique). Demandez un « prêt » dans le clavardage.
+LOGISTIQUE — Classe virtuelle : chacun garde la réunion ouverte, micro coupé, et travaille dans son outil (Notion, ClickUp ou un assistant générique). Demandez un « prêt » à chacun.
 
 TRANSITION — « Voici la mission. »`,
   `⏱ 3 min · LA MISSION
@@ -469,14 +469,14 @@ TRANSITION — « Premier choix : votre projet. »`,
 
 DIRE — « Quatre projets issus de Vélo Fleuve, un par profil : RH, marketing, TI, opérations. Choisissez celui qui ressemble le plus à votre métier, ou l'un de vos vrais projets, anonymisé. »
 
-ANIMATION — Chacun écrit son choix dans le clavardage (« recrues », « portes ouvertes », « rendez-vous », « inventaire » ou « mon projet »). Notez les choix : ils vous serviront pour l'imprévu et l'ordre de passage.
+ANIMATION — Chacun annonce son choix (« recrues », « portes ouvertes », « rendez-vous », « inventaire » ou « mon projet »). Notez les choix : ils vous serviront pour l'imprévu et l'ordre de passage.
 
 PROJET RÉEL — Rappelez le feu tricolore du module 5 : aucun nom, aucun chiffre réel, aucune donnée confidentielle.
 
 TRANSITION — « Étape 1 : planifier. »`,
   `⏱ 30 min · ÉTAPE 1 · PLANIFIER
 
-ANIMATION — Lancez le minuteur. Les livrables restent affichés : laissez cette page en partage pendant le travail. À mi-parcours, point d'étape dans le clavardage : « Où en êtes-vous (1 à 5) ? »
+ANIMATION — Lancez le minuteur. Les livrables restent affichés : laissez cette page en partage pendant le travail. À mi-parcours, point d'étape : « Où en êtes-vous (1 à 5) ? »
 
 DIRE — « Comme hier, mais plus vite. Partez des modèles de la bibliothèque : plan de projet et risques. Et n'oubliez pas : "Signale ce que tu as supposé." »
 
@@ -502,7 +502,7 @@ ANIMATION — Lancez le minuteur. Laissez cette page en partage.
 
 DIRE — « Imaginez que vous sortez de la réunion de suivi où l'imprévu a été discuté. Écrivez en 5 minutes 8 à 10 lignes de notes brutes, en vrac : qui a dit quoi, ce qui a été décidé, ce qui reste ouvert. Puis l'IA en fait le compte rendu, avec le modèle de ce matin. Relisez-le avec les quatre erreurs typiques : fausse décision, mauvaise personne, date inventée, point ouvert disparu. Mettez le plan à jour dans l'outil. Et rédigez le rapport au commanditaire, avec une météo que vous assumez. »
 
-POINT D'ÉTAPE — À mi-parcours : « Dans le clavardage, une erreur que l'IA a faite dans votre compte rendu. » Lisez-en deux ou trois à voix haute : c'est très parlant.
+POINT D'ÉTAPE — À mi-parcours : « Une erreur que l'IA a faite dans votre compte rendu ? » Faites-en raconter deux ou trois : c'est très parlant.
 
 TRANSITION — « Étape 3 : communiquer. »`,
   `⏱ 20 min · ÉTAPE 3 · COMMUNIQUER
@@ -518,11 +518,11 @@ TRANSITION — « Préparez votre présentation : voici le format. »`,
 
 DIRE — « Trois minutes, cinq temps, en partage d'écran. Le projet en une phrase. Le plan, montré dans l'outil, pas dans des diapositives. L'imprévu et votre réaction. Un message lu à voix haute. Et surtout : ce que l'IA a raté, et ce que vous avez corrigé. »
 
-ORDRE DE PASSAGE — Annoncez-le dans le clavardage (ordre alphabétique ou volontaires d'abord). Rappelez de fermer les onglets personnels avant de partager l'écran.
+ORDRE DE PASSAGE — Annoncez-le (ordre alphabétique ou volontaires d'abord). Rappelez de fermer les onglets personnels avant de partager l'écran.
 
 GRAND GROUPE — Au-delà de 10 participants : 5 ou 6 présentent, les autres déposent une capture de leur plan et leur « ce que l'IA a raté » dans le clavardage.
 
-POUR LE PUBLIC — « Pendant chaque présentation, préparez dans le clavardage un point fort et une piste. »
+POUR LE PUBLIC — « Pendant chaque présentation, préparez un point fort et une piste. »
 
 TRANSITION — « Il vous reste du temps de travail : à vous ! » (Ou passez directement aux présentations après la pause.)`,
   `⏱ 75 min · TRAVAIL INDIVIDUEL (vue d'ensemble)
@@ -531,25 +531,25 @@ ANIMATION — Cette page sert de tableau de bord pendant tout l'atelier : le min
 
 RYTHME — Pause de 14 h 30 entre la fin du travail et les présentations. En virtuel, la fatigue d'écran arrive vite : ne sautez pas la pause.
 
-POINTS D'ÉTAPE — À 0:30, tirez les imprévus (page « Coup de théâtre »). À 0:55, annoncez l'étape 3. À 5 minutes de la fin, demandez à chacun de préparer ses 5 temps. À chaque fois, un mot dans le clavardage pour savoir où chacun en est.
+POINTS D'ÉTAPE — À 0:30, tirez les imprévus (page « Coup de théâtre »). À 0:55, annoncez l'étape 3. À 5 minutes de la fin, demandez à chacun de préparer ses 5 temps. À chaque fois, un tour rapide pour savoir où chacun en est.
 
 AIDE — Quelqu'un écrit « bloqué » : partage d'écran 2 minutes, ou « Demandez à l'IA de vous poser ses questions. »
 
 TRANSITION — « Temps écoulé ! Pause, puis présentations. »`,
   `⏱ 3 min par participant + 1 min de rétroaction · RÉTROACTION COLLECTIVE (étoiles interactives)
 
-ANIMATION — Après chaque présentation, reprenez votre partage d'écran sur cette page. Lisez le clavardage : points forts et pistes. Cochez les étoiles en synthétisant ce que vous avez vu et lu (vous pouvez aussi demander une note de 1 à 5 par critère dans le clavardage). « Participant suivant » remet la grille à zéro.
+ANIMATION — Après chaque présentation, reprenez votre partage d'écran sur cette page. Recueillez au micro un point fort et une piste. Cochez les étoiles en synthétisant ce que vous avez vu et entendu (vous pouvez aussi demander une note de 1 à 5 par critère). « Participant suivant » remet la grille à zéro.
 
 LES QUATRE CRITÈRES — plan réaliste ; réaction à l'imprévu ; messages adaptés ; usage lucide de l'IA.
 
-DIRE — « Un point fort d'abord, toujours. Puis une piste, formulée comme une proposition : "Et si vous essayiez…" » Lisez à voix haute un point fort et une piste du clavardage.
+DIRE — « Un point fort d'abord, toujours. Puis une piste, formulée comme une proposition : "Et si vous essayiez…" » Faites dire un point fort et une piste par deux participants.
 
 TON — Bienveillant et concret. Valorisez explicitement ceux qui montrent ce que l'IA a raté : c'est l'objectif de la formation.
 
 TRANSITION — « Merci à toutes et à tous ! Quelques leçons pour finir. »`,
   `⏱ 8 min · DÉBRIEFING DE L'ATELIER
 
-ANIMATION — Sondage dans le clavardage (un numéro par personne, cliquez une ligne par réponse), puis les trois questions : deux ou trois réponses au micro, les autres dans le clavardage.
+ANIMATION — Sondage à voix haute (un numéro par personne, cliquez une ligne par réponse), puis les trois questions : deux ou trois réponses au micro.
 
 LECTURE DU SONDAGE — Souvent : compte rendu ou plan de départ. Si « Aucun » ressort : explorez. La vérification prend du temps au début ; elle devient rapide avec l'habitude et de bonnes demandes.
 

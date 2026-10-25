@@ -795,7 +795,7 @@ TRANSITION — « Et si la demande est trop vague ? Exercice. »`,
 
 OBJECTIF — Entraîner l'œil à repérer les erreurs typiques d'un compte rendu généré.
 
-ANIMATION — Laissez 2 minutes : chacun compare avec la transcription de la page précédente (revenez-y si besoin) et écrit dans le clavardage les erreurs trouvées. Puis un clic par erreur.
+ANIMATION — Laissez 2 minutes : chacun compare avec la transcription de la page précédente (revenez-y si besoin) et repère les erreurs. Faites-les annoncer, puis un clic par erreur.
 → beat 1 : Fausse décision : les portes ouvertes n'ont pas été reportées, on a seulement discuté.
 → beat 2 : Mauvaise personne : c'est Annie qui avance le câblage.
 → beat 3 : Date inventée : Julie a dit « demain », donc le 3 février, pas le 15.

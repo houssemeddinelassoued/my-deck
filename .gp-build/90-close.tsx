@@ -195,7 +195,7 @@ TRANSITION — « Passons de la formation à votre quotidien. »`,
 
 OBJECTIF — Transformer la formation en engagements concrets.
 
-ANIMATION — Chacun écrit ses trois engagements dans un document ou un carnet. Laissez 3 minutes de silence (caméras allumées si possible). Puis invitez 2 ou 3 personnes à en lire un au micro ; les autres peuvent en déposer un dans le clavardage.
+ANIMATION — Chacun écrit ses trois engagements dans un document ou un carnet. Laissez 3 minutes de silence (caméras allumées si possible). Puis invitez 2 ou 3 personnes à en lire un au micro.
 
 DIRE — « Trois engagements. Cette semaine : une demande de la bibliothèque, essayée sur un vrai cas. Ce mois-ci : un usage installé dans votre routine, et le temps gagné mesuré. Dans trois mois : une pratique partagée avec votre équipe, une charte d'usage par exemple. »
 

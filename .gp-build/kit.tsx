@@ -1968,7 +1968,7 @@ const Qcm = ({
               <Eyebrow c={C.violet}>À vous de jouer</Eyebrow>
               <div style={{ marginTop: 16, display: 'flex', flexDirection: 'column', gap: 14, fontSize: 25, lineHeight: 1.35, color: C.soft }}>
                 <div style={{ display: 'flex', gap: 14 }}>
-                  <Num n={1} tone="violet" size={36} /> Votez dans le clavardage : A, B, C ou D.
+                  <Num n={1} tone="violet" size={36} /> Annoncez votre réponse : A, B, C ou D.
                 </div>
                 <div style={{ display: 'flex', gap: 14 }}>
                   <Num n={2} tone="violet" size={36} /> {multi ? 'Les réponses majoritaires sont cochées, puis validées.' : 'La réponse majoritaire est cliquée.'}

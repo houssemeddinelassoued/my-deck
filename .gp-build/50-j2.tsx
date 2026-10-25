@@ -64,7 +64,7 @@ const J2Flip = ({ n, q, a }: { n: number; q: string; a: ReactNode }) => (
 const J2_Recall: Page = () => (
   <Frame mod={0} kind="qcm" label="Jour 2 · Réactivation">
     <Title>Cinq questions pour se réveiller</Title>
-    <Lede>Répondez dans le clavardage, puis on retourne la carte. Et vos questions d’hier ?</Lede>
+    <Lede>Répondez, puis on retourne la carte. Et vos questions d’hier ?</Lede>
     <div className={A.in} style={{ position: 'absolute', left: 120, top: 270, width: 1680, display: 'grid', gridTemplateColumns: 'repeat(3, 530px)', rowGap: 30, columnGap: 45, ...dl(150) }}>
       <J2Flip n={1} q="À partir de quoi une IA apprend-elle ?" a={<>D’<b>exemples</b>, pas de règles écrites à la main. Elle en tire un modèle.</>} />
       <J2Flip n={2} q="Comment un LLM choisit-il ses mots ?" a={<>Il prédit le mot le plus <b>probable</b>, pas le plus vrai. D’où les hallucinations.</>} />
@@ -108,7 +108,7 @@ TRANSITION — « D'abord, réveillons ce qu'on a appris hier. »`,
 
 OBJECTIF — Réactiver les notions clés du jour 1 et répondre aux questions des billets de sortie.
 
-ANIMATION — Lisez chaque question, laissez répondre dans le clavardage (ou au micro), puis cliquez pour retourner la carte.
+ANIMATION — Lisez chaque question, laissez répondre au micro, puis cliquez pour retourner la carte.
 
 RÉPONSES —
 1. D'exemples : l'IA en tire un modèle.

@@ -478,7 +478,7 @@ const M1Flip = ({ icon, q, ai, why }: { icon: IconName; q: string; ai: boolean; 
 const M1_AiOrNot: Page = () => (
   <Frame mod={1} kind="exercice">
     <Title>IA… ou pas IA ?</Title>
-    <Lede>Votez dans le clavardage : « IA » ou « pas IA » ? Puis on retourne la carte.</Lede>
+    <Lede>« IA » ou « pas IA » ? Votez, puis on retourne la carte.</Lede>
     <div className={A.in} style={{ position: 'absolute', left: 120, top: 270, width: 1680, display: 'grid', gridTemplateColumns: 'repeat(3, 530px)', rowGap: 30, columnGap: 44, ...dl(150) }}>
       <M1Flip icon="bell" q="Outlook vous rappelle une réunion 15 minutes avant" ai={false} why="Une règle fixe : « 15 min avant, afficher une alerte ». Aucun apprentissage." />
       <M1Flip icon="play" q="Netflix vous propose une série qui vous plaît" ai why="Le système a appris vos goûts et ceux de millions d’abonnés semblables." />
@@ -694,7 +694,7 @@ const M1Key = ({ tone, children }: { tone: Tone; children: ReactNode }) => (
 const M1_Sort: Page = () => (
   <Frame mod={1} kind="exercice" beats={1}>
     <Title>À vous : classez ces tâches du projet Limoilou</Title>
-    <Lede>Dites-moi dans le clavardage où va chaque étiquette. Le corrigé apparaît au clic.</Lede>
+    <Lede>Dites-moi où va chaque étiquette. Le corrigé apparaît au clic.</Lede>
     <M1Zone x={120} icon="gear" tone="grey" label="Automatisation" />
     <M1Zone x={690} icon="arm" tone="teal" label="Robotisation" />
     <M1Zone x={1260} icon="brain" tone="blue" label="IA" />
@@ -1031,7 +1031,7 @@ TRANSITION — « Vérifions vos réflexes : IA ou pas IA ? »`,
 
 OBJECTIF — Distinguer IA et simple règle programmée.
 
-ANIMATION — Pour chaque carte : lisez-la, faites voter dans le clavardage (« IA » ou « pas IA »), puis cliquez pour retourner.
+ANIMATION — Pour chaque carte : lisez-la, faites voter à voix haute (« IA » ou « pas IA »), puis cliquez pour retourner.
 
 RÉPONSES —
 • Rappel Outlook 15 min avant : pas d'IA, règle fixe.
@@ -1084,7 +1084,7 @@ TRANSITION — « À vous de jouer. »`,
 
 OBJECTIF — Appliquer la distinction sur des tâches du projet Limoilou.
 
-ANIMATION — Pour chaque étiquette, demandez la colonne dans le clavardage (« auto », « robot » ou « IA ») et glissez-la selon la majorité. Double-cliquer une étiquette la remet à sa place.
+ANIMATION — Pour chaque étiquette, demandez la colonne à voix haute (« auto », « robot » ou « IA ») et glissez-la selon la majorité. Double-cliquer une étiquette la remet à sa place.
 → beat 1 : le corrigé apparaît sur chaque étiquette.
 
 CORRIGÉ —
@@ -1134,7 +1134,7 @@ DIRE — « À gauche, ce qu'elle fait très bien : un premier jet en quelques s
 TRANSITION — « Deux questions pour vérifier tout ça. »`,
   `⏱ 3 min · QCM 1
 
-ANIMATION — Votes dans le clavardage (A, B, C ou D). Cliquez l'option majoritaire pour la rétroaction, puis → pour la bonne réponse et → pour l'essentiel.
+ANIMATION — Votes à voix haute (A, B, C ou D). Cliquez l'option majoritaire pour la rétroaction, puis → pour la bonne réponse et → pour l'essentiel.
 
 RÉPONSE — B, une automatisation à base de règles.
 • A ✗ PIÈGE — « Automatique ne veut pas dire intelligent. »

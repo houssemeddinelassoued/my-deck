@@ -136,7 +136,7 @@ const AskCard = ({ n, title, sub, d }: { n: number; title: ReactNode; sub: React
 const GP_Roundtable: Page = () => (
   <Frame mod={0} label="Ouverture · Faisons connaissance">
     <Title>Tour de table</Title>
-    <Lede>Une minute par personne, micro ouvert, trois questions. Puis un sondage éclair dans le clavardage.</Lede>
+    <Lede>Une minute par personne, micro ouvert, trois questions. Puis un sondage éclair.</Lede>
     <div style={{ position: 'absolute', left: 120, top: 290, width: 800, display: 'flex', flexDirection: 'column', gap: 20 }}>
       <AskCard n={1} title="Qui êtes-vous ?" sub="Prénom, rôle, service (RH, marketing, TI…)" d={100} />
       <AskCard n={2} title="Quel projet menez-vous en ce moment ?" sub="Une phrase : son objectif et son échéance" d={220} />
@@ -148,7 +148,7 @@ const GP_Roundtable: Page = () => (
         Sondage éclair · votre usage de l’IA
       </Eyebrow>
       <Hint cls={A.in} style={{ marginTop: 8, ...dl(260) }}>
-        Répondez dans le clavardage par le numéro de la ligne
+        Répondez par le numéro de la ligne
       </Hint>
       <Poll cls={A.in} style={{ marginTop: 22, ...dl(360) }}>
         <PollRow id="none" icon="eye" tone="grey" label="1 · Je ne l’ai jamais vraiment essayée" />
@@ -374,7 +374,7 @@ const GP_HowWeWork: Page = () => (
     </div>
     <div style={{ position: 'absolute', left: 120, top: 740, width: 1680, display: 'flex', gap: 24 }}>
       <RuleChip icon="chat" d={600}>
-        Questions dans le clavardage, à tout moment
+        Questions bienvenues, à tout moment
       </RuleChip>
       <RuleChip icon="lock" d={700}>
         Aucune donnée confidentielle dans les outils
@@ -391,7 +391,7 @@ const GP_HowWeWork: Page = () => (
       size={26}
       style={{ position: 'absolute', left: 120, top: 862, width: 1680, padding: '14px 26px', ...dl(900) }}
     >
-      Caméra si possible, micro coupé hors échanges, clavardage ouvert. Idéal : deux écrans, la formation et l’outil d’IA.
+      Caméra si possible, micro coupé hors échanges. Idéal : deux écrans, la formation et l’outil d’IA.
     </Callout>
   </Frame>
 );
@@ -580,7 +580,7 @@ Puis les quatre engagements :
 3. Des modèles réutilisables — « Vous repartez avec des demandes types : plan de projet, compte rendu, rapport d'avancement. »
 4. Un regard lucide — « L'IA se trompe. On verra quand, pourquoi, et comment s'en protéger. »
 
-INTERACTION — « Qui a déjà demandé quelque chose à ChatGPT ou à Copilot cette semaine ? » Réponses dans le clavardage (« oui » / « non ») : souvent la majorité. « Parfait, on part de là. »
+INTERACTION — « Qui a déjà demandé quelque chose à ChatGPT ou à Copilot cette semaine ? » Réponses à voix haute : souvent la majorité. « Parfait, on part de là. »
 
 TRANSITION — « À votre tour maintenant. »`,
   `⏱ 15 min (1 min par personne, ajuster selon la taille du groupe)
@@ -589,7 +589,7 @@ OBJECTIF — Connaître le groupe, ses projets et ses irritants, pour adapter le
 
 ANIMATION — Lancez le minuteur. Appelez chaque personne par son prénom (ordre de la liste des participants) ; elle ouvre son micro et répond aux trois questions. Notez dans un document à vous les tâches qui « prennent le plus de temps » : vous y reviendrez au module 2 (cas d'usage) et à l'atelier 2 (mini-projet).
 
-SONDAGE ÉCLAIR — Chacun écrit dans le clavardage le numéro de la ligne qui le décrit (1 à 5). Cliquez une fois la ligne par réponse (le bouton « − » corrige une erreur). Les barres se comparent automatiquement. Variante : le sondage intégré de Teams ou Zoom.
+SONDAGE ÉCLAIR — Chacun annonce à voix haute le numéro de la ligne qui le décrit (1 à 5). Cliquez une fois la ligne par réponse (le bouton « − » corrige une erreur). Les barres se comparent automatiquement. Variante : le sondage intégré de Teams ou Zoom.
 
 LECTURE DU RÉSULTAT —
 • Majorité « jamais / personnel » : prenez votre temps au module 1, multipliez les démonstrations en direct.
@@ -619,7 +619,7 @@ DIRE — « Jour 1 : comprendre et planifier. Module 1, l'IA expliquée simpleme
 
 « Jour 2 : automatiser et adopter. Module 4, comptes rendus, résumés de réunions et suivi des tâches. Module 5, limites, éthique et conduite du changement. Puis l'atelier 2, le gros morceau : un mini-projet complet avec l'IA, que vous présenterez au groupe. »
 
-À SOULIGNER — Les ateliers sont les carrés jaunes (modules 3 et 6). Précisez qu'ils se font en autonomie, chacun sur son poste, avec des points d'étape dans le clavardage.
+À SOULIGNER — Les ateliers sont les carrés jaunes (modules 3 et 6). Précisez qu'ils se font en autonomie, chacun sur son poste, avec des points d'étape réguliers.
 
 TRANSITION — « Parlons de la façon dont on va travailler. »`,
   `⏱ 2 min
@@ -627,13 +627,13 @@ TRANSITION — « Parlons de la façon dont on va travailler. »`,
 OBJECTIF — Expliquer les codes visuels et le contrat de participation.
 
 DIRE — « Vous verrez des étiquettes en haut des pages. »
-• QCM (violet) — « Vous votez dans le clavardage, je clique la réponse majoritaire, la rétroaction est immédiate. Les mauvaises réponses sont des pièges volontaires. »
+• QCM (violet) — « Vous votez à voix haute, je clique la réponse majoritaire, la rétroaction est immédiate. Les mauvaises réponses sont des pièges volontaires. »
 • EXERCICE (vert) — « On manipule à l'écran : cartes, glisser-déposer, simulateurs. »
 • DÉMO (bleu) — « Je montre en direct, en partage d'écran. »
 • ATELIER (jaune) — « Chacun sur son poste, guidé pas à pas, avec un minuteur et un livrable. »
 
 LES TROIS RÈGLES —
-1. Questions dans le clavardage, à tout moment ; je les lis aux transitions.
+1. Questions bienvenues à tout moment, au micro ou par écrit.
 2. « Aucune donnée confidentielle dans les outils pendant la formation. » C'est déjà une bonne pratique : on y reviendra au module 5.
 3. Fil rouge : Vélo Fleuve, présenté juste après.
 
@@ -666,14 +666,14 @@ DIRE — « 22 semaines pour ouvrir, le samedi 10 avril. 420 000 $ de budget, tr
 
 QUESTION — Pointer l'encadré : « Où l'IA peut-elle faire gagner du temps à Karim, sans lui faire perdre le contrôle ? C'est la question qu'on se posera pendant deux jours. »
 
-INTERACTION — « Lequel de ces quatre irritants vivez-vous en ce moment ? » Réponse dans le clavardage (1 à 4).
+INTERACTION — « Lequel de ces quatre irritants vivez-vous en ce moment ? » Réponses à voix haute (1 à 4).
 
 TRANSITION — « Testons vos intuitions avant de commencer. »`,
   `⏱ 4 min · QCM À RÉPONSES MULTIPLES
 
 OBJECTIF — Faire émerger les représentations initiales sans juger.
 
-ANIMATION — Lisez la question. Les participants écrivent dans le clavardage les lettres qu'ils retiennent (ex. « A C »). Cochez les options choisies par la majorité, puis « Valider ma sélection ». Cliquez ensuite chaque option pour lire l'explication. Avec →, vous révélez les bonnes réponses, puis l'essentiel.
+ANIMATION — Lisez la question. Les participants annoncent les lettres qu'ils retiennent (ex. « A et C »). Cochez les options choisies par la majorité, puis « Valider ma sélection ». Cliquez ensuite chaque option pour lire l'explication. Avec →, vous révélez les bonnes réponses, puis l'essentiel.
 
 RÉPONSES — A et C.
 • A ✓ — Une première découpe des tâches : l'IA est très bonne pour proposer une structure de départ.

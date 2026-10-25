@@ -374,7 +374,7 @@ const M2Quad = ({ x, y, tone, title, sub }: { x: number; y: number; tone: Tone; 
 const M2_Matrix: Page = () => (
   <Frame mod={2} kind="exercice">
     <Title>À vous : que confier à l’IA ?</Title>
-    <Lede>Proposez une case dans le clavardage pour chaque tâche. Il y a débat… c’est voulu.</Lede>
+    <Lede>Proposez une case pour chaque tâche. Il y a débat… c’est voulu.</Lede>
     <M2Quad x={540} y={270} tone="yellow" title="Avec relecture attentive" sub="Gain élevé, risque élevé" />
     <M2Quad x={1160} y={270} tone="green" title="À confier en priorité" sub="Gain élevé, risque faible" />
     <M2Quad x={540} y={590} tone="coral" title="À garder pour soi" sub="Gain faible, risque élevé" />
@@ -1035,7 +1035,7 @@ TRANSITION — « À vous de juger : que confier à l'IA ? »`,
 
 OBJECTIF — Développer le jugement : gain de temps versus risque en cas d'erreur.
 
-ANIMATION — Pour chaque étiquette, demandez une case dans le clavardage (« priorité », « relecture », « pour soi », « si le temps ») et glissez-la selon la majorité. Double-cliquer une étiquette la remet à sa place. Laissez débattre au micro : il n'y a pas de corrigé unique.
+ANIMATION — Pour chaque étiquette, demandez une case à voix haute (« priorité », « relecture », « pour soi », « si le temps ») et glissez-la selon la majorité. Double-cliquer une étiquette la remet à sa place. Laissez débattre : il n'y a pas de corrigé unique.
 
 PISTES DE CORRIGÉ —
 • À confier en priorité : compte rendu de réunion, ordre du jour, reformuler une note, premier découpage des tâches.

@@ -231,7 +231,7 @@ const M5_Data: Page = () => (
 const M5_Traffic: Page = () => (
   <Frame mod={5} kind="exercice" beats={1}>
     <Title>À vous : feu vert, jaune ou rouge ?</Title>
-    <Lede>Pour chaque information, votez dans le clavardage : vert, jaune ou rouge. Le corrigé apparaît au clic.</Lede>
+    <Lede>Pour chaque information, votez : vert, jaune ou rouge. Le corrigé apparaît au clic.</Lede>
     <M1Zone x={120} icon="check" tone="green" label="Vert · tout outil" />
     <M1Zone x={690} icon="shieldCheck" tone="yellow" label="Jaune · outil approuvé" />
     <M1Zone x={1260} icon="lock" tone="coral" label="Rouge · jamais tel quel" />
@@ -405,7 +405,7 @@ const M5Persona = ({ id, quote, children }: { id: CastId; quote: string; childre
 const M5_Personas: Page = () => (
   <Frame mod={5} kind="exercice">
     <Title>Accompagner l’équipe : quatre réactions, quatre réponses</Title>
-    <Lede>Que répondriez-vous ? Une idée dans le clavardage, puis on retourne la carte.</Lede>
+    <Lede>Que répondriez-vous ? Vos idées d’abord, puis on retourne la carte.</Lede>
     <div className={A.in} style={{ position: 'absolute', left: 120, top: 270, width: 1680, display: 'grid', gridTemplateColumns: 'repeat(2, 825px)', rowGap: 30, columnGap: 30, ...dl(150) }}>
       <M5Persona id="julie" quote="« L’IA va trier mes candidats à ma place ? »">
         Non. Elle t’aide à rédiger les offres et à préparer les entrevues. Le choix reste le tien, sur des critères écrits.
@@ -708,7 +708,7 @@ RÈGLE SIMPLE — « Ce que vous ne mettriez pas sur un forum public ne va pas d
 TRANSITION — « Exercice : quelles données, dans quel outil ? »`,
   `⏱ 5 min · EXERCICE FEU TRICOLORE (1 clic pour le corrigé)
 
-ANIMATION — Pour chaque étiquette, demandez la couleur dans le clavardage (« vert », « jaune » ou « rouge ») et glissez-la selon la majorité. Double-clic pour remettre une étiquette à sa place. → révèle le corrigé.
+ANIMATION — Pour chaque étiquette, demandez la couleur à voix haute (« vert », « jaune » ou « rouge ») et glissez-la selon la majorité. Double-clic pour remettre une étiquette à sa place. → révèle le corrigé.
 
 CORRIGÉ —
 • Vert (tout outil) : texte de l'affiche (public), procédure générique.
@@ -744,7 +744,7 @@ PRUDENCE — Vous n'êtes pas juriste : pour un cas précis, renvoyez au respons
 TRANSITION — « Faisons le point sur vos propres réflexes. »`,
   `⏱ 3 min · AUTODIAGNOSTIC (cases à cocher)
 
-ANIMATION — Chacun compte pour soi, sur papier ou dans un document, les réflexes qu'il pratique déjà ; ne demandez pas les scores. Cochez la grille à l'écran pour illustrer, puis demandez dans le clavardage le réflexe qui manque le plus.
+ANIMATION — Chacun compte pour soi, sur papier ou dans un document, les réflexes qu'il pratique déjà ; ne demandez pas les scores. Cochez la grille à l'écran pour illustrer, puis demandez le réflexe qui manque le plus.
 
 DIRE — « Huit réflexes. Personne ne voit votre écran : soyez honnêtes. »
 
@@ -760,7 +760,7 @@ TRANSITION — « Passons à l'équipe : comment accompagner le changement ? »`
 
 OBJECTIF — Travailler des réponses concrètes aux réactions typiques.
 
-ANIMATION — Pour chaque carte : lisez la phrase, demandez « Que répondriez-vous ? » dans le clavardage, lisez deux réponses, puis retournez la carte.
+ANIMATION — Pour chaque carte : lisez la phrase, demandez « Que répondriez-vous ? », écoutez deux réponses, puis retournez la carte.
 
 DIRE —
 • Julie, l'inquiète : la peur d'être remplacée ou de perdre le contrôle. Réponse : clarifier ce que l'IA fait et ne fait pas.
