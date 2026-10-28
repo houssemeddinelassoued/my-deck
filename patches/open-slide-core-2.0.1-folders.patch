@@ -2057,7 +2057,7 @@ index c29b8b6..e596933 100644
    useCallback,
    useEffect,
    useRef,
-@@ -20,17 +30,25 @@ import {
+@@ -20,17 +30,26 @@
  import { useNavigate, useParams } from 'react-router-dom';
  import { Button } from '@/components/ui/button';
  import { Dialog, DialogContent, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
@@ -2069,6 +2069,7 @@ index c29b8b6..e596933 100644
  import { format, useLocale } from '@/lib/use-locale';
  import { cn, pad2 } from '@/lib/utils';
  import { NoteMarkdown } from '../components/note-markdown';
++import { StartPunctuality } from '../components/present/start-punctuality';
 +import {
 +  type LaserRemote,
 +  replaySlideClick,
@@ -2084,7 +2085,7 @@ index c29b8b6..e596933 100644
  import { SlidePageProvider } from '../lib/page-context';
  import { CANVAS_HEIGHT, CANVAS_WIDTH, type SlideModule } from '../lib/sdk';
  import { loadSlide, slideIds } from '../lib/slides';
-@@ -52,19 +70,31 @@ export function Presenter() {
+@@ -52,19 +71,31 @@
    const [hasProjection, setHasProjection] = useState(false);
    const requestedRef = useRef(false);
    const t = useLocale();
@@ -2121,7 +2122,7 @@ index c29b8b6..e596933 100644
    // A deck switch reuses this route instance, so the handshake state from
    // the previous deck must be dropped before rejoining on the new channel.
    // Render-phase reset so the new deck never renders with the old state.
-@@ -99,6 +129,7 @@ export function Presenter() {
+@@ -99,6 +130,7 @@
    const goTo = useCallback((i: number) => send({ type: 'goto', index: i }), [send]);
    const toggleBlack = useCallback(() => send({ type: 'toggle-blackout', mode: 'black' }), [send]);
    const toggleWhite = useCallback(() => send({ type: 'toggle-blackout', mode: 'white' }), [send]);
@@ -2129,7 +2130,7 @@ index c29b8b6..e596933 100644
  
    // Local-window key bindings mirror the projection's main shortcuts so the
    // presenter can drive without the mouse.
-@@ -120,11 +151,14 @@ export function Presenter() {
+@@ -120,11 +152,14 @@
        } else if (e.key === 'w' || e.key === 'W') {
          e.preventDefault();
          toggleWhite();
@@ -2145,7 +2146,7 @@ index c29b8b6..e596933 100644
  
    if (error) {
      return (
-@@ -164,6 +198,7 @@ export function Presenter() {
+@@ -164,6 +199,7 @@
    const startedAt = state?.startedAt ?? localStart;
    const stepIndex = Math.max(0, state?.stepIndex ?? 0);
    const stepCount = Math.max(0, state?.stepCount ?? 0);
@@ -2153,7 +2154,7 @@ index c29b8b6..e596933 100644
  
    const stepsRemaining = stepIndex < stepCount;
    const hasNextSlide = index < total - 1;
-@@ -174,31 +209,10 @@ export function Presenter() {
+@@ -174,31 +210,10 @@
    const CurrentPage = pages[index];
    const NextPage = hasNext ? pages[nextPageIndex] : null;
  
@@ -2189,7 +2190,7 @@ index c29b8b6..e596933 100644
    return (
      <div className="dark flex h-dvh w-screen flex-col overflow-hidden bg-background text-foreground">
        <PresenterTopBar
-@@ -209,13 +223,16 @@ export function Presenter() {
+@@ -209,13 +224,16 @@
          slideTitle={slide.meta?.title ?? slideId}
          connected={hasProjection}
          onSwitchDeck={switchDeck}
@@ -2211,7 +2212,7 @@ index c29b8b6..e596933 100644
              <SlideCanvas flat design={slide.design}>
                <SlidePageProvider index={index} total={total}>
                  <PreviewStepHost revealed={stepIndex}>
-@@ -235,47 +252,670 @@ export function Presenter() {
+@@ -235,47 +253,670 @@
                  {blackout === 'black' ? t.presenter.blackScreen : t.presenter.whiteScreen}
                </div>
              )}
@@ -2912,7 +2913,7 @@ index c29b8b6..e596933 100644
        />
      </div>
    );
-@@ -289,6 +929,7 @@ function PresenterTopBar({
+@@ -289,6 +930,7 @@
    slideTitle,
    connected,
    onSwitchDeck,
@@ -2920,7 +2921,7 @@ index c29b8b6..e596933 100644
  }: {
    index: number;
    total: number;
-@@ -297,6 +938,7 @@ function PresenterTopBar({
+@@ -297,6 +939,7 @@
    slideTitle: string;
    connected: boolean;
    onSwitchDeck: (slideId: string) => void;
@@ -2928,15 +2929,16 @@ index c29b8b6..e596933 100644
  }) {
    const t = useLocale();
    return (
-@@ -317,6 +959,7 @@ function PresenterTopBar({
+@@ -317,6 +960,8 @@
          )}
        </div>
        <div className="flex items-center gap-6">
 +        {layoutMenu}
++        <StartPunctuality slideId={slideId} index={index} />
          <Clock />
          <ElapsedClock startedAt={startedAt} />
          <div className="font-mono text-[18px] tabular-nums">
-@@ -362,6 +1005,8 @@ function DeckSwitcher({
+@@ -362,6 +1007,8 @@
  }) {
    const t = useLocale();
    const modules = useDeckModules();
@@ -2945,7 +2947,7 @@ index c29b8b6..e596933 100644
    const [open, setOpen] = useState(false);
    const [query, setQuery] = useState('');
    const [activeIndex, setActiveIndex] = useState(0);
-@@ -369,6 +1014,7 @@ function DeckSwitcher({
+@@ -369,6 +1016,7 @@
  
    const trimmed = query.trim().toLowerCase();
    const filtered = slideIds.filter((id) => {
@@ -2953,7 +2955,7 @@ index c29b8b6..e596933 100644
      if (!trimmed) return true;
      const title = modules[id]?.meta?.title;
      return id.toLowerCase().includes(trimmed) || title?.toLowerCase().includes(trimmed);
-@@ -495,18 +1141,26 @@ function PresenterBottomBar({
+@@ -495,18 +1143,26 @@
    index,
    total,
    blackout,
@@ -2980,14 +2982,14 @@ index c29b8b6..e596933 100644
  }) {
    const t = useLocale();
    return (
-@@ -518,8 +1172,18 @@ function PresenterBottomBar({
+@@ -518,9 +1174,19 @@
          <Button variant="outline" onClick={onNext} disabled={index >= total - 1}>
            {t.presenter.next} <ChevronRight className="size-4" />
          </Button>
 +        <div className="ml-4">{jump}</div>
        </div>
        <div className="flex items-center gap-2">
-+        <Button
+         <Button
 +          variant={laser ? 'brand' : 'outline'}
 +          onClick={onLaser}
 +          disabled={!connected}
@@ -2996,10 +2998,11 @@ index c29b8b6..e596933 100644
 +        >
 +          <Crosshair className="size-4" /> {t.presenter.laser}
 +        </Button>
-         <Button
++        <Button
            variant={blackout === 'black' ? 'brand' : 'outline'}
            onClick={onBlackout}
-@@ -550,8 +1214,7 @@ const NOTES_FONT_SIZES = [11, 12, 13.5, 15, 17, 20, 24, 28];
+           aria-pressed={blackout === 'black'}
+@@ -550,8 +1216,7 @@
  const NOTES_FONT_SIZE_DEFAULT_INDEX = 2;
  const NOTES_FONT_SIZE_STORAGE_KEY = 'open-slide:presenter-notes-font-size';
  
@@ -3009,7 +3012,7 @@ index c29b8b6..e596933 100644
    const [sizeIndex, setSizeIndex] = useState(() => {
      if (typeof window === 'undefined') return NOTES_FONT_SIZE_DEFAULT_INDEX;
      const stored = Number(window.localStorage.getItem(NOTES_FONT_SIZE_STORAGE_KEY));
-@@ -564,49 +1227,71 @@ function SpeakerNotes({ note }: { note: string | undefined }) {
+@@ -564,49 +1229,71 @@
      window.localStorage.setItem(NOTES_FONT_SIZE_STORAGE_KEY, String(NOTES_FONT_SIZES[sizeIndex]));
    }, [sizeIndex]);
  
@@ -4008,3 +4011,140 @@ index 62297df..22ff329 100644
      noNotesPrefix: '此投影片沒有演講備忘。在你的投影片模組中加入 ',
      noNotesSuffix: ' 即可在此查看備忘。',
      blackScreen: '黑屏',
+diff --git b/src/app/components/present/start-punctuality.tsx b/src/app/components/present/start-punctuality.tsx
+new file mode 100644
+--- /dev/null
++++ b/src/app/components/present/start-punctuality.tsx
+@@ -0,0 +1,132 @@
++import { Check, Pencil } from 'lucide-react';
++import { useEffect, useState } from 'react';
++
++// Planned start of a training (date + time) is typed once per deck, then every
++// slide change compares "now" with it and shows early / on time / late. A gap
++// of up to TOLERANCE_MIN either way counts as "synchrone".
++const TOLERANCE_MIN = 15;
++const storageKey = (slideId: string) => `osd-planned-start:${slideId}`;
++
++function readPlanned(slideId: string): number | null {
++  try {
++    const n = Number(window.localStorage.getItem(storageKey(slideId)));
++    return Number.isFinite(n) && n > 0 ? n : null;
++  } catch {
++    return null;
++  }
++}
++
++const pad = (n: number) => String(n).padStart(2, '0');
++
++function toInputValue(ms: number): string {
++  const d = new Date(ms);
++  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
++}
++
++function formatGap(minutes: number): string {
++  const m = Math.abs(minutes);
++  const days = Math.floor(m / 1440);
++  const h = Math.floor((m % 1440) / 60);
++  const min = m % 60;
++  const parts: string[] = [];
++  if (days) parts.push(`${days} j`);
++  if (h) parts.push(`${h} h`);
++  if (min || parts.length === 0) parts.push(`${min} min`);
++  return parts.join(' ');
++}
++
++export function StartPunctuality({ slideId, index }: { slideId: string; index: number }) {
++  const [planned, setPlanned] = useState<number | null>(() => readPlanned(slideId));
++  const [editing, setEditing] = useState(false);
++  const [draft, setDraft] = useState('');
++  // The comparison instant: refreshed on validation and on every slide change.
++  const [checkedAt, setCheckedAt] = useState(() => Date.now());
++
++  useEffect(() => {
++    setPlanned(readPlanned(slideId));
++  }, [slideId]);
++
++  useEffect(() => {
++    setCheckedAt(Date.now());
++  }, [index, planned]);
++
++  const validate = () => {
++    const ms = new Date(draft).getTime();
++    if (!draft || Number.isNaN(ms)) return;
++    try {
++      window.localStorage.setItem(storageKey(slideId), String(ms));
++    } catch {}
++    setPlanned(ms);
++    setEditing(false);
++  };
++
++  if (planned === null || editing) {
++    return (
++      <form
++        className="flex items-center gap-1.5"
++        onSubmit={(e) => {
++          e.preventDefault();
++          validate();
++        }}
++      >
++        <span className="font-mono text-[10px] tracking-[0.06em] uppercase text-white/45">
++          Début prévu
++        </span>
++        <input
++          type="datetime-local"
++          value={draft || toInputValue(planned ?? Date.now())}
++          onChange={(e) => setDraft(e.target.value)}
++          className="h-7 rounded-[3px] border border-white/15 bg-white/5 px-1.5 font-mono text-[12px] text-foreground [color-scheme:dark]"
++        />
++        <button
++          type="submit"
++          className="flex h-7 items-center gap-1 rounded-[3px] border border-white/20 bg-white/10 px-2 font-mono text-[11px] text-foreground hover:bg-white/20"
++        >
++          <Check className="size-3.5" /> Valider
++        </button>
++      </form>
++    );
++  }
++
++  const gap = Math.round((checkedAt - planned) / 60000);
++  const synchro = Math.abs(gap) <= TOLERANCE_MIN;
++  const late = gap > 0;
++  const tone = synchro
++    ? 'border-emerald-300/30 bg-emerald-300/10 text-emerald-200'
++    : late
++      ? 'border-rose-300/30 bg-rose-300/10 text-rose-200'
++      : 'border-sky-300/30 bg-sky-300/10 text-sky-200';
++  const label = synchro
++    ? `Synchrone${gap === 0 ? '' : ` (${late ? '+' : '−'}${formatGap(gap)})`}`
++    : late
++      ? `En retard de ${formatGap(gap)}`
++      : `En avance de ${formatGap(gap)}`;
++  const plannedText = new Date(planned).toLocaleString('fr-FR', {
++    day: '2-digit',
++    month: '2-digit',
++    hour: '2-digit',
++    minute: '2-digit',
++  });
++
++  return (
++    <div className="flex items-center gap-1.5">
++      <span
++        title={`Début prévu ${plannedText} · tolérance ±${TOLERANCE_MIN} min · mis à jour à chaque changement de slide`}
++        className={`rounded-[3px] border px-1.5 py-0.5 font-mono text-[12px] tabular-nums ${tone}`}
++      >
++        {plannedText} · {label}
++      </span>
++      <button
++        type="button"
++        title="Modifier l’heure de début"
++        onClick={() => {
++          setDraft(toInputValue(planned));
++          setEditing(true);
++        }}
++        className="rounded-[3px] p-1 text-white/45 hover:bg-white/10 hover:text-foreground"
++      >
++        <Pencil className="size-3.5" />
++      </button>
++    </div>
++  );
++}
