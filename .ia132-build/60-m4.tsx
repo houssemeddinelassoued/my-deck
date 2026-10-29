@@ -521,7 +521,7 @@ TRANSITION — « Passons à la revue. Un exercice d'abord. »`,
 
 OBJECTIF — Faire vivre une revue avant de l'automatiser.
 
-ANIMATION — « Prenez 60 secondes. Que voyez-vous dans cet extrait ? » Écoutez 3 ou 4 propositions au micro. Puis → révèle les pastilles une à une (cliquez une pastille pour son explication).
+ANIMATION — « Prenez 60 secondes. Que voyez-vous dans cet extrait ? » Écoutez 3 ou 4 propositions au micro. Puis → révèle les failles une par une : pastille sur le code, explication à droite.
 1. Secret en dur. 2. MD5 sans sel. 3. Injection SQL. 4. Exception avalée. 5. Contrôle d'accès absent.
 
 À SOULIGNER (carte violette) — « ruff détecte 1, 2 et 3. L'IA trouve souvent les 5. Mais le contrôle d'accès, c'est une règle métier : c'est vous. »

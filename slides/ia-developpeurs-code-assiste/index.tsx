@@ -5763,12 +5763,31 @@ const M4_Style: Page = () => (
   </Frame>
 );
 
-// ─── M4 · Spot the flaws (hotspots on the PR of lab 07) ─────────────────────
+// ─── M4 · Spot the flaws (pins on the PR of lab 07) ─────────────────────────
+const FlawPin = ({ n, x, y }: { n: number; x: number; y: number }) => (
+  <div
+    className={b.pop(n)}
+    style={{ position: 'absolute', left: x, top: y, width: 40, height: 40, borderRadius: 99, background: C.coral, color: '#fff', border: '3px solid #fff', boxSizing: 'border-box', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: display, fontWeight: 700, fontSize: 22, boxShadow: '0 6px 16px -6px rgba(180,60,40,.7)', zIndex: 5 }}
+  >
+    {n}
+  </div>
+);
+
+const Flaw = ({ n, title, children }: { n: number; title: string; children: ReactNode }) => (
+  <div className={b.on(n)} style={{ display: 'flex', gap: 14, background: C.card, borderRadius: 14, boxShadow: `${SHADOW_SM}, inset 5px 0 0 ${C.coral}`, padding: '12px 18px' }}>
+    <Num n={n} tone="coral" size={36} />
+    <div>
+      <div style={{ fontWeight: 700, fontSize: 23, color: T.coral.fg }}>{title}</div>
+      <div style={{ fontSize: 20, lineHeight: 1.35, color: C.ink }}>{children}</div>
+    </div>
+  </div>
+);
+
 const M4_Hotspots: Page = () => (
   <Frame mod={4} kind="exercice" beats={5}>
     <Title>Revue éclair : repérez les failles</Title>
-    <Lede>Extrait de la PR n° 42 du lab 07. Dites-moi ce que vous voyez, puis j’ouvre les pastilles.</Lede>
-    <CodeDark cls={A.in} file="notes_service.py · PR #42" lang="python" size={22} style={{ position: 'absolute', left: 120, top: 270, width: 1180, ...dl(100) }}>
+    <Lede>Extrait de la PR n° 42 du lab 07. Dites-moi ce que vous voyez ; je révèle ensuite les 5 failles, une par clic.</Lede>
+    <CodeDark cls={A.in} file="notes_service.py · PR #42" lang="python" size={21} style={{ position: 'absolute', left: 160, top: 270, width: 1040, ...dl(100) }}>
       SECRET_KEY = <St>"s3cr3t-prod-2026"</St>
       {'\n'}
       {'\n'}
@@ -5792,36 +5811,31 @@ const M4_Hotspots: Page = () => (
       <Kw>def</Kw> <Fn>lire_note</Fn>(self, user_id, note_id):{'\n'}
       {'    '}row = self.bd.execute(<St>"select contenu from notes where id = ?"</St>, (note_id,))
     </CodeDark>
-    <Hotspot n={1} x={430} y={334} at={1} title="Secret en dur" w={460}>
-      Il finit dans Git et dans chaque copie du dépôt. À lire dans l’environnement ou un coffre-fort.
-    </Hotspot>
-    <Hotspot n={2} x={760} y={440} at={2} title="MD5, sans sel" w={460}>
-      Cassé en quelques secondes. pbkdf2, scrypt ou argon2, avec un sel par utilisateur.
-    </Hotspot>
-    <Hotspot n={3} x={1240} y={510} at={3} side="left" title="Injection SQL" w={460}>
-      « ana@x.ca' -- » se connecte sans mot de passe. Requête paramétrée.
-    </Hotspot>
-    <Hotspot n={4} x={480} y={580} at={4} title="Exception avalée" w={460}>
-      Cache l’injection et toutes les autres erreurs.
-    </Hotspot>
-    <Hotspot n={5} x={1240} y={720} at={5} side="left" title="Contrôle d’accès absent" w={480}>
-      user_id n’est pas vérifié : Bob lit les notes d’Ana. Aucun outil statique ne le voit.
-    </Hotspot>
-    <div style={{ position: 'absolute', left: 1360, top: 270, width: 440 }}>
-      <Card cls={b.on(5)} tone="violet" icon="eye" title="Qui trouve quoi ?" size={22}>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginTop: 4 }}>
-          <span>
-            <b>ruff (S)</b> : 1, 2, 3
-          </span>
-          <span>
-            <b>IA</b> : 1 à 4, souvent 5
-          </span>
-          <span>
-            <b>Vous</b> : 5, la règle métier
-          </span>
-        </div>
-      </Card>
+    <FlawPin n={1} x={110} y={318} />
+    <FlawPin n={2} x={110} y={384} />
+    <FlawPin n={3} x={110} y={449} />
+    <FlawPin n={4} x={110} y={515} />
+    <FlawPin n={5} x={110} y={612} />
+    <div style={{ position: 'absolute', left: 1240, top: 270, width: 560, display: 'flex', flexDirection: 'column', gap: 10 }}>
+      <Flaw n={1} title="Secret en dur">
+        Il finit dans Git : à lire dans l’environnement.
+      </Flaw>
+      <Flaw n={2} title="MD5, sans sel">
+        pbkdf2, scrypt ou argon2, un sel par compte.
+      </Flaw>
+      <Flaw n={3} title="Injection SQL">
+        « ana@x.ca' -- » entre sans mot de passe.
+      </Flaw>
+      <Flaw n={4} title="Exception avalée">
+        Elle cache l’injection et toutes les erreurs.
+      </Flaw>
+      <Flaw n={5} title="Contrôle d’accès absent">
+        Bob lit les notes d’Ana. Aucun outil ne le voit.
+      </Flaw>
     </div>
+    <Callout cls={b.on(5)} title="Qui trouve quoi ?" tone="violet" icon="eye" size={23} style={{ position: 'absolute', left: 120, top: 840, width: 1080 }}>
+      <b>ruff (S)</b> : 1, 2, 3 · <b>IA</b> : 1 à 4, souvent 5 · <b>Vous</b> : 5, la règle métier.
+    </Callout>
   </Frame>
 );
 
@@ -6129,7 +6143,7 @@ const M5_Smells: Page = () => (
         h={520}
         tone="grey"
         backTone="coral"
-        front={<div style={{ fontFamily: mono, fontSize: 22, lineHeight: 1.5, color: C.ink, whiteSpace: 'pre' }}>{'def test_panier():\n    p = Panier()\n    p.ajouter(CLAVIER)\n    assert p is not None'}</div>}
+        front={<div style={{ fontFamily: mono, fontSize: 19, lineHeight: 1.5, color: C.ink, whiteSpace: 'pre' }}>{'def test_panier():\n    p = Panier()\n    p.ajouter(CLAVIER)\n    assert p is not None'}</div>}
         back={<div style={{ fontSize: 24, lineHeight: 1.45, color: C.ink }}><b>Inutile.</b> Il exécute le code sans rien vérifier. Couverture en hausse, protection nulle.</div>}
       />
       <FlipCard
@@ -6137,7 +6151,7 @@ const M5_Smells: Page = () => (
         h={520}
         tone="grey"
         backTone="coral"
-        front={<div style={{ fontFamily: mono, fontSize: 22, lineHeight: 1.5, color: C.ink, whiteSpace: 'pre' }}>{'def test_rabais():\n    ...\n    attendu = (\n      p.sous_total() // 10)\n    assert p.rabais() == attendu'}</div>}
+        front={<div style={{ fontFamily: mono, fontSize: 19, lineHeight: 1.5, color: C.ink, whiteSpace: 'pre' }}>{'def test_rabais():\n    ...\n    attendu = (\n      p.sous_total() // 10)\n    assert p.rabais() == attendu'}</div>}
         back={<div style={{ fontSize: 24, lineHeight: 1.45, color: C.ink }}><b>Tautologique.</b> L’attendu recopie la formule du code : si la formule est fausse, le test aussi. Écrivez 999.</div>}
       />
       <FlipCard
@@ -6145,7 +6159,7 @@ const M5_Smells: Page = () => (
         h={520}
         tone="grey"
         backTone="green"
-        front={<div style={{ fontFamily: mono, fontSize: 22, lineHeight: 1.5, color: C.ink, whiteSpace: 'pre' }}>{'def test_livraison_\n    gratuite_au_seuil(p):\n    p.ajouter(SUPPORT_50)\n    assert p.livraison() == 0'}</div>}
+        front={<div style={{ fontFamily: mono, fontSize: 19, lineHeight: 1.5, color: C.ink, whiteSpace: 'pre' }}>{'def test_livraison_\n    gratuite_au_seuil(p):\n    p.ajouter(SUPPORT_50)\n    assert p.livraison() == 0'}</div>}
         back={<div style={{ fontSize: 24, lineHeight: 1.45, color: C.ink }}><b>Utile.</b> Une valeur limite exacte, un nom qui dit la règle, une seule vérification claire.</div>}
       />
       <FlipCard
@@ -6153,7 +6167,7 @@ const M5_Smells: Page = () => (
         h={520}
         tone="grey"
         backTone="coral"
-        front={<div style={{ fontFamily: mono, fontSize: 22, lineHeight: 1.5, color: C.ink, whiteSpace: 'pre' }}>{'PANIER = Panier()\n\ndef test_1():\n    PANIER.ajouter(A)\n\ndef test_2():\n    assert PANIER.total()\n      == 4999'}</div>}
+        front={<div style={{ fontFamily: mono, fontSize: 19, lineHeight: 1.5, color: C.ink, whiteSpace: 'pre' }}>{'PANIER = Panier()\n\ndef test_1():\n    PANIER.ajouter(A)\n\ndef test_2():\n    assert PANIER.total()\n      == 4999'}</div>}
         back={<div style={{ fontSize: 24, lineHeight: 1.45, color: C.ink }}><b>Fragile.</b> test_2 dépend de test_1 : l’ordre ou l’exécution seule le casse. Une fixture par test.</div>}
       />
     </div>
@@ -6299,7 +6313,7 @@ const M5_Load: Page = () => (
 
 // ─── M5 · CI/CD pipeline ────────────────────────────────────────────────────
 const PipeStage = ({ n, x, icon, tone, title, sub }: { n: number; x: number; icon: IconName; tone: Tone; title: string; sub: string }) => (
-  <div className={b.pop(n)} style={{ position: 'absolute', left: x, top: 300, width: 250, height: 210, boxSizing: 'border-box', background: C.card, borderRadius: 18, boxShadow: `${SHADOW}, inset 0 7px 0 ${STRONG[tone]}`, padding: '22px 20px', textAlign: 'center' }}>
+  <div className={b.pop(n)} style={{ position: 'absolute', left: x, top: 300, width: 240, height: 210, boxSizing: 'border-box', background: C.card, borderRadius: 18, boxShadow: `${SHADOW}, inset 0 7px 0 ${STRONG[tone]}`, padding: '22px 20px', textAlign: 'center' }}>
     <IconTile name={icon} tone={tone} size={60} style={{ margin: '0 auto' }} />
     <div style={{ marginTop: 12, fontFamily: display, fontWeight: 700, fontSize: 28, color: C.ink }}>{title}</div>
     <div style={{ marginTop: 4, fontSize: 20, color: C.muted, lineHeight: 1.3 }}>{sub}</div>
@@ -6314,11 +6328,11 @@ const M5_Pipeline: Page = () => (
       <line x1={180} y1={405} x2={1740} y2={405} stroke={C.rule} strokeWidth={5} strokeDasharray="10 12" className={A.march} />
     </svg>
     <PipeStage n={1} x={120} icon="code" tone="blue" title="Push / PR" sub="déclencheur" />
-    <PipeStage n={2} x={410} icon="search" tone="teal" title="Lint" sub="ruff, ESLint" />
-    <PipeStage n={3} x={700} icon="check" tone="green" title="Tests" sub="matrice de versions" />
-    <PipeStage n={4} x={990} icon="gauge" tone="violet" title="Couverture" sub="seuil : 80 %" />
-    <PipeStage n={5} x={1280} icon="shield" tone="coral" title="Sécurité" sub="audit, CodeQL" />
-    <PipeStage n={6} x={1570} icon="rocket" tone="yellow" title="Déploiement" sub="si tout est vert" />
+    <PipeStage n={2} x={408} icon="search" tone="teal" title="Lint" sub="ruff, ESLint" />
+    <PipeStage n={3} x={696} icon="check" tone="green" title="Tests" sub="matrice de versions" />
+    <PipeStage n={4} x={984} icon="gauge" tone="violet" title="Couverture" sub="seuil : 80 %" />
+    <PipeStage n={5} x={1272} icon="shield" tone="coral" title="Sécurité" sub="audit, CodeQL" />
+    <PipeStage n={6} x={1560} icon="rocket" tone="yellow" title="Déploiement" sub="si tout est vert" />
     <CodeDark cls={b.on(6)} file=".github/workflows/ci.yml" lang="yaml" size={19} style={{ position: 'absolute', left: 120, top: 560, width: 1000 }}>
       <Kw>on</Kw>: {'{'} push: {'{'} branches: [main] {'}'}, pull_request: {'{}'} {'}'}
       {'\n'}
@@ -6794,12 +6808,12 @@ const M7_Project: Page = () => (
     <Title>Le projet : taches, un gestionnaire de tâches en ligne de commande</Title>
     <Lede>Petit, complet, et entièrement spécifié : 6 commandes, des règles, des codes de sortie, des tests d’acceptation.</Lede>
     <Term cls={A.in} title="python -m taches" size={21} style={{ position: 'absolute', left: 120, top: 280, width: 960, ...dl(100) }}>
-      <Pr>taches ajouter "Préparer la démo" --priorite haute --echeance 2026-11-05 --etiquette ia</Pr>
+      <Pr>taches ajouter "Préparer la démo" --priorite haute</Pr>
       {'\n'}Tâche 1 ajoutée : Préparer la démo{'\n'}
       <Pr>taches ajouter "Relire la PR #42" --etiquette revue</Pr>
       {'\n'}Tâche 2 ajoutée : Relire la PR #42{'\n'}
       <Pr>taches lister</Pr>
-      {'\n'}[ ] 1  haute    2026-11-05  Préparer la démo  #ia{'\n'}
+      {'\n'}[ ] 1  haute    —           Préparer la démo{'\n'}
       [ ] 2  normale  —           Relire la PR #42  #revue{'\n'}
       <Pr>taches terminer 1</Pr>
       {'\n'}Tâche 1 terminée{'\n'}
@@ -7197,7 +7211,7 @@ if (typeof document !== 'undefined') {
 }
 
 export const meta: SlideMeta = {
-  title: 'IA132-IA pour développeurs : code assisté e',
+  title: "IA pour développeurs : code assisté et programmation intelligente — Formation IA132 (2 jours)",
   createdAt: '2026-10-28T23:48:17.849Z',
   theme: 'technologia',
   labs: labsPack,
@@ -8040,7 +8054,7 @@ TRANSITION — « Passons à la revue. Un exercice d'abord. »`,
 
 OBJECTIF — Faire vivre une revue avant de l'automatiser.
 
-ANIMATION — « Prenez 60 secondes. Que voyez-vous dans cet extrait ? » Écoutez 3 ou 4 propositions au micro. Puis → révèle les pastilles une à une (cliquez une pastille pour son explication).
+ANIMATION — « Prenez 60 secondes. Que voyez-vous dans cet extrait ? » Écoutez 3 ou 4 propositions au micro. Puis → révèle les failles une par une : pastille sur le code, explication à droite.
 1. Secret en dur. 2. MD5 sans sel. 3. Injection SQL. 4. Exception avalée. 5. Contrôle d'accès absent.
 
 À SOULIGNER (carte violette) — « ruff détecte 1, 2 et 3. L'IA trouve souvent les 5. Mais le contrôle d'accès, c'est une règle métier : c'est vous. »

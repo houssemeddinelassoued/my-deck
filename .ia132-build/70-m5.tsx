@@ -133,7 +133,7 @@ const M5_Smells: Page = () => (
         h={520}
         tone="grey"
         backTone="coral"
-        front={<div style={{ fontFamily: mono, fontSize: 22, lineHeight: 1.5, color: C.ink, whiteSpace: 'pre' }}>{'def test_panier():\n    p = Panier()\n    p.ajouter(CLAVIER)\n    assert p is not None'}</div>}
+        front={<div style={{ fontFamily: mono, fontSize: 19, lineHeight: 1.5, color: C.ink, whiteSpace: 'pre' }}>{'def test_panier():\n    p = Panier()\n    p.ajouter(CLAVIER)\n    assert p is not None'}</div>}
         back={<div style={{ fontSize: 24, lineHeight: 1.45, color: C.ink }}><b>Inutile.</b> Il exécute le code sans rien vérifier. Couverture en hausse, protection nulle.</div>}
       />
       <FlipCard
@@ -141,7 +141,7 @@ const M5_Smells: Page = () => (
         h={520}
         tone="grey"
         backTone="coral"
-        front={<div style={{ fontFamily: mono, fontSize: 22, lineHeight: 1.5, color: C.ink, whiteSpace: 'pre' }}>{'def test_rabais():\n    ...\n    attendu = (\n      p.sous_total() // 10)\n    assert p.rabais() == attendu'}</div>}
+        front={<div style={{ fontFamily: mono, fontSize: 19, lineHeight: 1.5, color: C.ink, whiteSpace: 'pre' }}>{'def test_rabais():\n    ...\n    attendu = (\n      p.sous_total() // 10)\n    assert p.rabais() == attendu'}</div>}
         back={<div style={{ fontSize: 24, lineHeight: 1.45, color: C.ink }}><b>Tautologique.</b> L’attendu recopie la formule du code : si la formule est fausse, le test aussi. Écrivez 999.</div>}
       />
       <FlipCard
@@ -149,7 +149,7 @@ const M5_Smells: Page = () => (
         h={520}
         tone="grey"
         backTone="green"
-        front={<div style={{ fontFamily: mono, fontSize: 22, lineHeight: 1.5, color: C.ink, whiteSpace: 'pre' }}>{'def test_livraison_\n    gratuite_au_seuil(p):\n    p.ajouter(SUPPORT_50)\n    assert p.livraison() == 0'}</div>}
+        front={<div style={{ fontFamily: mono, fontSize: 19, lineHeight: 1.5, color: C.ink, whiteSpace: 'pre' }}>{'def test_livraison_\n    gratuite_au_seuil(p):\n    p.ajouter(SUPPORT_50)\n    assert p.livraison() == 0'}</div>}
         back={<div style={{ fontSize: 24, lineHeight: 1.45, color: C.ink }}><b>Utile.</b> Une valeur limite exacte, un nom qui dit la règle, une seule vérification claire.</div>}
       />
       <FlipCard
@@ -157,7 +157,7 @@ const M5_Smells: Page = () => (
         h={520}
         tone="grey"
         backTone="coral"
-        front={<div style={{ fontFamily: mono, fontSize: 22, lineHeight: 1.5, color: C.ink, whiteSpace: 'pre' }}>{'PANIER = Panier()\n\ndef test_1():\n    PANIER.ajouter(A)\n\ndef test_2():\n    assert PANIER.total()\n      == 4999'}</div>}
+        front={<div style={{ fontFamily: mono, fontSize: 19, lineHeight: 1.5, color: C.ink, whiteSpace: 'pre' }}>{'PANIER = Panier()\n\ndef test_1():\n    PANIER.ajouter(A)\n\ndef test_2():\n    assert PANIER.total()\n      == 4999'}</div>}
         back={<div style={{ fontSize: 24, lineHeight: 1.45, color: C.ink }}><b>Fragile.</b> test_2 dépend de test_1 : l’ordre ou l’exécution seule le casse. Une fixture par test.</div>}
       />
     </div>
@@ -303,7 +303,7 @@ const M5_Load: Page = () => (
 
 // ─── M5 · CI/CD pipeline ────────────────────────────────────────────────────
 const PipeStage = ({ n, x, icon, tone, title, sub }: { n: number; x: number; icon: IconName; tone: Tone; title: string; sub: string }) => (
-  <div className={b.pop(n)} style={{ position: 'absolute', left: x, top: 300, width: 250, height: 210, boxSizing: 'border-box', background: C.card, borderRadius: 18, boxShadow: `${SHADOW}, inset 0 7px 0 ${STRONG[tone]}`, padding: '22px 20px', textAlign: 'center' }}>
+  <div className={b.pop(n)} style={{ position: 'absolute', left: x, top: 300, width: 240, height: 210, boxSizing: 'border-box', background: C.card, borderRadius: 18, boxShadow: `${SHADOW}, inset 0 7px 0 ${STRONG[tone]}`, padding: '22px 20px', textAlign: 'center' }}>
     <IconTile name={icon} tone={tone} size={60} style={{ margin: '0 auto' }} />
     <div style={{ marginTop: 12, fontFamily: display, fontWeight: 700, fontSize: 28, color: C.ink }}>{title}</div>
     <div style={{ marginTop: 4, fontSize: 20, color: C.muted, lineHeight: 1.3 }}>{sub}</div>
@@ -318,11 +318,11 @@ const M5_Pipeline: Page = () => (
       <line x1={180} y1={405} x2={1740} y2={405} stroke={C.rule} strokeWidth={5} strokeDasharray="10 12" className={A.march} />
     </svg>
     <PipeStage n={1} x={120} icon="code" tone="blue" title="Push / PR" sub="déclencheur" />
-    <PipeStage n={2} x={410} icon="search" tone="teal" title="Lint" sub="ruff, ESLint" />
-    <PipeStage n={3} x={700} icon="check" tone="green" title="Tests" sub="matrice de versions" />
-    <PipeStage n={4} x={990} icon="gauge" tone="violet" title="Couverture" sub="seuil : 80 %" />
-    <PipeStage n={5} x={1280} icon="shield" tone="coral" title="Sécurité" sub="audit, CodeQL" />
-    <PipeStage n={6} x={1570} icon="rocket" tone="yellow" title="Déploiement" sub="si tout est vert" />
+    <PipeStage n={2} x={408} icon="search" tone="teal" title="Lint" sub="ruff, ESLint" />
+    <PipeStage n={3} x={696} icon="check" tone="green" title="Tests" sub="matrice de versions" />
+    <PipeStage n={4} x={984} icon="gauge" tone="violet" title="Couverture" sub="seuil : 80 %" />
+    <PipeStage n={5} x={1272} icon="shield" tone="coral" title="Sécurité" sub="audit, CodeQL" />
+    <PipeStage n={6} x={1560} icon="rocket" tone="yellow" title="Déploiement" sub="si tout est vert" />
     <CodeDark cls={b.on(6)} file=".github/workflows/ci.yml" lang="yaml" size={19} style={{ position: 'absolute', left: 120, top: 560, width: 1000 }}>
       <Kw>on</Kw>: {'{'} push: {'{'} branches: [main] {'}'}, pull_request: {'{}'} {'}'}
       {'\n'}

@@ -820,8 +820,10 @@ python<span class="w"> </span>labs/lab09-ci/python/charge.py<span class="w">    
 <li><span class="sq"></span><div><strong>ADR (5 min)</strong> — <code>livrables/adr-001.md</code> à partir du gabarit : votre décision, ses alternatives, ses conséquences.</div></li>
 <li><span class="sq"></span><div><strong>Backlog et planification (12 min)</strong> — Faites découper le projet en <strong>12 user stories ou plus</strong> (<code>livrables/backlog.csv</code>) : critère d’acceptation Gherkin, points (suite de Fibonacci), priorité MoSCoW, sprint, dépendances. Lancez les tests : l’IA respecte-t-elle la <strong>vélocité de 20 points</strong>, l’ordre des dépendances, le pilote en 3 sprints ? Corrigez.</div></li>
 <li><span class="sq"></span><div><strong>Risques et dépendances (8 min)</strong> — <code>livrables/risques.md</code> (≥ 5 risques : probabilité, impact, mesure). Puis faites analyser <code>dependances/</code> par l’IA et <strong>vérifiez</strong> avec un outil :
-    <div class="highlight"><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span>pip-audit<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>pip-audit<span class="w"> </span>-r<span class="w"> </span>labs/lab10-architecture/dependances/requirements-legacy.txt
-<span class="nb">cd</span><span class="w"> </span>labs/lab10-architecture/dependances<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>npm<span class="w"> </span>audit<span class="w"> </span>--package-lock-only<span class="w">   </span><span class="c1"># après npm install --package-lock-only</span>
+    <div class="highlight"><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span>pip-audit
+pip-audit<span class="w"> </span>--disable-pip<span class="w"> </span>--no-deps<span class="w"> </span>-r<span class="w"> </span>labs/lab10-architecture/dependances/requirements-legacy.txt
+<span class="nb">cd</span><span class="w"> </span>labs/lab10-architecture/dependances
+npm<span class="w"> </span>install<span class="w"> </span>--package-lock-only<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>npm<span class="w"> </span>audit
 </code></pre></div>
     Consignez le résultat dans <code>livrables/dependances.md</code>, en signalant chaque identifiant CVE inventé par l’IA.</div></li>
 </ol></div>

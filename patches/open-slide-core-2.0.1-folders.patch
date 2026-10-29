@@ -2190,8 +2190,12 @@ index c29b8b6..e596933 100644
    return (
      <div className="dark flex h-dvh w-screen flex-col overflow-hidden bg-background text-foreground">
        <PresenterTopBar
-@@ -209,13 +224,16 @@
+@@ -207,15 +222,20 @@
+         startedAt={startedAt}
+         slideId={slideId}
          slideTitle={slide.meta?.title ?? slideId}
++        pages={pages}
++        notes={slide.notes}
          connected={hasProjection}
          onSwitchDeck={switchDeck}
 +        layoutMenu={<PresenterLayoutMenu layout={layout} setLayout={setLayout} />}
@@ -2212,7 +2216,7 @@ index c29b8b6..e596933 100644
              <SlideCanvas flat design={slide.design}>
                <SlidePageProvider index={index} total={total}>
                  <PreviewStepHost revealed={stepIndex}>
-@@ -235,47 +253,670 @@
+@@ -235,47 +255,670 @@
                  {blackout === 'black' ? t.presenter.blackScreen : t.presenter.whiteScreen}
                </div>
              )}
@@ -2913,32 +2917,39 @@ index c29b8b6..e596933 100644
        />
      </div>
    );
-@@ -289,6 +930,7 @@
+@@ -287,16 +930,22 @@
+   startedAt,
+   slideId,
    slideTitle,
++  pages,
++  notes,
    connected,
    onSwitchDeck,
 +  layoutMenu,
  }: {
    index: number;
    total: number;
-@@ -297,6 +939,7 @@
+   startedAt: number;
+   slideId: string;
    slideTitle: string;
++  pages: readonly unknown[];
++  notes: readonly (string | undefined)[] | undefined;
    connected: boolean;
    onSwitchDeck: (slideId: string) => void;
 +  layoutMenu: ReactNode;
  }) {
    const t = useLocale();
    return (
-@@ -317,6 +960,8 @@
+@@ -317,6 +966,8 @@
          )}
        </div>
        <div className="flex items-center gap-6">
 +        {layoutMenu}
-+        <StartPunctuality slideId={slideId} index={index} />
++        <StartPunctuality slideId={slideId} index={index} pages={pages} notes={notes} />
          <Clock />
          <ElapsedClock startedAt={startedAt} />
          <div className="font-mono text-[18px] tabular-nums">
-@@ -362,6 +1007,8 @@
+@@ -362,6 +1013,8 @@
  }) {
    const t = useLocale();
    const modules = useDeckModules();
@@ -2947,7 +2958,7 @@ index c29b8b6..e596933 100644
    const [open, setOpen] = useState(false);
    const [query, setQuery] = useState('');
    const [activeIndex, setActiveIndex] = useState(0);
-@@ -369,6 +1016,7 @@
+@@ -369,6 +1022,7 @@
  
    const trimmed = query.trim().toLowerCase();
    const filtered = slideIds.filter((id) => {
@@ -2955,7 +2966,7 @@ index c29b8b6..e596933 100644
      if (!trimmed) return true;
      const title = modules[id]?.meta?.title;
      return id.toLowerCase().includes(trimmed) || title?.toLowerCase().includes(trimmed);
-@@ -495,18 +1143,26 @@
+@@ -495,18 +1149,26 @@
    index,
    total,
    blackout,
@@ -2982,7 +2993,7 @@ index c29b8b6..e596933 100644
  }) {
    const t = useLocale();
    return (
-@@ -518,9 +1174,19 @@
+@@ -518,9 +1180,19 @@
          <Button variant="outline" onClick={onNext} disabled={index >= total - 1}>
            {t.presenter.next} <ChevronRight className="size-4" />
          </Button>
@@ -3002,7 +3013,7 @@ index c29b8b6..e596933 100644
            variant={blackout === 'black' ? 'brand' : 'outline'}
            onClick={onBlackout}
            aria-pressed={blackout === 'black'}
-@@ -550,8 +1216,7 @@
+@@ -550,8 +1222,7 @@
  const NOTES_FONT_SIZE_DEFAULT_INDEX = 2;
  const NOTES_FONT_SIZE_STORAGE_KEY = 'open-slide:presenter-notes-font-size';
  
@@ -3012,7 +3023,7 @@ index c29b8b6..e596933 100644
    const [sizeIndex, setSizeIndex] = useState(() => {
      if (typeof window === 'undefined') return NOTES_FONT_SIZE_DEFAULT_INDEX;
      const stored = Number(window.localStorage.getItem(NOTES_FONT_SIZE_STORAGE_KEY));
-@@ -564,49 +1229,71 @@
+@@ -564,49 +1235,71 @@
      window.localStorage.setItem(NOTES_FONT_SIZE_STORAGE_KEY, String(NOTES_FONT_SIZES[sizeIndex]));
    }, [sizeIndex]);
  
@@ -4015,70 +4026,136 @@ diff --git b/src/app/components/present/start-punctuality.tsx b/src/app/componen
 new file mode 100644
 --- /dev/null
 +++ b/src/app/components/present/start-punctuality.tsx
-@@ -0,0 +1,132 @@
+@@ -0,0 +1,233 @@
 +import { Check, Pencil } from 'lucide-react';
-+import { useEffect, useState } from 'react';
++import { useEffect, useMemo, useState } from 'react';
++import { buildPacingPlan, expectedIndex, type PacingPlan, pacingGap } from '../../lib/pacing';
 +
-+// Planned start of a training (date + time) is typed once per deck, then every
-+// slide change compares "now" with it and shows early / on time / late. A gap
-+// of up to TOLERANCE_MIN either way counts as "synchrone".
-+const TOLERANCE_MIN = 15;
-+const storageKey = (slideId: string) => `osd-planned-start:${slideId}`;
++// Punctuality badge of the presenter view. The trainer types the real start
++// of the current training day (and optionally its end); on every slide change
++// the badge compares "now" with the time the plan (lib/pacing.ts) expects
++// that slide to be shown, and says early / on time / late. A gap within the
++// margin (15 min by default) counts as on time.
++const DEFAULT_TOLERANCE_MIN = 15;
 +
-+function readPlanned(slideId: string): number | null {
++type DayConfig = { start: number; end: number | null; tolerance: number };
++
++const storageKey = (slideId: string, day: number) => `osd-pace:${slideId}:${day}`;
++
++function readConfig(slideId: string, day: number): DayConfig | null {
 +  try {
-+    const n = Number(window.localStorage.getItem(storageKey(slideId)));
-+    return Number.isFinite(n) && n > 0 ? n : null;
-+  } catch {
-+    return null;
-+  }
++    const raw = JSON.parse(window.localStorage.getItem(storageKey(slideId, day)) ?? 'null');
++    if (raw && Number.isFinite(raw.start) && raw.start > 0) {
++      return {
++        start: raw.start,
++        end: Number.isFinite(raw.end) && raw.end > raw.start ? raw.end : null,
++        tolerance: Number.isFinite(raw.tolerance) ? raw.tolerance : DEFAULT_TOLERANCE_MIN,
++      };
++    }
++  } catch {}
++  return null;
 +}
 +
 +const pad = (n: number) => String(n).padStart(2, '0');
 +
-+function toInputValue(ms: number): string {
++function toDateTimeInput(ms: number): string {
 +  const d = new Date(ms);
 +  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
 +}
 +
-+function formatGap(minutes: number): string {
-+  const m = Math.abs(minutes);
-+  const days = Math.floor(m / 1440);
-+  const h = Math.floor((m % 1440) / 60);
-+  const min = m % 60;
-+  const parts: string[] = [];
-+  if (days) parts.push(`${days} j`);
-+  if (h) parts.push(`${h} h`);
-+  if (min || parts.length === 0) parts.push(`${min} min`);
-+  return parts.join(' ');
++function toTimeInput(ms: number): string {
++  const d = new Date(ms);
++  return `${pad(d.getHours())}:${pad(d.getMinutes())}`;
 +}
 +
-+export function StartPunctuality({ slideId, index }: { slideId: string; index: number }) {
-+  const [planned, setPlanned] = useState<number | null>(() => readPlanned(slideId));
++const hhmm = (ms: number) => toTimeInput(ms).replace(':', ' h ');
++
++function formatGap(minutes: number): string {
++  const m = Math.round(Math.abs(minutes));
++  const h = Math.floor(m / 60);
++  const min = m % 60;
++  if (h && min) return `${h} h ${pad(min)}`;
++  if (h) return `${h} h`;
++  return `${min} min`;
++}
++
++/** Default start offered in the form: today at the plan's own start time, else now. */
++function suggestedStart(plan: PacingPlan, day: number): number {
++  const clock = plan.days.find((d) => d.day === day)?.clockStart;
++  if (clock === null || clock === undefined) return Date.now();
++  const d = new Date();
++  d.setHours(Math.floor(clock / 60), Math.round(clock % 60), 0, 0);
++  return d.getTime();
++}
++
++export function StartPunctuality({
++  slideId,
++  index,
++  pages,
++  notes,
++}: {
++  slideId: string;
++  index: number;
++  pages: readonly unknown[];
++  notes: readonly (string | undefined)[] | undefined;
++}) {
++  const plan = useMemo(() => buildPacingPlan(pages, notes), [pages, notes]);
++  const day = plan.slides[index]?.day ?? 1;
++  const dayPlan = plan.days.find((d) => d.day === day);
++  const multiDay = plan.days.length > 1;
++
++  const [config, setConfig] = useState<DayConfig | null>(() => readConfig(slideId, day));
 +  const [editing, setEditing] = useState(false);
-+  const [draft, setDraft] = useState('');
++  const [draftStart, setDraftStart] = useState('');
++  const [draftEnd, setDraftEnd] = useState('');
++  const [draftTol, setDraftTol] = useState(String(DEFAULT_TOLERANCE_MIN));
 +  // The comparison instant: refreshed on validation and on every slide change.
 +  const [checkedAt, setCheckedAt] = useState(() => Date.now());
 +
 +  useEffect(() => {
-+    setPlanned(readPlanned(slideId));
-+  }, [slideId]);
++    setConfig(readConfig(slideId, day));
++    setEditing(false);
++  }, [slideId, day]);
 +
 +  useEffect(() => {
 +    setCheckedAt(Date.now());
-+  }, [index, planned]);
++  }, [index, config]);
++
++  const openForm = () => {
++    const start = config?.start ?? suggestedStart(plan, day);
++    setDraftStart(toDateTimeInput(start));
++    setDraftEnd(config?.end ? toTimeInput(config.end) : '');
++    setDraftTol(String(config?.tolerance ?? DEFAULT_TOLERANCE_MIN));
++    setEditing(true);
++  };
 +
 +  const validate = () => {
-+    const ms = new Date(draft).getTime();
-+    if (!draft || Number.isNaN(ms)) return;
++    const start = new Date(draftStart || toDateTimeInput(suggestedStart(plan, day))).getTime();
++    if (Number.isNaN(start)) return;
++    let end: number | null = null;
++    if (draftEnd) {
++      const [h, m] = draftEnd.split(':').map(Number);
++      const d = new Date(start);
++      d.setHours(h, m, 0, 0);
++      if (d.getTime() > start) end = d.getTime();
++    }
++    const tol = Number(draftTol);
++    const next: DayConfig = {
++      start,
++      end,
++      tolerance: Number.isFinite(tol) && tol >= 0 ? tol : DEFAULT_TOLERANCE_MIN,
++    };
 +    try {
-+      window.localStorage.setItem(storageKey(slideId), String(ms));
++      window.localStorage.setItem(storageKey(slideId, day), JSON.stringify(next));
 +    } catch {}
-+    setPlanned(ms);
++    setConfig(next);
 +    setEditing(false);
 +  };
 +
-+  if (planned === null || editing) {
++  if (!dayPlan) return null;
++  const span = dayPlan.span;
++
++  if (config === null || editing) {
 +    return (
 +      <form
 +        className="flex items-center gap-1.5"
@@ -4088,13 +4165,38 @@ new file mode 100644
 +        }}
 +      >
 +        <span className="font-mono text-[10px] tracking-[0.06em] uppercase text-white/45">
-+          Début prévu
++          {multiDay ? `Début J${day}` : 'Début'}
 +        </span>
 +        <input
 +          type="datetime-local"
-+          value={draft || toInputValue(planned ?? Date.now())}
-+          onChange={(e) => setDraft(e.target.value)}
++          value={draftStart || toDateTimeInput(suggestedStart(plan, day))}
++          onChange={(e) => setDraftStart(e.target.value)}
 +          className="h-7 rounded-[3px] border border-white/15 bg-white/5 px-1.5 font-mono text-[12px] text-foreground [color-scheme:dark]"
++        />
++        <span
++          className="font-mono text-[10px] tracking-[0.06em] uppercase text-white/45"
++          title={`Optionnel : le plan (${formatGap(span)}) est étiré ou resserré pour finir à cette heure`}
++        >
++          Fin
++        </span>
++        <input
++          type="time"
++          value={draftEnd}
++          onChange={(e) => setDraftEnd(e.target.value)}
++          title={`Optionnel — durée prévue par les notes : ${formatGap(span)}`}
++          className="h-7 rounded-[3px] border border-white/15 bg-white/5 px-1.5 font-mono text-[12px] text-foreground [color-scheme:dark]"
++        />
++        <span className="font-mono text-[10px] tracking-[0.06em] uppercase text-white/45">
++          Marge
++        </span>
++        <input
++          type="number"
++          min={0}
++          max={120}
++          value={draftTol}
++          onChange={(e) => setDraftTol(e.target.value)}
++          title="Écart toléré (minutes) avant de signaler une avance ou un retard"
++          className="h-7 w-12 rounded-[3px] border border-white/15 bg-white/5 px-1.5 font-mono text-[12px] text-foreground [color-scheme:dark]"
 +        />
 +        <button
 +          type="submit"
@@ -4106,45 +4208,332 @@ new file mode 100644
 +    );
 +  }
 +
-+  const gap = Math.round((checkedAt - planned) / 60000);
-+  const synchro = Math.abs(gap) <= TOLERANCE_MIN;
++  const scale = config.end && span > 0 ? (config.end - config.start) / 60000 / span : 1;
++  const gap = pacingGap(plan, index, config.start, checkedAt, scale);
++  const expected = expectedIndex(plan, day, config.start, checkedAt, scale);
++  const slide = plan.slides[index];
++  const plannedAt = config.start + slide.start * scale * 60000;
++  const plannedEnd = config.start + span * scale * 60000;
++  const synchro = Math.abs(gap) <= config.tolerance;
 +  const late = gap > 0;
 +  const tone = synchro
 +    ? 'border-emerald-300/30 bg-emerald-300/10 text-emerald-200'
 +    : late
 +      ? 'border-rose-300/30 bg-rose-300/10 text-rose-200'
 +      : 'border-sky-300/30 bg-sky-300/10 text-sky-200';
++  const signed = Math.round(gap) === 0 ? '' : ` · ${late ? '+' : '−'}${formatGap(gap)}`;
 +  const label = synchro
-+    ? `Synchrone${gap === 0 ? '' : ` (${late ? '+' : '−'}${formatGap(gap)})`}`
++    ? `Synchrone${signed}`
 +    : late
 +      ? `En retard de ${formatGap(gap)}`
 +      : `En avance de ${formatGap(gap)}`;
-+  const plannedText = new Date(planned).toLocaleString('fr-FR', {
-+    day: '2-digit',
-+    month: '2-digit',
-+    hour: '2-digit',
-+    minute: '2-digit',
-+  });
++  const estimated = plan.slides.filter((s) => s.day === day && s.source === 'estimate').length;
++  const title = [
++    `Cette slide est prévue à ${hhmm(plannedAt)} (${formatGap(slide.minutes * scale)})`,
++    `Slide attendue maintenant : ${expected + 1}`,
++    `Début ${hhmm(config.start)} · fin prévue ${hhmm(plannedEnd)}`,
++    `Marge : ±${config.tolerance} min · recalculé à chaque changement de slide`,
++    estimated
++      ? `Durées estimées (longueur des notes, clics, minuteurs) pour ${estimated} slide(s) sans « ⏱ »`
++      : 'Durées lues dans les notes (« ⏱ N min ») et repères horaires',
++  ].join('\n');
 +
 +  return (
 +    <div className="flex items-center gap-1.5">
 +      <span
-+        title={`Début prévu ${plannedText} · tolérance ±${TOLERANCE_MIN} min · mis à jour à chaque changement de slide`}
++        title={title}
 +        className={`rounded-[3px] border px-1.5 py-0.5 font-mono text-[12px] tabular-nums ${tone}`}
 +      >
-+        {plannedText} · {label}
++        {label}
++      </span>
++      <span title={title} className="font-mono text-[11px] tabular-nums text-white/45">
++        prévu {hhmm(plannedAt)} · attendu p.{expected + 1}
 +      </span>
 +      <button
 +        type="button"
-+        title="Modifier l’heure de début"
-+        onClick={() => {
-+          setDraft(toInputValue(planned));
-+          setEditing(true);
-+        }}
++        title={multiDay ? `Modifier le début du jour ${day}` : 'Modifier l’heure de début'}
++        onClick={openForm}
 +        className="rounded-[3px] p-1 text-white/45 hover:bg-white/10 hover:text-foreground"
 +      >
 +        <Pencil className="size-3.5" />
 +      </button>
 +    </div>
 +  );
++}
+diff --git b/src/app/lib/pacing.ts b/src/app/lib/pacing.ts
+new file mode 100644
+--- /dev/null
++++ b/src/app/lib/pacing.ts
+@@ -0,0 +1,272 @@
++// Planned timeline of a deck, used by the presenter's punctuality badge.
++//
++// Each page gets a planned duration and a planned start, in minutes on the
++// deck's own clock. Sources, best first:
++//   1. Speaker-note header `⏱ N min` (or `⏱ A à B min`) — the author's own
++//      estimate; `⏱ (pendant l'atelier)` / `⏱ (support …)` pages take no time
++//      of their own (they are shown while the workshop timer runs).
++//   2. Clock anchors in that header — `· 13:30`, `(≈ 10 h 45)`,
++//      `fin vers 15:30`, `jusqu'à 16 h 00` — which pin the plan to the
++//      schedule, so breaks and lunch fall where the author put them.
++//   3. Without a `⏱` header: an estimate from the note's length (speaking
++//      pace), the number of reveal steps and any `<Timer minutes={N}>` the
++//      page renders.
++// A `COUVERTURE / ACCUEIL … JOUR N` header, or an anchor that jumps back in
++// time, starts a new training day; every day has its own planned start.
++
++export type PacingSlide = {
++  /** Planned duration of the page, minutes (0 = shown during a workshop). */
++  minutes: number;
++  /** Where `minutes` came from. */
++  source: 'notes' | 'estimate';
++  /** Training day (1-based). */
++  day: number;
++  /** Planned start / end, minutes on the deck clock, relative to its day start. */
++  start: number;
++  end: number;
++  /** Window in which being on this page counts as on schedule. */
++  windowStart: number;
++  windowEnd: number;
++};
++
++export type PacingDay = {
++  day: number;
++  first: number;
++  last: number;
++  /** Deck-clock time of day the plan assumes (minutes since midnight), if anchored. */
++  clockStart: number | null;
++  /** Planned length of the day, minutes. */
++  span: number;
++};
++
++export type PacingPlan = { slides: PacingSlide[]; days: PacingDay[] };
++
++const SPEAKING_WPM = 140;
++const MIN_ESTIMATE = 0.75;
++const NO_NOTES_ESTIMATE = 1;
++/** Gap between two anchors larger than the planned pages → a break before the later anchor. */
++const BREAK_MIN = 10;
++
++type Anchor = { at: number; kind: 'start' | 'end' };
++
++type Parsed = {
++  minutes: number | null;
++  during: boolean;
++  anchor: Anchor | null;
++  newDay: number | null;
++  words: number;
++  timer: number;
++};
++
++const CLOCK = /(\d{1,2})\s*(?::|h|H)\s*(\d{2})(?!\d)/g;
++
++function parseAnchor(header: string): Anchor | null {
++  for (const m of header.matchAll(CLOCK)) {
++    const h = Number(m[1]);
++    const min = Number(m[2]);
++    if (h < 6 || h > 21 || min > 59) continue;
++    const before = header.slice(0, m.index).toLowerCase();
++    // "pause à 14 h 15", "PAUSE DE 10 H 30", "avant 9 h 00", "(9 h 15 – 10 h 30)" end.
++    if (/(pause|avant|[–-])\s*(de|à|a|vers)?\s*$/.test(before)) continue;
++    const kind = /(fin[^·(,]*vers|jusqu['’]à|jusqu'a)\s*$/.test(before) ? 'end' : 'start';
++    return { at: h * 60 + min, kind };
++  }
++  return null;
++}
++
++function countWords(text: string): number {
++  return text.split(/\s+/).filter((w) => /[\p{L}\p{N}]/u.test(w)).length;
++}
++
++function parseTimer(source: string): number {
++  let best = 0;
++  for (const m of source.matchAll(/\bminutes\s*:\s*(\d{1,3}(?:\.\d+)?)\b/g)) {
++    const n = Number(m[1]);
++    if (n > 0 && n <= 180) best = Math.max(best, n);
++  }
++  return best;
++}
++
++function parseSlide(note: string | undefined, source: string): Parsed {
++  const text = (note ?? '').trim();
++  const header = text.startsWith('⏱') ? text.split('\n', 1)[0] : '';
++  let minutes: number | null = null;
++  let during = false;
++  if (header) {
++    const range = header.match(/⏱\s*(\d+(?:[.,]\d+)?)\s*(?:à|-|–)\s*(\d+(?:[.,]\d+)?)\s*min/);
++    const single = header.match(/⏱\s*(\d+(?:[.,]\d+)?)\s*min/);
++    const hours = header.match(/⏱\s*(\d+)\s*h\s*(\d{2})?(?!\s*\d)/);
++    const lead = header.split('·', 1)[0];
++    if (range) minutes = (Number(range[1].replace(',', '.')) + Number(range[2].replace(',', '.'))) / 2;
++    else if (single && lead.includes('+')) {
++      // "⏱ 3 min de démonstration + 10 min en autonomie"
++      minutes = [...lead.matchAll(/(\d+(?:[.,]\d+)?)\s*min/g)].reduce(
++        (s, m) => s + Number(m[1].replace(',', '.')),
++        0,
++      );
++    } else if (single) minutes = Number(single[1].replace(',', '.'));
++    else if (hours) minutes = Number(hours[1]) * 60 + Number(hours[2] ?? 0);
++    else if (/⏱\s*\(/.test(header)) {
++      minutes = 0;
++      during = true;
++    }
++  }
++  const dayMatch = header.match(
++    /(couverture|accueil|bienvenue|ouverture)[^\n]*?\b(?:jour|j)\s?([2-9])\b/i,
++  );
++  return {
++    minutes,
++    during,
++    anchor: header ? parseAnchor(header.replace(/^⏱[^·(]*/, '')) : null,
++    newDay: dayMatch ? Number(dayMatch[2]) : null,
++    words: countWords(text),
++    timer: parseTimer(source),
++  };
++}
++
++function pageSource(page: unknown): string {
++  try {
++    return typeof page === 'function' ? Function.prototype.toString.call(page) : '';
++  } catch {
++    return '';
++  }
++}
++
++function estimate(p: Parsed): number {
++  const spoken = p.words ? Math.max(MIN_ESTIMATE, p.words / SPEAKING_WPM) : NO_NOTES_ESTIMATE;
++  return p.timer ? Math.max(spoken, p.timer + 1) : spoken;
++}
++
++export function buildPacingPlan(
++  pages: readonly unknown[],
++  notes: readonly (string | undefined)[] | undefined,
++): PacingPlan {
++  const parsed = pages.map((page, i) => parseSlide(notes?.[i], pageSource(page)));
++  const slides: PacingSlide[] = parsed.map((p) => ({
++    minutes: p.minutes ?? estimate(p),
++    source: p.minutes === null ? 'estimate' : 'notes',
++    day: 1,
++    start: 0,
++    end: 0,
++    windowStart: 0,
++    windowEnd: 0,
++  }));
++
++  // Split into days.
++  const days: PacingDay[] = [];
++  let day = 1;
++  let first = 0;
++  let lastAnchor = -1;
++  const closeDay = (last: number) => {
++    if (last >= first) days.push({ day, first, last, clockStart: null, span: 0 });
++  };
++  parsed.forEach((p, i) => {
++    const anchorAt = p.anchor ? p.anchor.at : null;
++    const jumpsBack = anchorAt !== null && lastAnchor >= 0 && anchorAt < lastAnchor - 120;
++    const explicit = p.newDay !== null && p.newDay > day;
++    if (i > first && (explicit || jumpsBack)) {
++      closeDay(i - 1);
++      day = explicit ? (p.newDay as number) : day + 1;
++      first = i;
++      lastAnchor = -1;
++    }
++    if (anchorAt !== null) lastAnchor = anchorAt;
++    slides[i].day = day;
++  });
++  closeDay(pages.length - 1);
++
++  for (const d of days) layoutDay(d, parsed, slides);
++  return { slides, days };
++}
++
++function layoutDay(d: PacingDay, parsed: Parsed[], slides: PacingSlide[]) {
++  // Anchors as planned starts (an end anchor pins the page's end).
++  const anchors: { i: number; at: number }[] = [];
++  for (let i = d.first; i <= d.last; i++) {
++    const a = parsed[i].anchor;
++    if (!a) continue;
++    const at = a.kind === 'end' ? a.at - slides[i].minutes : a.at;
++    const prev = anchors[anchors.length - 1];
++    if (prev && at <= prev.at) continue; // out-of-order anchor: ignore it
++    anchors.push({ i, at });
++  }
++
++  const sum = (from: number, to: number) => {
++    let s = 0;
++    for (let i = from; i < to; i++) s += slides[i].minutes;
++    return s;
++  };
++
++  // Deck-clock start of the day: back-computed from the first anchor.
++  const origin = anchors.length ? anchors[0].at - sum(d.first, anchors[0].i) : 0;
++  d.clockStart = anchors.length ? origin : null;
++
++  // Lay out each segment between anchors.
++  const cuts = [{ i: d.first, at: origin }, ...anchors.filter((a) => a.i > d.first)];
++  for (let k = 0; k < cuts.length; k++) {
++    const from = cuts[k].i;
++    const to = k + 1 < cuts.length ? cuts[k + 1].i : d.last + 1;
++    const planned = sum(from, to);
++    const available = k + 1 < cuts.length ? cuts[k + 1].at - cuts[k].at : planned;
++    // Slack under BREAK_MIN is authoring imprecision: spread it. More is a
++    // break: keep the pace and leave the gap before the next anchor.
++    const scale =
++      planned > 0 && (available < planned || available - planned < BREAK_MIN)
++        ? available / planned
++        : 1;
++    let t = cuts[k].at - origin;
++    for (let i = from; i < to; i++) {
++      slides[i].start = t;
++      t += slides[i].minutes * scale;
++      slides[i].end = t;
++    }
++  }
++  d.span = slides[d.last].end;
++
++  // "During the workshop" pages share the window of the timed pages around them.
++  for (let i = d.first; i <= d.last; i++) {
++    const s = slides[i];
++    s.windowStart = s.start;
++    s.windowEnd = s.end;
++    if (!parsed[i].during) continue;
++    let a = i - 1;
++    while (a >= d.first && parsed[a].during) a--;
++    let b = i + 1;
++    while (b <= d.last && parsed[b].during) b++;
++    s.windowStart = a >= d.first ? slides[a].start : s.start;
++    s.windowEnd = b <= d.last ? slides[b].end : s.end;
++  }
++}
++
++/** Gap in minutes between now and the plan for page `index`: > 0 late, < 0 early, 0 inside the window. */
++export function pacingGap(
++  plan: PacingPlan,
++  index: number,
++  dayStartMs: number,
++  now: number,
++  scale = 1,
++): number {
++  const s = plan.slides[index];
++  if (!s) return 0;
++  const elapsed = (now - dayStartMs) / 60000;
++  if (elapsed < s.windowStart * scale) return elapsed - s.windowStart * scale;
++  if (elapsed > s.windowEnd * scale) return elapsed - s.windowEnd * scale;
++  return 0;
++}
++
++/** Page the plan expects to be on at `now`. */
++export function expectedIndex(
++  plan: PacingPlan,
++  day: number,
++  dayStartMs: number,
++  now: number,
++  scale = 1,
++): number {
++  const d = plan.days.find((x) => x.day === day);
++  if (!d) return 0;
++  const elapsed = (now - dayStartMs) / 60000;
++  for (let i = d.first; i <= d.last; i++) {
++    if (elapsed < plan.slides[i].end * scale) return i;
++  }
++  return d.last;
 +}

@@ -4,12 +4,12 @@ const M7_Project: Page = () => (
     <Title>Le projet : taches, un gestionnaire de tâches en ligne de commande</Title>
     <Lede>Petit, complet, et entièrement spécifié : 6 commandes, des règles, des codes de sortie, des tests d’acceptation.</Lede>
     <Term cls={A.in} title="python -m taches" size={21} style={{ position: 'absolute', left: 120, top: 280, width: 960, ...dl(100) }}>
-      <Pr>taches ajouter "Préparer la démo" --priorite haute --echeance 2026-11-05 --etiquette ia</Pr>
+      <Pr>taches ajouter "Préparer la démo" --priorite haute</Pr>
       {'\n'}Tâche 1 ajoutée : Préparer la démo{'\n'}
       <Pr>taches ajouter "Relire la PR #42" --etiquette revue</Pr>
       {'\n'}Tâche 2 ajoutée : Relire la PR #42{'\n'}
       <Pr>taches lister</Pr>
-      {'\n'}[ ] 1  haute    2026-11-05  Préparer la démo  #ia{'\n'}
+      {'\n'}[ ] 1  haute    —           Préparer la démo{'\n'}
       [ ] 2  normale  —           Relire la PR #42  #revue{'\n'}
       <Pr>taches terminer 1</Pr>
       {'\n'}Tâche 1 terminée{'\n'}

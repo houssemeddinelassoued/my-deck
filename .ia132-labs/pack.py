@@ -12,7 +12,7 @@ from pathlib import Path
 RACINE = Path(__file__).resolve().parents[1]
 LABS = RACINE / "labs" / "ia-developpeurs-code-assiste"
 PAQUET = RACINE / "slides" / "ia-developpeurs-code-assiste" / "assets" / "labs-ia132.zip"
-EXCLUS = {"__pycache__", ".pytest_cache", ".ruff_cache", "node_modules", ".venv"}
+EXCLUS = {".git", "__pycache__", ".pytest_cache", ".ruff_cache", "node_modules", ".venv"}
 
 
 def ajouter(z: zipfile.ZipFile, dossier: Path, prefixe: str) -> int:
