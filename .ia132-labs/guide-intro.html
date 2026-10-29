@@ -1,0 +1,69 @@
+<section class="cover">
+  <div class="stripe"><i style="flex:6;background:linear-gradient(90deg,#2A74BF,#6CCBD0)"></i><i style="flex:2;background:#3A9F45"></i><i style="flex:3;background:#FFD000"></i></div>
+  <img class="logo" src="{{LOGO}}" alt="Technologia">
+  <div class="sq" style="right:20mm;top:39mm;width:48mm;height:48mm;background:linear-gradient(135deg,#FFE24D,#FFD000 55%,#F4B400)"></div>
+  <div class="sq" style="right:36mm;top:23mm;width:48mm;height:48mm;background:linear-gradient(135deg,#2A74BF,#3D9FCB 55%,#6CCBD0)"></div>
+  <div class="sq" style="right:36mm;top:39mm;width:32mm;height:32mm;background:linear-gradient(135deg,#0F9A4A,#47A83F 60%,#7DB83A)"></div>
+  <div class="eyebrow">Formation IA132 · 2 jours</div>
+  <h1>Guide des ateliers pratiques</h1>
+  <div class="sub">IA pour développeurs : code assisté et programmation intelligente</div>
+  <div class="repo"><div class="cap">Le dépôt des labs</div><div class="u">{{REPO}}</div></div>
+  <div class="foot">
+    <div><b>Houssem Eddine Lassoued</b>Formateur · Technologia</div>
+    <div style="text-align:right">12 labs indépendants<br>Python et TypeScript</div>
+  </div>
+</section>
+
+<section class="page">
+  <div class="eyebrow">Avant de commencer</div>
+  <h2>Mode d’emploi</h2>
+  <p class="lead">Chaque lab est <b>indépendant</b> : un dossier, un objectif, un point de départ et des tests qui disent quand c’est terminé. Vous pouvez en reprendre un à tout moment, dans l’ordre que vous voulez, après la formation.</p>
+
+  <h3>1 · Récupérer le dépôt</h3>
+  <ol>
+    <li><span class="sq"></span><div>Ouvrez <b class="mono">https://{{REPO}}</b> et cliquez sur <b>Fork</b> : vous obtenez votre propre copie, où vous pourrez pousser et ouvrir des pull requests.</div></li>
+    <li><span class="sq"></span><div>Clonez <b>votre</b> fork, puis vérifiez votre poste :
+<pre><code>git clone https://github.com/&lt;votre-compte&gt;/ia132-labs.git
+cd ia132-labs
+python scripts/verifier_env.py</code></pre></div></li>
+    <li><span class="sq"></span><div><b>Python</b> : <code>python -m venv .venv</code>, activez-le, puis <code>pip install -r requirements-dev.txt</code>.
+      <b>TypeScript</b> : rien à installer, Node.js 22.18+ exécute les fichiers <code>.ts</code> directement.</div></li>
+    <li><span class="sq"></span><div>Faites le <b>lab 00</b> : deux tests verts et votre assistant qui « voit » le dépôt.</div></li>
+  </ol>
+
+  <h3>2 · Le cycle de chaque lab</h3>
+  <div class="grid2">
+    <div class="card top-blue"><h4>Rouge → vert</h4>Au départ, la plupart des tests échouent : c’est l’exercice. Le lab est terminé quand ils passent, <b>sans modifier les tests</b> (sauf consigne).
+<pre><code>pytest labs/lab04-debogage      # Python
+npm run test:lab04              # TypeScript</code></pre></div>
+    <div class="card top-green"><h4>L’IA propose, vous décidez</h4>Relisez chaque suggestion et chaque diff. Lancez les tests après chaque changement. Un commit par étape réussie : <code>git restore .</code> annule une étape ratée.</div>
+    <div class="card top-yellow"><h4>Classe virtuelle</h4>Chacun travaille sur son poste, minuteur à l’écran. Points d’étape réguliers : répondez au micro « étape 1, 2 ou 3 ». Bloqué ? Dites-le : partage d’écran de 2 minutes.</div>
+    <div class="card top-coral"><h4>Confidentialité</h4>Aucun code ni donnée de votre entreprise dans ces exercices. Les projets et les données des labs sont fictifs.</div>
+  </div>
+
+  <h3>3 · Lire une fiche</h3>
+  <table class="kv">
+    <tr><td>Objectif</td><td>La compétence visée, en une phrase.</td></tr>
+    <tr><td>Point de départ</td><td>Les fichiers fournis et l’état des tests au départ.</td></tr>
+    <tr><td>Étapes</td><td>Le déroulé conseillé, avec les demandes (prompts) à adapter.</td></tr>
+    <tr><td>Livrable</td><td>Les critères objectifs de fin : cochez-les.</td></tr>
+    <tr><td>Pièges</td><td>Ce que l’IA fait souvent mal sur ce type de tâche : à surveiller.</td></tr>
+    <tr><td>Bonus</td><td>Pour aller plus loin si vous avez fini en avance.</td></tr>
+  </table>
+</section>
+
+<section class="page">
+  <div class="eyebrow">Vue d’ensemble</div>
+  <h2>Les 12 labs et les modules</h2>
+  <p class="lead">Les horaires sont indicatifs. Les labs 00 à 05 se font le jour 1, les labs 06 à 11 le jour 2.</p>
+  <table class="vue">
+    <thead><tr><th>Lab</th><th>Titre et objectif</th><th>Module</th><th>Moment</th><th>Durée</th></tr></thead>
+    <tbody>
+{{VUE}}
+    </tbody>
+  </table>
+</section>
+
+{{LABS}}
+
+{{ANNEXES}}

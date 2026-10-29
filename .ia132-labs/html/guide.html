@@ -1,0 +1,997 @@
+<!doctype html><html lang='fr'><head><meta charset='utf-8'><title>Guide des ateliers · IA132</title><link href='https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Barlow+Condensed:wght@600;700&family=JetBrains+Mono:wght@400;600&display=swap' rel='stylesheet'><style>:root{--ink:#2B2F33;--soft:#4B545B;--muted:#77818A;--faint:#AFB8C0;--rule:#DCE3E8;--panel:#EAF0F4;--bg:#F4F7F9;
+  --blue:#1F78C1;--teal:#22A6B3;--green:#3A9F45;--yellow:#FFD000;--amber:#E8A600;--coral:#E0573D;--violet:#6B57C9}
+*{box-sizing:border-box}
+html{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+body{margin:0;font-family:"Barlow","Segoe UI",Arial,sans-serif;font-size:10pt;line-height:1.45;color:var(--ink)}
+h1,h2,h3,.d,.eyebrow,.cap{font-family:"Barlow Condensed","Arial Narrow",Arial,sans-serif}
+code,.mono{font-family:"JetBrains Mono",Consolas,monospace;font-size:8.6pt}
+code{background:var(--panel);padding:.2mm 1.2mm;border-radius:1mm;color:#1A65A3}
+pre{background:#1E2A33;color:#E6EDF3;border-radius:2mm;padding:2.6mm 3.5mm;margin:1.5mm 0 2mm;white-space:pre-wrap;break-inside:avoid}
+pre code{background:none;color:inherit;padding:0;font-size:8.2pt}
+blockquote{margin:1.5mm 0 2mm;padding:2.2mm 3.5mm;background:#F2F7FC;border-left:2.2pt solid var(--blue);border-radius:0 1.5mm 1.5mm 0;font-style:italic;color:var(--ink);break-inside:avoid}
+blockquote p{margin:0}
+p{margin:0 0 1.6mm}
+a{color:var(--blue);text-decoration:none}
+table{border-collapse:collapse;width:100%}
+
+@page{size:A4;margin:17mm 15mm 16mm;
+  @top-left{content:"Technologia · IA132 · IA pour développeurs";font:600 7.5pt "Barlow Condensed",Arial;letter-spacing:.12em;text-transform:uppercase;color:#77818A;vertical-align:bottom;padding-bottom:3mm}
+  @top-right{content:"Guide des ateliers pratiques";font:600 7.5pt "Barlow Condensed",Arial;letter-spacing:.12em;text-transform:uppercase;color:#1F78C1;vertical-align:bottom;padding-bottom:3mm}
+  @bottom-left{content:"Houssem Eddine Lassoued · formateur";font:7.5pt Barlow,Arial;color:#77818A}
+  @bottom-right{content:counter(page) " / " counter(pages);font:600 8pt "JetBrains Mono",Consolas;color:#77818A}}
+@page :first{margin:0;@top-left{content:none}@top-right{content:none}@bottom-left{content:none}@bottom-right{content:none}}
+
+/* ── Couverture ─────────────────────────────────────────── */
+.cover{position:relative;width:210mm;height:297mm;overflow:hidden;background:var(--bg);break-after:page;padding:24mm 20mm}
+.cover .stripe{position:absolute;left:0;top:0;right:0;height:2.6mm;display:flex}
+.cover .stripe i{display:block}
+.cover .logo{height:15mm}
+.cover .sq{position:absolute}
+.cover h1{font-size:44pt;line-height:.98;margin:52mm 0 0;font-weight:700;letter-spacing:-.01em;max-width:150mm}
+.cover .sub{font-size:16pt;color:var(--soft);margin-top:6mm;max-width:140mm;line-height:1.3}
+.cover .eyebrow{font-size:12pt;letter-spacing:.16em;color:var(--blue);margin-top:20mm;font-weight:600;text-transform:uppercase}
+.cover .repo{margin-top:12mm;display:inline-block;background:#fff;border-radius:3mm;box-shadow:0 0 0 .4mm #DCE3E8;padding:4mm 6mm}
+.cover .repo .cap{font-size:9pt;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.cover .repo .u{font:600 14pt "JetBrains Mono",Consolas;color:var(--blue);margin-top:1mm}
+.cover .foot{position:absolute;left:20mm;right:20mm;bottom:18mm;display:flex;justify-content:space-between;align-items:flex-end;font-size:10pt;color:var(--soft)}
+.cover .foot b{font-size:13pt;color:var(--ink);display:block}
+
+/* ── Pages de contenu ───────────────────────────────────── */
+.page{break-after:page}
+h2{font-size:22pt;line-height:1.05;margin:0 0 3mm;font-weight:700}
+h3{font-size:12pt;letter-spacing:.06em;text-transform:uppercase;color:var(--blue);margin:4mm 0 1.6mm;font-weight:700;break-after:avoid}
+.eyebrow{font-size:9.5pt;letter-spacing:.14em;text-transform:uppercase;font-weight:600;color:var(--blue)}
+.lead{font-size:11pt;color:var(--soft);margin:0 0 4mm}
+.cap{font-size:9pt;letter-spacing:.14em;text-transform:uppercase;font-weight:700;margin-bottom:1.2mm}
+ul,ol{list-style:none;margin:0 0 1.5mm;padding:0}
+li{display:flex;gap:2.4mm;align-items:flex-start;margin-bottom:1.3mm}
+li>div{flex:1;min-width:0}
+li .sq{flex:none;width:2.1mm;height:2.1mm;background:var(--blue);margin-top:1.55mm}
+ol{counter-reset:n}
+ol>li{counter-increment:n}
+ol>li>.sq{width:5.2mm;height:5.2mm;background:var(--blue);margin-top:.1mm;position:relative}
+ol>li>.sq::after{content:counter(n);position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#fff;font:700 9pt "Barlow Condensed",Arial}
+li .box{flex:none;width:3.4mm;height:3.4mm;border:.35mm solid var(--muted);border-radius:.6mm;margin-top:.8mm;background:#fff}
+li p{margin:0}
+
+.t-blue{color:var(--blue)}.t-teal{color:#137C87}.t-green{color:#2B7A33}.t-coral{color:#B3432B}.t-violet{color:#5644A6}.t-yellow{color:#7D6000}.t-grey{color:var(--soft)}
+
+/* ── Fiche de lab ───────────────────────────────────────── */
+.lab{break-before:page}
+.lh{display:flex;gap:5mm;align-items:center;margin-bottom:4mm}
+.lnum{flex:none;width:24mm;height:24mm;position:relative;color:#fff;display:flex;flex-direction:column;justify-content:center;align-items:center;
+  background:linear-gradient(135deg,#2A74BF,#3D9FCB 55%,#6CCBD0);box-shadow:4mm 4mm 0 #FFD000}
+.lnum span{font:700 8pt "Barlow Condensed",Arial;letter-spacing:.2em;opacity:.85}
+.lnum b{font:700 30pt/0.9 "Barlow Condensed",Arial}
+.lt{flex:1;min-width:0;padding-left:2mm}
+.lt h2{margin:.6mm 0 2mm}
+.chips{display:flex;gap:1.6mm;flex-wrap:wrap}
+.chip{display:inline-block;padding:.6mm 2.6mm;border-radius:10mm;background:#fff;box-shadow:inset 0 0 0 .3mm #CBD4DB;font-size:8.4pt;font-weight:600;color:var(--soft)}
+.obj{background:#E4F0FA;border-left:2.6pt solid var(--blue);border-radius:0 2mm 2mm 0;padding:3mm 4mm;font-size:10.6pt;break-inside:avoid}
+.obj .cap{color:#1A65A3}
+.obj p{margin:0}
+.steps>ol>li{margin-bottom:2.2mm}
+.duo{display:flex;gap:4mm;break-before:page;break-inside:avoid}
+.duo>div{flex:1;min-width:0}
+.liv{background:#fff;border:.35mm solid var(--rule);border-radius:2mm;padding:3mm 4mm}
+.liv .cap{color:#2B7A33}
+.col{display:flex;flex-direction:column;gap:3mm}
+.trap{background:#FCE7E2;border-radius:2mm;padding:3mm 4mm}.trap .cap{color:#B3432B}.trap .sq{background:var(--coral)}
+.bonus{background:#E4F3E3;border-radius:2mm;padding:3mm 4mm}.bonus .cap{color:#2B7A33}.bonus .sq{background:var(--green)}
+.help{background:#FFF5CC;border-radius:2mm;padding:3mm 4mm}.help .cap{color:#7D6000}.help .sq{background:var(--amber)}
+.trap,.bonus,.help,.liv{font-size:9.3pt}
+.notes{margin-top:5mm;border:.35mm dashed var(--faint);border-radius:2mm;padding:3mm 4mm;min-height:105mm;break-inside:avoid}
+.notes .cap{color:var(--muted)}
+
+/* ── Vue d'ensemble ─────────────────────────────────────── */
+.vue th{font:700 8.5pt "Barlow Condensed",Arial;letter-spacing:.12em;text-transform:uppercase;color:#fff;background:var(--ink);text-align:left;padding:2mm 2.4mm}
+.vue td{padding:2mm 2.4mm;border-bottom:.3mm solid var(--rule);vertical-align:top;font-size:9pt}
+.vue tr{break-inside:avoid}
+.vue .n{font:700 15pt "Barlow Condensed",Arial}
+.vue .o{color:var(--soft);font-size:8.6pt;margin-top:.6mm}
+.nw{white-space:nowrap}
+
+/* ── Blocs génériques ───────────────────────────────────── */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:4mm}
+.card{background:#fff;border-radius:2mm;box-shadow:0 0 0 .3mm #DCE3E8;padding:3.5mm 4mm;break-inside:avoid}
+.card.top-blue{box-shadow:inset 0 1.4mm 0 var(--blue),0 0 0 .3mm #DCE3E8}
+.card.top-green{box-shadow:inset 0 1.4mm 0 var(--green),0 0 0 .3mm #DCE3E8}
+.card.top-yellow{box-shadow:inset 0 1.4mm 0 var(--yellow),0 0 0 .3mm #DCE3E8}
+.card.top-coral{box-shadow:inset 0 1.4mm 0 var(--coral),0 0 0 .3mm #DCE3E8}
+.card.top-violet{box-shadow:inset 0 1.4mm 0 var(--violet),0 0 0 .3mm #DCE3E8}
+.card.top-teal{box-shadow:inset 0 1.4mm 0 var(--teal),0 0 0 .3mm #DCE3E8}
+.card h4{font:700 12pt "Barlow Condensed",Arial;margin:1mm 0 1.4mm}
+.big{font:600 13pt "JetBrains Mono",Consolas;color:var(--blue)}
+.kv td{padding:1.6mm 2mm;border-bottom:.3mm solid var(--rule);font-size:9.2pt;vertical-align:top}
+.kv td:first-child{font-weight:700;white-space:nowrap;width:34mm}
+li p+p,li p+blockquote,li blockquote+p,li pre+p{margin-top:1.2mm}
+</style></head><body><section class="cover">
+  <div class="stripe"><i style="flex:6;background:linear-gradient(90deg,#2A74BF,#6CCBD0)"></i><i style="flex:2;background:#3A9F45"></i><i style="flex:3;background:#FFD000"></i></div>
+  <img class="logo" src="data:image/png;base64,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" alt="Technologia">
+  <div class="sq" style="right:20mm;top:39mm;width:48mm;height:48mm;background:linear-gradient(135deg,#FFE24D,#FFD000 55%,#F4B400)"></div>
+  <div class="sq" style="right:36mm;top:23mm;width:48mm;height:48mm;background:linear-gradient(135deg,#2A74BF,#3D9FCB 55%,#6CCBD0)"></div>
+  <div class="sq" style="right:36mm;top:39mm;width:32mm;height:32mm;background:linear-gradient(135deg,#0F9A4A,#47A83F 60%,#7DB83A)"></div>
+  <div class="eyebrow">Formation IA132 · 2 jours</div>
+  <h1>Guide des ateliers pratiques</h1>
+  <div class="sub">IA pour développeurs : code assisté et programmation intelligente</div>
+  <div class="repo"><div class="cap">Le dépôt des labs</div><div class="u">github.com/houssemeddinelassoued/ia132-labs</div></div>
+  <div class="foot">
+    <div><b>Houssem Eddine Lassoued</b>Formateur · Technologia</div>
+    <div style="text-align:right">12 labs indépendants<br>Python et TypeScript</div>
+  </div>
+</section>
+
+<section class="page">
+  <div class="eyebrow">Avant de commencer</div>
+  <h2>Mode d’emploi</h2>
+  <p class="lead">Chaque lab est <b>indépendant</b> : un dossier, un objectif, un point de départ et des tests qui disent quand c’est terminé. Vous pouvez en reprendre un à tout moment, dans l’ordre que vous voulez, après la formation.</p>
+
+  <h3>1 · Récupérer le dépôt</h3>
+  <ol>
+    <li><span class="sq"></span><div>Ouvrez <b class="mono">https://github.com/houssemeddinelassoued/ia132-labs</b> et cliquez sur <b>Fork</b> : vous obtenez votre propre copie, où vous pourrez pousser et ouvrir des pull requests.</div></li>
+    <li><span class="sq"></span><div>Clonez <b>votre</b> fork, puis vérifiez votre poste :
+<pre><code>git clone https://github.com/&lt;votre-compte&gt;/ia132-labs.git
+cd ia132-labs
+python scripts/verifier_env.py</code></pre></div></li>
+    <li><span class="sq"></span><div><b>Python</b> : <code>python -m venv .venv</code>, activez-le, puis <code>pip install -r requirements-dev.txt</code>.
+      <b>TypeScript</b> : rien à installer, Node.js 22.18+ exécute les fichiers <code>.ts</code> directement.</div></li>
+    <li><span class="sq"></span><div>Faites le <b>lab 00</b> : deux tests verts et votre assistant qui « voit » le dépôt.</div></li>
+  </ol>
+
+  <h3>2 · Le cycle de chaque lab</h3>
+  <div class="grid2">
+    <div class="card top-blue"><h4>Rouge → vert</h4>Au départ, la plupart des tests échouent : c’est l’exercice. Le lab est terminé quand ils passent, <b>sans modifier les tests</b> (sauf consigne).
+<pre><code>pytest labs/lab04-debogage      # Python
+npm run test:lab04              # TypeScript</code></pre></div>
+    <div class="card top-green"><h4>L’IA propose, vous décidez</h4>Relisez chaque suggestion et chaque diff. Lancez les tests après chaque changement. Un commit par étape réussie : <code>git restore .</code> annule une étape ratée.</div>
+    <div class="card top-yellow"><h4>Classe virtuelle</h4>Chacun travaille sur son poste, minuteur à l’écran. Points d’étape réguliers : répondez au micro « étape 1, 2 ou 3 ». Bloqué ? Dites-le : partage d’écran de 2 minutes.</div>
+    <div class="card top-coral"><h4>Confidentialité</h4>Aucun code ni donnée de votre entreprise dans ces exercices. Les projets et les données des labs sont fictifs.</div>
+  </div>
+
+  <h3>3 · Lire une fiche</h3>
+  <table class="kv">
+    <tr><td>Objectif</td><td>La compétence visée, en une phrase.</td></tr>
+    <tr><td>Point de départ</td><td>Les fichiers fournis et l’état des tests au départ.</td></tr>
+    <tr><td>Étapes</td><td>Le déroulé conseillé, avec les demandes (prompts) à adapter.</td></tr>
+    <tr><td>Livrable</td><td>Les critères objectifs de fin : cochez-les.</td></tr>
+    <tr><td>Pièges</td><td>Ce que l’IA fait souvent mal sur ce type de tâche : à surveiller.</td></tr>
+    <tr><td>Bonus</td><td>Pour aller plus loin si vous avez fini en avance.</td></tr>
+  </table>
+</section>
+
+<section class="page">
+  <div class="eyebrow">Vue d’ensemble</div>
+  <h2>Les 12 labs et les modules</h2>
+  <p class="lead">Les horaires sont indicatifs. Les labs 00 à 05 se font le jour 1, les labs 06 à 11 le jour 2.</p>
+  <table class="vue">
+    <thead><tr><th>Lab</th><th>Titre et objectif</th><th>Module</th><th>Moment</th><th>Durée</th></tr></thead>
+    <tbody>
+<tr><td><b class='n t-grey'>00</b></td><td><b>Mise en route</b><div class='o'>Avoir un poste prêt pour les 2 jours : le dépôt cloné, les tests qui passent, l’assistant d’IA actif dans votre IDE.</div></td><td>Ouverture</td><td class='nw'>Jour 1<br>9 h 20</td><td class='nw'>10 min</td></tr>
+<tr><td><b class='n t-blue'>01</b></td><td><b>Les 4 modes de votre assistant</b><div class='o'>Utiliser les 4 modes d’interaction d’un assistant de codage — complétion en ligne, chat, édition, agent — et savoir lequel choisir selon la tâche.</div></td><td>1 · Panorama des assistants de codage</td><td class='nw'>Jour 1<br>10 h 05</td><td class='nw'>20 min</td></tr>
+<tr><td><b class='n t-teal'>02</b></td><td><b>Générer du code à partir d’une spécification</b><div class='o'>Rédiger un prompt structuré (contexte, tâche, contraintes, format, exemples) et utiliser des tests existants comme critère d’acceptation du code généré.</div></td><td>2 · Génération et réécriture de code</td><td class='nw'>Jour 1<br>11 h 25</td><td class='nw'>25 min</td></tr>
+<tr><td><b class='n t-teal'>03</b></td><td><b>Refactoriser du code hérité, sans rien casser</b><div class='o'>Refactoriser un module hérité par petites étapes vérifiées : l’IA propose, les tests de caractérisation protègent, Git garde chaque étape.</div></td><td>2 · Génération et réécriture de code</td><td class='nw'>Jour 1<br>13 h 00</td><td class='nw'>25 min</td></tr>
+<tr><td><b class='n t-coral'>04</b></td><td><b>Chasse aux bogues avec l’IA</b><div class='o'>Déboguer méthodiquement avec un assistant : reproduire, faire expliquer, formuler des hypothèses, corriger, puis prouver la correction par un test de non-régression.</div></td><td>3 · Débogage et optimisation avec l’IA</td><td class='nw'>Jour 1<br>13 h 55</td><td class='nw'>25 min</td></tr>
+<tr><td><b class='n t-coral'>05</b></td><td><b>Optimiser avec l’IA… et le prouver par la mesure</b><div class='o'>Faire analyser la complexité d’un code par l’IA, appliquer l’optimisation proposée, puis mesurer le gain sans changer le comportement.</div></td><td>3 · Débogage et optimisation avec l’IA</td><td class='nw'>Jour 1<br>14 h 55</td><td class='nw'>20 min</td></tr>
+<tr><td><b class='n t-violet'>06</b></td><td><b>Documenter automatiquement… et vérifier ce qui est écrit</b><div class='o'>Générer une documentation conforme à une convention (docstrings Google / TSDoc), un README de module et un journal des modifications, puis vérifier que la documentation dit vrai.</div></td><td>4 · Revue de code et documentation automatisée</td><td class='nw'>Jour 2<br>9 h 25</td><td class='nw'>20 min</td></tr>
+<tr><td><b class='n t-violet'>07</b></td><td><b>Revue de code assistée par l’IA</b><div class='o'>Mener une revue de pull request avec l’IA et un analyseur statique, classer les constats par gravité, trier les faux positifs, puis corriger les problèmes bloquants.</div></td><td>4 · Revue de code et documentation automatisée</td><td class='nw'>Jour 2<br>10 h 00</td><td class='nw'>25 min</td></tr>
+<tr><td><b class='n t-green'>08</b></td><td><b>Générer des tests unitaires qui servent vraiment</b><div class='o'>Faire générer une suite de tests par l’IA (cas nominaux, limites, erreurs), puis la juger avec deux mesures objectives : la couverture des branches et le score de mutation.</div></td><td>5 · Génération de tests et assurance qualité</td><td class='nw'>Jour 2<br>11 h 05</td><td class='nw'>30 min</td></tr>
+<tr><td><b class='n t-green'>09</b></td><td><b>Tests d’intégration, charge et pipeline CI/CD</b><div class='o'>Faire écrire par l’IA des tests d’intégration sur une vraie API, simuler une charge avec un objectif de service, puis brancher le tout dans un pipeline GitHub Actions qui bloque une PR fautive.</div></td><td>5 · Génération de tests et assurance qualité</td><td class='nw'>Jour 2<br>11 h 40</td><td class='nw'>35 min</td></tr>
+<tr><td><b class='n t-yellow'>10</b></td><td><b>Concevoir et planifier avec l’IA</b><div class='o'>Utiliser l’IA comme partenaire d’architecture : faire émerger les questions, comparer des options, documenter une décision (ADR), découper et estimer un backlog réaliste, puis auditer des dépendances… en vérifiant chaque affirmation.</div></td><td>6 · IA pour la planification et l’architecture logicielle</td><td class='nw'>Jour 2<br>13 h 40</td><td class='nw'>35 min</td></tr>
+<tr><td><b class='n t-blue'>11</b></td><td><b>Projet final : un outil complet, de la spécification à la PR</b><div class='o'>Développer de bout en bout un petit outil avec un agent de codage — plan, code, tests, documentation, CI, pull request revue — en appliquant le flux de travail d’une équipe : instructions de projet, petits commits, revue humaine.</div></td><td>7 · Ateliers pratiques</td><td class='nw'>Jour 2<br>14 h 30</td><td class='nw'>55 min</td></tr>
+    </tbody>
+  </table>
+</section>
+
+
+<section class="lab" id="lab00">
+  <header class="lh">
+    <div class="lnum"><span>LAB</span><b>00</b></div>
+    <div class="lt">
+      <div class="eyebrow t-grey">Ouverture</div>
+      <h2>Mise en route</h2>
+      <div class="chips">
+        <span class="chip">⏱ 10 min</span>
+        <span class="chip">Jour 1 · vers 9 h 20</span>
+        <span class="chip">Python et/ou TypeScript</span>
+        <span class="chip mono">labs/lab00-mise-en-route/</span>
+      </div>
+    </div>
+  </header>
+  <div class="obj"><div class="cap">Objectif</div><p>Avoir un poste prêt pour les 2 jours : le dépôt cloné, les tests qui passent, l’assistant d’IA actif dans votre IDE.</p></div>
+  <h3>Point de départ</h3>
+  <h3>Étapes</h3><div class="steps"><ol>
+<li><span class="sq"></span><div>
+<p><strong>Forkez</strong> le dépôt sur votre compte GitHub (bouton <em>Fork</em>), puis clonez <strong>votre</strong> fork :
+    <div class="highlight"><pre><span></span><code>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/&lt;votre-compte&gt;/ia132-labs.git
+<span class="nb">cd</span><span class="w"> </span>ia132-labs
+</code></pre></div></p>
+</div></li>
+<li><span class="sq"></span><div>
+<p><strong>Vérifiez vos outils</strong> :
+    <div class="highlight"><pre><span></span><code>python<span class="w"> </span>scripts/verifier_env.py
+</code></pre></div></p>
+</div></li>
+<li><span class="sq"></span><div>
+<p><strong>Python</strong> — créez un environnement virtuel et installez les outils :
+    <div class="highlight"><pre><span></span><code>python<span class="w"> </span>-m<span class="w"> </span>venv<span class="w"> </span>.venv
+<span class="c1"># Windows : .venv\Scripts\activate   ·   macOS / Linux : source .venv/bin/activate</span>
+pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>requirements-dev.txt
+pytest<span class="w"> </span>labs/lab00-mise-en-route
+</code></pre></div></p>
+</div></li>
+<li><span class="sq"></span><div>
+<p><strong>TypeScript</strong> — rien à installer, Node 22.18+ exécute les fichiers <code>.ts</code> :
+    <div class="highlight"><pre><span></span><code>npm<span class="w"> </span>run<span class="w"> </span>test:lab00
+</code></pre></div></p>
+</div></li>
+<li><span class="sq"></span><div>
+<p><strong>Assistant d’IA</strong> — ouvrez le chat de votre outil (Copilot, Cursor, JetBrains AI, Claude Code…) et demandez :</p>
+<blockquote>
+<p>Résume ce dépôt en 5 lignes, puis liste les labs avec leur objectif.</p>
+</blockquote>
+<p>Vérifiez que la réponse cite bien les dossiers <code>labs/…</code> : l’assistant « voit » votre projet.</p>
+</div></li>
+<li><span class="sq"></span><div>
+<p>Notez le <strong>nom du modèle</strong> utilisé par votre assistant (sélecteur de modèle du chat).</p>
+</div></li>
+</ol></div>
+  <div class="duo">
+    <div class="liv"><div class="cap">Livrable · c’est terminé quand…</div><ul>
+<li><span class="box"></span><div><code>pytest labs/lab00-mise-en-route</code> et/ou <code>npm run test:lab00</code> : <strong>2 tests verts</strong>.</div></li>
+<li><span class="box"></span><div>Votre assistant répond dans le chat en citant les fichiers du dépôt.</div></li>
+</ul></div>
+    <div class="col">
+      <div class="trap"><div class="cap">Pièges à observer</div></div>
+      
+      <div class="help"><div class="cap">Coincé ?</div><ul>
+<li><span class="sq"></span><div><code>python</code> introuvable sous Windows : essayez <code>py</code>.</div></li>
+<li><span class="sq"></span><div>Proxy d’entreprise : <code>pip install --proxy http://proxy:port -r requirements-dev.txt</code>.</div></li>
+<li><span class="sq"></span><div>Pas de Copilot ? Un essai gratuit suffit ; sinon Cursor ou Claude Code font l’affaire pour tous les labs.</div></li>
+</ul></div>
+    </div>
+  </div>
+  <div class="notes"><div class="cap">Mes notes</div></div>
+</section>
+
+<section class="lab" id="lab01">
+  <header class="lh">
+    <div class="lnum"><span>LAB</span><b>01</b></div>
+    <div class="lt">
+      <div class="eyebrow t-blue">1 · Panorama des assistants de codage</div>
+      <h2>Les 4 modes de votre assistant</h2>
+      <div class="chips">
+        <span class="chip">⏱ 20 min</span>
+        <span class="chip">Jour 1 · vers 10 h 05</span>
+        <span class="chip">Python ou TypeScript</span>
+        <span class="chip mono">labs/lab01-decouverte/</span>
+      </div>
+    </div>
+  </header>
+  <div class="obj"><div class="cap">Objectif</div><p>Utiliser les <strong>4 modes d’interaction</strong> d’un assistant de codage — complétion en ligne, chat, édition, agent — et savoir lequel choisir selon la tâche.</p></div>
+  <h3>Point de départ</h3><ul>
+<li><span class="sq"></span><div><code>python/convertisseur.py</code> ou <code>typescript/convertisseur.ts</code> : 5 fonctions avec leur signature et leur documentation, mais sans code.</div></li>
+<li><span class="sq"></span><div>Les tests des étapes 1 à 3 (<code>test_convertisseur.py</code> / <code>convertisseur.test.ts</code>) et de l’étape 4 (<code>test_cli.py</code> / <code>cli.test.ts</code>) échouent tous au départ.</div></li>
+</ul>
+<div class="highlight"><pre><span></span><code>pytest<span class="w"> </span>labs/lab01-decouverte<span class="w">           </span><span class="c1"># Python</span>
+npm<span class="w"> </span>run<span class="w"> </span>test:lab01<span class="w">                     </span><span class="c1"># TypeScript</span>
+</code></pre></div>
+  <h3>Étapes</h3><div class="steps"><ol>
+<li><span class="sq"></span><div><strong>Complétion en ligne (5 min)</strong> — Effacez la ligne <code>raise NotImplementedError</code> (ou <code>throw</code>) de <code>celsius_vers_fahrenheit</code>, placez le curseur dans la fonction et attendez la suggestion grisée. <code>Tab</code> pour accepter, <code>Échap</code> pour refuser. Faites de même pour les 3 conversions suivantes. <strong>Lisez chaque suggestion avant de l’accepter.</strong></div></li>
+<li><span class="sq"></span><div>
+<p><strong>Chat (5 min)</strong> — Sélectionnez <code>fahrenheit_vers_celsius</code> et demandez :</p>
+<blockquote>
+<p>Explique cette fonction. Quels cas limites ne sont pas couverts par les tests ?</p>
+</blockquote>
+<p>Notez une idée de cas limite pertinente… et une qui ne l’est pas.</p>
+</div></li>
+<li><span class="sq"></span><div>
+<p><strong>Édition (5 min)</strong> — Ouvrez le mode édition (Copilot Edits, Cursor <code>Ctrl+K</code>, JetBrains <em>AI Actions</em>) et demandez :</p>
+<blockquote>
+<p>Implémente convertir() avec un dictionnaire de fonctions plutôt qu’une suite de if. Lève ValueError pour une paire non prise en charge.</p>
+</blockquote>
+<p>Relisez le <strong>diff</strong> proposé avant de l’accepter. Lancez les tests : étapes 1 à 3 au vert.</p>
+</div></li>
+<li><span class="sq"></span><div>
+<p><strong>Agent (5 min)</strong> — Passez en mode agent (Copilot <em>Agent</em>, Cursor <em>Agent</em>, Claude Code, Junie) et demandez :</p>
+<blockquote>
+<p>Ajoute une fonction main(argv) qui rend le module utilisable en ligne de commande, de façon à faire passer les tests de test_cli. Lance les tests pour vérifier.</p>
+</blockquote>
+<p>Observez : quels fichiers l’agent lit-il ? Quelles commandes lance-t-il ? Vous demande-t-il votre accord ?</p>
+</div></li>
+</ol></div>
+  <div class="duo">
+    <div class="liv"><div class="cap">Livrable · c’est terminé quand…</div><ul>
+<li><span class="box"></span><div>Tous les tests du lab au vert.</div></li>
+<li><span class="box"></span><div>Un fichier <code>NOTES.md</code> dans le dossier du lab : pour chaque mode, <strong>une phrase</strong> « utile pour… / à éviter pour… ».</div></li>
+</ul></div>
+    <div class="col">
+      <div class="trap"><div class="cap">Pièges à observer</div><ul>
+<li><span class="sq"></span><div>La complétion invente parfois une constante au lieu d’utiliser <code>KM_PAR_MILE</code> déjà définie.</div></li>
+<li><span class="sq"></span><div>En mode agent, l’outil peut modifier les <strong>tests</strong> pour les faire passer : refusez, et dites-le dans votre demande.</div></li>
+</ul></div>
+      <div class="bonus"><div class="cap">Bonus</div><p>Demandez au chat la même implémentation avec <strong>deux modèles différents</strong> (sélecteur de modèle) et comparez : longueur, style, cas limites.</p></div>
+      
+    </div>
+  </div>
+  <div class="notes"><div class="cap">Mes notes</div></div>
+</section>
+
+<section class="lab" id="lab02">
+  <header class="lh">
+    <div class="lnum"><span>LAB</span><b>02</b></div>
+    <div class="lt">
+      <div class="eyebrow t-teal">2 · Génération et réécriture de code</div>
+      <h2>Générer du code à partir d’une spécification</h2>
+      <div class="chips">
+        <span class="chip">⏱ 25 min</span>
+        <span class="chip">Jour 1 · vers 11 h 25</span>
+        <span class="chip">Python ou TypeScript</span>
+        <span class="chip mono">labs/lab02-generation/</span>
+      </div>
+    </div>
+  </header>
+  <div class="obj"><div class="cap">Objectif</div><p>Rédiger un <strong>prompt structuré</strong> (contexte, tâche, contraintes, format, exemples) et utiliser des <strong>tests existants comme critère d’acceptation</strong> du code généré.</p></div>
+  <h3>Point de départ</h3><ul>
+<li><span class="sq"></span><div><code>SPEC.md</code> : les règles métier (TPS, TVQ, rabais, livraison, arrondi).</div></li>
+<li><span class="sq"></span><div><code>python/facture.py</code> ou <code>typescript/facture.ts</code> : la signature seule.</div></li>
+<li><span class="sq"></span><div><code>test_facture.py</code> / <code>facture.test.ts</code> : 12 tests d’acceptation, tous en échec. <strong>Ne les modifiez pas.</strong></div></li>
+</ul>
+  <h3>Étapes</h3><div class="steps"><ol>
+<li><span class="sq"></span><div><strong>Lisez</strong> <code>SPEC.md</code> (3 min). Repérez les 2 règles les plus piégeuses.</div></li>
+<li><span class="sq"></span><div>
+<p><strong>Rédigez votre prompt</strong> dans un fichier <code>PROMPT.md</code> en suivant le canevas :
+    <div class="highlight"><pre><span></span><code>CONTEXTE    : langage, version, fichier, conventions du projet
+TÂCHE       : ce que la fonction doit faire (renvoyer à SPEC.md avec #file / @SPEC.md)
+CONTRAINTES : entiers en cents, arrondi demi vers le haut, pas de dépendance, exceptions…
+FORMAT      : une seule fonction + fonctions privées, sans modifier les tests
+EXEMPLES    : 1 ou 2 cas chiffrés tirés de SPEC.md
+</code></pre></div></p>
+</div></li>
+<li><span class="sq"></span><div>
+<p><strong>Générez</strong> l’implémentation (chat ou édition), en joignant <code>SPEC.md</code> et le fichier de tests au contexte.</p>
+</div></li>
+<li><span class="sq"></span><div><strong>Lancez les tests</strong>. S’il en reste en échec : copiez <strong>le message d’échec</strong> dans le chat plutôt que de demander « corrige ».</div></li>
+<li><span class="sq"></span><div><strong>Relisez</strong> le code : chaque règle de <code>SPEC.md</code> est-elle visible et nommée (constantes, petites fonctions) ?</div></li>
+</ol>
+<div class="highlight"><pre><span></span><code>pytest<span class="w"> </span>labs/lab02-generation<span class="w">       </span><span class="c1"># Python</span>
+npm<span class="w"> </span>run<span class="w"> </span>test:lab02<span class="w">                 </span><span class="c1"># TypeScript</span>
+</code></pre></div></div>
+  <div class="duo">
+    <div class="liv"><div class="cap">Livrable · c’est terminé quand…</div><ul>
+<li><span class="box"></span><div>12 tests au vert, sans modification des tests.</div></li>
+<li><span class="box"></span><div><code>PROMPT.md</code> : votre prompt final + le nombre d’itérations nécessaires.</div></li>
+</ul></div>
+    <div class="col">
+      <div class="trap"><div class="cap">Pièges à observer</div><ul>
+<li><span class="sq"></span><div><code>round()</code> en Python arrondit 50,5 à 50 : le test d’arrondi le détecte.</div></li>
+<li><span class="sq"></span><div>Des montants en <code>float</code> (<code>0.05 * base</code>) : refusez-les, la spécification impose des entiers.</div></li>
+<li><span class="sq"></span><div>L’assistant qui « corrige » un test pour le faire passer.</div></li>
+</ul></div>
+      <div class="bonus"><div class="cap">Bonus</div><p>Demandez à l’assistant 5 cas limites <strong>absents</strong> des tests (ex. code <code>ETE15</code> à exactement 100,00 $). Ajoutez ceux qui sont justes… après avoir vérifié le calcul à la main.</p></div>
+      
+    </div>
+  </div>
+  <div class="notes"><div class="cap">Mes notes</div></div>
+</section>
+
+<section class="lab" id="lab03">
+  <header class="lh">
+    <div class="lnum"><span>LAB</span><b>03</b></div>
+    <div class="lt">
+      <div class="eyebrow t-teal">2 · Génération et réécriture de code</div>
+      <h2>Refactoriser du code hérité, sans rien casser</h2>
+      <div class="chips">
+        <span class="chip">⏱ 25 min</span>
+        <span class="chip">Jour 1 · vers 13 h 00</span>
+        <span class="chip">Python ou TypeScript</span>
+        <span class="chip mono">labs/lab03-refactorisation/</span>
+      </div>
+    </div>
+  </header>
+  <div class="obj"><div class="cap">Objectif</div><p>Refactoriser un module hérité <strong>par petites étapes vérifiées</strong> : l’IA propose, les tests de caractérisation protègent, Git garde chaque étape.</p></div>
+  <h3>Point de départ</h3><ul>
+<li><span class="sq"></span><div><code>python/commandes.py</code> ou <code>typescript/commandes.ts</code> : une fonction <code>traiter(c, r, p)</code> de 50 lignes — noms d’une lettre, <code>if</code> imbriqués sur 4 niveaux, nombres magiques, code dupliqué par région.</div></li>
+<li><span class="sq"></span><div><code>test_commandes.py</code> / <code>commandes.test.ts</code> : <strong>tests de caractérisation</strong>, verts au départ. Ils figent le comportement actuel (fichier <code>donnees/attendu.json</code>).</div></li>
+</ul>
+<div class="highlight"><pre><span></span><code>pytest<span class="w"> </span>labs/lab03-refactorisation<span class="w">                          </span><span class="c1"># Python</span>
+ruff<span class="w"> </span>check<span class="w"> </span>--select<span class="w"> </span>C901<span class="w"> </span>labs/lab03-refactorisation<span class="w">        </span><span class="c1"># complexité (Python)</span>
+npm<span class="w"> </span>run<span class="w"> </span>test:lab03<span class="w">                                         </span><span class="c1"># TypeScript</span>
+</code></pre></div>
+  <h3>Étapes</h3><div class="steps"><ol>
+<li><span class="sq"></span><div>
+<p><strong>Diagnostic (5 min)</strong> — Demandez au chat :</p>
+<blockquote>
+<p>Liste les problèmes de lisibilité et de maintenabilité de traiter(), du plus coûteux au moins coûteux. Ne propose pas encore de code.</p>
+</blockquote>
+<p>Notez la complexité de départ (<code>ruff check --select C901</code> signale <code>traiter</code> comme trop complexe).</p>
+</div></li>
+<li><span class="sq"></span><div>
+<p><strong>Plan (3 min)</strong> — Demandez un <strong>plan de refactorisation en 5 étapes maximum</strong>, chacune ne changeant pas le comportement. Validez ou réordonnez le plan vous-même.</p>
+</div></li>
+<li><span class="sq"></span><div>
+<p><strong>Exécution pas à pas (15 min)</strong> — Pour chaque étape : demandez <strong>cette étape seulement</strong> → relisez le diff → lancez les tests → <code>git commit -m "refactor: …"</code>. Si un test casse : <code>git restore .</code> et reformulez.
+    Pistes : noms explicites, constantes nommées, grille de tarifs par région (dictionnaire / dataclass), fonctions <code>frais_livraison</code>, <code>priorite</code>, retours anticipés (<code>continue</code>) au lieu des <code>if</code> imbriqués, types.</p>
+</div></li>
+<li><span class="sq"></span><div>
+<p><strong>Bilan (2 min)</strong> — Relancez <code>ruff check --select C901</code> : <code>traiter</code> ne doit plus apparaître.</p>
+</div></li>
+</ol></div>
+  <div class="duo">
+    <div class="liv"><div class="cap">Livrable · c’est terminé quand…</div><ul>
+<li><span class="box"></span><div>Tests de caractérisation <strong>toujours verts</strong>, sans les avoir modifiés.</div></li>
+<li><span class="box"></span><div>3 à 5 commits <code>refactor: …</code>, chacun vert.</div></li>
+<li><span class="box"></span><div><code>traiter</code> sous le seuil de complexité (8).</div></li>
+</ul></div>
+    <div class="col">
+      <div class="trap"><div class="cap">Pièges à observer</div><ul>
+<li><span class="sq"></span><div>« J’en ai profité pour corriger un bogue » : en refactorisation, <strong>aucun</strong> changement de comportement. Les arrondis (<code>round(t + f, 2)</code>) et les seuils stricts (<code>&gt; 100</code>) doivent rester identiques.</div></li>
+<li><span class="sq"></span><div>L’IA remplace le <code>print</code> par une exception : c’est un changement de comportement. Un <code>logging.warning</code> est acceptable ; discutez-en.</div></li>
+<li><span class="sq"></span><div>Une grosse réécriture d’un seul coup : impossible à relire, impossible à annuler proprement.</div></li>
+</ul></div>
+      <div class="bonus"><div class="cap">Bonus</div><p>Demandez à l’assistant d’ajouter des <strong>types</strong> (<code>TypedDict</code>/<code>dataclass</code> en Python, <code>type Commande</code> en TypeScript) et vérifiez que les tests passent encore.</p></div>
+      
+    </div>
+  </div>
+  <div class="notes"><div class="cap">Mes notes</div></div>
+</section>
+
+<section class="lab" id="lab04">
+  <header class="lh">
+    <div class="lnum"><span>LAB</span><b>04</b></div>
+    <div class="lt">
+      <div class="eyebrow t-coral">3 · Débogage et optimisation avec l’IA</div>
+      <h2>Chasse aux bogues avec l’IA</h2>
+      <div class="chips">
+        <span class="chip">⏱ 25 min</span>
+        <span class="chip">Jour 1 · vers 13 h 55</span>
+        <span class="chip">Python ou TypeScript</span>
+        <span class="chip mono">labs/lab04-debogage/</span>
+      </div>
+    </div>
+  </header>
+  <div class="obj"><div class="cap">Objectif</div><p>Déboguer <strong>méthodiquement</strong> avec un assistant : reproduire, faire expliquer, formuler des hypothèses, corriger, puis <strong>prouver</strong> la correction par un test de non-régression.</p></div>
+  <h3>Point de départ</h3><ul>
+<li><span class="sq"></span><div><code>rapport-incidents.md</code> : 5 tickets du support (symptômes, une trace d’erreur).</div></li>
+<li><span class="sq"></span><div><code>python/reservations.py</code> ou <code>typescript/reservations.ts</code> : le module en production.</div></li>
+<li><span class="sq"></span><div><code>test_reservations.py</code> / <code>reservations.test.ts</code> : 4 tests verts, 5 tests rouges (un par ticket).</div></li>
+</ul>
+<div class="highlight"><pre><span></span><code>pytest<span class="w"> </span>labs/lab04-debogage<span class="w">            </span><span class="c1"># Python</span>
+npm<span class="w"> </span>run<span class="w"> </span>test:lab04<span class="w">                    </span><span class="c1"># TypeScript</span>
+</code></pre></div>
+  <h3>Étapes</h3><div class="steps"><ol>
+<li><span class="sq"></span><div><strong>Reproduire INC-101 (3 min)</strong> — Lancez <code>python tableau_de_bord.py</code> (ou la version <code>.ts</code>). Vous obtenez la trace du rapport.</div></li>
+<li><span class="sq"></span><div>
+<p><strong>Faire expliquer, pas corriger (5 min)</strong> — Collez la trace <strong>complète</strong> dans le chat avec le fichier en contexte :</p>
+<blockquote>
+<p>Voici une trace d’erreur et le code concerné. Explique la cause racine en 3 phrases, puis propose 2 corrections possibles avec leurs inconvénients. N’écris pas encore le code.</p>
+</blockquote>
+<p>Choisissez vous-même la correction, puis appliquez-la.</p>
+</div></li>
+<li><span class="sq"></span><div>
+<p><strong>Un ticket à la fois (12 min)</strong> — Pour INC-102 à INC-104 : donnez au chat <strong>le symptôme + le test rouge</strong>, demandez une hypothèse, vérifiez-la (en lisant le code ou avec <code>print</code> / débogueur), corrigez, relancez <strong>tous</strong> les tests.</p>
+</div></li>
+<li><span class="sq"></span><div><strong>Non-régression (5 min)</strong> — Pour chaque correction, vérifiez qu’un test échoue si vous annulez la correction (<code>git stash</code> → test rouge → <code>git stash pop</code>).</div></li>
+</ol></div>
+  <div class="duo">
+    <div class="liv"><div class="cap">Livrable · c’est terminé quand…</div><ul>
+<li><span class="box"></span><div>9 tests au vert (INC-105 en bonus).</div></li>
+<li><span class="box"></span><div>Un commit par ticket : <code>fix(INC-10x): …</code>, avec la cause racine en une ligne dans le message.</div></li>
+</ul></div>
+    <div class="col">
+      <div class="trap"><div class="cap">Pièges à observer</div><ul>
+<li><span class="sq"></span><div>L’IA propose <code>try/except ZeroDivisionError: return 0</code> partout : ça masque le symptôme au lieu de traiter la cause (pas de réservation → pas de jour).</div></li>
+<li><span class="sq"></span><div>INC-104 : <code>round(x + 0.0001, 2)</code> « marche » sur ce cas… et échoue sur d’autres. Exigez une explication (représentation binaire des décimaux) et une correction de fond (<code>Decimal</code>, calcul en cents).</div></li>
+<li><span class="sq"></span><div>Un test modifié pour devenir vert n’est pas une correction.</div></li>
+</ul></div>
+      <div class="bonus"><div class="cap">Bonus</div><p>INC-105 : faites trouver la cause par l’IA <strong>sans</strong> lui montrer le test, seulement le ticket. A-t-elle vu le piège de <code>.seconds</code> / <code>getHours()</code> ?</p></div>
+      
+    </div>
+  </div>
+  <div class="notes"><div class="cap">Mes notes</div></div>
+</section>
+
+<section class="lab" id="lab05">
+  <header class="lh">
+    <div class="lnum"><span>LAB</span><b>05</b></div>
+    <div class="lt">
+      <div class="eyebrow t-coral">3 · Débogage et optimisation avec l’IA</div>
+      <h2>Optimiser avec l’IA… et le prouver par la mesure</h2>
+      <div class="chips">
+        <span class="chip">⏱ 20 min</span>
+        <span class="chip">Jour 1 · vers 14 h 55</span>
+        <span class="chip">Python ou TypeScript</span>
+        <span class="chip mono">labs/lab05-performance/</span>
+      </div>
+    </div>
+  </header>
+  <div class="obj"><div class="cap">Objectif</div><p>Faire analyser la <strong>complexité</strong> d’un code par l’IA, appliquer l’optimisation proposée, puis <strong>mesurer</strong> le gain sans changer le comportement.</p></div>
+  <h3>Point de départ</h3><ul>
+<li><span class="sq"></span><div><code>analyse.py</code> / <code>analyse.ts</code> : 3 fonctions correctes mais quadratiques (<code>in</code> sur une liste, <code>count</code> dans une boucle).</div></li>
+<li><span class="sq"></span><div><code>test_analyse.py</code> / <code>analyse.test.ts</code> : le comportement à préserver (verts).</div></li>
+<li><span class="sq"></span><div><code>test_performance.py</code> / fin de <code>analyse.test.ts</code> : 2 budgets de temps (rouges).</div></li>
+<li><span class="sq"></span><div><code>bench.py</code> / <code>bench.ts</code> : chronomètre les fonctions quand la taille double.</div></li>
+</ul>
+<div class="highlight"><pre><span></span><code>python<span class="w"> </span>labs/lab05-performance/python/bench.py<span class="w">     </span><span class="c1"># ou : npm run bench:lab05</span>
+pytest<span class="w"> </span>labs/lab05-performance<span class="w">                     </span><span class="c1"># ou : npm run test:lab05</span>
+</code></pre></div>
+  <h3>Étapes</h3><div class="steps"><ol>
+<li><span class="sq"></span><div><strong>Mesurer d’abord (3 min)</strong> — Lancez le banc d’essai. Quand la taille double, le temps est-il ×2 ou ×4 ? Notez les chiffres.</div></li>
+<li><span class="sq"></span><div>
+<p><strong>Faire analyser (5 min)</strong> — Demandez :</p>
+<blockquote>
+<p>Donne la complexité en temps de chaque fonction de ce fichier, en expliquant la ligne responsable. Propose une version O(n) qui garde exactement le même résultat, y compris l’ordre des éléments.</p>
+</blockquote>
+</div></li>
+<li><span class="sq"></span><div>
+<p><strong>Appliquer et vérifier (7 min)</strong> — Appliquez une fonction à la fois, relancez <strong>les tests de comportement</strong> après chacune.</p>
+</div></li>
+<li><span class="sq"></span><div><strong>Mesurer après (5 min)</strong> — Relancez le banc d’essai, puis <code>bench.py 200000</code>. Les budgets de temps passent-ils ?</div></li>
+</ol></div>
+  <div class="duo">
+    <div class="liv"><div class="cap">Livrable · c’est terminé quand…</div><ul>
+<li><span class="box"></span><div>Tous les tests au vert, dont les 2 budgets de temps.</div></li>
+<li><span class="box"></span><div>Un tableau avant / après dans <code>NOTES.md</code> (3 tailles × 3 fonctions).</div></li>
+</ul></div>
+    <div class="col">
+      <div class="trap"><div class="cap">Pièges à observer</div><ul>
+<li><span class="sq"></span><div><code>list(set(courriels))</code> est rapide… mais <strong>perd l’ordre</strong> : un test le détecte.</div></li>
+<li><span class="sq"></span><div><code>Counter.most_common()</code> départage les égalités par ordre d’apparition, pas alphabétique.</div></li>
+<li><span class="sq"></span><div>« C’est plus rapide » sans mesure n’est pas une preuve. Une micro-optimisation (compréhension de liste au lieu d’une boucle) ne change pas un O(n²).</div></li>
+</ul></div>
+      <div class="bonus"><div class="cap">Bonus</div><p>Demandez à l’IA un profil d’exécution (<code>python -m cProfile -s cumtime bench.py</code>, ou <code>node --cpu-prof</code>) et faites-lui interpréter le résultat.</p></div>
+      
+    </div>
+  </div>
+  <div class="notes"><div class="cap">Mes notes</div></div>
+</section>
+
+<section class="lab" id="lab06">
+  <header class="lh">
+    <div class="lnum"><span>LAB</span><b>06</b></div>
+    <div class="lt">
+      <div class="eyebrow t-violet">4 · Revue de code et documentation automatisée</div>
+      <h2>Documenter automatiquement… et vérifier ce qui est écrit</h2>
+      <div class="chips">
+        <span class="chip">⏱ 20 min</span>
+        <span class="chip">Jour 2 · vers 9 h 25</span>
+        <span class="chip">Python ou TypeScript</span>
+        <span class="chip mono">labs/lab06-documentation/</span>
+      </div>
+    </div>
+  </header>
+  <div class="obj"><div class="cap">Objectif</div><p>Générer une documentation <strong>conforme à une convention</strong> (docstrings Google / TSDoc), un README de module et un journal des modifications, puis <strong>vérifier</strong> que la documentation dit vrai.</p></div>
+  <h3>Point de départ</h3><ul>
+<li><span class="sq"></span><div><code>geo.py</code> / <code>geo.ts</code> : 4 fonctions géographiques, <strong>zéro</strong> commentaire.</div></li>
+<li><span class="sq"></span><div>Les tests de comportement sont verts ; les tests de documentation sont rouges : ils exigent <code>Args:</code> / <code>Returns:</code> / <code>Raises:</code> et un exemple exécutable (Python, vérifié par <code>doctest</code>), ou <code>@param</code> / <code>@returns</code> / <code>@throws</code> / <code>@example</code> (TypeScript).</div></li>
+</ul>
+<div class="highlight"><pre><span></span><code>pytest<span class="w"> </span>labs/lab06-documentation<span class="w">              </span><span class="c1"># ou : npm run test:lab06</span>
+python<span class="w"> </span>-m<span class="w"> </span>doctest<span class="w"> </span>-v<span class="w"> </span>labs/lab06-documentation/python/geo.py
+</code></pre></div>
+  <h3>Étapes</h3><div class="steps"><ol>
+<li><span class="sq"></span><div><strong>Convention d’abord (3 min)</strong> — Demandez à l’assistant de documenter <strong>une</strong> fonction en précisant la convention (« docstring au format Google, en français, avec un exemple doctest exécutable »). Comparez avec le même prompt <strong>sans</strong> préciser la convention.</div></li>
+<li><span class="sq"></span><div><strong>Tout le module (7 min)</strong> — Documentez le module, la classe <code>Point</code> et les 4 fonctions (commande <code>/doc</code> de Copilot, <em>Generate documentation</em> de JetBrains, ou le chat). Lancez les tests.</div></li>
+<li><span class="sq"></span><div><strong>Vérifier (5 min)</strong> — Les exemples sont-ils justes ? Python : <code>doctest</code> le prouve. TypeScript : exécutez un exemple à la main. Cherchez une phrase <strong>fausse</strong> ou invérifiable (ex. « précision au mètre »).</div></li>
+<li><span class="sq"></span><div>
+<p><strong>README et changelog (5 min)</strong> — Demandez un <code>README.md</code> pour ce module (but, installation, exemple, limites), puis :</p>
+<blockquote>
+<p>À partir de <code>git log --oneline -15</code>, rédige une entrée de CHANGELOG au format Keep a Changelog (Ajouté / Modifié / Corrigé).</p>
+</blockquote>
+</div></li>
+</ol></div>
+  <div class="duo">
+    <div class="liv"><div class="cap">Livrable · c’est terminé quand…</div><ul>
+<li><span class="box"></span><div>Tous les tests du lab au vert.</div></li>
+<li><span class="box"></span><div><code>README.md</code> du module, revu par vous (au moins une correction de votre part).</div></li>
+</ul></div>
+    <div class="col">
+      <div class="trap"><div class="cap">Pièges à observer</div><ul>
+<li><span class="sq"></span><div>L’IA paraphrase le code (« incrémente i de 1 ») au lieu d’expliquer le <strong>pourquoi</strong> (haversine, Terre sphérique, bord inclus).</div></li>
+<li><span class="sq"></span><div>Les exemples inventés : <code>distance_km(Montréal, Québec) == 250</code> « à peu près » → le doctest échoue.</div></li>
+<li><span class="sq"></span><div>La documentation qui promet un comportement que le code n’a pas (ex. « lève une erreur si la liste est vide »).</div></li>
+</ul></div>
+      <div class="bonus"><div class="cap">Bonus</div><p>Générez la doc HTML : <code>python -m pydoc -w geo</code> ou <code>npx typedoc labs/lab06-documentation/typescript/geo.ts</code>.</p></div>
+      
+    </div>
+  </div>
+  <div class="notes"><div class="cap">Mes notes</div></div>
+</section>
+
+<section class="lab" id="lab07">
+  <header class="lh">
+    <div class="lnum"><span>LAB</span><b>07</b></div>
+    <div class="lt">
+      <div class="eyebrow t-violet">4 · Revue de code et documentation automatisée</div>
+      <h2>Revue de code assistée par l’IA</h2>
+      <div class="chips">
+        <span class="chip">⏱ 25 min</span>
+        <span class="chip">Jour 2 · vers 10 h 00</span>
+        <span class="chip">Python ou TypeScript</span>
+        <span class="chip mono">labs/lab07-revue/</span>
+      </div>
+    </div>
+  </header>
+  <div class="obj"><div class="cap">Objectif</div><p>Mener une <strong>revue de pull request</strong> avec l’IA et un analyseur statique, <strong>classer</strong> les constats par gravité, trier les faux positifs, puis corriger les problèmes bloquants.</p></div>
+  <h3>Point de départ</h3><ul>
+<li><span class="sq"></span><div><code>notes_service.py</code> / <code>notes-service.ts</code> : la PR n° 42 « Service de notes, prêt pour la prod ». Les tests fonctionnels passent.</div></li>
+<li><span class="sq"></span><div><code>grille-revue.md</code> : la grille de gravité et le gabarit de commentaire.</div></li>
+<li><span class="sq"></span><div><code>.github/copilot-instructions.md</code> (racine du dépôt) : les conventions de l’équipe, lues par Copilot.</div></li>
+</ul>
+  <h3>Étapes</h3><div class="steps"><ol>
+<li><span class="sq"></span><div><strong>Revue humaine éclair (3 min)</strong> — Lisez le fichier <strong>sans IA</strong> et notez ce qui vous frappe.</div></li>
+<li><span class="sq"></span><div>
+<p><strong>Revue par l’IA (7 min)</strong> — Demandez :</p>
+<blockquote>
+<p>Fais la revue de ce fichier comme un relecteur senior, en suivant grille-revue.md. Pour chaque constat : ligne, gravité (Bloquant / Majeur / Mineur / Suggestion), problème, correction proposée. Termine par un verdict : approuver ou demander des changements.</p>
+</blockquote>
+<p>Puis l’analyseur statique :
+<div class="highlight"><pre><span></span><code>ruff<span class="w"> </span>check<span class="w"> </span>labs/lab07-revue/python<span class="w">                  </span><span class="c1"># règles S (bandit) : SQL, MD5, secret en dur…</span>
+</code></pre></div></p>
+</div></li>
+<li><span class="sq"></span><div>
+<p><strong>Trier (5 min)</strong> — Comparez les trois listes (vous, l’IA, <code>ruff</code>). Marquez chaque constat de l’IA <strong>vrai / faux positif / discutable</strong>. Puis lancez les tests de sécurité :
+    <div class="highlight"><pre><span></span><code>pytest<span class="w"> </span>labs/lab07-revue<span class="w">                             </span><span class="c1"># ou : npm run test:lab07</span>
+</code></pre></div>
+    Votre revue avait-elle vu les 5 problèmes que les tests révèlent ?</p>
+</div></li>
+<li><span class="sq"></span><div>
+<p><strong>Corriger les bloquants (10 min)</strong> — Requêtes paramétrées, empreinte de mot de passe salée et lente (<code>hashlib.pbkdf2_hmac</code>, <code>scrypt</code>), contrôle du propriétaire, secret lu dans l’environnement. Un commit par correction.</p>
+</div></li>
+</ol></div>
+  <div class="duo">
+    <div class="liv"><div class="cap">Livrable · c’est terminé quand…</div><ul>
+<li><span class="box"></span><div><code>REVUE.md</code> : vos constats classés (tableau), avec la colonne « trouvé par : moi / IA / ruff ».</div></li>
+<li><span class="box"></span><div>Les 9 tests au vert.</div></li>
+</ul></div>
+    <div class="col">
+      <div class="trap"><div class="cap">Pièges à observer</div><ul>
+<li><span class="sq"></span><div>L’IA signale 15 « problèmes », dont la moitié de style : un relecteur trie, il ne recopie pas.</div></li>
+<li><span class="sq"></span><div>Elle peut manquer le <strong>contrôle d’accès</strong> (<code>lire_note</code> ne vérifie pas le propriétaire) : aucun outil statique ne le voit, c’est une règle métier.</div></li>
+<li><span class="sq"></span><div><code>except Exception: return None</code> cache les erreurs (et ici l’injection SQL).</div></li>
+</ul></div>
+      <div class="bonus"><div class="cap">Bonus</div><p>Sur votre fork, ouvrez une vraie PR avec ce fichier et demandez une revue à Copilot (<em>Reviewers → Copilot</em>). Comparez avec votre <code>REVUE.md</code>.</p></div>
+      
+    </div>
+  </div>
+  <div class="notes"><div class="cap">Mes notes</div></div>
+</section>
+
+<section class="lab" id="lab08">
+  <header class="lh">
+    <div class="lnum"><span>LAB</span><b>08</b></div>
+    <div class="lt">
+      <div class="eyebrow t-green">5 · Génération de tests et assurance qualité</div>
+      <h2>Générer des tests unitaires qui servent vraiment</h2>
+      <div class="chips">
+        <span class="chip">⏱ 30 min</span>
+        <span class="chip">Jour 2 · vers 11 h 05</span>
+        <span class="chip">Python ou TypeScript</span>
+        <span class="chip mono">labs/lab08-tests/</span>
+      </div>
+    </div>
+  </header>
+  <div class="obj"><div class="cap">Objectif</div><p>Faire générer une suite de tests par l’IA (cas nominaux, limites, erreurs), puis la juger avec deux <strong>mesures objectives</strong> : la couverture des branches et le <strong>score de mutation</strong>.</p></div>
+  <h3>Point de départ</h3><ul>
+<li><span class="sq"></span><div><code>panier.py</code> / <code>panier.ts</code> : un panier d’achat (ajout, retrait, codes promo, livraison) sans tests.</div></li>
+<li><span class="sq"></span><div><code>test_panier.py</code> / <code>panier.test.ts</code> : 2 tests de départ.</div></li>
+<li><span class="sq"></span><div><code>mutants.py</code> / <code>mutants.ts</code> : introduit 8 bogues un par un et vérifie que vos tests les détectent.</div></li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="c1"># Python</span>
+pytest<span class="w"> </span>labs/lab08-tests<span class="w"> </span>--cov<span class="o">=</span>panier<span class="w"> </span>--cov-branch<span class="w"> </span>--cov-report<span class="o">=</span>term-missing
+python<span class="w"> </span>labs/lab08-tests/python/mutants.py
+<span class="c1"># TypeScript</span>
+npm<span class="w"> </span>run<span class="w"> </span>cov:lab08
+node<span class="w"> </span>labs/lab08-tests/typescript/mutants.ts
+</code></pre></div>
+<p>Au départ : couverture ≈ 40 %, score de mutation <strong>1/8</strong>.</p>
+  <h3>Étapes</h3><div class="steps"><ol>
+<li><span class="sq"></span><div>
+<p><strong>Lister les comportements d’abord (5 min)</strong> — Demandez :</p>
+<blockquote>
+<p>Liste les comportements de cette classe à tester : cas nominaux, valeurs limites, erreurs. Un comportement par ligne, sans code.</p>
+</blockquote>
+<p>Ajoutez-en un que l’IA a oublié.</p>
+</div></li>
+<li><span class="sq"></span><div>
+<p><strong>Générer (10 min)</strong> — Faites générer les tests (<code>/tests</code> dans Copilot, <em>Generate tests</em> dans JetBrains, ou le chat), <strong>avec</strong> : fixtures, <code>pytest.mark.parametrize</code> / boucles de <code>test</code>, noms de tests en phrases.</p>
+</div></li>
+<li><span class="sq"></span><div><strong>Mesurer (5 min)</strong> — Couverture des branches, puis mutants. Pour chaque mutant <strong>survivant</strong>, demandez à l’IA le test qui le tuerait.</div></li>
+<li><span class="sq"></span><div><strong>Relire (5 min)</strong> — Chaque test vérifie-t-il quelque chose ? Supprimez ceux qui ne font qu’exécuter du code (<code>assert panier is not None</code>).</div></li>
+<li><span class="sq"></span><div><strong>Valeurs limites (5 min)</strong> — Vérifiez qu’il existe un test <strong>exactement au seuil</strong> (99 articles, 50,00 $ de livraison gratuite, stock exact).</div></li>
+</ol></div>
+  <div class="duo">
+    <div class="liv"><div class="cap">Livrable · c’est terminé quand…</div><ul>
+<li><span class="box"></span><div>Couverture des branches <strong>≥ 95 %</strong>.</div></li>
+<li><span class="box"></span><div>Score de mutation <strong>8/8</strong>.</div></li>
+<li><span class="box"></span><div>Tous les tests au vert, en moins d’une seconde.</div></li>
+</ul></div>
+    <div class="col">
+      <div class="trap"><div class="cap">Pièges à observer</div><ul>
+<li><span class="sq"></span><div>100 % de couverture et 3/8 mutants tués : la couverture mesure ce qui <strong>s’exécute</strong>, pas ce qui est <strong>vérifié</strong>.</div></li>
+<li><span class="sq"></span><div>L’IA calcule l’attendu avec la même formule que le code (<code>assert total == sous_total - sous_total // 10</code>) : le test recopie le bogue. Écrivez des valeurs littérales (<code>9_998 - 999</code>).</div></li>
+<li><span class="sq"></span><div>Les tests qui dépendent les uns des autres (panier partagé, sans fixture).</div></li>
+</ul></div>
+      <div class="bonus"><div class="cap">Bonus</div><p>Demandez des tests <strong>par propriétés</strong> (<code>hypothesis</code> en Python, <code>fast-check</code> en TypeScript) : « le total n’est jamais négatif », « ajouter puis retirer laisse le panier inchangé ».</p></div>
+      
+    </div>
+  </div>
+  <div class="notes"><div class="cap">Mes notes</div></div>
+</section>
+
+<section class="lab" id="lab09">
+  <header class="lh">
+    <div class="lnum"><span>LAB</span><b>09</b></div>
+    <div class="lt">
+      <div class="eyebrow t-green">5 · Génération de tests et assurance qualité</div>
+      <h2>Tests d’intégration, charge et pipeline CI/CD</h2>
+      <div class="chips">
+        <span class="chip">⏱ 35 min</span>
+        <span class="chip">Jour 2 · vers 11 h 40</span>
+        <span class="chip">Python et/ou TypeScript + GitHub Actions</span>
+        <span class="chip mono">labs/lab09-ci/</span>
+      </div>
+    </div>
+  </header>
+  <div class="obj"><div class="cap">Objectif</div><p>Faire écrire par l’IA des <strong>tests d’intégration</strong> sur une vraie API, simuler une <strong>charge</strong> avec un objectif de service, puis brancher le tout dans un <strong>pipeline GitHub Actions</strong> qui bloque une PR fautive.</p></div>
+  <h3>Point de départ</h3><ul>
+<li><span class="sq"></span><div><code>api.py</code> / <code>api.ts</code> : une mini-API de liens courts (création, redirection, statistiques), sans dépendance.</div></li>
+<li><span class="sq"></span><div>Tests unitaires existants (verts) ; <code>test_integration.py</code> / <code>integration.test.ts</code> : un seul test (<code>/sante</code>).</div></li>
+<li><span class="sq"></span><div><code>charge.py</code> / <code>charge.ts</code> : test de charge (80 % de lectures) avec objectif p95 &lt; 50 ms et &lt; 1 % d’erreurs.</div></li>
+<li><span class="sq"></span><div><code>ci-a-completer.yml</code> : un pipeline à trous ; <code>python/test_workflow.py</code> : ses critères d’acceptation (rouges).</div></li>
+</ul>
+<div class="highlight"><pre><span></span><code>pytest<span class="w"> </span>labs/lab09-ci<span class="w">                               </span><span class="c1"># ou : npm run test:lab09</span>
+python<span class="w"> </span>labs/lab09-ci/python/charge.py<span class="w">              </span><span class="c1"># ou : node labs/lab09-ci/typescript/charge.ts</span>
+</code></pre></div>
+  <h3>Étapes</h3><div class="steps"><ol>
+<li><span class="sq"></span><div>
+<p><strong>Scénarios d’intégration (10 min)</strong> — Demandez :</p>
+<blockquote>
+<p>Voici une API HTTP (api.py) et la fixture de test qui démarre un vrai serveur. Liste les scénarios d’intégration à couvrir (nominal, erreurs 4xx, concurrence), puis écris-les en réutilisant requete().</p>
+</blockquote>
+<p>Visez au moins 6 scénarios, dont <strong>200 créations concurrentes</strong> qui doivent donner 200 codes uniques.</p>
+</div></li>
+<li><span class="sq"></span><div>
+<p><strong>Couverture (3 min)</strong> — <code>pytest labs/lab09-ci/python --cov=api --cov-report=term-missing</code> : ≥ 80 % ?</p>
+</div></li>
+<li><span class="sq"></span><div><strong>Charge (7 min)</strong> — Lancez <code>charge.py</code>, puis <code>charge.py 5000 100</code>. Faites <strong>interpréter</strong> les chiffres à l’IA (p50 vs p99, débit, erreurs). Demandez-lui un second scénario « pic » (100 % de créations) et comparez.</div></li>
+<li><span class="sq"></span><div>
+<p><strong>Pipeline (12 min)</strong> — Copiez <code>ci-a-completer.yml</code> dans <code>.github/workflows/ci.yml</code> et faites compléter les 6 TODO par l’IA. Validez localement :
+    <div class="highlight"><pre><span></span><code>pytest<span class="w"> </span>labs/lab09-ci/python/test_workflow.py
+</code></pre></div></p>
+</div></li>
+<li><span class="sq"></span><div>
+<p><strong>Le voir bloquer (3 min)</strong> — Poussez sur votre fork, ouvrez une PR qui casse un test (ex. <code>LONGUEUR_CODE = 5</code>) : le pipeline doit passer <strong>au rouge</strong>. Fermez la PR.</p>
+</div></li>
+</ol></div>
+  <div class="duo">
+    <div class="liv"><div class="cap">Livrable · c’est terminé quand…</div><ul>
+<li><span class="box"></span><div>Tests d’intégration verts, couverture ≥ 80 %.</div></li>
+<li><span class="box"></span><div><code>.github/workflows/ci.yml</code> : critères de <code>test_workflow.py</code> au vert, exécution verte sur GitHub (onglet <em>Actions</em>).</div></li>
+<li><span class="box"></span><div>Une phrase dans <code>NOTES.md</code> : « l’objectif de service est / n’est pas respecté parce que… ».</div></li>
+</ul></div>
+    <div class="col">
+      <div class="trap"><div class="cap">Pièges à observer</div><ul>
+<li><span class="sq"></span><div>Des tests d’intégration qui appellent les fonctions en mémoire (<code>Depot()</code>) : ce sont des tests unitaires déguisés.</div></li>
+<li><span class="sq"></span><div>Un port fixe (8009) dans les tests : échecs aléatoires en CI. Utilisez le port 0.</div></li>
+<li><span class="sq"></span><div>L’IA invente des actions (<code>actions/setup-python@v9</code>) ou des options : vérifiez sur la page de l’action.</div></li>
+<li><span class="sq"></span><div>Des secrets écrits dans le YAML : utilisez <code>${{ secrets.NOM }}</code>.</div></li>
+</ul></div>
+      <div class="bonus"><div class="cap">Bonus</div><p>Ajoutez au pipeline une étape qui lance <code>charge.py 1000 10</code> et échoue si l’objectif de service n’est pas respecté.</p></div>
+      
+    </div>
+  </div>
+  <div class="notes"><div class="cap">Mes notes</div></div>
+</section>
+
+<section class="lab" id="lab10">
+  <header class="lh">
+    <div class="lnum"><span>LAB</span><b>10</b></div>
+    <div class="lt">
+      <div class="eyebrow t-yellow">6 · IA pour la planification et l’architecture logicielle</div>
+      <h2>Concevoir et planifier avec l’IA</h2>
+      <div class="chips">
+        <span class="chip">⏱ 35 min</span>
+        <span class="chip">Jour 2 · vers 13 h 40</span>
+        <span class="chip">Markdown, Mermaid, CSV (vérification en Python ou TypeScript)</span>
+        <span class="chip mono">labs/lab10-architecture/</span>
+      </div>
+    </div>
+  </header>
+  <div class="obj"><div class="cap">Objectif</div><p>Utiliser l’IA comme <strong>partenaire d’architecture</strong> : faire émerger les questions, comparer des options, documenter une décision (ADR), découper et estimer un backlog réaliste, puis auditer des dépendances… en <strong>vérifiant</strong> chaque affirmation.</p></div>
+  <h3>Point de départ</h3><ul>
+<li><span class="sq"></span><div><code>cahier-des-charges.md</code> : Cantine+, précommande de repas pour 3 cafétérias (projet fictif).</div></li>
+<li><span class="sq"></span><div><code>gabarits/</code> : modèle d’ADR et en-tête du backlog CSV.</div></li>
+<li><span class="sq"></span><div><code>dependances/</code> : les fichiers de dépendances d’un vieux prototype que l’équipe veut réutiliser.</div></li>
+<li><span class="sq"></span><div><code>python/test_livrables.py</code> / <code>typescript/livrables.test.ts</code> : vérifient que vos livrables sont <strong>complets et cohérents</strong> (pas leur qualité).</div></li>
+</ul>
+<p>Créez vos fichiers dans <code>labs/lab10-architecture/livrables/</code>.</p>
+<div class="highlight"><pre><span></span><code>pytest<span class="w"> </span>labs/lab10-architecture<span class="w">          </span><span class="c1"># ou : npm run test:lab10</span>
+</code></pre></div>
+  <h3>Étapes</h3><div class="steps"><ol>
+<li><span class="sq"></span><div>
+<p><strong>Questions d’abord (5 min)</strong> — Joignez le cahier des charges et demandez :</p>
+<blockquote>
+<p>Avant de proposer une architecture, pose-moi les 8 questions les plus importantes sur ce projet, classées par impact sur l’architecture.</p>
+</blockquote>
+<p>Répondez à 3 d’entre elles (vous jouez le PO).</p>
+</div></li>
+<li><span class="sq"></span><div>
+<p><strong>Architecture (10 min)</strong> — Demandez <strong>2 options contrastées</strong> (ex. monolithe modulaire vs microservices) avec leurs compromis face aux contraintes (pic de 10 h 30, paie SAP, allergènes, équipe de 4). Choisissez. Faites produire <code>livrables/architecture.md</code> avec un diagramme <strong>Mermaid</strong> et un tableau des composants.</p>
+</div></li>
+<li><span class="sq"></span><div><strong>ADR (5 min)</strong> — <code>livrables/adr-001.md</code> à partir du gabarit : votre décision, ses alternatives, ses conséquences.</div></li>
+<li><span class="sq"></span><div><strong>Backlog et planification (12 min)</strong> — Faites découper le projet en <strong>12 user stories ou plus</strong> (<code>livrables/backlog.csv</code>) : critère d’acceptation Gherkin, points (suite de Fibonacci), priorité MoSCoW, sprint, dépendances. Lancez les tests : l’IA respecte-t-elle la <strong>vélocité de 20 points</strong>, l’ordre des dépendances, le pilote en 3 sprints ? Corrigez.</div></li>
+<li><span class="sq"></span><div><strong>Risques et dépendances (8 min)</strong> — <code>livrables/risques.md</code> (≥ 5 risques : probabilité, impact, mesure). Puis faites analyser <code>dependances/</code> par l’IA et <strong>vérifiez</strong> avec un outil :
+    <div class="highlight"><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span>pip-audit<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>pip-audit<span class="w"> </span>-r<span class="w"> </span>labs/lab10-architecture/dependances/requirements-legacy.txt
+<span class="nb">cd</span><span class="w"> </span>labs/lab10-architecture/dependances<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>npm<span class="w"> </span>audit<span class="w"> </span>--package-lock-only<span class="w">   </span><span class="c1"># après npm install --package-lock-only</span>
+</code></pre></div>
+    Consignez le résultat dans <code>livrables/dependances.md</code>, en signalant chaque identifiant CVE inventé par l’IA.</div></li>
+</ol></div>
+  <div class="duo">
+    <div class="liv"><div class="cap">Livrable · c’est terminé quand…</div><p>Les 5 fichiers de <code>livrables/</code>, tous les tests du lab au vert, et une phrase dans <code>NOTES.md</code> : « l’IA a été utile pour… / je l’ai corrigée sur… ».</p></div>
+    <div class="col">
+      <div class="trap"><div class="cap">Pièges à observer</div><ul>
+<li><span class="sq"></span><div>L’IA propose des microservices, Kubernetes et Kafka pour 4 développeurs et un pilote en 6 semaines.</div></li>
+<li><span class="sq"></span><div>Les estimations « au doigt mouillé » : demandez-lui de justifier chaque 8 par un critère (inconnue, intégration, risque).</div></li>
+<li><span class="sq"></span><div>Sprints surchargés et dépendances inversées : c’est exactement ce que les tests détectent.</div></li>
+<li><span class="sq"></span><div>Des numéros de CVE plausibles… mais inexistants. Seul un outil d’audit fait foi.</div></li>
+</ul></div>
+      <div class="bonus"><div class="cap">Bonus</div><p>Demandez à l’IA de jouer l’<strong>avocat du diable</strong> sur votre ADR : quel scénario ferait regretter cette décision dans 2 ans ?</p></div>
+      
+    </div>
+  </div>
+  <div class="notes"><div class="cap">Mes notes</div></div>
+</section>
+
+<section class="lab" id="lab11">
+  <header class="lh">
+    <div class="lnum"><span>LAB</span><b>11</b></div>
+    <div class="lt">
+      <div class="eyebrow t-blue">7 · Ateliers pratiques</div>
+      <h2>Projet final : un outil complet, de la spécification à la PR</h2>
+      <div class="chips">
+        <span class="chip">⏱ 55 min</span>
+        <span class="chip">Jour 2 · vers 14 h 30</span>
+        <span class="chip">Python ou TypeScript</span>
+        <span class="chip mono">labs/lab11-projet-final/</span>
+      </div>
+    </div>
+  </header>
+  <div class="obj"><div class="cap">Objectif</div><p>Développer <strong>de bout en bout</strong> un petit outil avec un agent de codage — plan, code, tests, documentation, CI, pull request revue — en appliquant le flux de travail d’une équipe : instructions de projet, petits commits, revue humaine.</p></div>
+  <h3>Point de départ</h3><ul>
+<li><span class="sq"></span><div><code>SPEC.md</code> : <code>taches</code>, un gestionnaire de tâches en ligne de commande (6 commandes, règles, codes de sortie).</div></li>
+<li><span class="sq"></span><div><code>test_acceptation.py</code> / <code>acceptation.test.ts</code> : 16 (Python) ou 11 (TypeScript) tests d’acceptation, tous rouges. <strong>Ne les modifiez pas.</strong></div></li>
+<li><span class="sq"></span><div><code>taches/cli.py</code> / <code>taches/cli.ts</code> : la signature de <code>main()</code>, rien d’autre.</div></li>
+<li><span class="sq"></span><div><code>AGENTS.md</code> : un gabarit d’instructions pour l’agent, à compléter.</div></li>
+</ul>
+<div class="highlight"><pre><span></span><code>pytest<span class="w"> </span>labs/lab11-projet-final<span class="w">          </span><span class="c1"># ou : npm run test:lab11</span>
+<span class="nb">cd</span><span class="w"> </span>labs/lab11-projet-final/python<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>python<span class="w"> </span>-m<span class="w"> </span>taches<span class="w"> </span>lister<span class="w">     </span><span class="c1"># ou : npm run taches -- lister</span>
+</code></pre></div>
+  <h3>Étapes</h3><div class="steps"><ol>
+<li><span class="sq"></span><div><strong>Préparer l’agent (5 min)</strong> — Créez une branche <code>lab11</code>. Complétez <code>AGENTS.md</code> avec l’IA : conventions, commandes de test, ce qu’il ne doit pas faire. C’est ce fichier qui rend le travail reproductible pour toute une équipe.</div></li>
+<li><span class="sq"></span><div>
+<p><strong>Plan avant le code (5 min)</strong> — En mode agent ou plan :</p>
+<blockquote>
+<p>Lis SPEC.md, AGENTS.md et les tests d’acceptation. Propose un plan d’implémentation en étapes, avec les fichiers à créer. N’écris pas de code tant que je n’ai pas validé le plan.</p>
+</blockquote>
+<p>Corrigez le plan (découpage <code>modele</code> / <code>depot</code> / <code>cli</code>), puis validez.</p>
+</div></li>
+<li><span class="sq"></span><div>
+<p><strong>Implémenter par incréments (25 min)</strong> — Une commande à la fois : <code>ajouter</code> + <code>lister</code>, puis <code>terminer</code> / <code>supprimer</code>, puis <code>en-retard</code>, puis <code>exporter</code>. Après chaque incrément : tests verts → relecture du diff → commit <code>feat: …</code>. Ajoutez au moins <strong>5 tests unitaires à vous</strong> (modèle, ordre de tri, dates invalides).</p>
+</div></li>
+<li><span class="sq"></span><div><strong>Documenter (5 min)</strong> — Faites générer un <code>README.md</code> d’utilisation (installation, exemples de chaque commande, codes de sortie) et vérifiez chaque exemple en le lançant.</div></li>
+<li><span class="sq"></span><div><strong>Pull request (10 min)</strong> — Poussez la branche, ouvrez une PR vers <code>main</code> de <strong>votre fork</strong>. Description générée par l’IA, puis <strong>relue</strong> par vous. Demandez une revue IA (Copilot <em>Reviewers</em>, ou collez le diff dans le chat avec <code>grille-revue.md</code> du lab 07). Traitez les commentaires utiles, répondez aux autres.</div></li>
+<li><span class="sq"></span><div><strong>Rétrospective (5 min)</strong> — Dans <code>NOTES.md</code> : temps passé, ce que l’agent a bien fait, 2 erreurs qu’il a commises et comment vous les avez détectées.</div></li>
+</ol></div>
+  <div class="duo">
+    <div class="liv"><div class="cap">Livrable · c’est terminé quand…</div><ul>
+<li><span class="box"></span><div>Tous les tests d’acceptation au vert + vos tests unitaires.</div></li>
+<li><span class="box"></span><div><code>README.md</code>, <code>AGENTS.md</code>, <code>NOTES.md</code> complétés.</div></li>
+<li><span class="box"></span><div>Une PR sur votre fork, avec la revue et vos réponses.</div></li>
+<li><span class="box"></span><div><strong>Présentation : partage d’écran de 2 à 3 minutes</strong> (démo de l’outil + une leçon apprise).</div></li>
+</ul></div>
+    <div class="col">
+      <div class="trap"><div class="cap">Pièges à observer</div><ul>
+<li><span class="sq"></span><div>L’agent écrit tout d’un coup, 400 lignes, sans plan : arrêtez-le et revenez à l’étape 2.</div></li>
+<li><span class="sq"></span><div><code>argparse</code> qui appelle <code>sys.exit()</code> sur une erreur : la spécification exige un <strong>code retourné</strong> (2).</div></li>
+<li><span class="sq"></span><div>Les identifiants réutilisés après suppression : un test le vérifie.</div></li>
+<li><span class="sq"></span><div>Une PR « générée et fusionnée » sans relecture : c’est vous qui en répondez.</div></li>
+</ul></div>
+      <div class="bonus"><div class="cap">Bonus</div><ul>
+<li><span class="sq"></span><div>Ajoutez la commande <code>modifier &lt;id&gt; [--titre] [--priorite] [--echeance]</code>, avec ses tests d’acceptation écrits <strong>avant</strong> le code.</div></li>
+<li><span class="sq"></span><div>Ajoutez le job du lab 11 au pipeline CI du lab 09.</div></li>
+</ul></div>
+      
+    </div>
+  </div>
+  <div class="notes"><div class="cap">Mes notes</div></div>
+</section>
+
+<section class="lab">
+  <div class="eyebrow">Annexe A</div>
+  <h2>Canevas de demande (prompt) pour le code</h2>
+  <p class="lead">Cinq ingrédients. Plus la tâche est risquée, plus chacun doit être précis.</p>
+<pre><code>CONTEXTE    Langage, version, framework, fichier(s) concerné(s), conventions (#file, @workspace)
+TÂCHE       Ce qu'il faut faire, en une phrase, avec le verbe d'action (implémente, refactorise, explique…)
+CONTRAINTES Ce qui ne doit PAS changer : comportement, API publique, tests, dépendances, performance
+FORMAT      Ce que vous attendez : un diff, une fonction, un plan sans code, un tableau, des tests
+EXEMPLES    1 ou 2 cas concrets : entrée → sortie attendue, ou un extrait du style voulu</code></pre>
+  <div class="grid2" style="margin-top:3mm">
+    <div class="card top-green"><h4>Demandes qui marchent</h4>
+      <ul>
+        <li><span class="sq"></span><div>« Pose-moi tes questions avant d’écrire le code. »</div></li>
+        <li><span class="sq"></span><div>« Propose un plan en 5 étapes ; n’écris pas encore de code. »</div></li>
+        <li><span class="sq"></span><div>« Voici le message d’échec du test : explique la cause racine. »</div></li>
+        <li><span class="sq"></span><div>« Donne 2 options avec leurs inconvénients ; je choisis. »</div></li>
+        <li><span class="sq"></span><div>« Ne modifie pas les tests. Lance-les après chaque changement. »</div></li>
+      </ul>
+    </div>
+    <div class="card top-coral"><h4>Demandes à éviter</h4>
+      <ul>
+        <li><span class="sq"></span><div>« Corrige. » (sans trace ni attendu)</div></li>
+        <li><span class="sq"></span><div>« Améliore ce code. » (améliorer selon quel critère ?)</div></li>
+        <li><span class="sq"></span><div>« Écris toute l’application. » (impossible à relire)</div></li>
+        <li><span class="sq"></span><div>Coller un secret, une clé d’API ou des données personnelles.</div></li>
+        <li><span class="sq"></span><div>Accepter sans lancer les tests.</div></li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>Choisir le mode d’interaction</h3>
+  <table class="kv">
+    <tr><td>Complétion</td><td>Code répétitif, prévisible, local : une ligne ou une fonction dont l’intention est claire (nom, type, docstring).</td></tr>
+    <tr><td>Chat</td><td>Comprendre, expliquer, comparer des options, déboguer à partir d’une trace. Aucune modification sans votre accord.</td></tr>
+    <tr><td>Édition</td><td>Modifier un ou plusieurs fichiers que vous désignez, avec un diff à relire.</td></tr>
+    <tr><td>Agent</td><td>Tâche en plusieurs étapes : lire le dépôt, modifier, lancer les tests, itérer. À encadrer par un plan et des instructions de projet.</td></tr>
+  </table>
+
+  <h3>Valider avant d’accepter</h3>
+  <ul>
+    <li><span class="box"></span><div>Je comprends chaque ligne, et je saurais l’expliquer en revue.</div></li>
+    <li><span class="box"></span><div>Les tests passent, et un test échoue si je casse le code.</div></li>
+    <li><span class="box"></span><div>Les API, options et paquets cités existent vraiment (documentation officielle).</div></li>
+    <li><span class="box"></span><div>Pas de faille évidente : entrées non fiables, secrets, SQL, chemins, cryptographie.</div></li>
+    <li><span class="box"></span><div>Le diff ne touche que ce que j’ai demandé.</div></li>
+  </ul>
+</section>
+
+<section class="lab">
+  <div class="eyebrow">Annexe B</div>
+  <h2>Aide-mémoire des commandes</h2>
+  <div class="grid2">
+    <div class="card top-blue"><h4>Python</h4>
+<pre><code>pytest labs/lab02-generation
+pytest labs/lab08-tests --cov=panier --cov-branch \
+       --cov-report=term-missing
+ruff check labs/lab07-revue
+ruff check --select C901 labs/lab03-refactorisation
+python -m doctest -v labs/lab06-documentation/python/geo.py
+python labs/lab05-performance/python/bench.py
+python -m cProfile -s cumtime bench.py</code></pre></div>
+    <div class="card top-violet"><h4>TypeScript (Node.js 22.18+)</h4>
+<pre><code>npm run test:lab02
+npm run cov:lab08
+node labs/lab08-tests/typescript/mutants.ts
+npm run bench:lab05
+npm run api:lab09
+npm run taches -- lister
+npm install &amp;&amp; npm run typecheck   # facultatif</code></pre></div>
+    <div class="card top-green"><h4>Git</h4>
+<pre><code>git switch -c lab04              # une branche par lab
+git add -p                       # relire avant d'indexer
+git commit -m "fix(INC-101): …"
+git restore .                    # annuler une étape ratée
+git stash / git stash pop        # prouver un test de non-régression
+git log --oneline -15</code></pre></div>
+    <div class="card top-yellow"><h4>Fichiers d’instructions</h4>
+      <table class="kv">
+        <tr><td>Copilot</td><td><code>.github/copilot-instructions.md</code></td></tr>
+        <tr><td>Agents (standard ouvert)</td><td><code>AGENTS.md</code></td></tr>
+        <tr><td>Cursor</td><td><code>.cursor/rules/*.mdc</code></td></tr>
+        <tr><td>Claude Code</td><td><code>CLAUDE.md</code></td></tr>
+        <tr><td>JetBrains</td><td><code>.junie/guidelines.md</code></td></tr>
+      </table>
+    </div>
+  </div>
+  <div class="notes" style="min-height:70mm"><div class="cap">Mon plan d’action : 3 usages que j’adopte dès lundi</div></div>
+</section>
+
+</body></html>

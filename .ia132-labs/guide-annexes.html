@@ -1,0 +1,88 @@
+<section class="lab">
+  <div class="eyebrow">Annexe A</div>
+  <h2>Canevas de demande (prompt) pour le code</h2>
+  <p class="lead">Cinq ingrédients. Plus la tâche est risquée, plus chacun doit être précis.</p>
+<pre><code>CONTEXTE    Langage, version, framework, fichier(s) concerné(s), conventions (#file, @workspace)
+TÂCHE       Ce qu'il faut faire, en une phrase, avec le verbe d'action (implémente, refactorise, explique…)
+CONTRAINTES Ce qui ne doit PAS changer : comportement, API publique, tests, dépendances, performance
+FORMAT      Ce que vous attendez : un diff, une fonction, un plan sans code, un tableau, des tests
+EXEMPLES    1 ou 2 cas concrets : entrée → sortie attendue, ou un extrait du style voulu</code></pre>
+  <div class="grid2" style="margin-top:3mm">
+    <div class="card top-green"><h4>Demandes qui marchent</h4>
+      <ul>
+        <li><span class="sq"></span><div>« Pose-moi tes questions avant d’écrire le code. »</div></li>
+        <li><span class="sq"></span><div>« Propose un plan en 5 étapes ; n’écris pas encore de code. »</div></li>
+        <li><span class="sq"></span><div>« Voici le message d’échec du test : explique la cause racine. »</div></li>
+        <li><span class="sq"></span><div>« Donne 2 options avec leurs inconvénients ; je choisis. »</div></li>
+        <li><span class="sq"></span><div>« Ne modifie pas les tests. Lance-les après chaque changement. »</div></li>
+      </ul>
+    </div>
+    <div class="card top-coral"><h4>Demandes à éviter</h4>
+      <ul>
+        <li><span class="sq"></span><div>« Corrige. » (sans trace ni attendu)</div></li>
+        <li><span class="sq"></span><div>« Améliore ce code. » (améliorer selon quel critère ?)</div></li>
+        <li><span class="sq"></span><div>« Écris toute l’application. » (impossible à relire)</div></li>
+        <li><span class="sq"></span><div>Coller un secret, une clé d’API ou des données personnelles.</div></li>
+        <li><span class="sq"></span><div>Accepter sans lancer les tests.</div></li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>Choisir le mode d’interaction</h3>
+  <table class="kv">
+    <tr><td>Complétion</td><td>Code répétitif, prévisible, local : une ligne ou une fonction dont l’intention est claire (nom, type, docstring).</td></tr>
+    <tr><td>Chat</td><td>Comprendre, expliquer, comparer des options, déboguer à partir d’une trace. Aucune modification sans votre accord.</td></tr>
+    <tr><td>Édition</td><td>Modifier un ou plusieurs fichiers que vous désignez, avec un diff à relire.</td></tr>
+    <tr><td>Agent</td><td>Tâche en plusieurs étapes : lire le dépôt, modifier, lancer les tests, itérer. À encadrer par un plan et des instructions de projet.</td></tr>
+  </table>
+
+  <h3>Valider avant d’accepter</h3>
+  <ul>
+    <li><span class="box"></span><div>Je comprends chaque ligne, et je saurais l’expliquer en revue.</div></li>
+    <li><span class="box"></span><div>Les tests passent, et un test échoue si je casse le code.</div></li>
+    <li><span class="box"></span><div>Les API, options et paquets cités existent vraiment (documentation officielle).</div></li>
+    <li><span class="box"></span><div>Pas de faille évidente : entrées non fiables, secrets, SQL, chemins, cryptographie.</div></li>
+    <li><span class="box"></span><div>Le diff ne touche que ce que j’ai demandé.</div></li>
+  </ul>
+</section>
+
+<section class="lab">
+  <div class="eyebrow">Annexe B</div>
+  <h2>Aide-mémoire des commandes</h2>
+  <div class="grid2">
+    <div class="card top-blue"><h4>Python</h4>
+<pre><code>pytest labs/lab02-generation
+pytest labs/lab08-tests --cov=panier --cov-branch \
+       --cov-report=term-missing
+ruff check labs/lab07-revue
+ruff check --select C901 labs/lab03-refactorisation
+python -m doctest -v labs/lab06-documentation/python/geo.py
+python labs/lab05-performance/python/bench.py
+python -m cProfile -s cumtime bench.py</code></pre></div>
+    <div class="card top-violet"><h4>TypeScript (Node.js 22.18+)</h4>
+<pre><code>npm run test:lab02
+npm run cov:lab08
+node labs/lab08-tests/typescript/mutants.ts
+npm run bench:lab05
+npm run api:lab09
+npm run taches -- lister
+npm install &amp;&amp; npm run typecheck   # facultatif</code></pre></div>
+    <div class="card top-green"><h4>Git</h4>
+<pre><code>git switch -c lab04              # une branche par lab
+git add -p                       # relire avant d'indexer
+git commit -m "fix(INC-101): …"
+git restore .                    # annuler une étape ratée
+git stash / git stash pop        # prouver un test de non-régression
+git log --oneline -15</code></pre></div>
+    <div class="card top-yellow"><h4>Fichiers d’instructions</h4>
+      <table class="kv">
+        <tr><td>Copilot</td><td><code>.github/copilot-instructions.md</code></td></tr>
+        <tr><td>Agents (standard ouvert)</td><td><code>AGENTS.md</code></td></tr>
+        <tr><td>Cursor</td><td><code>.cursor/rules/*.mdc</code></td></tr>
+        <tr><td>Claude Code</td><td><code>CLAUDE.md</code></td></tr>
+        <tr><td>JetBrains</td><td><code>.junie/guidelines.md</code></td></tr>
+      </table>
+    </div>
+  </div>
+  <div class="notes" style="min-height:70mm"><div class="cap">Mon plan d’action : 3 usages que j’adopte dès lundi</div></div>
+</section>

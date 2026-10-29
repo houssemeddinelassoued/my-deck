@@ -1,0 +1,39 @@
+# Pipeline CI du lab 09 (corrigé)
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  python:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11", "3.13"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+      - run: pip install -r requirements-dev.txt
+      - name: Lint
+        run: ruff check labs/lab09-ci
+      - name: Tests et couverture
+        working-directory: labs/lab09-ci/python
+        run: pytest --cov=api --cov-report=term-missing --cov-fail-under=80
+      - name: Charge (objectif de service)
+        working-directory: labs/lab09-ci/python
+        run: python charge.py 1000 10
+
+  typescript:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: node --test "labs/lab09-ci/typescript/*.test.ts"
