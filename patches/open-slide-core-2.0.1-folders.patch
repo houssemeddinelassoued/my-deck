@@ -1,8 +1,8 @@
 diff --git a/dist/config-GMR1QUlM.d.ts b/dist/config-GMR1QUlM.d.ts
-index a0596a6..bf077db 100644
+index a0596a6..5424c07 100644
 --- a/dist/config-GMR1QUlM.d.ts
 +++ b/dist/config-GMR1QUlM.d.ts
-@@ -19,6 +19,11 @@ type OpenSlideConfig = {
+@@ -19,6 +19,19 @@ type OpenSlideConfig = {
     */
    locale?: Locale;
    build?: OpenSlideBuildConfig;
@@ -10,6 +10,14 @@ index a0596a6..bf077db 100644
 +  folderLock?: {
 +    /** Pre-filled when protecting a folder. Defaults to '0999'. */
 +    defaultPassword?: string;
++  };
++  /**
++   * Site-wide password gate (project patch, see patches/ in the deck repo).
++   * When set, every route except read-only share links (/v/:code) stays
++   * behind this password until the tab unlocks it.
++   */
++  siteLock?: {
++    password?: string;
 +  };
  };
  //#endregion
@@ -61,13 +69,13 @@ index dd895a5..bdaac94 100644
 +  export default src;
 +}
 diff --git a/src/app/app.tsx b/src/app/app.tsx
-index 650f670..732afd6 100644
+index 650f670..39be09e 100644
 --- a/src/app/app.tsx
 +++ b/src/app/app.tsx
 @@ -1,5 +1,6 @@
  import config from 'virtual:open-slide/config';
  import { BrowserRouter, Route, Routes } from 'react-router-dom';
-+import { SlideLockGate } from './components/folder-lock';
++import { SiteLockGate, SlideLockGate } from './components/folder-lock';
  import { Toaster } from './components/ui/sonner';
  import { TooltipProvider } from './components/ui/tooltip';
  import { useLocale } from './lib/use-locale';
@@ -79,34 +87,58 @@ index 650f670..732afd6 100644
  import { Slide } from './routes/slide';
  import { ThemeDetailPage, ThemesGalleryPage } from './routes/themes';
  
-@@ -25,8 +27,25 @@ export function App() {
-               <Route path="/assets" element={<AssetsPage />} />
-             </Route>
-           )}
+@@ -16,19 +18,38 @@ export function App() {
+       {/* One app-wide provider so adjacent tooltips group: after the first
+           opens, moving along a toolbar shows the rest instantly. */}
+       <TooltipProvider delay={200}>
+-        <Routes>
+-          {config.build.showSlideBrowser && (
+-            <Route element={<HomeShell />}>
+-              <Route path="/" element={<Home />} />
+-              <Route path="/themes" element={<ThemesGalleryPage />} />
+-              <Route path="/themes/:themeId" element={<ThemeDetailPage />} />
+-              <Route path="/assets" element={<AssetsPage />} />
+-            </Route>
+-          )}
 -          <Route path="/s/:slideId" element={<Slide />} />
 -          <Route path="/s/:slideId/presenter" element={<Presenter />} />
-+          <Route
-+            path="/s/:slideId"
-+            element={
-+              <SlideLockGate>
-+                <Slide />
-+              </SlideLockGate>
-+            }
-+          />
-+          <Route
-+            path="/s/:slideId/presenter"
-+            element={
-+              <SlideLockGate>
-+                <Presenter />
-+              </SlideLockGate>
-+            }
-+          />
-+          {/* Read-only share links: play-only viewer, outside the folder lock
-+              (sharing the link is the owner's explicit grant). */}
-+          <Route path="/v/:code" element={<ShareViewer />} />
-           <Route path="*" element={<NotFound />} />
-         </Routes>
+-          <Route path="*" element={<NotFound />} />
+-        </Routes>
++        <SiteLockGate>
++          <Routes>
++            {config.build.showSlideBrowser && (
++              <Route element={<HomeShell />}>
++                <Route path="/" element={<Home />} />
++                <Route path="/themes" element={<ThemesGalleryPage />} />
++                <Route path="/themes/:themeId" element={<ThemeDetailPage />} />
++                <Route path="/assets" element={<AssetsPage />} />
++              </Route>
++            )}
++            <Route
++              path="/s/:slideId"
++              element={
++                <SlideLockGate>
++                  <Slide />
++                </SlideLockGate>
++              }
++            />
++            <Route
++              path="/s/:slideId/presenter"
++              element={
++                <SlideLockGate>
++                  <Presenter />
++                </SlideLockGate>
++              }
++            />
++            {/* Read-only share links: play-only viewer, outside the folder lock
++                (sharing the link is the owner's explicit grant). */}
++            <Route path="/v/:code" element={<ShareViewer />} />
++            <Route path="*" element={<NotFound />} />
++          </Routes>
++        </SiteLockGate>
        </TooltipProvider>
+       <Toaster />
+     </BrowserRouter>
 diff --git a/src/app/components/command/home-command-menu.tsx b/src/app/components/command/home-command-menu.tsx
 index f814bd3..6969f74 100644
 --- a/src/app/components/command/home-command-menu.tsx
@@ -161,13 +193,13 @@ index f814bd3..6969f74 100644
      <CommandMenu
 diff --git b/src/app/components/folder-lock.tsx b/src/app/components/folder-lock.tsx
 new file mode 100644
-index 0000000..40c13c0
+index 0000000..9f91880
 --- /dev/null
 +++ b/src/app/components/folder-lock.tsx
-@@ -0,0 +1,248 @@
+@@ -0,0 +1,324 @@
 +import { Eye, EyeOff, Lock } from 'lucide-react';
 +import { type ReactNode, useEffect, useRef, useState } from 'react';
-+import { Link, useParams } from 'react-router-dom';
++import { Link, useLocation, useParams } from 'react-router-dom';
 +import { Button } from '@/components/ui/button';
 +import {
 +  Dialog,
@@ -181,6 +213,8 @@ index 0000000..40c13c0
 +  DEFAULT_FOLDER_PASSWORD,
 +  isFolderLocked,
 +  unlockFolder,
++  unlockSite,
++  useSiteUnlocked,
 +  useUnlockedFolders,
 +} from '@/lib/folder-lock';
 +import { useFolders } from '@/lib/folders';
@@ -409,6 +443,80 @@ index 0000000..40c13c0
 +            {t.common.home}
 +          </Link>
 +        </div>
++      </div>
++    </div>
++  );
++}
++
++/** Password prompt shown in place of the whole site, behind the site-wide lock. */
++function SiteUnlockPanel() {
++  const [value, setValue] = useState('');
++  const [wrong, setWrong] = useState(false);
++  const t = useLocale();
++
++  const submit = () => {
++    if (unlockSite(value)) {
++      setValue('');
++      setWrong(false);
++    } else {
++      setWrong(true);
++    }
++  };
++
++  return (
++    <div className="rounded-[8px] border border-dashed border-border px-8 py-16">
++      <div className="mx-auto flex max-w-[320px] flex-col items-center text-center">
++        <span className="flex size-10 items-center justify-center rounded-full bg-muted">
++          <Lock className="size-4.5 text-foreground/80" aria-hidden />
++        </span>
++        <p className="mt-4 font-heading text-[14px] font-semibold tracking-tight">
++          {t.siteLock.title}
++        </p>
++        <p className="mt-1.5 text-[13px] leading-relaxed text-muted-foreground">
++          {t.siteLock.hint}
++        </p>
++        <div className="mt-5 flex w-full flex-col gap-2">
++          <PasswordInput
++            value={value}
++            onChange={(v) => {
++              setValue(v);
++              setWrong(false);
++            }}
++            onEnter={submit}
++            invalid={wrong}
++            autoFocus
++          />
++          <p
++            className={cn('h-4 text-left text-[11.5px] text-destructive', !wrong && 'invisible')}
++            aria-live="polite"
++          >
++            {t.folderLock.wrongPassword}
++          </p>
++          <Button size="sm" onClick={submit} disabled={!value}>
++            {t.folderLock.unlock}
++          </Button>
++        </div>
++      </div>
++    </div>
++  );
++}
++
++/**
++ * Guards every route: the whole deck browser and every deck stay behind a
++ * single password until this tab has unlocked it. Read-only share links
++ * (/v/:code) bypass this gate — sharing the link is the owner's explicit
++ * grant, same as for folder locks.
++ */
++export function SiteLockGate({ children }: { children: ReactNode }) {
++  const location = useLocation();
++  const unlocked = useSiteUnlocked();
++
++  if (unlocked || location.pathname.startsWith('/v/')) return <>{children}</>;
++
++  return (
++    <div className="grid min-h-dvh place-items-center bg-background px-5 text-foreground">
++      <div className="w-full max-w-[460px]">
++        <SiteUnlockPanel />
 +      </div>
 +    </div>
 +  );
@@ -1111,6 +1219,245 @@ index 3507376..ddf1224 100644
 +  target.dispatchEvent(new MouseEvent('mouseup', init));
 +  target.dispatchEvent(new MouseEvent('click', init));
 +}
+diff --git b/src/app/components/present/start-punctuality.tsx b/src/app/components/present/start-punctuality.tsx
+new file mode 100644
+index 0000000..be1d468
+--- /dev/null
++++ b/src/app/components/present/start-punctuality.tsx
+@@ -0,0 +1,233 @@
++import { Check, Pencil } from 'lucide-react';
++import { useEffect, useMemo, useState } from 'react';
++import { buildPacingPlan, expectedIndex, type PacingPlan, pacingGap } from '../../lib/pacing';
++
++// Punctuality badge of the presenter view. The trainer types the real start
++// of the current training day (and optionally its end); on every slide change
++// the badge compares "now" with the time the plan (lib/pacing.ts) expects
++// that slide to be shown, and says early / on time / late. A gap within the
++// margin (15 min by default) counts as on time.
++const DEFAULT_TOLERANCE_MIN = 15;
++
++type DayConfig = { start: number; end: number | null; tolerance: number };
++
++const storageKey = (slideId: string, day: number) => `osd-pace:${slideId}:${day}`;
++
++function readConfig(slideId: string, day: number): DayConfig | null {
++  try {
++    const raw = JSON.parse(window.localStorage.getItem(storageKey(slideId, day)) ?? 'null');
++    if (raw && Number.isFinite(raw.start) && raw.start > 0) {
++      return {
++        start: raw.start,
++        end: Number.isFinite(raw.end) && raw.end > raw.start ? raw.end : null,
++        tolerance: Number.isFinite(raw.tolerance) ? raw.tolerance : DEFAULT_TOLERANCE_MIN,
++      };
++    }
++  } catch {}
++  return null;
++}
++
++const pad = (n: number) => String(n).padStart(2, '0');
++
++function toDateTimeInput(ms: number): string {
++  const d = new Date(ms);
++  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
++}
++
++function toTimeInput(ms: number): string {
++  const d = new Date(ms);
++  return `${pad(d.getHours())}:${pad(d.getMinutes())}`;
++}
++
++const hhmm = (ms: number) => toTimeInput(ms).replace(':', ' h ');
++
++function formatGap(minutes: number): string {
++  const m = Math.round(Math.abs(minutes));
++  const h = Math.floor(m / 60);
++  const min = m % 60;
++  if (h && min) return `${h} h ${pad(min)}`;
++  if (h) return `${h} h`;
++  return `${min} min`;
++}
++
++/** Default start offered in the form: today at the plan's own start time, else now. */
++function suggestedStart(plan: PacingPlan, day: number): number {
++  const clock = plan.days.find((d) => d.day === day)?.clockStart;
++  if (clock === null || clock === undefined) return Date.now();
++  const d = new Date();
++  d.setHours(Math.floor(clock / 60), Math.round(clock % 60), 0, 0);
++  return d.getTime();
++}
++
++export function StartPunctuality({
++  slideId,
++  index,
++  pages,
++  notes,
++}: {
++  slideId: string;
++  index: number;
++  pages: readonly unknown[];
++  notes: readonly (string | undefined)[] | undefined;
++}) {
++  const plan = useMemo(() => buildPacingPlan(pages, notes), [pages, notes]);
++  const day = plan.slides[index]?.day ?? 1;
++  const dayPlan = plan.days.find((d) => d.day === day);
++  const multiDay = plan.days.length > 1;
++
++  const [config, setConfig] = useState<DayConfig | null>(() => readConfig(slideId, day));
++  const [editing, setEditing] = useState(false);
++  const [draftStart, setDraftStart] = useState('');
++  const [draftEnd, setDraftEnd] = useState('');
++  const [draftTol, setDraftTol] = useState(String(DEFAULT_TOLERANCE_MIN));
++  // The comparison instant: refreshed on validation and on every slide change.
++  const [checkedAt, setCheckedAt] = useState(() => Date.now());
++
++  useEffect(() => {
++    setConfig(readConfig(slideId, day));
++    setEditing(false);
++  }, [slideId, day]);
++
++  useEffect(() => {
++    setCheckedAt(Date.now());
++  }, [index, config]);
++
++  const openForm = () => {
++    const start = config?.start ?? suggestedStart(plan, day);
++    setDraftStart(toDateTimeInput(start));
++    setDraftEnd(config?.end ? toTimeInput(config.end) : '');
++    setDraftTol(String(config?.tolerance ?? DEFAULT_TOLERANCE_MIN));
++    setEditing(true);
++  };
++
++  const validate = () => {
++    const start = new Date(draftStart || toDateTimeInput(suggestedStart(plan, day))).getTime();
++    if (Number.isNaN(start)) return;
++    let end: number | null = null;
++    if (draftEnd) {
++      const [h, m] = draftEnd.split(':').map(Number);
++      const d = new Date(start);
++      d.setHours(h, m, 0, 0);
++      if (d.getTime() > start) end = d.getTime();
++    }
++    const tol = Number(draftTol);
++    const next: DayConfig = {
++      start,
++      end,
++      tolerance: Number.isFinite(tol) && tol >= 0 ? tol : DEFAULT_TOLERANCE_MIN,
++    };
++    try {
++      window.localStorage.setItem(storageKey(slideId, day), JSON.stringify(next));
++    } catch {}
++    setConfig(next);
++    setEditing(false);
++  };
++
++  if (!dayPlan) return null;
++  const span = dayPlan.span;
++
++  if (config === null || editing) {
++    return (
++      <form
++        className="flex items-center gap-1.5"
++        onSubmit={(e) => {
++          e.preventDefault();
++          validate();
++        }}
++      >
++        <span className="font-mono text-[10px] tracking-[0.06em] uppercase text-white/45">
++          {multiDay ? `Début J${day}` : 'Début'}
++        </span>
++        <input
++          type="datetime-local"
++          value={draftStart || toDateTimeInput(suggestedStart(plan, day))}
++          onChange={(e) => setDraftStart(e.target.value)}
++          className="h-7 rounded-[3px] border border-white/15 bg-white/5 px-1.5 font-mono text-[12px] text-foreground [color-scheme:dark]"
++        />
++        <span
++          className="font-mono text-[10px] tracking-[0.06em] uppercase text-white/45"
++          title={`Optionnel : le plan (${formatGap(span)}) est étiré ou resserré pour finir à cette heure`}
++        >
++          Fin
++        </span>
++        <input
++          type="time"
++          value={draftEnd}
++          onChange={(e) => setDraftEnd(e.target.value)}
++          title={`Optionnel — durée prévue par les notes : ${formatGap(span)}`}
++          className="h-7 rounded-[3px] border border-white/15 bg-white/5 px-1.5 font-mono text-[12px] text-foreground [color-scheme:dark]"
++        />
++        <span className="font-mono text-[10px] tracking-[0.06em] uppercase text-white/45">
++          Marge
++        </span>
++        <input
++          type="number"
++          min={0}
++          max={120}
++          value={draftTol}
++          onChange={(e) => setDraftTol(e.target.value)}
++          title="Écart toléré (minutes) avant de signaler une avance ou un retard"
++          className="h-7 w-12 rounded-[3px] border border-white/15 bg-white/5 px-1.5 font-mono text-[12px] text-foreground [color-scheme:dark]"
++        />
++        <button
++          type="submit"
++          className="flex h-7 items-center gap-1 rounded-[3px] border border-white/20 bg-white/10 px-2 font-mono text-[11px] text-foreground hover:bg-white/20"
++        >
++          <Check className="size-3.5" /> Valider
++        </button>
++      </form>
++    );
++  }
++
++  const scale = config.end && span > 0 ? (config.end - config.start) / 60000 / span : 1;
++  const gap = pacingGap(plan, index, config.start, checkedAt, scale);
++  const expected = expectedIndex(plan, day, config.start, checkedAt, scale);
++  const slide = plan.slides[index];
++  const plannedAt = config.start + slide.start * scale * 60000;
++  const plannedEnd = config.start + span * scale * 60000;
++  const synchro = Math.abs(gap) <= config.tolerance;
++  const late = gap > 0;
++  const tone = synchro
++    ? 'border-emerald-300/30 bg-emerald-300/10 text-emerald-200'
++    : late
++      ? 'border-rose-300/30 bg-rose-300/10 text-rose-200'
++      : 'border-sky-300/30 bg-sky-300/10 text-sky-200';
++  const signed = Math.round(gap) === 0 ? '' : ` · ${late ? '+' : '−'}${formatGap(gap)}`;
++  const label = synchro
++    ? `Synchrone${signed}`
++    : late
++      ? `En retard de ${formatGap(gap)}`
++      : `En avance de ${formatGap(gap)}`;
++  const estimated = plan.slides.filter((s) => s.day === day && s.source === 'estimate').length;
++  const title = [
++    `Cette slide est prévue à ${hhmm(plannedAt)} (${formatGap(slide.minutes * scale)})`,
++    `Slide attendue maintenant : ${expected + 1}`,
++    `Début ${hhmm(config.start)} · fin prévue ${hhmm(plannedEnd)}`,
++    `Marge : ±${config.tolerance} min · recalculé à chaque changement de slide`,
++    estimated
++      ? `Durées estimées (longueur des notes, clics, minuteurs) pour ${estimated} slide(s) sans « ⏱ »`
++      : 'Durées lues dans les notes (« ⏱ N min ») et repères horaires',
++  ].join('\n');
++
++  return (
++    <div className="flex items-center gap-1.5">
++      <span
++        title={title}
++        className={`rounded-[3px] border px-1.5 py-0.5 font-mono text-[12px] tabular-nums ${tone}`}
++      >
++        {label}
++      </span>
++      <span title={title} className="font-mono text-[11px] tabular-nums text-white/45">
++        prévu {hhmm(plannedAt)} · attendu p.{expected + 1}
++      </span>
++      <button
++        type="button"
++        title={multiDay ? `Modifier le début du jour ${day}` : 'Modifier l’heure de début'}
++        onClick={openForm}
++        className="rounded-[3px] p-1 text-white/45 hover:bg-white/10 hover:text-foreground"
++      >
++        <Pencil className="size-3.5" />
++      </button>
++    </div>
++  );
++}
 diff --git a/src/app/components/present/use-presenter-channel.ts b/src/app/components/present/use-presenter-channel.ts
 index 2541a74..e5aa292 100644
 --- a/src/app/components/present/use-presenter-channel.ts
@@ -1379,10 +1726,10 @@ index 2e82c52..1375477 100644
  }
 diff --git b/src/app/lib/folder-lock.ts b/src/app/lib/folder-lock.ts
 new file mode 100644
-index 0000000..cda84bd
+index 0000000..3b5221c
 --- /dev/null
 +++ b/src/app/lib/folder-lock.ts
-@@ -0,0 +1,168 @@
+@@ -0,0 +1,221 @@
 +import config from 'virtual:open-slide/config';
 +import { useMemo, useSyncExternalStore } from 'react';
 +import type { Folder, FoldersManifest } from './sdk';
@@ -1551,6 +1898,59 @@ index 0000000..cda84bd
 +    return { isLocked: (id) => locked.has(id), hiddenSlides };
 +  }, [manifest, state]);
 +}
++
++// ─── Site-wide lock ─────────────────────────────────────────────────────────
++// Overridable from open-slide.config.ts → `siteLock.password`. Empty by
++// default: the site stays open unless a password is configured.
++export const SITE_PASSWORD = config.siteLock?.password || '';
++
++const SITE_STORAGE_KEY = 'open-slide:site-unlocked';
++
++function hashSitePassword(password: string): string {
++  return sha256Hex(`open-slide:site:${password}`);
++}
++
++function readSiteUnlocked(): string | null {
++  try {
++    return window.sessionStorage.getItem(SITE_STORAGE_KEY);
++  } catch {
++    return null;
++  }
++}
++
++let siteUnlockedHash: string | null = typeof window === 'undefined' ? null : readSiteUnlocked();
++const siteListeners = new Set<() => void>();
++
++function writeSiteUnlocked(hash: string | null) {
++  siteUnlockedHash = hash;
++  try {
++    if (hash) window.sessionStorage.setItem(SITE_STORAGE_KEY, hash);
++    else window.sessionStorage.removeItem(SITE_STORAGE_KEY);
++  } catch {}
++  for (const l of siteListeners) l();
++}
++
++function subscribeSite(listener: () => void) {
++  siteListeners.add(listener);
++  return () => siteListeners.delete(listener);
++}
++
++/** True while the site has no password configured, or this tab already unlocked it. */
++export function useSiteUnlocked(): boolean {
++  const hash = useSyncExternalStore(
++    subscribeSite,
++    () => siteUnlockedHash,
++    () => siteUnlockedHash,
++  );
++  return !SITE_PASSWORD || hash === hashSitePassword(SITE_PASSWORD);
++}
++
++/** Returns false when the password is wrong. */
++export function unlockSite(password: string): boolean {
++  if (hashSitePassword(password) !== hashSitePassword(SITE_PASSWORD)) return false;
++  writeSiteUnlocked(hashSitePassword(password));
++  return true;
++}
 diff --git a/src/app/lib/folders.ts b/src/app/lib/folders.ts
 index 32d34ef..be39317 100644
 --- a/src/app/lib/folders.ts
@@ -1594,6 +1994,284 @@ index 32d34ef..be39317 100644
        await patchFolder(id, patch);
        await refresh();
      },
+diff --git b/src/app/lib/pacing.ts b/src/app/lib/pacing.ts
+new file mode 100644
+index 0000000..b4e21a6
+--- /dev/null
++++ b/src/app/lib/pacing.ts
+@@ -0,0 +1,272 @@
++// Planned timeline of a deck, used by the presenter's punctuality badge.
++//
++// Each page gets a planned duration and a planned start, in minutes on the
++// deck's own clock. Sources, best first:
++//   1. Speaker-note header `⏱ N min` (or `⏱ A à B min`) — the author's own
++//      estimate; `⏱ (pendant l'atelier)` / `⏱ (support …)` pages take no time
++//      of their own (they are shown while the workshop timer runs).
++//   2. Clock anchors in that header — `· 13:30`, `(≈ 10 h 45)`,
++//      `fin vers 15:30`, `jusqu'à 16 h 00` — which pin the plan to the
++//      schedule, so breaks and lunch fall where the author put them.
++//   3. Without a `⏱` header: an estimate from the note's length (speaking
++//      pace), the number of reveal steps and any `<Timer minutes={N}>` the
++//      page renders.
++// A `COUVERTURE / ACCUEIL … JOUR N` header, or an anchor that jumps back in
++// time, starts a new training day; every day has its own planned start.
++
++export type PacingSlide = {
++  /** Planned duration of the page, minutes (0 = shown during a workshop). */
++  minutes: number;
++  /** Where `minutes` came from. */
++  source: 'notes' | 'estimate';
++  /** Training day (1-based). */
++  day: number;
++  /** Planned start / end, minutes on the deck clock, relative to its day start. */
++  start: number;
++  end: number;
++  /** Window in which being on this page counts as on schedule. */
++  windowStart: number;
++  windowEnd: number;
++};
++
++export type PacingDay = {
++  day: number;
++  first: number;
++  last: number;
++  /** Deck-clock time of day the plan assumes (minutes since midnight), if anchored. */
++  clockStart: number | null;
++  /** Planned length of the day, minutes. */
++  span: number;
++};
++
++export type PacingPlan = { slides: PacingSlide[]; days: PacingDay[] };
++
++const SPEAKING_WPM = 140;
++const MIN_ESTIMATE = 0.75;
++const NO_NOTES_ESTIMATE = 1;
++/** Gap between two anchors larger than the planned pages → a break before the later anchor. */
++const BREAK_MIN = 10;
++
++type Anchor = { at: number; kind: 'start' | 'end' };
++
++type Parsed = {
++  minutes: number | null;
++  during: boolean;
++  anchor: Anchor | null;
++  newDay: number | null;
++  words: number;
++  timer: number;
++};
++
++const CLOCK = /(\d{1,2})\s*(?::|h|H)\s*(\d{2})(?!\d)/g;
++
++function parseAnchor(header: string): Anchor | null {
++  for (const m of header.matchAll(CLOCK)) {
++    const h = Number(m[1]);
++    const min = Number(m[2]);
++    if (h < 6 || h > 21 || min > 59) continue;
++    const before = header.slice(0, m.index).toLowerCase();
++    // "pause à 14 h 15", "PAUSE DE 10 H 30", "avant 9 h 00", "(9 h 15 – 10 h 30)" end.
++    if (/(pause|avant|[–-])\s*(de|à|a|vers)?\s*$/.test(before)) continue;
++    const kind = /(fin[^·(,]*vers|jusqu['’]à|jusqu'a)\s*$/.test(before) ? 'end' : 'start';
++    return { at: h * 60 + min, kind };
++  }
++  return null;
++}
++
++function countWords(text: string): number {
++  return text.split(/\s+/).filter((w) => /[\p{L}\p{N}]/u.test(w)).length;
++}
++
++function parseTimer(source: string): number {
++  let best = 0;
++  for (const m of source.matchAll(/\bminutes\s*:\s*(\d{1,3}(?:\.\d+)?)\b/g)) {
++    const n = Number(m[1]);
++    if (n > 0 && n <= 180) best = Math.max(best, n);
++  }
++  return best;
++}
++
++function parseSlide(note: string | undefined, source: string): Parsed {
++  const text = (note ?? '').trim();
++  const header = text.startsWith('⏱') ? text.split('\n', 1)[0] : '';
++  let minutes: number | null = null;
++  let during = false;
++  if (header) {
++    const range = header.match(/⏱\s*(\d+(?:[.,]\d+)?)\s*(?:à|-|–)\s*(\d+(?:[.,]\d+)?)\s*min/);
++    const single = header.match(/⏱\s*(\d+(?:[.,]\d+)?)\s*min/);
++    const hours = header.match(/⏱\s*(\d+)\s*h\s*(\d{2})?(?!\s*\d)/);
++    const lead = header.split('·', 1)[0];
++    if (range) minutes = (Number(range[1].replace(',', '.')) + Number(range[2].replace(',', '.'))) / 2;
++    else if (single && lead.includes('+')) {
++      // "⏱ 3 min de démonstration + 10 min en autonomie"
++      minutes = [...lead.matchAll(/(\d+(?:[.,]\d+)?)\s*min/g)].reduce(
++        (s, m) => s + Number(m[1].replace(',', '.')),
++        0,
++      );
++    } else if (single) minutes = Number(single[1].replace(',', '.'));
++    else if (hours) minutes = Number(hours[1]) * 60 + Number(hours[2] ?? 0);
++    else if (/⏱\s*\(/.test(header)) {
++      minutes = 0;
++      during = true;
++    }
++  }
++  const dayMatch = header.match(
++    /(couverture|accueil|bienvenue|ouverture)[^\n]*?\b(?:jour|j)\s?([2-9])\b/i,
++  );
++  return {
++    minutes,
++    during,
++    anchor: header ? parseAnchor(header.replace(/^⏱[^·(]*/, '')) : null,
++    newDay: dayMatch ? Number(dayMatch[2]) : null,
++    words: countWords(text),
++    timer: parseTimer(source),
++  };
++}
++
++function pageSource(page: unknown): string {
++  try {
++    return typeof page === 'function' ? Function.prototype.toString.call(page) : '';
++  } catch {
++    return '';
++  }
++}
++
++function estimate(p: Parsed): number {
++  const spoken = p.words ? Math.max(MIN_ESTIMATE, p.words / SPEAKING_WPM) : NO_NOTES_ESTIMATE;
++  return p.timer ? Math.max(spoken, p.timer + 1) : spoken;
++}
++
++export function buildPacingPlan(
++  pages: readonly unknown[],
++  notes: readonly (string | undefined)[] | undefined,
++): PacingPlan {
++  const parsed = pages.map((page, i) => parseSlide(notes?.[i], pageSource(page)));
++  const slides: PacingSlide[] = parsed.map((p) => ({
++    minutes: p.minutes ?? estimate(p),
++    source: p.minutes === null ? 'estimate' : 'notes',
++    day: 1,
++    start: 0,
++    end: 0,
++    windowStart: 0,
++    windowEnd: 0,
++  }));
++
++  // Split into days.
++  const days: PacingDay[] = [];
++  let day = 1;
++  let first = 0;
++  let lastAnchor = -1;
++  const closeDay = (last: number) => {
++    if (last >= first) days.push({ day, first, last, clockStart: null, span: 0 });
++  };
++  parsed.forEach((p, i) => {
++    const anchorAt = p.anchor ? p.anchor.at : null;
++    const jumpsBack = anchorAt !== null && lastAnchor >= 0 && anchorAt < lastAnchor - 120;
++    const explicit = p.newDay !== null && p.newDay > day;
++    if (i > first && (explicit || jumpsBack)) {
++      closeDay(i - 1);
++      day = explicit ? (p.newDay as number) : day + 1;
++      first = i;
++      lastAnchor = -1;
++    }
++    if (anchorAt !== null) lastAnchor = anchorAt;
++    slides[i].day = day;
++  });
++  closeDay(pages.length - 1);
++
++  for (const d of days) layoutDay(d, parsed, slides);
++  return { slides, days };
++}
++
++function layoutDay(d: PacingDay, parsed: Parsed[], slides: PacingSlide[]) {
++  // Anchors as planned starts (an end anchor pins the page's end).
++  const anchors: { i: number; at: number }[] = [];
++  for (let i = d.first; i <= d.last; i++) {
++    const a = parsed[i].anchor;
++    if (!a) continue;
++    const at = a.kind === 'end' ? a.at - slides[i].minutes : a.at;
++    const prev = anchors[anchors.length - 1];
++    if (prev && at <= prev.at) continue; // out-of-order anchor: ignore it
++    anchors.push({ i, at });
++  }
++
++  const sum = (from: number, to: number) => {
++    let s = 0;
++    for (let i = from; i < to; i++) s += slides[i].minutes;
++    return s;
++  };
++
++  // Deck-clock start of the day: back-computed from the first anchor.
++  const origin = anchors.length ? anchors[0].at - sum(d.first, anchors[0].i) : 0;
++  d.clockStart = anchors.length ? origin : null;
++
++  // Lay out each segment between anchors.
++  const cuts = [{ i: d.first, at: origin }, ...anchors.filter((a) => a.i > d.first)];
++  for (let k = 0; k < cuts.length; k++) {
++    const from = cuts[k].i;
++    const to = k + 1 < cuts.length ? cuts[k + 1].i : d.last + 1;
++    const planned = sum(from, to);
++    const available = k + 1 < cuts.length ? cuts[k + 1].at - cuts[k].at : planned;
++    // Slack under BREAK_MIN is authoring imprecision: spread it. More is a
++    // break: keep the pace and leave the gap before the next anchor.
++    const scale =
++      planned > 0 && (available < planned || available - planned < BREAK_MIN)
++        ? available / planned
++        : 1;
++    let t = cuts[k].at - origin;
++    for (let i = from; i < to; i++) {
++      slides[i].start = t;
++      t += slides[i].minutes * scale;
++      slides[i].end = t;
++    }
++  }
++  d.span = slides[d.last].end;
++
++  // "During the workshop" pages share the window of the timed pages around them.
++  for (let i = d.first; i <= d.last; i++) {
++    const s = slides[i];
++    s.windowStart = s.start;
++    s.windowEnd = s.end;
++    if (!parsed[i].during) continue;
++    let a = i - 1;
++    while (a >= d.first && parsed[a].during) a--;
++    let b = i + 1;
++    while (b <= d.last && parsed[b].during) b++;
++    s.windowStart = a >= d.first ? slides[a].start : s.start;
++    s.windowEnd = b <= d.last ? slides[b].end : s.end;
++  }
++}
++
++/** Gap in minutes between now and the plan for page `index`: > 0 late, < 0 early, 0 inside the window. */
++export function pacingGap(
++  plan: PacingPlan,
++  index: number,
++  dayStartMs: number,
++  now: number,
++  scale = 1,
++): number {
++  const s = plan.slides[index];
++  if (!s) return 0;
++  const elapsed = (now - dayStartMs) / 60000;
++  if (elapsed < s.windowStart * scale) return elapsed - s.windowStart * scale;
++  if (elapsed > s.windowEnd * scale) return elapsed - s.windowEnd * scale;
++  return 0;
++}
++
++/** Page the plan expects to be on at `now`. */
++export function expectedIndex(
++  plan: PacingPlan,
++  day: number,
++  dayStartMs: number,
++  now: number,
++  scale = 1,
++): number {
++  const d = plan.days.find((x) => x.day === day);
++  if (!d) return 0;
++  const elapsed = (now - dayStartMs) / 60000;
++  for (let i = d.first; i <= d.last; i++) {
++    if (elapsed < plan.slides[i].end * scale) return i;
++  }
++  return d.last;
++}
 diff --git a/src/app/lib/sdk.ts b/src/app/lib/sdk.ts
 index 082e3c4..cbbdd58 100644
 --- a/src/app/lib/sdk.ts
@@ -2026,7 +2704,7 @@ index 21936c3..f809db4 100644
          <span className="ml-auto inline-flex items-center gap-1 text-[10.5px] text-brand">
            <span className="inline-block size-1 rounded-full bg-brand" aria-hidden />
 diff --git a/src/app/routes/presenter.tsx b/src/app/routes/presenter.tsx
-index c29b8b6..e596933 100644
+index c29b8b6..f273081 100644
 --- a/src/app/routes/presenter.tsx
 +++ b/src/app/routes/presenter.tsx
 @@ -1,17 +1,27 @@
@@ -2057,7 +2735,7 @@ index c29b8b6..e596933 100644
    useCallback,
    useEffect,
    useRef,
-@@ -20,17 +30,26 @@
+@@ -20,17 +30,26 @@ import {
  import { useNavigate, useParams } from 'react-router-dom';
  import { Button } from '@/components/ui/button';
  import { Dialog, DialogContent, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
@@ -2085,7 +2763,7 @@ index c29b8b6..e596933 100644
  import { SlidePageProvider } from '../lib/page-context';
  import { CANVAS_HEIGHT, CANVAS_WIDTH, type SlideModule } from '../lib/sdk';
  import { loadSlide, slideIds } from '../lib/slides';
-@@ -52,19 +71,31 @@
+@@ -52,19 +71,31 @@ export function Presenter() {
    const [hasProjection, setHasProjection] = useState(false);
    const requestedRef = useRef(false);
    const t = useLocale();
@@ -2122,7 +2800,7 @@ index c29b8b6..e596933 100644
    // A deck switch reuses this route instance, so the handshake state from
    // the previous deck must be dropped before rejoining on the new channel.
    // Render-phase reset so the new deck never renders with the old state.
-@@ -99,6 +130,7 @@
+@@ -99,6 +130,7 @@ export function Presenter() {
    const goTo = useCallback((i: number) => send({ type: 'goto', index: i }), [send]);
    const toggleBlack = useCallback(() => send({ type: 'toggle-blackout', mode: 'black' }), [send]);
    const toggleWhite = useCallback(() => send({ type: 'toggle-blackout', mode: 'white' }), [send]);
@@ -2130,7 +2808,7 @@ index c29b8b6..e596933 100644
  
    // Local-window key bindings mirror the projection's main shortcuts so the
    // presenter can drive without the mouse.
-@@ -120,11 +152,14 @@
+@@ -120,11 +152,14 @@ export function Presenter() {
        } else if (e.key === 'w' || e.key === 'W') {
          e.preventDefault();
          toggleWhite();
@@ -2146,7 +2824,7 @@ index c29b8b6..e596933 100644
  
    if (error) {
      return (
-@@ -164,6 +199,7 @@
+@@ -164,6 +199,7 @@ export function Presenter() {
    const startedAt = state?.startedAt ?? localStart;
    const stepIndex = Math.max(0, state?.stepIndex ?? 0);
    const stepCount = Math.max(0, state?.stepCount ?? 0);
@@ -2154,7 +2832,7 @@ index c29b8b6..e596933 100644
  
    const stepsRemaining = stepIndex < stepCount;
    const hasNextSlide = index < total - 1;
-@@ -174,31 +210,10 @@
+@@ -174,31 +210,10 @@ export function Presenter() {
    const CurrentPage = pages[index];
    const NextPage = hasNext ? pages[nextPageIndex] : null;
  
@@ -2190,7 +2868,7 @@ index c29b8b6..e596933 100644
    return (
      <div className="dark flex h-dvh w-screen flex-col overflow-hidden bg-background text-foreground">
        <PresenterTopBar
-@@ -207,15 +222,20 @@
+@@ -207,15 +222,20 @@ export function Presenter() {
          startedAt={startedAt}
          slideId={slideId}
          slideTitle={slide.meta?.title ?? slideId}
@@ -2216,7 +2894,7 @@ index c29b8b6..e596933 100644
              <SlideCanvas flat design={slide.design}>
                <SlidePageProvider index={index} total={total}>
                  <PreviewStepHost revealed={stepIndex}>
-@@ -235,47 +255,670 @@
+@@ -235,47 +255,670 @@ export function Presenter() {
                  {blackout === 'black' ? t.presenter.blackScreen : t.presenter.whiteScreen}
                </div>
              )}
@@ -2917,7 +3595,7 @@ index c29b8b6..e596933 100644
        />
      </div>
    );
-@@ -287,16 +930,22 @@
+@@ -287,16 +930,22 @@ function PresenterTopBar({
    startedAt,
    slideId,
    slideTitle,
@@ -2940,7 +3618,7 @@ index c29b8b6..e596933 100644
  }) {
    const t = useLocale();
    return (
-@@ -317,6 +966,8 @@
+@@ -317,6 +966,8 @@ function PresenterTopBar({
          )}
        </div>
        <div className="flex items-center gap-6">
@@ -2949,7 +3627,7 @@ index c29b8b6..e596933 100644
          <Clock />
          <ElapsedClock startedAt={startedAt} />
          <div className="font-mono text-[18px] tabular-nums">
-@@ -362,6 +1013,8 @@
+@@ -362,6 +1013,8 @@ function DeckSwitcher({
  }) {
    const t = useLocale();
    const modules = useDeckModules();
@@ -2958,7 +3636,7 @@ index c29b8b6..e596933 100644
    const [open, setOpen] = useState(false);
    const [query, setQuery] = useState('');
    const [activeIndex, setActiveIndex] = useState(0);
-@@ -369,6 +1022,7 @@
+@@ -369,6 +1022,7 @@ function DeckSwitcher({
  
    const trimmed = query.trim().toLowerCase();
    const filtered = slideIds.filter((id) => {
@@ -2966,7 +3644,7 @@ index c29b8b6..e596933 100644
      if (!trimmed) return true;
      const title = modules[id]?.meta?.title;
      return id.toLowerCase().includes(trimmed) || title?.toLowerCase().includes(trimmed);
-@@ -495,18 +1149,26 @@
+@@ -495,18 +1149,26 @@ function PresenterBottomBar({
    index,
    total,
    blackout,
@@ -2993,14 +3671,14 @@ index c29b8b6..e596933 100644
  }) {
    const t = useLocale();
    return (
-@@ -518,9 +1180,19 @@
+@@ -518,8 +1180,18 @@ function PresenterBottomBar({
          <Button variant="outline" onClick={onNext} disabled={index >= total - 1}>
            {t.presenter.next} <ChevronRight className="size-4" />
          </Button>
 +        <div className="ml-4">{jump}</div>
        </div>
        <div className="flex items-center gap-2">
-         <Button
++        <Button
 +          variant={laser ? 'brand' : 'outline'}
 +          onClick={onLaser}
 +          disabled={!connected}
@@ -3009,11 +3687,10 @@ index c29b8b6..e596933 100644
 +        >
 +          <Crosshair className="size-4" /> {t.presenter.laser}
 +        </Button>
-+        <Button
+         <Button
            variant={blackout === 'black' ? 'brand' : 'outline'}
            onClick={onBlackout}
-           aria-pressed={blackout === 'black'}
-@@ -550,8 +1222,7 @@
+@@ -550,8 +1222,7 @@ const NOTES_FONT_SIZES = [11, 12, 13.5, 15, 17, 20, 24, 28];
  const NOTES_FONT_SIZE_DEFAULT_INDEX = 2;
  const NOTES_FONT_SIZE_STORAGE_KEY = 'open-slide:presenter-notes-font-size';
  
@@ -3023,7 +3700,7 @@ index c29b8b6..e596933 100644
    const [sizeIndex, setSizeIndex] = useState(() => {
      if (typeof window === 'undefined') return NOTES_FONT_SIZE_DEFAULT_INDEX;
      const stored = Number(window.localStorage.getItem(NOTES_FONT_SIZE_STORAGE_KEY));
-@@ -564,49 +1235,71 @@
+@@ -564,49 +1235,71 @@ function SpeakerNotes({ note }: { note: string | undefined }) {
      window.localStorage.setItem(NOTES_FONT_SIZE_STORAGE_KEY, String(NOTES_FONT_SIZES[sizeIndex]));
    }, [sizeIndex]);
  
@@ -3536,22 +4213,23 @@ index 009bde3..71d3043 100644
                  onToggleDesignPanel: () => setDesignOpen((v) => !v),
                  onExportHtml: exportHtml,
 diff --git a/src/app/virtual.d.ts b/src/app/virtual.d.ts
-index 2ef0115..454e717 100644
+index 2ef0115..2ba1731 100644
 --- a/src/app/virtual.d.ts
 +++ b/src/app/virtual.d.ts
-@@ -14,6 +14,7 @@ declare module 'virtual:open-slide/config' {
+@@ -14,6 +14,8 @@ declare module 'virtual:open-slide/config' {
      slidesDir?: string;
      port?: number;
      locale?: Locale;
 +    folderLock?: { defaultPassword?: string };
++    siteLock?: { password?: string };
      version: string;
      build: {
        showSlideBrowser: boolean;
 diff --git a/src/locale/en.ts b/src/locale/en.ts
-index 9a2525a..991e054 100644
+index 9a2525a..da890d5 100644
 --- a/src/locale/en.ts
 +++ b/src/locale/en.ts
-@@ -95,6 +95,53 @@ export const en: Locale = {
+@@ -95,6 +95,58 @@ export const en: Locale = {
      pickIcon: 'Pick icon',
    },
  
@@ -3585,6 +4263,11 @@ index 9a2525a..991e054 100644
 +    newFolderPlaceholder: 'New folder name',
 +  },
 +
++  siteLock: {
++    title: 'This deck is locked',
++    hint: 'Enter the password to continue.',
++  },
++
 +  share: {
 +    menu: 'Share',
 +    copyDeck: 'Share link — whole presentation',
@@ -3605,7 +4288,7 @@ index 9a2525a..991e054 100644
    slide: {
      home: 'Home',
      backToHome: 'Back to home',
-@@ -105,6 +152,12 @@ export const en: Locale = {
+@@ -105,6 +157,12 @@ export const en: Locale = {
      agentDisconnectedTooltip:
        'Lost connection to the dev server, so your agent can no longer see the current slide or inspector selection. Restart the dev server to restore the connection.',
      download: 'Download',
@@ -3618,7 +4301,7 @@ index 9a2525a..991e054 100644
      copyLink: 'Copy link',
      moreActions: 'More actions',
      toastCopyLinkSuccess: 'Link copied to clipboard',
-@@ -144,6 +197,23 @@ export const en: Locale = {
+@@ -144,6 +202,23 @@ export const en: Locale = {
      speakerNotes: 'Speaker notes',
      notesTextSmaller: 'Make notes text smaller',
      notesTextLarger: 'Make notes text larger',
@@ -3643,10 +4326,10 @@ index 9a2525a..991e054 100644
      noNotesSuffix: ' to your slide module to see notes here.',
      blackScreen: 'Black screen',
 diff --git a/src/locale/ja.ts b/src/locale/ja.ts
-index a39090f..b9ec798 100644
+index a39090f..78ad298 100644
 --- a/src/locale/ja.ts
 +++ b/src/locale/ja.ts
-@@ -95,6 +95,53 @@ export const ja: Locale = {
+@@ -95,6 +95,58 @@ export const ja: Locale = {
      pickIcon: 'アイコンを選択',
    },
  
@@ -3680,6 +4363,11 @@ index a39090f..b9ec798 100644
 +    newFolderPlaceholder: '新しいフォルダ名',
 +  },
 +
++  siteLock: {
++    title: 'このデッキはロックされています',
++    hint: '続けるにはパスワードを入力してください。',
++  },
++
 +  share: {
 +    menu: '共有',
 +    copyDeck: '共有リンク — プレゼンテーション全体',
@@ -3700,7 +4388,7 @@ index a39090f..b9ec798 100644
    slide: {
      agentConnected: 'エージェント接続中',
      agentConnectedTooltip:
-@@ -105,6 +152,12 @@ export const ja: Locale = {
+@@ -105,6 +157,12 @@ export const ja: Locale = {
      home: 'ホーム',
      backToHome: 'ホームへ戻る',
      download: 'ダウンロード',
@@ -3713,7 +4401,7 @@ index a39090f..b9ec798 100644
      copyLink: 'リンクをコピー',
      moreActions: 'その他の操作',
      toastCopyLinkSuccess: 'リンクをクリップボードにコピーしました',
-@@ -144,6 +197,23 @@ export const ja: Locale = {
+@@ -144,6 +202,23 @@ export const ja: Locale = {
      speakerNotes: '発表者ノート',
      notesTextSmaller: 'ノートの文字を小さく',
      notesTextLarger: 'ノートの文字を大きく',
@@ -3738,10 +4426,10 @@ index a39090f..b9ec798 100644
      noNotesSuffix: ' を追加するとここに表示されます。',
      blackScreen: '黒い画面',
 diff --git a/src/locale/types.ts b/src/locale/types.ts
-index e05bfe3..99bd5cd 100644
+index e05bfe3..c8dc2e8 100644
 --- a/src/locale/types.ts
 +++ b/src/locale/types.ts
-@@ -99,6 +99,53 @@ export type Locale = {
+@@ -99,6 +99,58 @@ export type Locale = {
      pickIcon: string;
    };
  
@@ -3775,6 +4463,11 @@ index e05bfe3..99bd5cd 100644
 +    newFolderPlaceholder: string;
 +  };
 +
++  siteLock: {
++    title: string;
++    hint: string;
++  };
++
 +  share: {
 +    menu: string;
 +    copyDeck: string;
@@ -3795,7 +4488,7 @@ index e05bfe3..99bd5cd 100644
    slide: {
      home: string;
      backToHome: string;
-@@ -107,6 +154,12 @@ export type Locale = {
+@@ -107,6 +159,12 @@ export type Locale = {
      agentDisconnected: string;
      agentDisconnectedTooltip: string;
      download: string;
@@ -3808,7 +4501,7 @@ index e05bfe3..99bd5cd 100644
      copyLink: string;
      moreActions: string;
      toastCopyLinkSuccess: string;
-@@ -145,6 +198,23 @@ export type Locale = {
+@@ -145,6 +203,23 @@ export type Locale = {
      speakerNotes: string;
      notesTextSmaller: string;
      notesTextLarger: string;
@@ -3833,10 +4526,10 @@ index e05bfe3..99bd5cd 100644
      noNotesSuffix: string;
      blackScreen: string;
 diff --git a/src/locale/zh-cn.ts b/src/locale/zh-cn.ts
-index 7fdf60b..5538be7 100644
+index 7fdf60b..c4a0188 100644
 --- a/src/locale/zh-cn.ts
 +++ b/src/locale/zh-cn.ts
-@@ -95,6 +95,53 @@ export const zhCN: Locale = {
+@@ -95,6 +95,58 @@ export const zhCN: Locale = {
      pickIcon: '选择图标',
    },
  
@@ -3870,6 +4563,11 @@ index 7fdf60b..5538be7 100644
 +    newFolderPlaceholder: '新文件夹名称',
 +  },
 +
++  siteLock: {
++    title: '此演示文稿已锁定',
++    hint: '请输入密码以继续。',
++  },
++
 +  share: {
 +    menu: '分享',
 +    copyDeck: '分享链接 — 整个演示文稿',
@@ -3890,7 +4588,7 @@ index 7fdf60b..5538be7 100644
    slide: {
      agentConnected: 'Agent 已连接',
      agentConnectedTooltip: '目前的 slide 与 Inspector 选择会即时同步给 agent。',
-@@ -104,6 +151,12 @@ export const zhCN: Locale = {
+@@ -104,6 +156,12 @@ export const zhCN: Locale = {
      home: '首页',
      backToHome: '返回首页',
      download: '下载',
@@ -3903,7 +4601,7 @@ index 7fdf60b..5538be7 100644
      copyLink: '复制链接',
      moreActions: '更多操作',
      toastCopyLinkSuccess: '已复制链接到剪贴板',
-@@ -143,6 +196,23 @@ export const zhCN: Locale = {
+@@ -143,6 +201,23 @@ export const zhCN: Locale = {
      speakerNotes: '演讲备注',
      notesTextSmaller: '缩小备注文字',
      notesTextLarger: '放大备注文字',
@@ -3928,10 +4626,10 @@ index 7fdf60b..5538be7 100644
      noNotesSuffix: ' 即可在此查看备注。',
      blackScreen: '黑屏',
 diff --git a/src/locale/zh-tw.ts b/src/locale/zh-tw.ts
-index 62297df..22ff329 100644
+index 62297df..223395f 100644
 --- a/src/locale/zh-tw.ts
 +++ b/src/locale/zh-tw.ts
-@@ -95,6 +95,53 @@ export const zhTW: Locale = {
+@@ -95,6 +95,58 @@ export const zhTW: Locale = {
      pickIcon: '選擇圖示',
    },
  
@@ -3965,6 +4663,11 @@ index 62297df..22ff329 100644
 +    newFolderPlaceholder: '新資料夾名稱',
 +  },
 +
++  siteLock: {
++    title: '此簡報已鎖定',
++    hint: '請輸入密碼以繼續。',
++  },
++
 +  share: {
 +    menu: '分享',
 +    copyDeck: '分享連結 — 整份簡報',
@@ -3985,7 +4688,7 @@ index 62297df..22ff329 100644
    slide: {
      agentConnected: 'Agent 已連線',
      agentConnectedTooltip: '目前的 slide 與 Inspector 選擇會即時同步給 agent。',
-@@ -104,6 +151,12 @@ export const zhTW: Locale = {
+@@ -104,6 +156,12 @@ export const zhTW: Locale = {
      home: '首頁',
      backToHome: '返回首頁',
      download: '下載',
@@ -3998,7 +4701,7 @@ index 62297df..22ff329 100644
      copyLink: '複製連結',
      moreActions: '更多動作',
      toastCopyLinkSuccess: '已複製連結到剪貼簿',
-@@ -143,6 +196,23 @@ export const zhTW: Locale = {
+@@ -143,6 +201,23 @@ export const zhTW: Locale = {
      speakerNotes: '演講備忘',
      notesTextSmaller: '縮小備忘文字',
      notesTextLarger: '放大備忘文字',
@@ -4022,518 +4725,3 @@ index 62297df..22ff329 100644
      noNotesPrefix: '此投影片沒有演講備忘。在你的投影片模組中加入 ',
      noNotesSuffix: ' 即可在此查看備忘。',
      blackScreen: '黑屏',
-diff --git b/src/app/components/present/start-punctuality.tsx b/src/app/components/present/start-punctuality.tsx
-new file mode 100644
---- /dev/null
-+++ b/src/app/components/present/start-punctuality.tsx
-@@ -0,0 +1,233 @@
-+import { Check, Pencil } from 'lucide-react';
-+import { useEffect, useMemo, useState } from 'react';
-+import { buildPacingPlan, expectedIndex, type PacingPlan, pacingGap } from '../../lib/pacing';
-+
-+// Punctuality badge of the presenter view. The trainer types the real start
-+// of the current training day (and optionally its end); on every slide change
-+// the badge compares "now" with the time the plan (lib/pacing.ts) expects
-+// that slide to be shown, and says early / on time / late. A gap within the
-+// margin (15 min by default) counts as on time.
-+const DEFAULT_TOLERANCE_MIN = 15;
-+
-+type DayConfig = { start: number; end: number | null; tolerance: number };
-+
-+const storageKey = (slideId: string, day: number) => `osd-pace:${slideId}:${day}`;
-+
-+function readConfig(slideId: string, day: number): DayConfig | null {
-+  try {
-+    const raw = JSON.parse(window.localStorage.getItem(storageKey(slideId, day)) ?? 'null');
-+    if (raw && Number.isFinite(raw.start) && raw.start > 0) {
-+      return {
-+        start: raw.start,
-+        end: Number.isFinite(raw.end) && raw.end > raw.start ? raw.end : null,
-+        tolerance: Number.isFinite(raw.tolerance) ? raw.tolerance : DEFAULT_TOLERANCE_MIN,
-+      };
-+    }
-+  } catch {}
-+  return null;
-+}
-+
-+const pad = (n: number) => String(n).padStart(2, '0');
-+
-+function toDateTimeInput(ms: number): string {
-+  const d = new Date(ms);
-+  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
-+}
-+
-+function toTimeInput(ms: number): string {
-+  const d = new Date(ms);
-+  return `${pad(d.getHours())}:${pad(d.getMinutes())}`;
-+}
-+
-+const hhmm = (ms: number) => toTimeInput(ms).replace(':', ' h ');
-+
-+function formatGap(minutes: number): string {
-+  const m = Math.round(Math.abs(minutes));
-+  const h = Math.floor(m / 60);
-+  const min = m % 60;
-+  if (h && min) return `${h} h ${pad(min)}`;
-+  if (h) return `${h} h`;
-+  return `${min} min`;
-+}
-+
-+/** Default start offered in the form: today at the plan's own start time, else now. */
-+function suggestedStart(plan: PacingPlan, day: number): number {
-+  const clock = plan.days.find((d) => d.day === day)?.clockStart;
-+  if (clock === null || clock === undefined) return Date.now();
-+  const d = new Date();
-+  d.setHours(Math.floor(clock / 60), Math.round(clock % 60), 0, 0);
-+  return d.getTime();
-+}
-+
-+export function StartPunctuality({
-+  slideId,
-+  index,
-+  pages,
-+  notes,
-+}: {
-+  slideId: string;
-+  index: number;
-+  pages: readonly unknown[];
-+  notes: readonly (string | undefined)[] | undefined;
-+}) {
-+  const plan = useMemo(() => buildPacingPlan(pages, notes), [pages, notes]);
-+  const day = plan.slides[index]?.day ?? 1;
-+  const dayPlan = plan.days.find((d) => d.day === day);
-+  const multiDay = plan.days.length > 1;
-+
-+  const [config, setConfig] = useState<DayConfig | null>(() => readConfig(slideId, day));
-+  const [editing, setEditing] = useState(false);
-+  const [draftStart, setDraftStart] = useState('');
-+  const [draftEnd, setDraftEnd] = useState('');
-+  const [draftTol, setDraftTol] = useState(String(DEFAULT_TOLERANCE_MIN));
-+  // The comparison instant: refreshed on validation and on every slide change.
-+  const [checkedAt, setCheckedAt] = useState(() => Date.now());
-+
-+  useEffect(() => {
-+    setConfig(readConfig(slideId, day));
-+    setEditing(false);
-+  }, [slideId, day]);
-+
-+  useEffect(() => {
-+    setCheckedAt(Date.now());
-+  }, [index, config]);
-+
-+  const openForm = () => {
-+    const start = config?.start ?? suggestedStart(plan, day);
-+    setDraftStart(toDateTimeInput(start));
-+    setDraftEnd(config?.end ? toTimeInput(config.end) : '');
-+    setDraftTol(String(config?.tolerance ?? DEFAULT_TOLERANCE_MIN));
-+    setEditing(true);
-+  };
-+
-+  const validate = () => {
-+    const start = new Date(draftStart || toDateTimeInput(suggestedStart(plan, day))).getTime();
-+    if (Number.isNaN(start)) return;
-+    let end: number | null = null;
-+    if (draftEnd) {
-+      const [h, m] = draftEnd.split(':').map(Number);
-+      const d = new Date(start);
-+      d.setHours(h, m, 0, 0);
-+      if (d.getTime() > start) end = d.getTime();
-+    }
-+    const tol = Number(draftTol);
-+    const next: DayConfig = {
-+      start,
-+      end,
-+      tolerance: Number.isFinite(tol) && tol >= 0 ? tol : DEFAULT_TOLERANCE_MIN,
-+    };
-+    try {
-+      window.localStorage.setItem(storageKey(slideId, day), JSON.stringify(next));
-+    } catch {}
-+    setConfig(next);
-+    setEditing(false);
-+  };
-+
-+  if (!dayPlan) return null;
-+  const span = dayPlan.span;
-+
-+  if (config === null || editing) {
-+    return (
-+      <form
-+        className="flex items-center gap-1.5"
-+        onSubmit={(e) => {
-+          e.preventDefault();
-+          validate();
-+        }}
-+      >
-+        <span className="font-mono text-[10px] tracking-[0.06em] uppercase text-white/45">
-+          {multiDay ? `Début J${day}` : 'Début'}
-+        </span>
-+        <input
-+          type="datetime-local"
-+          value={draftStart || toDateTimeInput(suggestedStart(plan, day))}
-+          onChange={(e) => setDraftStart(e.target.value)}
-+          className="h-7 rounded-[3px] border border-white/15 bg-white/5 px-1.5 font-mono text-[12px] text-foreground [color-scheme:dark]"
-+        />
-+        <span
-+          className="font-mono text-[10px] tracking-[0.06em] uppercase text-white/45"
-+          title={`Optionnel : le plan (${formatGap(span)}) est étiré ou resserré pour finir à cette heure`}
-+        >
-+          Fin
-+        </span>
-+        <input
-+          type="time"
-+          value={draftEnd}
-+          onChange={(e) => setDraftEnd(e.target.value)}
-+          title={`Optionnel — durée prévue par les notes : ${formatGap(span)}`}
-+          className="h-7 rounded-[3px] border border-white/15 bg-white/5 px-1.5 font-mono text-[12px] text-foreground [color-scheme:dark]"
-+        />
-+        <span className="font-mono text-[10px] tracking-[0.06em] uppercase text-white/45">
-+          Marge
-+        </span>
-+        <input
-+          type="number"
-+          min={0}
-+          max={120}
-+          value={draftTol}
-+          onChange={(e) => setDraftTol(e.target.value)}
-+          title="Écart toléré (minutes) avant de signaler une avance ou un retard"
-+          className="h-7 w-12 rounded-[3px] border border-white/15 bg-white/5 px-1.5 font-mono text-[12px] text-foreground [color-scheme:dark]"
-+        />
-+        <button
-+          type="submit"
-+          className="flex h-7 items-center gap-1 rounded-[3px] border border-white/20 bg-white/10 px-2 font-mono text-[11px] text-foreground hover:bg-white/20"
-+        >
-+          <Check className="size-3.5" /> Valider
-+        </button>
-+      </form>
-+    );
-+  }
-+
-+  const scale = config.end && span > 0 ? (config.end - config.start) / 60000 / span : 1;
-+  const gap = pacingGap(plan, index, config.start, checkedAt, scale);
-+  const expected = expectedIndex(plan, day, config.start, checkedAt, scale);
-+  const slide = plan.slides[index];
-+  const plannedAt = config.start + slide.start * scale * 60000;
-+  const plannedEnd = config.start + span * scale * 60000;
-+  const synchro = Math.abs(gap) <= config.tolerance;
-+  const late = gap > 0;
-+  const tone = synchro
-+    ? 'border-emerald-300/30 bg-emerald-300/10 text-emerald-200'
-+    : late
-+      ? 'border-rose-300/30 bg-rose-300/10 text-rose-200'
-+      : 'border-sky-300/30 bg-sky-300/10 text-sky-200';
-+  const signed = Math.round(gap) === 0 ? '' : ` · ${late ? '+' : '−'}${formatGap(gap)}`;
-+  const label = synchro
-+    ? `Synchrone${signed}`
-+    : late
-+      ? `En retard de ${formatGap(gap)}`
-+      : `En avance de ${formatGap(gap)}`;
-+  const estimated = plan.slides.filter((s) => s.day === day && s.source === 'estimate').length;
-+  const title = [
-+    `Cette slide est prévue à ${hhmm(plannedAt)} (${formatGap(slide.minutes * scale)})`,
-+    `Slide attendue maintenant : ${expected + 1}`,
-+    `Début ${hhmm(config.start)} · fin prévue ${hhmm(plannedEnd)}`,
-+    `Marge : ±${config.tolerance} min · recalculé à chaque changement de slide`,
-+    estimated
-+      ? `Durées estimées (longueur des notes, clics, minuteurs) pour ${estimated} slide(s) sans « ⏱ »`
-+      : 'Durées lues dans les notes (« ⏱ N min ») et repères horaires',
-+  ].join('\n');
-+
-+  return (
-+    <div className="flex items-center gap-1.5">
-+      <span
-+        title={title}
-+        className={`rounded-[3px] border px-1.5 py-0.5 font-mono text-[12px] tabular-nums ${tone}`}
-+      >
-+        {label}
-+      </span>
-+      <span title={title} className="font-mono text-[11px] tabular-nums text-white/45">
-+        prévu {hhmm(plannedAt)} · attendu p.{expected + 1}
-+      </span>
-+      <button
-+        type="button"
-+        title={multiDay ? `Modifier le début du jour ${day}` : 'Modifier l’heure de début'}
-+        onClick={openForm}
-+        className="rounded-[3px] p-1 text-white/45 hover:bg-white/10 hover:text-foreground"
-+      >
-+        <Pencil className="size-3.5" />
-+      </button>
-+    </div>
-+  );
-+}
-diff --git b/src/app/lib/pacing.ts b/src/app/lib/pacing.ts
-new file mode 100644
---- /dev/null
-+++ b/src/app/lib/pacing.ts
-@@ -0,0 +1,272 @@
-+// Planned timeline of a deck, used by the presenter's punctuality badge.
-+//
-+// Each page gets a planned duration and a planned start, in minutes on the
-+// deck's own clock. Sources, best first:
-+//   1. Speaker-note header `⏱ N min` (or `⏱ A à B min`) — the author's own
-+//      estimate; `⏱ (pendant l'atelier)` / `⏱ (support …)` pages take no time
-+//      of their own (they are shown while the workshop timer runs).
-+//   2. Clock anchors in that header — `· 13:30`, `(≈ 10 h 45)`,
-+//      `fin vers 15:30`, `jusqu'à 16 h 00` — which pin the plan to the
-+//      schedule, so breaks and lunch fall where the author put them.
-+//   3. Without a `⏱` header: an estimate from the note's length (speaking
-+//      pace), the number of reveal steps and any `<Timer minutes={N}>` the
-+//      page renders.
-+// A `COUVERTURE / ACCUEIL … JOUR N` header, or an anchor that jumps back in
-+// time, starts a new training day; every day has its own planned start.
-+
-+export type PacingSlide = {
-+  /** Planned duration of the page, minutes (0 = shown during a workshop). */
-+  minutes: number;
-+  /** Where `minutes` came from. */
-+  source: 'notes' | 'estimate';
-+  /** Training day (1-based). */
-+  day: number;
-+  /** Planned start / end, minutes on the deck clock, relative to its day start. */
-+  start: number;
-+  end: number;
-+  /** Window in which being on this page counts as on schedule. */
-+  windowStart: number;
-+  windowEnd: number;
-+};
-+
-+export type PacingDay = {
-+  day: number;
-+  first: number;
-+  last: number;
-+  /** Deck-clock time of day the plan assumes (minutes since midnight), if anchored. */
-+  clockStart: number | null;
-+  /** Planned length of the day, minutes. */
-+  span: number;
-+};
-+
-+export type PacingPlan = { slides: PacingSlide[]; days: PacingDay[] };
-+
-+const SPEAKING_WPM = 140;
-+const MIN_ESTIMATE = 0.75;
-+const NO_NOTES_ESTIMATE = 1;
-+/** Gap between two anchors larger than the planned pages → a break before the later anchor. */
-+const BREAK_MIN = 10;
-+
-+type Anchor = { at: number; kind: 'start' | 'end' };
-+
-+type Parsed = {
-+  minutes: number | null;
-+  during: boolean;
-+  anchor: Anchor | null;
-+  newDay: number | null;
-+  words: number;
-+  timer: number;
-+};
-+
-+const CLOCK = /(\d{1,2})\s*(?::|h|H)\s*(\d{2})(?!\d)/g;
-+
-+function parseAnchor(header: string): Anchor | null {
-+  for (const m of header.matchAll(CLOCK)) {
-+    const h = Number(m[1]);
-+    const min = Number(m[2]);
-+    if (h < 6 || h > 21 || min > 59) continue;
-+    const before = header.slice(0, m.index).toLowerCase();
-+    // "pause à 14 h 15", "PAUSE DE 10 H 30", "avant 9 h 00", "(9 h 15 – 10 h 30)" end.
-+    if (/(pause|avant|[–-])\s*(de|à|a|vers)?\s*$/.test(before)) continue;
-+    const kind = /(fin[^·(,]*vers|jusqu['’]à|jusqu'a)\s*$/.test(before) ? 'end' : 'start';
-+    return { at: h * 60 + min, kind };
-+  }
-+  return null;
-+}
-+
-+function countWords(text: string): number {
-+  return text.split(/\s+/).filter((w) => /[\p{L}\p{N}]/u.test(w)).length;
-+}
-+
-+function parseTimer(source: string): number {
-+  let best = 0;
-+  for (const m of source.matchAll(/\bminutes\s*:\s*(\d{1,3}(?:\.\d+)?)\b/g)) {
-+    const n = Number(m[1]);
-+    if (n > 0 && n <= 180) best = Math.max(best, n);
-+  }
-+  return best;
-+}
-+
-+function parseSlide(note: string | undefined, source: string): Parsed {
-+  const text = (note ?? '').trim();
-+  const header = text.startsWith('⏱') ? text.split('\n', 1)[0] : '';
-+  let minutes: number | null = null;
-+  let during = false;
-+  if (header) {
-+    const range = header.match(/⏱\s*(\d+(?:[.,]\d+)?)\s*(?:à|-|–)\s*(\d+(?:[.,]\d+)?)\s*min/);
-+    const single = header.match(/⏱\s*(\d+(?:[.,]\d+)?)\s*min/);
-+    const hours = header.match(/⏱\s*(\d+)\s*h\s*(\d{2})?(?!\s*\d)/);
-+    const lead = header.split('·', 1)[0];
-+    if (range) minutes = (Number(range[1].replace(',', '.')) + Number(range[2].replace(',', '.'))) / 2;
-+    else if (single && lead.includes('+')) {
-+      // "⏱ 3 min de démonstration + 10 min en autonomie"
-+      minutes = [...lead.matchAll(/(\d+(?:[.,]\d+)?)\s*min/g)].reduce(
-+        (s, m) => s + Number(m[1].replace(',', '.')),
-+        0,
-+      );
-+    } else if (single) minutes = Number(single[1].replace(',', '.'));
-+    else if (hours) minutes = Number(hours[1]) * 60 + Number(hours[2] ?? 0);
-+    else if (/⏱\s*\(/.test(header)) {
-+      minutes = 0;
-+      during = true;
-+    }
-+  }
-+  const dayMatch = header.match(
-+    /(couverture|accueil|bienvenue|ouverture)[^\n]*?\b(?:jour|j)\s?([2-9])\b/i,
-+  );
-+  return {
-+    minutes,
-+    during,
-+    anchor: header ? parseAnchor(header.replace(/^⏱[^·(]*/, '')) : null,
-+    newDay: dayMatch ? Number(dayMatch[2]) : null,
-+    words: countWords(text),
-+    timer: parseTimer(source),
-+  };
-+}
-+
-+function pageSource(page: unknown): string {
-+  try {
-+    return typeof page === 'function' ? Function.prototype.toString.call(page) : '';
-+  } catch {
-+    return '';
-+  }
-+}
-+
-+function estimate(p: Parsed): number {
-+  const spoken = p.words ? Math.max(MIN_ESTIMATE, p.words / SPEAKING_WPM) : NO_NOTES_ESTIMATE;
-+  return p.timer ? Math.max(spoken, p.timer + 1) : spoken;
-+}
-+
-+export function buildPacingPlan(
-+  pages: readonly unknown[],
-+  notes: readonly (string | undefined)[] | undefined,
-+): PacingPlan {
-+  const parsed = pages.map((page, i) => parseSlide(notes?.[i], pageSource(page)));
-+  const slides: PacingSlide[] = parsed.map((p) => ({
-+    minutes: p.minutes ?? estimate(p),
-+    source: p.minutes === null ? 'estimate' : 'notes',
-+    day: 1,
-+    start: 0,
-+    end: 0,
-+    windowStart: 0,
-+    windowEnd: 0,
-+  }));
-+
-+  // Split into days.
-+  const days: PacingDay[] = [];
-+  let day = 1;
-+  let first = 0;
-+  let lastAnchor = -1;
-+  const closeDay = (last: number) => {
-+    if (last >= first) days.push({ day, first, last, clockStart: null, span: 0 });
-+  };
-+  parsed.forEach((p, i) => {
-+    const anchorAt = p.anchor ? p.anchor.at : null;
-+    const jumpsBack = anchorAt !== null && lastAnchor >= 0 && anchorAt < lastAnchor - 120;
-+    const explicit = p.newDay !== null && p.newDay > day;
-+    if (i > first && (explicit || jumpsBack)) {
-+      closeDay(i - 1);
-+      day = explicit ? (p.newDay as number) : day + 1;
-+      first = i;
-+      lastAnchor = -1;
-+    }
-+    if (anchorAt !== null) lastAnchor = anchorAt;
-+    slides[i].day = day;
-+  });
-+  closeDay(pages.length - 1);
-+
-+  for (const d of days) layoutDay(d, parsed, slides);
-+  return { slides, days };
-+}
-+
-+function layoutDay(d: PacingDay, parsed: Parsed[], slides: PacingSlide[]) {
-+  // Anchors as planned starts (an end anchor pins the page's end).
-+  const anchors: { i: number; at: number }[] = [];
-+  for (let i = d.first; i <= d.last; i++) {
-+    const a = parsed[i].anchor;
-+    if (!a) continue;
-+    const at = a.kind === 'end' ? a.at - slides[i].minutes : a.at;
-+    const prev = anchors[anchors.length - 1];
-+    if (prev && at <= prev.at) continue; // out-of-order anchor: ignore it
-+    anchors.push({ i, at });
-+  }
-+
-+  const sum = (from: number, to: number) => {
-+    let s = 0;
-+    for (let i = from; i < to; i++) s += slides[i].minutes;
-+    return s;
-+  };
-+
-+  // Deck-clock start of the day: back-computed from the first anchor.
-+  const origin = anchors.length ? anchors[0].at - sum(d.first, anchors[0].i) : 0;
-+  d.clockStart = anchors.length ? origin : null;
-+
-+  // Lay out each segment between anchors.
-+  const cuts = [{ i: d.first, at: origin }, ...anchors.filter((a) => a.i > d.first)];
-+  for (let k = 0; k < cuts.length; k++) {
-+    const from = cuts[k].i;
-+    const to = k + 1 < cuts.length ? cuts[k + 1].i : d.last + 1;
-+    const planned = sum(from, to);
-+    const available = k + 1 < cuts.length ? cuts[k + 1].at - cuts[k].at : planned;
-+    // Slack under BREAK_MIN is authoring imprecision: spread it. More is a
-+    // break: keep the pace and leave the gap before the next anchor.
-+    const scale =
-+      planned > 0 && (available < planned || available - planned < BREAK_MIN)
-+        ? available / planned
-+        : 1;
-+    let t = cuts[k].at - origin;
-+    for (let i = from; i < to; i++) {
-+      slides[i].start = t;
-+      t += slides[i].minutes * scale;
-+      slides[i].end = t;
-+    }
-+  }
-+  d.span = slides[d.last].end;
-+
-+  // "During the workshop" pages share the window of the timed pages around them.
-+  for (let i = d.first; i <= d.last; i++) {
-+    const s = slides[i];
-+    s.windowStart = s.start;
-+    s.windowEnd = s.end;
-+    if (!parsed[i].during) continue;
-+    let a = i - 1;
-+    while (a >= d.first && parsed[a].during) a--;
-+    let b = i + 1;
-+    while (b <= d.last && parsed[b].during) b++;
-+    s.windowStart = a >= d.first ? slides[a].start : s.start;
-+    s.windowEnd = b <= d.last ? slides[b].end : s.end;
-+  }
-+}
-+
-+/** Gap in minutes between now and the plan for page `index`: > 0 late, < 0 early, 0 inside the window. */
-+export function pacingGap(
-+  plan: PacingPlan,
-+  index: number,
-+  dayStartMs: number,
-+  now: number,
-+  scale = 1,
-+): number {
-+  const s = plan.slides[index];
-+  if (!s) return 0;
-+  const elapsed = (now - dayStartMs) / 60000;
-+  if (elapsed < s.windowStart * scale) return elapsed - s.windowStart * scale;
-+  if (elapsed > s.windowEnd * scale) return elapsed - s.windowEnd * scale;
-+  return 0;
-+}
-+
-+/** Page the plan expects to be on at `now`. */
-+export function expectedIndex(
-+  plan: PacingPlan,
-+  day: number,
-+  dayStartMs: number,
-+  now: number,
-+  scale = 1,
-+): number {
-+  const d = plan.days.find((x) => x.day === day);
-+  if (!d) return 0;
-+  const elapsed = (now - dayStartMs) / 60000;
-+  for (let i = d.first; i <= d.last; i++) {
-+    if (elapsed < plan.slides[i].end * scale) return i;
-+  }
-+  return d.last;
-+}
