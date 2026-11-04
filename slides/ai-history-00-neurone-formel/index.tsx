@@ -123,6 +123,7 @@ const vars = (o: Record<string, string | number>): CSSProperties => {
 const pad2 = (n: number) => String(n).padStart(2, '0');
 // French decimal comma.
 const fr = (x: number) => x.toFixed(1).replace('.', ',');
+
 const svgUrl = (s: string) => `url("data:image/svg+xml,${encodeURIComponent(s)}")`;
 
 // Deterministic pseudo-random generator (same picture on every render).

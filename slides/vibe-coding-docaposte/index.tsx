@@ -107,9 +107,9 @@ const MOD_TITLES: Record<number, string> = {
   9: 'Données JSON / CSV & visualisations',
   10: 'TP Jour 2 · TaskFlow, le Kanban complet',
   11: 'Passer à VS Code : Ask, Edit & Agent',
-  12: 'Instructions, Skills & Agents dans VS Code',
-  13: 'Refactorisation, effets visuels & README',
-  14: 'TP Final co-créé avec l’IA & Restitution',
+  12: 'Instructions, Skill & équipe de 3 agents',
+  13: 'Fonctionnalité phare orchestrée par 3 agents',
+  14: 'GitHub, GitHub Pages & démo finale',
 };
 const dayOf = (mod: number) => (mod <= 6 ? 1 : mod <= 10 ? 2 : 3);
 
@@ -189,6 +189,7 @@ const vars = (o: Record<string, string | number>): CSSProperties => {
 const dl = (ms: number): CSSProperties => vars({ d: `${ms}ms` });
 const cx = (...xs: (string | false | null | undefined)[]) => xs.filter(Boolean).join(' ');
 const pad = (n: number) => String(n).padStart(2, '0');
+const clock = (s: number) => `${pad(Math.floor(s / 60))}:${pad(s % 60)}`;
 const fr = (x: number, digits = 0) => {
   const [i, d] = Math.abs(x).toFixed(digits).split('.');
   const s = i.replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + (d ? `,${d}` : '');
@@ -1336,7 +1337,7 @@ const Timer = ({
         <div>
           <Eyebrow c={C.muted} size={17}>{label}</Eyebrow>
           <div style={{ fontFamily: mono, fontWeight: 700, fontSize: 44, lineHeight: 1.05, color: done ? C.coral : C.navy }}>
-            {pad(Math.floor(left / 60))}:{pad(left % 60)}
+            {clock(left)}
           </div>
         </div>
         <div style={{ display: 'flex', gap: 8 }}>
@@ -1349,7 +1350,7 @@ const Timer = ({
   return (
     <div className={cls} style={{ display: 'flex', alignItems: 'center', gap: 18, ...style }}>
       <div style={{ fontFamily: mono, fontWeight: 700, fontSize: big ? 112 : 56, lineHeight: 1, letterSpacing: '0.02em', color: done ? C.coral : C.navy }}>
-        {pad(Math.floor(left / 60))}:{pad(left % 60)}
+        {clock(left)}
       </div>
       <div style={{ display: 'flex', gap: 10 }}>
         <Btn icon={running ? 'pause' : 'play'} size={big ? 28 : 22} onClick={toggle} />
@@ -1871,7 +1872,7 @@ const Footer = ({ left = 120, day }: { left?: number; day: number }) => {
         <span style={{ fontSize: 19, color: C.muted, whiteSpace: 'nowrap' }}>{COURSE}</span>
       </div>
       <span style={{ fontFamily: mono, fontSize: 19, color: C.muted, letterSpacing: '0.04em', whiteSpace: 'nowrap' }}>
-        Jour {day} · {pad(current)} / {pad(total)}
+        {`Jour ${day} · ${pad(current)} / ${pad(total)}`}
       </span>
     </div>
   );
@@ -2610,10 +2611,10 @@ const O_Programme: Page = () => (
           <div><Tag tone="violet" size={16}>Matin</Tag> Découvrir VS Code sans stress</div>
           <div>Les 3 modes : Ask, Edit et Agent multi-fichiers</div>
           <div>Personnaliser l’IA : <Ic>AGENTS.md</Ic>, <Ic>SKILL.md</Ic> &amp; Agents</div>
-          <div>Générer composants, effets visuels &amp; variantes</div>
-          <div style={{ marginTop: 4 }}><Tag tone="violet" size={16}>Après-midi</Tag> Refactorisation assistée &amp; données</div>
-          <div>Préparer le <Ic>README.md</Ic> et expliquer le rôle de l’IA</div>
-          <div><Strong c={C.violet}>TP Final · Co-création complète &amp; Démo live</Strong></div>
+          <div>Une équipe de 3 agents : PO, Dev JS, Testeur</div>
+          <div style={{ marginTop: 4 }}><Tag tone="violet" size={16}>Après-midi</Tag> Fonctionnalité phare livrée par relais</div>
+          <div>Git, GitHub &amp; déploiement sur GitHub Pages</div>
+          <div><Strong c={C.violet}>TP Final · Démo live depuis votre URL publique</Strong></div>
         </Col>
       </Card>
     </Grid>
@@ -2634,8 +2635,8 @@ const O_FilRouge: Page = () => (
         <Card title="Jour 2 · TaskFlow, gestion de projet" icon="database" tone="teal" d={220} bsz={22} pad={20}>
           Backlog produit puis tableau Kanban évolutif : règles métier testées, import CSV, tableau de bord, glisser-déposer et sauvegarde <Ic>localStorage</Ic>.
         </Card>
-        <Card title="Jour 3 · VibePulse Studio dans VS Code" icon="bot" tone="violet" d={340} bsz={22} pad={20}>
-          Application multi-fichiers propre (<Ic>index.html</Ic>, <Ic>style.css</Ic>, <Ic>app.js</Ic>, <Ic>README.md</Ic>) pilotée avec vos propres <Strong c={C.violet}>Skills</Strong> et <Strong c={C.violet}>Agents</Strong>.
+        <Card title="Jour 3 · TaskFlow, livré et en ligne" icon="bot" tone="violet" d={340} bsz={22} pad={20}>
+          Projet VS Code multi-fichiers, une fonctionnalité phare livrée par une <Strong c={C.violet}>équipe de 3 agents</Strong> guidée par un <Strong c={C.violet}>Skill</Strong>, puis publiée sur <Strong c={C.violet}>GitHub Pages</Strong>.
         </Card>
       </Col>
     </Box>
@@ -3689,7 +3690,7 @@ const M3_QCM: Page = () => (
   </Frame>
 );
 
-const M3_Dejeuner: Page = () => <Pause mod={3} title="Pause déjeuner" back="Reprise à 14 h 00" minutes={60} />;
+const M3_Dejeuner: Page = () => <Pause mod={3} title="Pause déjeuner" back="Reprise à 14 h 00" minutes={90} />;
 
 const PAGES_O: Page[] = [O_Cover, O_Welcome, O_Formateur, O_Virtuel, O_Poll, O_Objectifs, O_Programme, O_FilRouge, O_Outils, O_Defis];
 const PAGES_M1: Page[] = [M1_Divider, M1_Paradigme, M1_CanvasArtifacts, M1_Determinisme, M1_TokenTemp, M1_Algorithme, M1_Erreurs, M1_CorrigerIA, M1_Lab1, M1_QCM];
@@ -3762,7 +3763,7 @@ TRANSITION — « Voici comment ces objectifs se répartissent sur nos trois jou
 
 OBJECTIF — Donner la feuille de route claire des 3 journées.
 
-DIRE — « Jour 1 : la logique et les bases du code en Vibe Coding avec ChatGPT, Claude ou Gemini, jusqu’à votre premier Quiz ou Calculateur graphique cet après-midi. Jour 2 : structurer un projet et manipuler des données — listes, objets, JSON/CSV, tests simples et sauvegarde dans le navigateur. Jour 3 : on passe à la vitesse supérieure en découvrant VS Code, les modes Ask/Edit/Agent, les fichiers d’instructions, les Skills et les Agents personnalisés pour co-créer et présenter votre mini-app finale. »
+DIRE — « Jour 1 : la logique et les bases du code en Vibe Coding avec ChatGPT, Claude ou Gemini, jusqu’à votre premier Quiz ou Calculateur graphique cet après-midi. Jour 2 : structurer un projet et manipuler des données — listes, objets, JSON/CSV, tests simples et sauvegarde dans le navigateur. Jour 3 : VS Code, un Skill et une équipe de trois agents — un Product Owner, un développeur JavaScript et un testeur — qui livrent une nouvelle fonctionnalité, puis la mise en ligne sur GitHub Pages et la démo finale. »
 
 ANIMATION — Parcourir les trois colonnes de gauche à droite.
 
@@ -3772,7 +3773,7 @@ TRANSITION — « Découvrons notre fil rouge applicatif : VibePulse. »`,
 
 OBJECTIF — Montrer concrètement le rendu visuel des applications que les participants vont créer.
 
-DIRE — « Fini les exercices abstraits sur fond noir : chaque journée produit une vraie interface graphique. Aujourd’hui, VibeQuiz ou VibeCalc. Demain, TaskFlow : un outil de gestion de projet avec backlog, Kanban en glisser-déposer et sauvegarde automatique, construit en quatre incréments. Et mercredi, VibePulse Studio dans VS Code. »
+DIRE — « Fini les exercices abstraits sur fond noir : chaque journée produit une vraie interface graphique. Aujourd’hui, VibeQuiz ou VibeCalc. Demain, TaskFlow : un outil de gestion de projet avec backlog, Kanban en glisser-déposer et sauvegarde automatique, construit en quatre incréments. Et mercredi, TaskFlow passe dans VS Code, gagne une fonctionnalité livrée par une équipe d’agents, et part en ligne sur GitHub Pages. »
 
 ANIMATION — Pointer l’aperçu UI à droite : montrer les compteurs, le statut des auto-tests et les cartes.
 
@@ -4069,13 +4070,13 @@ DIRE — « Quatre questions à voix haute : dites A, B, C ou D. »
 
 ANIMATION — Cliquer les réponses votées et commenter chaque explication.
 
-TRANSITION — « Excellente matinée ! Pause déjeuner d’une heure, on se retrouve à 14 h 00. »`,
+TRANSITION — « Excellente matinée ! Pause déjeuner d’une heure trente, on se retrouve à 14 h 00. »`,
   // M3_Dejeuner
-  `⏱ 60 min · PAUSE DÉJEUNER
+  `⏱ 90 min · PAUSE DÉJEUNER
 
 DIRE — « Bon appétit à toutes et à tous ! On se retrouve à 14 h 00 pour les fonctions, le constructeur de prompts UI et le grand TP du Jour 1. »
 
-ANIMATION — Lancer le minuteur de 60 minutes.`,
+ANIMATION — Lancer le minuteur de 90 minutes.`,
 ];
 
 // ════════════════════════════════════════════════════════════════════════════
@@ -4842,7 +4843,7 @@ const M6_LabTwist: Page = () => (
         </Checklist>
       </div>
       <Note tone="yellow" icon="chat" label="Suivi en classe virtuelle" size={20} d={380}>
-        Points d’étape au micro à 35 min (twist intégré) et à 45 min. Bloqué ? Partage d’écran 2 minutes !
+        Points d’étape au micro à 10:00 restantes (twist intégré) et à 00:00 (fin du TP). Bloqué ? Partage d’écran 2 minutes !
       </Note>
     </div>
   </Frame>
@@ -5106,7 +5107,7 @@ OBJECTIF — Apprendre à faire évoluer un code généré par l’IA face à un
 
 DIRE — « Nouvelle exigence. VibeQuiz : plus de questions en dur, elles viennent d’un JSON, les scores sont sauvegardés dans le localStorage et vous affichez un classement local. VibeCalc : le client veut un export instantané du résultat, rapport imprimable ou graphique interactif. Vous avez 15 minutes pour refactoriser par prompts, sans repartir de zéro. À 35 minutes, je vous donne le cahier des charges Vibe Design. »
 
-ANIMATION — Lancer le minuteur de 25 minutes. À 35 minutes (reste 10 min), cliquer une fois : cahier des charges Vibe Design (mode sombre / clair avec transition CSS pure, micro-animation de feedback type confettis ou jauge SVG, mobile-first testé dans les devtools). Point d’étape oral à 35 puis 45 minutes. Si la librairie de graphiques n’est pas chargeable dans l’outil, proposer un graphique en SVG ou Canvas natif.
+ANIMATION — Lancer le minuteur de 25 minutes. À 35 minutes (reste 10 min), cliquer une fois : cahier des charges Vibe Design (mode sombre / clair avec transition CSS pure, micro-animation de feedback type confettis ou jauge SVG, mobile-first testé dans les devtools). Point d’étape oral quand le minuteur affiche 10:00 puis 00:00. Si la librairie de graphiques n’est pas chargeable dans l’outil, proposer un graphique en SVG ou Canvas natif.
 
 TRANSITION — « Place aux démonstrations de vos applications ! »`,
   // M6_Restitution
@@ -6032,7 +6033,7 @@ const M8_QCM: Page = () => (
   </Frame>
 );
 
-const M8_Dejeuner: Page = () => <Pause mod={8} title="Pause déjeuner" back="Reprise à 14 h 00" minutes={60} />;
+const M8_Dejeuner: Page = () => <Pause mod={8} title="Pause déjeuner" back="Reprise à 14 h 00" minutes={90} />;
 
 // ════════════════════════════════════════════════════════════════════════════
 // MODULE 9 — Données JSON / CSV & Visualisations légères (9 pages)
@@ -6564,7 +6565,7 @@ const M10_LabTwist: Page = () => (
         </Checklist>
       </div>
       <Note tone="yellow" icon="chat" label="Suivi en classe virtuelle" size={20} d={380}>
-        Points d’étape au micro à 40 min (colonne « En revue ») et à 50 min (migration). Bloqué ? Partage d’écran 2 minutes !
+        Points d’étape au micro à 20:00 restantes (colonne « En revue ») et à 10:00 (migration). Bloqué ? Partage d’écran 2 minutes !
       </Note>
     </div>
   </Frame>
@@ -6632,7 +6633,7 @@ const M10_SortieJ2: Page = () => (
     </Grid>
     <Box x={120} y={710} w={1680}>
       <Callout tone="violet" icon="laptop" title="Demain · Jour 3 · TaskFlow passe dans VS Code" d={500} size={25}>
-        Nous découvrons <Strong c={C.violet}>VS Code</Strong>, les modes <Strong>Ask / Edit / Agent</Strong> et les fichiers <Ic>AGENTS.md</Ic>, <Ic>SKILL.md</Ic> et <Ic>.agent.md</Ic> pour faire grandir votre application jusqu’à la démo finale.
+        Nous découvrons <Strong c={C.violet}>VS Code</Strong>, les modes <Strong>Ask / Edit / Agent</Strong> et une équipe de trois agents guidée par un Skill pour livrer une nouvelle fonctionnalité, puis TaskFlow part en ligne sur <Strong c={C.violet}>GitHub Pages</Strong>.
       </Callout>
     </Box>
   </Frame>
@@ -6883,11 +6884,11 @@ Q6 → B, la fonction pure.
 
 TRANSITION — « Bon appétit ! Cet après-midi : importer un vrai fichier piégé, puis le TP Kanban. »`,
   // M8_Dejeuner
-  `⏱ 60 min · PAUSE DÉJEUNER
+  `⏱ 90 min · PAUSE DÉJEUNER
 
-DIRE — « Pause déjeuner d’une heure, reposez-vous bien, reprise à 14 h 00 ! »
+DIRE — « Pause déjeuner d’une heure trente, reposez-vous bien, reprise à 14 h 00 ! »
 
-ANIMATION — Lancer le minuteur de 60 minutes.`,
+ANIMATION — Lancer le minuteur de 90 minutes.`,
 ];
 
 const NOTES_M9: string[] = [
@@ -7019,7 +7020,7 @@ OBJECTIF — Faire évoluer l’application sans régression : nouvelle colonne 
 
 DIRE — « Le Product Owner change le process, comme dans la vraie vie. Une colonne En revue, limitée à deux, par laquelle on doit passer avant Terminé. Un champ assigne, alors que vos données sauvegardées ne l’ont pas : migration obligatoire. Et un bouton Annuler. Bonne nouvelle : si vos colonnes viennent de COLONNES et si vos tableaux sont immuables, c’est beaucoup plus simple qu’il n’y paraît. Faites passer vos anciens tests à chaque étape. »
 
-ANIMATION — Lancer le minuteur de 30 minutes. → beat 1 : ce que le twist met à l’épreuve. Points d’étape à 40 min (colonne En revue) et 50 min (migration). Rappeler à 55 min d’enregistrer taskflow-v4.html.
+ANIMATION — Lancer le minuteur de 30 minutes. → beat 1 : ce que le twist met à l’épreuve. Points d’étape quand le minuteur affiche 20:00 (colonne En revue) et 10:00 (migration). Rappeler à 05:00 d’enregistrer taskflow-v4.html.
 
 TRANSITION — « Place aux démos, et le groupe va essayer de casser vos règles. »`,
   // M10_Restitution
@@ -7049,7 +7050,7 @@ OBJECTIF — Clôturer la journée et préparer le passage sur VS Code au Jour 3
 
 DIRE — « Une minute chacun au micro : le bug qui vous a le plus appris, la décision du matin qui vous a sauvé pendant le twist, et la prochaine fonctionnalité que vous ajouteriez à TaskFlow. Très bonne soirée à toutes et à tous ! »
 
-ANIMATION — Tour de table par prénom. Vérifier que chacun a enregistré taskflow-v4.html et que VS Code (ou vscode.dev / GitHub Codespaces) est prêt pour demain.`,
+ANIMATION — Tour de table par prénom. Vérifier que chacun a enregistré taskflow-v4.html et que VS Code (ou vscode.dev / GitHub Codespaces) est prêt pour demain, et que chacun a un compte GitHub (gratuit, à créer soi-même ce soir) pour publier en ligne.`,
 ];
 
 // ════════════════════════════════════════════════════════════════════════════
@@ -7059,12 +7060,12 @@ const J3_Cover: Page = () => (
   <Cover
     mod={11}
     day={3}
-    eyebrow="Jour 3 · Vibe coding : mini-app interactive, VS Code, Agents, Skills et restitution"
-    sub="Aujourd’hui, vous passez dans un vrai environnement de développement avec VS Code, des fichiers d’instructions, des Skills et des Agents personnalisés pour co-créer et présenter votre mini-application finale."
+    eyebrow="Jour 3 · VS Code, Skill, équipe d’agents et mise en ligne"
+    sub="TaskFlow passe dans VS Code : une équipe de trois agents (Product Owner, développeur JavaScript, testeur) livre votre fonctionnalité phare, puis vous la publiez sur GitHub Pages."
   >
     <span style={{ color: C.plum }}>Jour 3</span>
     <br />
-    VS Code, Agents, Skills &amp; Démo
+    Agents, GitHub &amp; Démo
   </Cover>
 );
 J3_Cover.transition = BLOOM;
@@ -7197,7 +7198,7 @@ const M11_TourVSCode: Page = () => (
           </div>
           <div style={{ marginTop: 'auto', display: 'flex', gap: 8 }}>
             <Tag tone="violet" size={15}>Mode : Agent</Tag>
-            <Tag tone="teal" size={15}>@Coach-Vibe</Tag>
+            <Tag tone="teal" size={15}>@Dev-JS</Tag>
           </div>
         </div>
       </div>
@@ -7318,8 +7319,8 @@ const M11_DiffReview: Page = () => (
 const M12_Divider: Page = () => (
   <Divider mod={12} kicker="Jour 3 · Matin" title="Instructions, Skills & Agents personnalisés dans VS Code">
     <Bullet size={30}>Donner une mémoire permanente au projet avec AGENTS.md</Bullet>
-    <Bullet size={30}>Créer des fiches de savoir-faire réutilisables (SKILL.md)</Bullet>
-    <Bullet size={30}>Créer ses propres Agents spécialisés (.agent.md) et générer des variantes UI</Bullet>
+    <Bullet size={30}>Un Skill partagé : la recette d’une fonctionnalité TaskFlow</Bullet>
+    <Bullet size={30}>Trois agents qui se passent le relais : PO, Dev JS, Testeur</Bullet>
   </Divider>
 );
 M12_Divider.transition = BLOOM;
@@ -7341,14 +7342,14 @@ const M12_PyramideContexte: Page = () => (
           <Tag tone="green" size={16}>2 · Chargé quand la tâche correspond</Tag>
           <div style={{ fontFamily: mono, fontWeight: 700, fontSize: 22, color: T.green.fg, marginTop: 6 }}>.github/skills/&lt;nom&gt;/SKILL.md</div>
         </div>
-        <div style={{ fontSize: 22, color: C.soft }}>Une fiche « recette de savoir-faire » spécialisée : ex. comment créer une belle carte UI, comment écrire les tests, comment générer le README.</div>
+        <div style={{ fontSize: 22, color: C.soft }}>Une recette de savoir-faire spécialisée : ici, comment ajouter une fonctionnalité à TaskFlow (modèle, migration, tests, Definition of Done).</div>
       </div>
       <div className={b.on(2)} style={{ display: 'grid', gridTemplateColumns: '480px 1fr', gap: 22, alignItems: 'center', background: C.card, padding: '16px 24px', borderRadius: 16, boxShadow: SHADOW_SM, borderLeft: `8px solid ${C.violet}` }}>
         <div>
           <Tag tone="violet" size={16}>3 · Appelé quand vous le choisissez</Tag>
           <div style={{ fontFamily: mono, fontWeight: 700, fontSize: 22, color: T.violet.fg, marginTop: 6 }}>.github/agents/&lt;nom&gt;.agent.md</div>
         </div>
-        <div style={{ fontSize: 22, color: C.soft }}>Un coéquipier au rôle précis : <Ic>@Coach-Vibe</Ic> (explique simplement), <Ic>@Designer-UI</Ic> (soigne les effets visuels), <Ic>@Testeur-QA</Ic> (chasse les bugs).</div>
+        <div style={{ fontSize: 22, color: C.soft }}>Un coéquipier au rôle précis : <Ic>@Analyste-PO</Ic> (spécifie), <Ic>@Testeur-QA</Ic> (prouve), <Ic>@Dev-JS</Ic> (implémente).</div>
       </div>
       <div className={b.on(3)} style={{ display: 'grid', gridTemplateColumns: '480px 1fr', gap: 22, alignItems: 'center', background: C.card, padding: '16px 24px', borderRadius: 16, boxShadow: SHADOW_SM, borderLeft: `8px solid ${C.blue}` }}>
         <div>
@@ -7363,26 +7364,26 @@ const M12_PyramideContexte: Page = () => (
 
 const M12_FichierInstructions: Page = () => (
   <Frame mod={12} kind="cours" beats={1}>
-    <Title>Couche 1 : votre fichier AGENTS.md (la constitution du projet)</Title>
-    <Lede>Placé à la racine du dossier (ou dans .github/copilot-instructions.md), il est lu automatiquement par les agents IA.</Lede>
+    <Title>Couche 1 : AGENTS.md, la constitution commune de toute l’équipe</Title>
+    <Lede>Placé à la racine du dossier, il est lu à chaque requête, par chacun de vos agents. Court, stable, non négociable.</Lede>
     <Box x={120} y={255} w={1040}>
       <Code
-        file="AGENTS.md (à la racine de votre dossier)"
-        size={20}
-        hi={[3, 7, 8, 9]}
-        code={`# Règles du projet VibePulse\n\n## Public & Stack\n- Projet débutant en HTML, CSS et JavaScript pur (aucun framework externe).\n- Architecture en 3 fichiers : index.html, style.css, app.js.\n\n## Conventions de code obligatoires\n- Utiliser des noms de variables et de fonctions explicites en français.\n- Séparer app.js en 3 zones : 1. Données, 2. Fonctions métier, 3. Affichage UI.\n- Toute fonction de calcul doit gérer le cas limite de la liste vide [].\n- Expliquer chaque modification en 2 phrases simples sans jargon.`}
+        file="AGENTS.md (à la racine du dossier taskflow)"
+        size={19}
+        hi={[9, 10, 11, 14]}
+        code={`# TaskFlow · Règles du projet\n\n## Stack\n- HTML, CSS et JavaScript natifs : aucune bibliothèque, aucun framework.\n- 4 fichiers : index.html, style.css, app.js, tests.js.\n\n## Conventions obligatoires\n- Noms de variables et de fonctions explicites, en français.\n- app.js en 3 zones : 1. Données & état, 2. Fonctions métier pures, 3. UI.\n- Ne jamais modifier un tableau reçu : renvoyer un nouveau tableau.\n- Toute règle métier est couverte par un test dans tests.js.\n- Toute évolution du modèle de ticket = nouvelle version + migration.\n\n## Équipe : @Analyste-PO spécifie · @Testeur-QA prouve · @Dev-JS code`}
       />
     </Box>
     <Box x={1200} y={255} w={600}>
-      <Card title="Ce que ça change immédiatement" icon="sparkles" tone="navy" bsz={22}>
+      <Card title="Ce qui y va… et ce qui n’y va pas" icon="filter" tone="navy" bsz={21}>
         <Col gap={12}>
-          <div>Plus jamais l’IA ne vous proposera du code compliqué avec 12 outils externes.</div>
-          <div>Chaque nouvelle fonction créée respectera automatiquement vos <Strong>noms en français</Strong> et vos <Strong>3 zones</Strong> !</div>
+          <div><Strong c={C.green}>Oui :</Strong> les règles vraies pour <Strong>toute</Strong> demande, même « renomme ce bouton ».</div>
+          <div><Strong c={C.coral}>Non :</Strong> les recettes longues et spécialisées. Elles encombrent chaque requête et diluent les règles importantes : leur place est dans un Skill.</div>
         </Col>
       </Card>
       <div className={b.on(1)} style={{ marginTop: 16 }}>
         <Callout tone="green" icon="globe" title="Un standard ouvert" size={22}>
-          Le fichier <PathChip>AGENTS.md</PathChip> est reconnu aussi bien par GitHub Copilot dans VS Code que par Claude Code, Cursor ou Gemini !
+          <PathChip>AGENTS.md</PathChip> est reconnu par GitHub Copilot dans VS Code comme par Claude Code, Cursor ou Gemini.
         </Callout>
       </div>
     </Box>
@@ -7390,98 +7391,177 @@ const M12_FichierInstructions: Page = () => (
 );
 
 const M12_SkillsExplique: Page = () => (
-  <Frame mod={12} kind="cours" beats={2}>
-    <Title>Couche 2 : les Skills (.github/skills/*/SKILL.md)</Title>
-    <Lede>Un Skill est une fiche « savoir-faire » que l’agent ouvre automatiquement dès que votre demande correspond à sa description.</Lede>
-    <Box x={120} y={255} w={980}>
+  <Frame mod={12} kind="cours" beats={1}>
+    <Title>Couche 2 : un Skill partagé, la recette d’une fonctionnalité TaskFlow</Title>
+    <Lede>Un Skill est une fiche de savoir-faire que l’agent ouvre seulement quand votre demande correspond à sa description.</Lede>
+    <Box x={120} y={255} w={1000}>
       <Code
-        file=".github/skills/composant-ui/SKILL.md"
-        size={19}
+        file=".github/skills/fonctionnalite-taskflow/SKILL.md"
+        size={18}
         hi={[2, 3, 4]}
-        code={`---\nname: composant-ui\ndescription: Crée ou améliore un composant visuel (carte, jauge, filtre, thème)
-  dans index.html et style.css.\n---\n\n# Savoir-faire : Créer un composant UI VibePulse\n1. Utiliser des cartes blanches (border-radius: 16px)
-   avec une barre supérieure colorée.\n2. Respecter les couleurs : Bleu (#0A62D0), Violet (#7442E0),
-   Vert (#0E9F6E), Rouge (#E04848).\n3. Toujours prévoir un état vide élégant ("Aucun élément à afficher").\n4. Ajouter une transition douce (200ms) sur les boutons et barres de progression.`}
+        code={`---\nname: fonctionnalite-taskflow\ndescription: Recette pour spécifier, coder ou tester une nouvelle\n  fonctionnalité de TaskFlow (modèle, règles, migration, tests).\n---\n\n# Ajouter une fonctionnalité à TaskFlow\n1. Partir du modèle de ticket actuel (app.js, zone 1).\n2. Nouveau champ : valeur par défaut + fonction migrerV4versV5().\n3. Règles en fonctions pures (zone 2) : ni DOM, ni Date.now().\n   La date du jour est passée en paramètre « aujourdhui ».\n4. Erreur métier : renvoyer { ok: false, erreur }, jamais alert().\n5. Definition of Done :\n   - tous les tests de tests.js au vert, + 1 test de mutation ;\n   - aucune régression sur deplacerTicket et l’import CSV ;\n   - README.md mis à jour (fonctionnalité + rôle de l’IA).`}
       />
     </Box>
-    <Box x={1140} y={255} w={660} style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-      <Card title="Comment fonctionne le déclenchement ?" icon="wand" tone="green" bsz={21}>
+    <Box x={1160} y={255} w={640} style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+      <Card title="Comment l’agent décide de l’ouvrir" icon="wand" tone="green" bsz={20} pad={22}>
         <Col gap={10}>
-          <div><Strong c={C.navy}>1. L’en-tête (name + description) :</Strong> l’IA le connaît en permanence.</div>
-          <div><Strong c={C.green}>2. Le corps du SKILL.md :</Strong> chargé automatiquement dès que vous demandez « ajoute une carte » ou « crée une jauge » !</div>
+          <div><Strong c={C.navy}>1. L’en-tête</Strong> (name + description) est connu en permanence.</div>
+          <div><Strong c={C.green}>2. Le corps</Strong> n’est chargé que si la demande correspond : « ajoute les sprints », « teste les dépendances »…</div>
+          <div><Strong c={C.coral}>Donc :</Strong> une description vague (« mon skill ») = un Skill jamais utilisé.</div>
         </Col>
       </Card>
-      <Callout tone="violet" icon="bulb" title="Exemples de Skills utiles pour vos projets" cls={b.on(1)} size={21}>
-        • <Ic>composant-ui/SKILL.md</Ic> (charte visuelle)
-        <br />• <Ic>auto-tests/SKILL.md</Ic> (comment vérifier les cas limites)
-        <br />• <Ic>rediger-readme/SKILL.md</Ic> (modèle de documentation)
+      <Callout tone="violet" icon="layers" title="Un seul Skill, trois agents" cls={b.on(1)} size={21}>
+        Le PO, le développeur et le testeur appliquent la même recette et la même Definition of Done : ils parlent la même langue, chacun depuis son rôle.
       </Callout>
     </Box>
   </Frame>
 );
+
+const M12_AGENTS: { nom: string; tone: Tone; icon: IconName; ecrit: string; jamais: string }[] = [
+  { nom: '@Analyste-PO', tone: 'blue', icon: 'doc', ecrit: 'docs/spec.md : user stories, critères d’acceptation, cas limites, impact sur les données', jamais: 'Écrire du code' },
+  { nom: '@Testeur-QA', tone: 'green', icon: 'flask', ecrit: 'tests.js : tests écrits d’après la spec, tests de mutation, rapport', jamais: 'Toucher app.js' },
+  { nom: '@Dev-JS', tone: 'violet', icon: 'code', ecrit: 'app.js, index.html, style.css : une règle à la fois, petits diffs', jamais: 'Toucher tests.js' },
+];
 
 const M12_AgentsExplique: Page = () => (
   <Frame mod={12} kind="cours" beats={1}>
-    <Title>Couche 3 : vos Agents personnalisés (.github/agents/*.agent.md)</Title>
-    <Lede>Un fichier .agent.md crée un coéquipier spécialisé que vous pouvez sélectionner dans le menu du Chat de VS Code.</Lede>
+    <Title>Couche 3 : une équipe de trois agents aux droits séparés</Title>
+    <Lede>Chaque fichier .github/agents/*.agent.md crée un coéquipier sélectionnable dans le menu du Chat de VS Code.</Lede>
     <Box x={120} y={255} w={960}>
       <Code
-        file=".github/agents/coach-vibe.agent.md"
-        size={19}
-        hi={[2, 3, 4]}
-        code={`---\nname: Coach-Vibe\ndescription: Accompagne un débutant pas à pas pour co-créer, expliquer et tester
-  sa mini-app.\n---\n\nTu es un formateur bienveillant en Vibe Coding.\n- Avant de modifier plusieurs fichiers, propose un plan en 3 étapes courtes.\n- Écris un code HTML/CSS/JS simple, aéré et commenté en français.\n- Après chaque modification, indique quelle variable ou condition l’apprenant 
-  peut inspecter à-et comment tester le résultat dans l’interface.`}
+        file=".github/agents/dev-js.agent.md"
+        size={18}
+        hi={[2, 3, 4, 13, 14]}
+        code={`---\nname: Dev-JS\ndescription: Développeur JavaScript expert. Implémente une spec\n  validée en fonctions pures, sans dépendance.\nhandoffs:\n  - label: Faire vérifier par le testeur\n    agent: Testeur-QA\n    prompt: Lance tous les tests de tests.js, puis un test de mutation.\n    send: false\n---\nTu es un développeur JavaScript senior (vanilla, ES2022).\n- Tu implémentes uniquement ce que décrit docs/spec.md.\n- Tu ne modifies JAMAIS tests.js : si un test te semble faux,\n  tu l’expliques au lieu de le changer.\n- Une règle métier à la fois, puis tu t’arrêtes.\n- Tu termines par : fichiers modifiés, fonctions ajoutées, risques.`}
       />
     </Box>
-    <Box x={1120} y={255} w={680} style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
-      <Card title="Votre équipe de 3 agents dans VS Code" icon="bot" tone="violet" bsz={20} pad={20}>
-        <Col gap={10}>
-          <div><Tag tone="blue" size={16}>@Coach-Vibe</Tag> Co-crée pas à pas et vous explique où regarder dans le code.</div>
-          <div><Tag tone="violet" size={16}>@Designer-UI</Tag> Propose des effets visuels, animations CSS et variantes de thèmes.</div>
-          <div><Tag tone="green" size={16}>@Testeur-QA</Tag> Inspecte <Ic>app.js</Ic>, cherche les cas limites oubliés et enrichit le panneau d’Auto-Tests.</div>
-        </Col>
-      </Card>
-      <Callout tone="pink" icon="sparkles" title="Vous êtes le chef d’orchestre" cls={b.on(1)} size={22}>
-        Un même projet, trois regards complémentaires : vous appelez <Ic>@Designer-UI</Ic> pour le style, puis <Ic>@Testeur-QA</Ic> pour vérifier que tout est solide !
+    <Box x={1120} y={255} w={680} style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+      {M12_AGENTS.map((a, i) => (
+        <div key={a.nom} className={A.right} style={{ ...dl(150 + i * 120), background: C.card, borderRadius: 16, boxShadow: SHADOW_SM, padding: '14px 20px', borderLeft: `6px solid ${STRONG[a.tone]}` }}>
+          <Tag tone={a.tone} size={17} icon={a.icon}>{a.nom}</Tag>
+          <div style={{ fontSize: 19, lineHeight: 1.35, color: C.ink, marginTop: 8 }}><Strong c={T[a.tone].fg}>Écrit :</Strong> {a.ecrit}</div>
+          <div style={{ fontSize: 19, lineHeight: 1.35, color: C.ink, marginTop: 4 }}><Strong c={C.coral}>Jamais :</Strong> {a.jamais}</div>
+        </div>
+      ))}
+      <Callout tone="pink" icon="shield" title="Pourquoi séparer les droits ?" cls={b.on(1)} size={20}>
+        Un développeur qui écrit aussi ses tests finit par tester ce qu’il a codé, pas ce qui était demandé.
       </Callout>
     </Box>
   </Frame>
 );
 
-const M12_ComposantsVariantes: Page = () => (
-  <Frame mod={12} kind="cours" beats={1}>
-    <Title>Générer des composants, effets visuels et variantes d’interface</Title>
-    <Lede>Grâce à votre Skill UI et à l’Agent, vous pouvez explorer plusieurs styles visuels en quelques secondes.</Lede>
-    <Grid top={255} cols={3} gap={26}>
-      <Card title="1 · Nouveaux composants UI" icon="grid" tone="blue" d={100} bsz={21}>
-        <Col gap={8}>
-          <div>• Modale de détail au clic sur une carte</div>
-          <div>• Onglets « Vue Cartes » vs « Vue Tableau »</div>
-          <div>• Jauge circulaire ou barre multi-couleurs</div>
-          <div>• Bandeau de notification animé (« Carte sauvegardée ✓ »)</div>
-        </Col>
-      </Card>
-      <Card title="2 · Effets visuels doux (CSS)" icon="palette" tone="violet" d={220} bsz={21}>
-        <Col gap={8}>
-          <div>• Survol des cartes (légère élévation <Ic>translateY(-4px)</Ic>)</div>
-          <div>• Apparition fluide des cartes filtrées</div>
-          <div>• Animation de la barre de progression</div>
-          <div>• Interrupteur de thème Clair / Sombre / Docaposte</div>
-        </Col>
-      </Card>
-      <Card title="3 · Comparer 3 variantes" icon="sparkles" tone="green" d={340} bsz={21}>
-        <Col gap={8}>
-          <div>Demandez à l’IA :</div>
-          <div style={{ background: T.green.bg, padding: 12, borderRadius: 10, fontSize: 19, color: C.ink }}>
-            « Ajoute un sélecteur en haut de l’app permettant de basculer entre 3 styles : Minimaliste, Coloré et Mode Sombre. »
+const M12_RELAIS: { qui: string; tone: Tone; icon: IconName; quoi: string; fichier: string }[] = [
+  { qui: 'Vous', tone: 'pink', icon: 'user', quoi: 'Formulez le besoin', fichier: 'une phrase' },
+  { qui: '@Analyste-PO', tone: 'blue', icon: 'doc', quoi: 'Spécifie', fichier: 'docs/spec.md' },
+  { qui: '@Testeur-QA', tone: 'green', icon: 'flask', quoi: 'Tests d’abord (rouges)', fichier: 'tests.js' },
+  { qui: '@Dev-JS', tone: 'violet', icon: 'code', quoi: 'Code jusqu’au vert', fichier: 'app.js' },
+  { qui: '@Testeur-QA', tone: 'green', icon: 'search', quoi: 'Contre-vérifie', fichier: 'mutation' },
+];
+
+const M12_Orchestration: Page = () => (
+  <Frame mod={12} kind="cours" beats={2}>
+    <Title>Orchestrer : chaque agent passe le relais au suivant</Title>
+    <Lede>Un « handoff » ajoute un bouton en fin de réponse : il bascule vers l’agent suivant avec un prompt pré-rempli.</Lede>
+    <Box x={120} y={255} w={1680} style={{ display: 'flex', alignItems: 'stretch', gap: 10 }}>
+      {M12_RELAIS.map((r, i) => (
+        <div key={i} style={{ display: 'contents' }}>
+          {i > 0 ? <FlowArrow w={44} /> : null}
+          <div className={A.in} style={{ ...dl(100 + i * 110), flex: 1, minWidth: 0, background: C.card, borderRadius: 16, boxShadow: SHADOW_SM, padding: '16px 16px', borderTop: `6px solid ${STRONG[r.tone]}`, textAlign: 'center' }}>
+            <Icon name={r.icon} size={30} color={T[r.tone].fg} />
+            <div style={{ fontFamily: display, fontWeight: 800, fontSize: 21, color: C.navy, marginTop: 6 }}>{r.qui}</div>
+            <div style={{ fontSize: 19, color: C.ink, marginTop: 4 }}>{r.quoi}</div>
+            <div style={{ fontFamily: mono, fontSize: 16, color: C.muted, marginTop: 6 }}>{r.fichier}</div>
           </div>
-        </Col>
+        </div>
+      ))}
+    </Box>
+    <Box x={120} y={470} w={900}>
+      <Code
+        file=".github/agents/analyste-po.agent.md · en-tête"
+        size={18}
+        hi={[4, 5, 6, 7, 8]}
+        code={`---\nname: Analyste-PO\ndescription: Transforme une demande en spec testable. Ne code jamais.\nhandoffs:\n  - label: Écrire les tests de la spec\n    agent: Testeur-QA\n    prompt: Écris dans tests.js les tests de docs/spec.md, sans toucher app.js.\n    send: false\n---`}
+      />
+    </Box>
+    <Box x={1060} y={470} w={740} style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+      <Callout tone="blue" icon="compass" title="send: false · vous restez chef d’orchestre" size={21}>
+        Le bouton pré-remplit le prompt sans l’envoyer : vous relisez le travail, ajustez la consigne, puis vous lancez le relais.
+      </Callout>
+      <Callout tone="yellow" icon="save" title="Un relais = un diff relu + un commit" cls={b.on(1)} size={21}>
+        Si une passe casse quelque chose, vous revenez au commit précédent au lieu de négocier avec l’agent.
+      </Callout>
+      <Callout tone="violet" icon="loop" title="La boucle Dev ⇄ Testeur" cls={b.on(2)} size={21}>
+        Tant qu’un test est rouge ou qu’une mutation survit, le relais repart vers @Dev-JS.
+      </Callout>
+    </Box>
+  </Frame>
+);
+
+const M12_RefactoMulti: Page = () => (
+  <Frame mod={12} kind="cours" beats={2}>
+    <Title>Préparer le terrain : de 1 fichier géant à 4 fichiers aux rôles clairs</Title>
+    <Lede>Refactoriser, c’est réorganiser le code sans rien changer pour l’utilisateur. Ici, c’est aussi ce qui permet de séparer les droits des agents.</Lede>
+    <Box x={120} y={260} w={1680} style={{ display: 'flex', alignItems: 'stretch', gap: 18 }}>
+      <Card title="Avant · taskflow-v4.html (un seul fichier)" icon="doc" tone="coral" d={100} style={{ flex: 0.85 }} bsz={21}>
+        <Code size={18} style={{ marginTop: 8 }} code={`index.html (≈ 700 lignes)\n├─ <style>  ... CSS          </style>\n├─ <div>    ... HTML         </div>\n├─ <script> ... app          </script>\n└─ <script> ... auto-tests   </script>`} />
+      </Card>
+      <FlowArrow />
+      <Card title="Après · le dossier taskflow dans VS Code" icon="folder" tone="green" cls={b.on(1)} style={{ flex: 1.15 }} bsz={21}>
+        <Code
+          size={18}
+          style={{ marginTop: 8 }}
+          code={`taskflow/\n├─ index.html   structure de la page\n├─ style.css    design, thèmes, animations\n├─ app.js       1. Données · 2. Règles · 3. UI   ← @Dev-JS\n├─ tests.js     auto-tests                       ← @Testeur-QA\n├─ docs/        spécifications                    ← @Analyste-PO\n├─ AGENTS.md\n└─ .github/  skills/  agents/`}
+        />
+      </Card>
+    </Box>
+    <Box x={120} y={680} w={1680}>
+      <Bubble who="vous" tool="Prompt de découpage en mode Agent" cls={b.on(2)} size={22}>
+        Découpe <Ic>index.html</Ic> en <Ic>index.html</Ic>, <Ic>style.css</Ic>, <Ic>app.js</Ic> et <Ic>tests.js</Ic> (panneau Auto-Tests et tous les tests), sans changer aucun comportement. Garde les 3 zones de <Ic>app.js</Ic>. Tous les tests doivent rester au vert.
+      </Bubble>
+    </Box>
+  </Frame>
+);
+
+const M12_GitLocal: Page = () => (
+  <Frame mod={12} kind="cours" beats={1}>
+    <Title>Git dans VS Code : une photo du projet après chaque relais</Title>
+    <Lede>Les agents écrivent vite et beaucoup. Sans point de sauvegarde entre deux passes, impossible de savoir qui a cassé quoi.</Lede>
+    <Grid top={255} cols={3} gap={24} w={1060}>
+      <Card title="1 · Initialiser" icon="git" tone="blue" d={100} bsz={20} pad={20}>
+        Vue <Strong>Contrôle de code source</Strong> (<Ic>Ctrl+Maj+G</Ic>) → <Strong>Initialiser le dépôt</Strong>. Une seule fois par projet.
+      </Card>
+      <Card title="2 · Commiter" icon="save" tone="green" d={220} bsz={20} pad={20}>
+        Message court qui dit <Strong c={C.green}>quoi et qui</Strong>, puis <Strong>Valider</Strong>. Ex. « tests sprints (rouges) ».
+      </Card>
+      <Card title="3 · Revenir" icon="reset" tone="coral" d={340} bsz={20} pad={20}>
+        Clic sur un fichier modifié : le diff. <Strong c={C.coral}>Ignorer les modifications</Strong> : retour au dernier commit.
       </Card>
     </Grid>
-    <Box x={120} y={760} w={1680}>
-      <Callout tone="blue" icon="eye" title="Toujours séparer le style (style.css) de la logique (app.js)" cls={b.on(1)} size={24}>
-        Changer les couleurs, les ombres ou les animations dans <PathChip>style.css</PathChip> ne risque jamais de casser vos calculs ni vos sauvegardes dans <PathChip>app.js</PathChip> !
+    <Box x={1220} y={255} w={580}>
+      <Term
+        title="Les mêmes gestes en ligne de commande"
+        size={19}
+        lines={[
+          '» git init',
+          'Initialized empty Git repository',
+          '» git add .',
+          '» git commit -m "v4 : TaskFlow du Jour 2"',
+          '[main (root-commit) 3f2a91c] v4 : TaskFlow du Jour 2',
+          '» git log --oneline',
+          '3f2a91c v4 : TaskFlow du Jour 2',
+        ]}
+      />
+    </Box>
+    <Box x={120} y={640} w={1060}>
+      <Code
+        file="L’historique visé en fin de journée"
+        size={18}
+        code={`a91e0d4  feat(dependances) : contre-vérifié, mutation tuée\n7c3b112  feat(dependances) : implémentation, 25/25\n52f8e9a  test(dependances) : 7 tests écrits, rouges\n1d0c6f3  docs(dependances) : spec relue, 7 critères\n3f2a91c  v4 : TaskFlow du Jour 2`}
+      />
+    </Box>
+    <Box x={1220} y={640} w={580}>
+      <Callout tone="yellow" icon="key" title="Votre filet de sécurité" cls={b.on(1)} size={21}>
+        Un commit par relais d’agent. L’historique raconte qui a fait quoi : il servira aussi dans votre README et votre démo.
       </Callout>
     </Box>
   </Frame>
@@ -7493,203 +7573,568 @@ const M12_Lab12: Page = () => (
   <VibeLab
     mod={12}
     n="12.1"
-    title="Premiers pas dans VS Code avec AGENTS.md, un SKILL.md et un Agent"
+    title="Monter l’équipe : projet découpé, Skill et trois agents"
     defi="skill"
-    tools="VS Code · GitHub Copilot / Claude / Gemini"
+    tools="VS Code · GitHub Copilot (agents personnalisés)"
     objective={
       <>
-        Ouvrir le dossier de votre mini-application dans <strong>VS Code</strong>, créer votre fichier <PathChip>AGENTS.md</PathChip>, un skill <PathChip>.github/skills/composant-ui/SKILL.md</PathChip> et un agent <PathChip>.github/agents/coach-vibe.agent.md</PathChip>, puis faire générer un nouveau composant visuel.
+        Faire de TaskFlow un projet VS Code en 4 fichiers versionné avec Git, doté d’<PathChip>AGENTS.md</PathChip>, du Skill <PathChip>fonctionnalite-taskflow</PathChip> et des agents <Ic>@Analyste-PO</Ic>, <Ic>@Dev-JS</Ic> et <Ic>@Testeur-QA</Ic>, puis faire une répétition du relais.
       </>
     }
-    minutes={25}
+    minutes={50}
     crit={
       <>
-        <CheckItem id="m12l1a">Mon dossier est ouvert dans VS Code avec AGENTS.md à la racine</CheckItem>
-        <CheckItem id="m12l1b">J’ai créé le fichier SKILL.md et le fichier coach-vibe.agent.md (modèles dans le clavardage)</CheckItem>
-        <CheckItem id="m12l1c">J’ai généré un sélecteur de 3 thèmes visuels ou un nouveau composant et inspecté le Diff</CheckItem>
+        <CheckItem id="m12l1a">Après le découpage en 4 fichiers, tous les tests restent au vert</CheckItem>
+        <CheckItem id="m12l1b">Les 3 agents apparaissent dans le menu du Chat et le Skill est présent</CheckItem>
+        <CheckItem id="m12l1c">@Testeur-QA a ajouté 3 tests sans modifier app.js (vérifié dans le diff)</CheckItem>
+        <CheckItem id="m12l1d">L’historique Git compte au moins 3 commits lisibles</CheckItem>
       </>
     }
+    suivi="Points d’étape au micro à 15 min (découpage), 30 min (agents visibles) et 45 min (relais). Bloqué ? Partage d’écran 2 minutes !"
   >
     <WStep n={1}>
-      Ouvrez un dossier <Ic>mon-projet-vibe</Ic> dans VS Code, glissez-y votre <PathChip>taskflow-v4.html</PathChip> d’hier renommé <PathChip>index.html</PathChip>, et créez <PathChip>AGENTS.md</PathChip> (modèle collé dans le clavardage).
+      Ouvrez le dossier <Ic>taskflow</Ic> avec <PathChip>taskflow-v4.html</PathChip> renommé <PathChip>index.html</PathChip>. Initialisez Git et commitez. En mode Agent, lancez le prompt de découpage en 4 fichiers, vérifiez les tests, commitez.
     </WStep>
     <WStep n={2}>
-      Créez <PathChip>.github/skills/composant-ui/SKILL.md</PathChip> et <PathChip>.github/agents/coach-vibe.agent.md</PathChip>.
+      Créez <PathChip>AGENTS.md</PathChip>, <PathChip>.github/skills/fonctionnalite-taskflow/SKILL.md</PathChip> et les 3 fichiers <PathChip>.github/agents/*.agent.md</PathChip> (modèles dans le clavardage). Commitez.
     </WStep>
     <WStep n={3}>
-      Dans le Chat en mode <Strong>Agent</Strong> (avec <Ic>@Coach-Vibe</Ic>), demandez : <Pr>« Ajoute un sélecteur permettant de basculer entre 3 variantes visuelles (Clair, Marine Docaposte, Sombre) et une animation douce sur les cartes. »</Pr> Lisez le Diff Vert/Rouge avant d’accepter !
+      <Strong>Répétition du relais :</Strong> avec <Ic>@Testeur-QA</Ic>, <Pr>« Audite deplacerTicket et importerTickets : ajoute dans tests.js 3 tests sur des cas limites non couverts. »</Pr> Un test rouge ? Passez le relais à <Ic>@Dev-JS</Ic>. Commitez.
     </WStep>
   </VibeLab>
 );
 
 const M12_QCM: Page = () => (
   <Frame mod={12} kind="qcm">
-    <Title>QCM · VS Code, Modes Ask/Edit/Agent, Skills et Agents</Title>
-    <QuizSeries y={195}>
+    <Title>QCM · Skills, agents et orchestration : les vrais pièges</Title>
+    <QuizSeries y={190}>
       <QuizQ
-        q="Dans VS Code, vous voulez comprendre comment fonctionne une fonction de 15 lignes sans risquer de modifier votre fichier. Quel mode utilisez-vous ?"
-        explain="Le mode Ask répond à vos questions et explique le code en lecture seule, sans modifier aucun fichier."
+        q="Vous collez votre recette de 60 lignes « ajouter une fonctionnalité » dans AGENTS.md plutôt que dans un Skill. Quel est l’effet principal ?"
+        explain="AGENTS.md est lu à chaque requête : la recette encombre même « renomme ce bouton » et noie les règles courtes et vitales. Un Skill n’est chargé que lorsque la demande correspond."
       >
-        <QOpt ok>Le mode Ask (poser une question / expliquer)</QOpt>
-        <QOpt>Supprimer le fichier et recommencer</QOpt>
-        <QOpt>Débrancher le clavier</QOpt>
-        <QOpt>Renommer le fichier en .txt</QOpt>
+        <QOpt>Aucun : AGENTS.md et un Skill sont lus exactement de la même façon</QOpt>
+        <QOpt ok>Elle est chargée à chaque requête, et dilue les règles importantes du projet</QOpt>
+        <QOpt>Elle ne sera jamais lue : AGENTS.md est limité à 20 lignes</QOpt>
+        <QOpt>Elle désactive les agents personnalisés</QOpt>
       </QuizQ>
       <QuizQ
-        q="À quoi sert le fichier AGENTS.md (ou .github/copilot-instructions.md) placé dans votre projet VS Code ?"
-        explain="Il donne à l’IA les règles permanentes du projet (stack simple HTML/CSS/JS, variables en français, découpage en 3 zones, tests) sans avoir à les répéter."
+        q={
+          <>
+            Ce Skill n’est jamais utilisé par vos agents. Cause la plus probable ?
+            <QCode>{`---\nname: skill1\ndescription: Mon skill\n---`}</QCode>
+          </>
+        }
+        explain="L’agent ne voit que l’en-tête et décide d’ouvrir le Skill d’après sa description. « Mon skill » ne correspond à aucune demande : il faut dire quand l’utiliser."
       >
-        <QOpt>À stocker les mots de passe des utilisateurs</QOpt>
-        <QOpt ok>À définir une fois pour toutes les règles et conventions que l’IA doit respecter à chaque requête</QOpt>
-        <QOpt>À remplacer le navigateur web</QOpt>
-        <QOpt>À empêcher l’ouverture de index.html</QOpt>
+        <QOpt>Le nom doit être écrit en majuscules</QOpt>
+        <QOpt ok>La description ne dit pas à quelles demandes le Skill répond</QOpt>
+        <QOpt>Un Skill ne fonctionne qu’en mode Ask</QOpt>
+        <QOpt>Il manque un fichier SKILL.json à côté</QOpt>
       </QuizQ>
       <QuizQ
-        q="Quelle est la particularité d’un Skill (.github/skills/<nom>/SKILL.md) ?"
-        explain="L’agent lit son nom et sa description, et ne charge tout le contenu de la fiche savoir-faire que lorsque votre demande correspond."
+        q="Le test T3 est rouge. @Dev-JS répond « corrigé ✓ » ; le diff montre qu’il a changé, dans tests.js, l’attendu de false à true. Que faites-vous ?"
+        explain="Le code doit satisfaire la spec, pas l’inverse. Rejetez le diff et renvoyez au testeur, qui tranche avec docs/spec.md : c’est le test ou la spec qui a tort, jamais par commodité."
       >
-        <QOpt>Il s’exécute uniquement le lundi matin</QOpt>
-        <QOpt ok>C’est une fiche de savoir-faire chargée à la demande quand la tâche correspond à sa description</QOpt>
-        <QOpt>C’est un fichier d’image PNG</QOpt>
-        <QOpt>Il supprime automatiquement le CSS</QOpt>
+        <QOpt>J’accepte : tous les tests sont verts</QOpt>
+        <QOpt ok>Je rejette le diff et renvoie au testeur pour trancher avec la spec</QOpt>
+        <QOpt>Je supprime T3, qui bloque l’avancement</QOpt>
+        <QOpt>Je demande au Dev d’entourer le code d’un try/catch</QOpt>
       </QuizQ>
       <QuizQ
-        q="Que représentent les lignes surlignées en vert et en rouge dans l’éditeur VS Code après une proposition de l’Agent ?"
-        explain="C’est le Diff : en rouge les lignes supprimées ou remplacées, en vert les lignes ajoutées, que vous pouvez Accepter ou Annuler."
+        q="Pourquoi @Testeur-QA écrit-il les tests avant que @Dev-JS n’implémente ?"
+        explain="Écrit d’après la spec et vu rouge, un test prouve qu’il vérifie la demande. Écrit après le code, il risque de photographier le comportement réel, bugs compris, et de passer toujours."
       >
-        <QOpt>Des erreurs de syntaxe bloquantes</QOpt>
-        <QOpt ok>Le Diff (en vert ce que l’IA ajoute, en rouge ce qu’elle retire) à relire avant de cliquer sur Accepter</QOpt>
-        <QOpt>La météo du jour</QOpt>
-        <QOpt>Le niveau de batterie de l’ordinateur</QOpt>
+        <QOpt>Parce que des tests écrits en premier s’exécutent plus vite</QOpt>
+        <QOpt>Parce que VS Code refuse un handoff vers un agent sans tests</QOpt>
+        <QOpt ok>Pour vérifier la demande, pas recopier ce que le code fait déjà</QOpt>
+        <QOpt>Pour que le développeur puisse ensuite les adapter à son code</QOpt>
+      </QuizQ>
+      <QuizQ
+        q={
+          <>
+            Pourquoi @Testeur-QA refuse-t-il cette fonction ?
+            <QCode>{`function estEnRetard(ticket) {\n  return new Date(ticket.echeance) < new Date();\n}`}</QCode>
+          </>
+        }
+        explain="new Date() dépend du jour où l’on lance le test : vert aujourd’hui, rouge demain. On passe la date du jour en paramètre, estEnRetard(ticket, aujourdhui), et le test fixe cette date."
+      >
+        <QOpt>Parce qu’on ne peut pas comparer deux dates avec &lt;</QOpt>
+        <QOpt ok>Parce que son résultat dépend du jour où l’on lance le test</QOpt>
+        <QOpt>Parce que new Date() ne fonctionne pas sur GitHub Pages</QOpt>
+        <QOpt>Parce qu’une fonction métier doit afficher un console.log</QOpt>
+      </QuizQ>
+      <QuizQ
+        q="Dans l’en-tête d’un agent, que change send: false sur un handoff ?"
+        explain="Le bouton de relais bascule vers l’agent suivant et pré-remplit le prompt, sans l’envoyer : vous relisez le travail et ajustez la consigne avant de lancer la passe suivante."
+      >
+        <QOpt>L’agent suivant ne peut pas lire les fichiers du projet</QOpt>
+        <QOpt ok>Le prompt du relais est pré-rempli mais pas envoyé : vous le relisez d’abord</QOpt>
+        <QOpt>Le relais est désactivé jusqu’au prochain commit</QOpt>
+        <QOpt>La réponse de l’agent n’est pas sauvegardée</QOpt>
       </QuizQ>
     </QuizSeries>
   </Frame>
 );
 
-const M12_Dejeuner: Page = () => <Pause mod={12} title="Pause déjeuner" back="Reprise à 14 h 00" minutes={60} />;
+const M12_Dejeuner: Page = () => <Pause mod={12} title="Pause déjeuner" back="Reprise à 14 h 00" minutes={90} />;
 
 // ════════════════════════════════════════════════════════════════════════════
-// MODULES 13 & 14 — Refactorisation, README, TP Final & Clôture (11 pages)
+// MODULE 13 — Fonctionnalité phare orchestrée par 3 agents (5 pages)
 // ════════════════════════════════════════════════════════════════════════════
 const M13_Divider: Page = () => (
-  <Divider mod={13} kicker="Jour 3 · Après-midi" title="Refactorisation assistée, contenu IA & préparation de la démo">
-    <Bullet size={30}>Découper proprement en index.html, style.css et app.js</Bullet>
-    <Bullet size={30}>Améliorer l’interactivité et vérifier le contenu généré</Bullet>
-    <Bullet size={30}>Rédiger un README.md professionnel expliquant le rôle de l’IA</Bullet>
+  <Divider mod={13} kicker="Jour 3 · Après-midi" title="La fonctionnalité phare, livrée par votre équipe d’agents">
+    <Bullet size={30}>Choisir une fonctionnalité exigeante parmi trois</Bullet>
+    <Bullet size={30}>Passer le relais : PO → Testeur → Développeur → Testeur</Bullet>
+    <Bullet size={30}>Garder la main : périmètre, diffs relus, un commit par passe</Bullet>
   </Divider>
 );
 M13_Divider.transition = BLOOM;
 
-const M13_RefactoMulti: Page = () => (
-  <Frame mod={13} kind="cours" beats={2}>
-    <Title>Refactorisation assistée : de 1 fichier géant à 3 fichiers propres</Title>
-    <Lede>Refactoriser signifie réorganiser et nettoyer le code sans changer ce que fait l’application pour l’utilisateur.</Lede>
-    <Box x={120} y={260} w={1680} style={{ display: 'flex', alignItems: 'stretch', gap: 18 }}>
-      <Card title="Avant · 1 seul fichier monolithique" icon="doc" tone="coral" d={100} style={{ flex: 0.9 }} bsz={21}>
-        <Code size={18} style={{ marginTop: 8 }} code={`index.html (450 lignes)\n├─ <style> ... 150 lignes CSS </style>\n├─ <div> ... 100 lignes HTML </div>\n└─ <script> ... 200 lignes JS </script>`} />
-      </Card>
-      <FlowArrow />
-      <Card title="Après · Architecture claire dans VS Code" icon="folder" tone="green" cls={b.on(1)} style={{ flex: 1.1 }} bsz={21}>
-        <Code
-          size={18}
-          style={{ marginTop: 8 }}
-          code={`mon-projet-vibe/\n├─ index.html  (structure de la page + liens)\n├─ style.css   (couleurs, cartes, thèmes, animations)\n└─ app.js      (1. Données, 2. Logique métier, 3. UI & Tests)`}
-        />
-      </Card>
-    </Box>
-    <Box x={120} y={660} w={1680}>
-      <Bubble who="vous" tool="Prompt de refactorisation en mode Agent VS Code" cls={b.on(2)} size={22}>
-        Découpe mon fichier <Ic>index.html</Ic> en trois fichiers propres : <Ic>index.html</Ic>, <Ic>style.css</Ic> et <Ic>app.js</Ic> sans changer aucune fonctionnalité. Garde les 3 zones commentées dans <Ic>app.js</Ic> et vérifie que le panneau d’Auto-Tests reste à 100 % au vert.
-      </Bubble>
-    </Box>
-  </Frame>
-);
+const M13_FEATURES: { id: string; titre: string; verbe: string; icon: IconName; tone: Tone; us: string[]; piege: string; donnees: string }[] = [
+  {
+    id: 'A',
+    titre: 'Sprints & burndown',
+    verbe: 'Planifier',
+    icon: 'chart',
+    tone: 'blue',
+    us: ['Créer un sprint : nom, dates, capacité en points', 'Y glisser des tickets, avec une jauge de capacité', 'Clôturer : le non-terminé revient au backlog', 'Burndown en SVG : restant vs ligne idéale'],
+    piege: 'Capacité atteinte pile, ticket non estimé, sprint d’un seul jour (division par zéro de la ligne idéale).',
+    donnees: 'sprints[] · ticket.sprintId',
+  },
+  {
+    id: 'B',
+    titre: 'Dépendances & blocages',
+    verbe: 'Sécuriser',
+    icon: 'link',
+    tone: 'violet',
+    us: ['Déclarer « bloqué par » un ou plusieurs tickets', 'Interdit d’entrer En cours si un bloquant n’est pas terminé', 'Badge 🔒 listant les bloquants', 'Supprimer un ticket nettoie toutes les références'],
+    piege: 'Les cycles A → B → C → A : refusés, avec le cycle affiché dans le message.',
+    donnees: 'ticket.bloquePar = []',
+  },
+  {
+    id: 'C',
+    titre: 'Échéances & calendrier',
+    verbe: 'Anticiper',
+    icon: 'calendar',
+    tone: 'teal',
+    us: ['Date d’échéance, badges « En retard » et « J-2 »', 'Tri et filtre par urgence', 'Vue calendrier mensuelle, mois par mois', 'Résumé des retards par colonne'],
+    piege: 'Mois numérotés de 0 à 11, « 31 janvier + 1 mois », et la date du jour à injecter pour pouvoir tester.',
+    donnees: 'ticket.echeance = null',
+  },
+];
 
-const M13_ContenuInteractivite: Page = () => (
-  <Frame mod={13} kind="cours" beats={1}>
-    <Title>Enrichir l’interactivité &amp; contrôler le contenu généré par l’IA</Title>
-    <Lede>Avant la démonstration finale, donnez du relief à votre application et vérifiez la qualité des données affichées.</Lede>
-    <Grid top={255} cols={2} gap={28}>
-      <Card title="Améliorations d’interactivité par prompts" icon="sparkles" tone="blue" d={100} bsz={21}>
-        <Col gap={10}>
-          <div>• <Strong>Validation en direct :</Strong> appuyer sur la touche <Ic>Entrée</Ic> dans le champ valide le formulaire</div>
-          <div>• <Strong>Compteurs animés &amp; barres :</Strong> mise à jour fluide à chaque clic</div>
-          <div>• <Strong>État vide soigné :</Strong> quand une recherche ne trouve rien, afficher un message clair et un bouton « Réinitialiser les filtres »</div>
-          <div>• <Strong>Bouton « Générer une idée / astuce » :</Strong> tirage intelligent par catégorie</div>
-        </Col>
-      </Card>
-      <Card title="4 contrôles sur le contenu généré par l’IA" icon="shield" tone="coral" cls={b.on(1)} bsz={21}>
-        <Col gap={10}>
-          <div><Strong c={C.coral}>1. Validité technique :</Strong> le JSON généré ne contient aucune erreur de virgule ou de guillemet</div>
-          <div><Strong c={C.coral}>2. Pertinence métier :</Strong> pas de chiffres absurdes ni de doublons</div>
-          <div><Strong c={C.coral}>3. Neutralité &amp; ton :</Strong> formulations professionnelles et inclusives</div>
-          <div><Strong c={C.coral}>4. Zéro donnée réelle :</Strong> uniquement des exemples fictifs</div>
-        </Col>
-      </Card>
+const M13_Fonctionnalites: Page = () => (
+  <Frame mod={13} kind="tp" beats={1}>
+    <Title>Choisissez votre fonctionnalité phare : trois sujets, une même exigence</Title>
+    <Lede>Chacune touche le modèle de données, impose une règle qui piège et demande des tests sérieux. Choisissez au micro : A, B ou C.</Lede>
+    <Grid top={250} cols={3} gap={24}>
+      {M13_FEATURES.map((f, i) => (
+        <div key={f.id} className={A.in} style={{ ...dl(100 + i * 120), background: C.card, borderRadius: 20, boxShadow: SHADOW, padding: '20px 24px', borderTop: `8px solid ${STRONG[f.tone]}`, display: 'flex', flexDirection: 'column', gap: 10 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
+            <span style={{ fontFamily: display, fontWeight: 800, fontSize: 46, color: STRONG[f.tone], lineHeight: 1 }}>{f.id}</span>
+            <div>
+              <div style={{ fontFamily: display, fontWeight: 800, fontSize: 26, color: C.navy }}>{f.titre}</div>
+              <Tag tone={f.tone} size={15} icon={f.icon}>{f.verbe}</Tag>
+            </div>
+          </div>
+          {f.us.map((u) => (
+            <div key={u} style={{ display: 'flex', gap: 10, fontSize: 19, lineHeight: 1.33, color: C.ink }}>
+              <Icon name="check" size={19} color={T[f.tone].fg} style={{ flex: 'none', marginTop: 3 }} />
+              <span>{u}</span>
+            </div>
+          ))}
+          <div style={{ background: T.coral.bg, borderRadius: 12, padding: '10px 14px', fontSize: 18, lineHeight: 1.35, color: C.ink }}>
+            <Strong c={C.coral}>La règle qui piège :</Strong> {f.piege}
+          </div>
+          <div style={{ fontFamily: mono, fontSize: 16, color: C.muted }}>Données : {f.donnees}</div>
+        </div>
+      ))}
     </Grid>
-  </Frame>
-);
-
-const CODE_README_FINAL = `# VibePulse · Application interactive co-créée avec l’IA
-
-## 1. Objectif de l’application
-Mini-application web interactive permettant de [gérer des tâches / simuler un budget / animer un quiz] avec filtres en direct, indicateurs visuels et sauvegarde locale.
-
-## 2. Comment lancer l’application
-Double-cliquer sur \`index.html\` (ou l’ouvrir avec Live Server dans VS Code). Aucune installation requise.
-
-## 3. Architecture du projet
-- \`index.html\` : structure de l’interface
-- \`style.css\` : design, thèmes et animations
-- \`app.js\` : 1. Données, 2. Fonctions métier pures, 3. Affichage UI & Panneau d’Auto-Tests
-- \`AGENTS.md\` & \`.github/skills/\` : instructions et savoir-faire fournis à l’IA
-
-## 4. Rôle de l’IA générative & Vérifications humaines
-- **Généré avec l’appui de l’IA** : structure HTML/CSS, fonctions de filtre/graphiques et jeu de 12 données fictives.
-- **Piloté et vérifié par moi** : définition des règles métier et des seuils, personnalisation du code, validation des 5 auto-tests (dont cas limites liste vide et saisie négative).`;
-
-const M13_ReadmeRoleIA: Page = () => (
-  <Frame mod={13} kind="cours" beats={1}>
-    <Title>Préparer la démonstration : le fichier README.md et le rôle de l’IA</Title>
-    <Lede>Un bon projet Vibe Coding s’accompagne toujours d’un fichier README.md honnête, clair et structuré en 4 parties.</Lede>
-    <Box x={120} y={250} w={1060}>
-      <Code file="README.md · Modèle prêt à personnaliser dans VS Code" size={17} wrap hi={[15, 16, 17]} code={CODE_README_FINAL} />
-    </Box>
-    <Box x={1220} y={250} w={580} style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-      <Card title="Pourquoi expliquer le rôle de l’IA ?" icon="checkCircle" tone="green" bsz={21}>
-        <Col gap={10}>
-          <div><Strong c={C.green}>1. Transparence professionnelle :</Strong> vous montrez ce que l’IA a accéléré.</div>
-          <div><Strong c={C.green}>2. Preuve de maîtrise :</Strong> vous précisez quelles règles métier et quels cas limites <Strong>vous</Strong> avez vérifiés et testés !</div>
-        </Col>
-      </Card>
-      <Callout tone="violet" icon="bot" title="Astuce Skill" cls={b.on(1)} size={21}>
-        Demandez à votre Agent dans VS Code : <Pr>« Rédige le fichier README.md du projet en suivant cette structure en 4 parties. »</Pr>
+    <Box x={120} y={730} w={1680}>
+      <Callout tone="navy" icon="target" title="Même barre pour les trois" cls={b.on(1)} size={21}>
+        Spec relue et réduite par vous, au moins 6 tests écrits avant le code, migration v4 → v5 de vos données d’hier, aucune régression.
       </Callout>
     </Box>
   </Frame>
 );
 
-const M13_ChecklistDemo: Page = () => (
-  <Frame mod={13} kind="demo">
-    <Title>Checklist interactive : votre application est-elle prête pour la démo ?</Title>
-    <Lede>Avant de présenter votre projet, passez en revue ces 6 critères. Je coche à l’écran pour illustrer le score !</Lede>
+const M13_PASSES: { qui: string; tone: Tone; icon: IconName; titre: string; fichier: string; msg: string; ok: number; ko: number; relais: string | null; vous: string }[] = [
+  {
+    qui: '@Analyste-PO',
+    tone: 'blue',
+    icon: 'doc',
+    titre: 'Spécifier',
+    fichier: 'docs/spec-dependances.md',
+    msg: '8 critères d’acceptation, dont : « A bloqué par B et B bloqué par A → refus, message « Cycle : A → B → A » ». Hors périmètre : dépendances entre projets.',
+    ok: 18,
+    ko: 0,
+    relais: 'Écrire les tests de la spec',
+    vous: 'Je retire un critère trop ambitieux (le chemin critique) : il en reste 7.',
+  },
+  {
+    qui: '@Testeur-QA',
+    tone: 'green',
+    icon: 'flask',
+    titre: 'Tests d’abord',
+    fichier: 'tests.js · +7 tests',
+    msg: '7 tests ajoutés d’après la spec. Ils sont rouges : ajouterDependance() n’existe pas encore. C’est attendu.',
+    ok: 18,
+    ko: 7,
+    relais: 'Implémenter pour faire passer les tests',
+    vous: 'Je vérifie qu’ils sont rouges pour la bonne raison, puis je commite.',
+  },
+  {
+    qui: '@Dev-JS',
+    tone: 'violet',
+    icon: 'code',
+    titre: 'Implémenter',
+    fichier: 'app.js · zones 1, 2 et 3',
+    msg: 'ajouterDependance() et detecterCycle() (parcours en profondeur), migration v4 → v5 (bloquePar: []), badge 🔒 sur la carte. tests.js non modifié.',
+    ok: 25,
+    ko: 0,
+    relais: 'Faire vérifier par le testeur',
+    vous: 'Je relis le diff : aucune ligne de tests.js n’a bougé. Commit.',
+  },
+  {
+    qui: '@Testeur-QA',
+    tone: 'green',
+    icon: 'search',
+    titre: 'Contre-vérifier',
+    fichier: 'tests.js · +1 test',
+    msg: 'Mutation : peutDemarrer() renvoie toujours true → 25/25 restent verts ! Trou dans le filet : test 26 ajouté (ticket bloqué par un ticket « En cours »).',
+    ok: 26,
+    ko: 0,
+    relais: 'Rendre la main',
+    vous: 'Je relance la mutation : le test 26 passe au rouge. Le filet tient.',
+  },
+  {
+    qui: 'Vous',
+    tone: 'pink',
+    icon: 'user',
+    titre: 'Valider',
+    fichier: 'git commit',
+    msg: 'feat(dependances) : blocages + détection de cycles, 8 tests, migration v5.',
+    ok: 26,
+    ko: 0,
+    relais: null,
+    vous: 'Démo à la main : je crée un cycle, il est refusé. Ma sauvegarde d’hier se recharge.',
+  },
+];
+
+const M13_SimOrchestration: Page = () => {
+  const [step, setStep] = useState(0);
+  const p = M13_PASSES[step];
+  const total = p.ok + p.ko;
+  return (
+    <Frame mod={13} kind="demo">
+      <Title>Simulateur : une fonctionnalité, cinq passes, un relais à chaque fois</Title>
+      <Lede>Exemple avec la fonctionnalité B, Dépendances. Cliquez sur chaque passe : qui travaille, sur quel fichier, et l’état des tests.</Lede>
+      <div style={{ position: 'absolute', left: 120, top: 250, width: 1680, display: 'grid', gridTemplateColumns: 'repeat(5, minmax(0, 1fr))', gap: 16 }}>
+        {M13_PASSES.map((s, i) => (
+          <button
+            key={i}
+            type="button"
+            data-osd-interactive
+            onClick={(e) => {
+              e.currentTarget.blur();
+              setStep(i);
+            }}
+            style={{
+              border: 'none',
+              cursor: 'pointer',
+              textAlign: 'left',
+              borderRadius: 16,
+              padding: '14px 18px',
+              fontFamily: body,
+              background: i === step ? T[s.tone].bg : C.card,
+              boxShadow: i === step ? `inset 0 0 0 3px ${STRONG[s.tone]}` : SHADOW_SM,
+              opacity: i <= step ? 1 : 0.55,
+              transition: `all 200ms ${EASE}`,
+            }}
+          >
+            <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+              <span style={{ fontFamily: display, fontWeight: 800, fontSize: 26, color: STRONG[s.tone] }}>{i + 1}</span>
+              <Icon name={s.icon} size={24} color={T[s.tone].fg} />
+              <span style={{ fontFamily: display, fontWeight: 800, fontSize: 20, color: C.navy }}>{s.titre}</span>
+            </div>
+            <div style={{ fontSize: 18, color: C.soft, marginTop: 6 }}>{s.qui}</div>
+          </button>
+        ))}
+      </div>
+      <Box x={120} y={400} w={1060}>
+        <UiMock title={`Chat VS Code · ${p.qui}`} tool={p.fichier} tone={p.tone}>
+          <div key={step} className={A.fade} style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+            <div style={{ fontSize: 22, lineHeight: 1.42, color: C.ink, minHeight: 130 }}>{p.msg}</div>
+            {p.relais ? (
+              <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
+                <Btn icon="arrow" tone={M13_PASSES[step + 1].tone} size={19} onClick={() => setStep(step + 1)}>
+                  {p.relais} → {M13_PASSES[step + 1].qui}
+                </Btn>
+                <span style={{ fontSize: 17, color: C.muted }}>bouton de handoff · send: false</span>
+              </div>
+            ) : (
+              <Btn icon="reset" ghost tone="grey" size={19} onClick={() => setStep(0)}>
+                Rejouer depuis la spec
+              </Btn>
+            )}
+          </div>
+        </UiMock>
+      </Box>
+      <Box x={1220} y={400} w={580} style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+        <div style={{ background: C.card, borderRadius: 18, boxShadow: SHADOW, padding: '18px 22px' }}>
+          <Eyebrow c={C.muted} size={17}>tests.js</Eyebrow>
+          <div style={{ display: 'flex', alignItems: 'baseline', gap: 12, marginTop: 6 }}>
+            <span style={{ fontFamily: display, fontWeight: 800, fontSize: 52, color: p.ko ? C.coral : C.green }}>
+              {p.ok} / {total}
+            </span>
+            <span style={{ fontSize: 20, color: C.soft }}>{p.ko ? `${p.ko} rouges` : 'tous verts'}</span>
+          </div>
+          <div style={{ display: 'flex', height: 16, borderRadius: 8, overflow: 'hidden', marginTop: 10, background: C.panel }}>
+            <div style={{ width: `${(p.ok / total) * 100}%`, background: C.green, transition: `width 400ms ${EASE}` }} />
+            <div style={{ width: `${(p.ko / total) * 100}%`, background: C.coral, transition: `width 400ms ${EASE}` }} />
+          </div>
+        </div>
+        <Callout tone="pink" icon="user" title="Votre rôle à cette passe" size={20}>
+          <span key={step}>{p.vous}</span>
+        </Callout>
+      </Box>
+    </Frame>
+  );
+};
+
+const M13_LabFeature: Page = () => (
+  <VibeLab
+    mod={13}
+    n="TP Final"
+    kind="tp"
+    title="Phase 1 · Livrer la fonctionnalité phare avec vos agents"
+    defi="skill"
+    tools="VS Code · GitHub Copilot (agents personnalisés)"
+    objective={
+      <>
+        Livrer la fonctionnalité <strong>A, B ou C</strong> en faisant passer le relais <Ic>@Analyste-PO</Ic> → <Ic>@Testeur-QA</Ic> → <Ic>@Dev-JS</Ic> → <Ic>@Testeur-QA</Ic>, avec un commit à chaque passe, sans casser TaskFlow.
+      </>
+    }
+    minutes={60}
+    crit={
+      <>
+        <CheckItem id="tpf1">J’ai relu et réduit docs/spec.md : 6 à 8 critères d’acceptation</CheckItem>
+        <CheckItem id="tpf2">Au moins 6 nouveaux tests, écrits avant le code et vus rouges</CheckItem>
+        <CheckItem id="tpf3">Tout est vert, et aucun diff de @Dev-JS ne touche tests.js</CheckItem>
+        <CheckItem id="tpf4">Ma sauvegarde d’hier se recharge sans erreur (migration v4 → v5)</CheckItem>
+      </>
+    }
+    suivi="Points d’étape au micro à 15 min (spec), 30 min (tests rouges) et 45 min (vert). Bloqué ? Partage d’écran 2 minutes !"
+  >
+    <WStep n={1}>
+      <Strong>0–15 min ·</Strong> Avec <Ic>@Analyste-PO</Ic> : <Pr>« Spécifie la fonctionnalité [A, B ou C] pour TaskFlow en suivant le Skill fonctionnalite-taskflow. »</Pr> Relisez <PathChip>docs/spec.md</PathChip>, coupez ce qui dépasse, commitez.
+    </WStep>
+    <WStep n={2}>
+      <Strong>15–45 min ·</Strong> Relais vers <Ic>@Testeur-QA</Ic> (tests rouges, commit), puis vers <Ic>@Dev-JS</Ic>, une règle à la fois jusqu’au vert (commit). <Strong c={C.coral}>Refusez</Strong> tout diff du Dev qui touche <Ic>tests.js</Ic>.
+    </WStep>
+    <WStep n={3}>
+      <Strong>45–60 min ·</Strong> Relais final vers <Ic>@Testeur-QA</Ic> : test de mutation et chargement de votre sauvegarde d’hier. Déroulez la spec à la main dans l’interface, commitez.
+    </WStep>
+  </VibeLab>
+);
+
+const M13_Pause: Page = () => <Pause mod={13} title="Pause après-midi" back="Reprise dans 15 minutes" minutes={15} />;
+
+// ════════════════════════════════════════════════════════════════════════════
+// MODULE 14 — Publier sur GitHub Pages, README, démo finale & clôture
+// ════════════════════════════════════════════════════════════════════════════
+const M14_Divider: Page = () => (
+  <Divider mod={14} kicker="Jour 3 · Fin d’après-midi" title="Publier : de votre poste à une adresse publique">
+    <Bullet size={30}>Pousser le dépôt sur GitHub depuis VS Code</Bullet>
+    <Bullet size={30}>Déployer sur GitHub Pages, sans serveur ni installation</Bullet>
+    <Bullet size={30}>Démontrer TaskFlow en ligne, devant tout le groupe</Bullet>
+  </Divider>
+);
+M14_Divider.transition = BLOOM;
+
+const M14_GitHubPush: Page = () => (
+  <Frame mod={14} kind="cours" beats={1}>
+    <Title>Pousser le code sur GitHub depuis VS Code</Title>
+    <Lede>Votre dépôt local a déjà son historique. Il suffit de lui donner une copie en ligne, puis de la synchroniser à chaque commit.</Lede>
+    <Box x={120} y={255} w={1000} style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+      <WStep n={1} d={100}>
+        <Strong>Se connecter :</Strong> icône <Strong>Comptes</Strong> en bas à gauche de VS Code → <Strong>Se connecter avec GitHub</Strong>. Chacun s’authentifie lui-même dans son navigateur.
+      </WStep>
+      <WStep n={2} d={220}>
+        <Strong>Publier :</Strong> vue Contrôle de code source → <Strong>Publier sur GitHub</Strong> → nom <Ic>taskflow</Ic> → <Strong>dépôt public</Strong>.
+      </WStep>
+      <WStep n={3} d={340}>
+        <Strong>Ensuite :</Strong> chaque commit → bouton <Strong>Synchroniser les modifications</Strong> (push). Le dépôt en ligne suit votre historique.
+      </WStep>
+    </Box>
+    <Box x={1160} y={255} w={640}>
+      <Term
+        title="Équivalent en ligne de commande"
+        size={18}
+        lines={[
+          '» git remote add origin https://github.com/<vous>/taskflow.git',
+          '» git branch -M main',
+          '» git push -u origin main',
+          'Enumerating objects: 42, done.',
+          'To https://github.com/<vous>/taskflow.git',
+          ' * [new branch]      main -> main',
+        ]}
+      />
+    </Box>
+    <Box x={120} y={610} w={1680}>
+      <Callout tone="coral" icon="shield" title="Public veut dire lisible par tous, historique compris" cls={b.on(1)} size={23}>
+        Avant de pousser : uniquement des <Strong c={C.coral}>données fictives</Strong>, aucun mot de passe, aucune clé d’API, aucun export réel. Un secret supprimé dans un commit récent reste visible dans les anciens.
+      </Callout>
+    </Box>
+  </Frame>
+);
+
+const M14_GitHubPages: Page = () => (
+  <Frame mod={14} kind="cours" beats={2}>
+    <Title>Déployer sur GitHub Pages : quatre réglages… et quatre pièges</Title>
+    <Lede>GitHub Pages publie gratuitement un dépôt public comme site web. TaskFlow n’a besoin d’aucun serveur.</Lede>
+    <Box x={120} y={255} w={820}>
+      <UiMock title="Dépôt taskflow · Settings → Pages" tool="github.com" tone="navy" d={100}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 12, fontSize: 19, color: C.ink }}>
+          <div style={{ fontFamily: display, fontWeight: 800, fontSize: 21, color: C.navy }}>Build and deployment</div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+            <span style={{ width: 90, color: C.muted }}>Source</span>
+            <Tag tone="blue" size={16}>Deploy from a branch ▾</Tag>
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+            <span style={{ width: 90, color: C.muted }}>Branch</span>
+            <Tag tone="blue" size={16}>main ▾</Tag>
+            <Tag tone="blue" size={16}>/ (root) ▾</Tag>
+            <Tag tone="green" size={16}>Save</Tag>
+          </div>
+          <div style={{ background: T.green.bg, borderRadius: 10, padding: '10px 14px', fontSize: 18 }}>
+            ✓ Your site is live at <Strong c={T.green.fg}>https://&lt;vous&gt;.github.io/taskflow/</Strong>
+          </div>
+        </div>
+      </UiMock>
+      <div className={A.in} style={{ ...dl(250), marginTop: 16, fontSize: 20, lineHeight: 1.4, color: C.soft }}>
+        Comptez une à deux minutes : l’onglet <Strong>Actions</Strong> montre le déploiement « pages build and deployment ». Chaque nouveau push redéploie automatiquement.
+      </div>
+    </Box>
+    <Box x={980} y={255} w={820} style={{ display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', gap: 16 }}>
+      <Card title="1 · Page 404" icon="alert" tone="coral" d={150} bsz={18} pad={18}>
+        <Ic>index.html</Ic> doit être <Strong>à la racine</Strong> et en minuscules.
+      </Card>
+      <Card title="2 · Styles absents" icon="alert" tone="coral" d={230} bsz={18} pad={18}>
+        <Ic>Style.css</Ic> ≠ <Ic>style.css</Ic> : Windows tolère la casse, GitHub Pages non.
+      </Card>
+      <Card title="3 · Chemin absolu" icon="link" tone="coral" cls={b.on(1)} bsz={18} pad={18}>
+        <Ic>/style.css</Ic> vise <Ic>&lt;vous&gt;.github.io/style.css</Ic>. Écrivez <Ic>style.css</Ic> ou <Ic>./style.css</Ic>.
+      </Card>
+      <Card title="4 · « Mes tickets ont disparu »" icon="database" tone="violet" cls={b.on(1)} bsz={18} pad={18}>
+        <Ic>localStorage</Ic> dépend de l’adresse : en ligne, TaskFlow repart des données de démo. Normal.
+      </Card>
+    </Box>
+    <Box x={980} y={640} w={820}>
+      <Callout tone="blue" icon="search" title="Le réflexe de vérification" cls={b.on(2)} size={20}>
+        Ouvrez l’URL en fenêtre privée, puis <Ic>F12</Ic> → Console et Réseau : aucune erreur 404.
+      </Callout>
+    </Box>
+  </Frame>
+);
+
+const CODE_README_FINAL = `# TaskFlow · Kanban de gestion de projet co-créé avec l’IA
+Démo en ligne : https://<votre-compte>.github.io/taskflow/
+
+## 1. Objectif
+Backlog et Kanban : limites WIP, import CSV, tableau de bord, glisser-déposer, sauvegarde locale et [fonctionnalité phare].
+
+## 2. Lancer le projet
+Via le lien ci-dessus, ou en local en ouvrant index.html. Aucune installation.
+
+## 3. Architecture
+- index.html · style.css · app.js (3 zones) · tests.js (auto-tests)
+- docs/spec-<fonctionnalité>.md : spécification validée
+- AGENTS.md · .github/skills/ · .github/agents/ : consignes des agents
+
+## 4. Rôle de l’IA & vérifications humaines
+- Agents : @Analyste-PO (spec), @Testeur-QA (tests), @Dev-JS (code).
+- Mes décisions : périmètre réduit à 7 critères, 2 diffs refusés.
+- Mes vérifications : 26 tests verts, mutation tuée, migration v5 testée.`;
+
+const M14_ReadmeRoleIA: Page = () => (
+  <Frame mod={14} kind="cours" beats={1}>
+    <Title>Le README.md : présenter le projet, et qui a fait quoi</Title>
+    <Lede>C’est la première chose que l’on voit sur votre dépôt GitHub. Quatre parties, honnêtes et vérifiables.</Lede>
+    <Box x={120} y={250} w={1060}>
+      <Code file="README.md · modèle à personnaliser" size={17} wrap hi={[2, 16, 17, 18]} code={CODE_README_FINAL} />
+    </Box>
+    <Box x={1220} y={250} w={580} style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+      <Card title="Pourquoi détailler le rôle de l’IA ?" icon="checkCircle" tone="green" bsz={21}>
+        <Col gap={10}>
+          <div><Strong c={C.green}>Transparence :</Strong> vous montrez ce que les agents ont produit.</div>
+          <div><Strong c={C.green}>Preuve de maîtrise :</Strong> vos décisions (périmètre coupé, diffs refusés) et vos vérifications sont ce qui fait la qualité.</div>
+        </Col>
+      </Card>
+      <Callout tone="violet" icon="bot" title="Faites-le rédiger, puis vérifiez" cls={b.on(1)} size={21}>
+        Avec <Ic>@Analyste-PO</Ic> : <Pr>« Mets à jour README.md selon cette structure, à partir de docs/spec.md et de l’historique Git. »</Pr> Chaque chiffre annoncé doit être vrai.
+      </Callout>
+    </Box>
+  </Frame>
+);
+
+const M14_LabPublier: Page = () => (
+  <VibeLab
+    mod={14}
+    n="TP Final"
+    kind="tp"
+    title="Phase 2 · Publier TaskFlow sur GitHub Pages"
+    defi="construire"
+    tools="VS Code · GitHub · GitHub Pages"
+    objective={
+      <>
+        Mettre TaskFlow en ligne à l’adresse <Ic>https://&lt;vous&gt;.github.io/taskflow/</Ic>, avec votre fonctionnalité phare, des tests verts et un <PathChip>README.md</PathChip> qui pointe vers la démo.
+      </>
+    }
+    minutes={25}
+    crit={
+      <>
+        <CheckItem id="tpf5">Mon dépôt public a index.html à la racine et aucune donnée réelle</CheckItem>
+        <CheckItem id="tpf6">L’URL s’affiche avec styles et scripts : F12 ne montre aucune erreur 404</CheckItem>
+        <CheckItem id="tpf7">Ma fonctionnalité phare et le panneau Auto-Tests marchent en ligne</CheckItem>
+        <CheckItem id="tpf8">Le README.md commence par le lien vers la démo en ligne</CheckItem>
+      </>
+    }
+    suivi="Point d’étape à 10 min (dépôt publié). GitHub inaccessible depuis votre poste d’entreprise ? Dites-le au micro : plan B en partage d’écran."
+  >
+    <WStep n={1}>
+      <Strong>Contrôle avant publication :</Strong> avec <Ic>@Testeur-QA</Ic>, <Pr>« Vérifie que le projet est prêt pour GitHub Pages : chemins relatifs, casse des noms de fichiers, aucune donnée réelle ni secret, tests verts. »</Pr> Corrigez, commitez.
+    </WStep>
+    <WStep n={2}>
+      <Strong>Publier :</Strong> Contrôle de code source → <Strong>Publier sur GitHub</Strong> (dépôt public <Ic>taskflow</Ic>), puis sur github.com : <Strong>Settings → Pages → main / (root) → Save</Strong>.
+    </WStep>
+    <WStep n={3}>
+      <Strong>Vérifier en ligne :</Strong> ouvrez l’URL en fenêtre privée, déroulez votre spec. Ajoutez le lien en tête du <PathChip>README.md</PathChip>, commitez, synchronisez : la page se met à jour en une minute.
+    </WStep>
+  </VibeLab>
+);
+
+const M14_ChecklistDemo: Page = () => (
+  <Frame mod={14} kind="demo">
+    <Title>Checklist : votre TaskFlow est-il prêt pour la démo ?</Title>
+    <Lede>Comptez vos points pour vous-même ; je coche à l’écran pour illustrer le score.</Lede>
     <Checklist>
       <Box x={120} y={255} w={1060} style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-        <CheckItem id="ck1" w={2} size={22}>1 · Architecture propre : index.html, style.css et app.js séparés dans VS Code (2 pts)</CheckItem>
-        <CheckItem id="ck2" w={2} size={22}>2 · Personnalisation IA : AGENTS.md + au moins 1 SKILL.md ou Agent créé (2 pts)</CheckItem>
-        <CheckItem id="ck3" w={2} size={22}>3 · Interactivité complète : ajout, filtres/recherche ou calcul + visuel/barres (2 pts)</CheckItem>
-        <CheckItem id="ck4" w={2} size={22}>4 · Sauvegarde fonctionnelle : localStorage + bouton de réinitialisation démo (2 pts)</CheckItem>
-        <CheckItem id="ck5" w={1} size={22}>5 · Panneau Auto-Tests au vert (incluant le cas limite liste ou champ vide) (1 pt)</CheckItem>
-        <CheckItem id="ck6" w={1} size={22}>6 · Fichier README.md présent avec la section « Rôle de l’IA & vérifications » (1 pt)</CheckItem>
+        <CheckItem id="ck1" w={2} size={22}>1 · Projet en 4 fichiers + AGENTS.md, un Skill et trois agents (2 pts)</CheckItem>
+        <CheckItem id="ck2" w={2} size={22}>2 · Fonctionnalité phare livrée par le relais PO → Testeur → Dev (2 pts)</CheckItem>
+        <CheckItem id="ck3" w={2} size={22}>3 · 6 tests ou plus écrits avant le code, tous verts, mutation vérifiée (2 pts)</CheckItem>
+        <CheckItem id="ck4" w={1} size={22}>4 · Sauvegarde d’hier rechargée sans erreur (migration v5) (1 pt)</CheckItem>
+        <CheckItem id="ck5" w={1} size={22}>5 · Historique Git lisible : un commit par passe d’agent (1 pt)</CheckItem>
+        <CheckItem id="ck6" w={2} size={22}>6 · En ligne sur GitHub Pages + README avec lien et rôle de l’IA (2 pts)</CheckItem>
       </Box>
       <Box x={1220} y={255} w={580}>
         <CheckScore
           max={10}
           label="Prêt pour la démo"
           levels={[
-            { min: 0, text: 'En cours de construction : validez les étapes une par une.', tone: 'coral' },
-            { min: 5, text: 'Solide ! Finalisez les auto-tests et le README.md.', tone: 'yellow' },
-            { min: 8, text: 'Prêt pour le showtime : application complète et maîtrisée !', tone: 'green' },
+            { min: 0, text: 'En construction : avancez passe par passe.', tone: 'coral' },
+            { min: 5, text: 'Solide ! Finalisez la mise en ligne et le README.', tone: 'yellow' },
+            { min: 8, text: 'Prêt pour le showtime : livré, testé et en ligne !', tone: 'green' },
           ]}
         />
       </Box>
@@ -7697,53 +8142,16 @@ const M13_ChecklistDemo: Page = () => (
   </Frame>
 );
 
-const M13_Pause: Page = () => <Pause mod={13} title="Pause après-midi" back="Reprise dans 15 minutes" minutes={15} />;
-
-const M14_LabTPFinal: Page = () => (
-  <VibeLab
-    mod={14}
-    n="TP Final"
-    kind="tp"
-    title="Co-créer et finaliser votre mini-application interactive avec l’IA"
-    defi="skill"
-    tools="VS Code (Agents & Skills) + ChatGPT / Claude / Gemini"
-    objective={
-      <>
-        Finaliser en 70 minutes votre mini-application interactive dans <strong>VS Code</strong> (architecture multi-fichiers, <PathChip>AGENTS.md</PathChip>, <PathChip>SKILL.md</PathChip>, panneau d’Auto-Tests et <PathChip>README.md</PathChip>) et préparer votre démonstration de 4 minutes.
-      </>
-    }
-    minutes={70}
-    crit={
-      <>
-        <CheckItem id="tpf1">Le projet est découpé en index.html, style.css, app.js et README.md</CheckItem>
-        <CheckItem id="tpf2">AGENTS.md + 1 SKILL.md + 1 Agent personnalisé guident l’IA dans VS Code</CheckItem>
-        <CheckItem id="tpf3">L’interface est riche (KPI, filtres/jauges, thème, sauvegarde localStorage)</CheckItem>
-        <CheckItem id="tpf4">Les auto-tests sont au vert et je sais expliquer le rôle de l’IA dans mon README</CheckItem>
-      </>
-    }
-  >
-    <WStep n={1}>
-      <Strong>Refactorisation &amp; Structure (20 min) :</Strong> avec le mode Agent de VS Code et votre <PathChip>AGENTS.md</PathChip>, séparez proprement <Ic>index.html</Ic>, <Ic>style.css</Ic> et <Ic>app.js</Ic>.
-    </WStep>
-    <WStep n={2}>
-      <Strong>Enrichissement par Skill &amp; Agent (30 min) :</Strong> ajoutez votre fonctionnalité phare (graphique par catégorie, mode sombre, export/import JSON ou générateur d’idées) et vérifiez le panneau d’Auto-Tests.
-    </WStep>
-    <WStep n={3}>
-      <Strong>Documentation &amp; Répétition (20 min) :</Strong> générez et relisez votre <PathChip>README.md</PathChip> en détaillant ce que l’IA a produit et ce que vous avez vérifié.
-    </WStep>
-  </VibeLab>
-);
-
 const M14_Restitution: Page = () => (
   <Frame mod={14} kind="tp" beats={1}>
-    <Title>Grandes démonstrations finales : présentez votre mini-application !</Title>
-    <Lede>Partage d’écran individuel de 4 à 5 minutes : vous êtes aux commandes de votre création.</Lede>
+    <Title>Grandes démonstrations finales : TaskFlow, en ligne !</Title>
+    <Lede>Partage d’écran individuel de 4 à 5 minutes, depuis votre adresse GitHub Pages. Le groupe peut tester en même temps que vous.</Lede>
     <Box x={120} y={255} w={820}>
       <Card title="Le fil de votre démonstration (4 à 5 min)" icon="rocket" tone="violet" d={100} bsz={22}>
         <Col gap={10}>
-          <div><Strong>1. L’application en action (2 min) :</Strong> montrez l’interface, ajoutez/filtrez une donnée, montrez les KPI et la sauvegarde.</div>
-          <div><Strong>2. Sous le capot dans VS Code (1 min 30) :</Strong> montrez vos fichiers, votre <Ic>SKILL.md</Ic>, une fonction de <Ic>app.js</Ic> et le panneau Auto-Tests ✓.</div>
-          <div><Strong>3. Le rôle de l’IA (1 min) :</Strong> présentez votre <Ic>README.md</Ic> et un bug ou cas limite que vous avez corrigé.</div>
+          <div><Strong>1. En ligne (2 min) :</Strong> votre URL, la fonctionnalité phare, et une règle qui refuse une action interdite.</div>
+          <div><Strong>2. L’orchestration (1 min 30) :</Strong> <Ic>docs/spec.md</Ic>, un diff que vous avez refusé, l’historique Git.</div>
+          <div><Strong>3. Le recul (1 min) :</Strong> votre <Ic>README.md</Ic> et le bug que les tests ont attrapé.</div>
         </Col>
         <div style={{ marginTop: 14 }}>
           <Timer id="restit-j3" minutes={5} />
@@ -7753,16 +8161,16 @@ const M14_Restitution: Page = () => (
     <Box x={980} y={255} w={820}>
       <Card title="Grille d’appréciation finale" icon="star" tone="green" d={220} bsz={22}>
         <Col gap={12}>
-          <div><Strong c={C.green}>Utilité &amp; Ergonomie UI :</Strong> l’interface est claire, fluide et agréable.</div>
-          <div><Strong c={C.green}>Maîtrise des fondations :</Strong> variables, conditions, boucles, fonctions et objets sont compris.</div>
-          <div><Strong c={C.green}>Ingénierie Vibe Coding :</Strong> usage pertinent des prompts, Skills, Agents et tests.</div>
-          <div><Strong c={C.green}>Recul critique :</Strong> clarté du <Ic>README.md</Ic> sur la répartition Humain / IA.</div>
+          <div><Strong c={C.green}>Utilité &amp; ergonomie :</Strong> l’outil est clair, fluide et utile à un chef de projet.</div>
+          <div><Strong c={C.green}>Fondations :</Strong> données, règles métier et tests sont compris, pas seulement générés.</div>
+          <div><Strong c={C.green}>Orchestration :</Strong> rôles respectés, tests avant le code, un commit par passe.</div>
+          <div><Strong c={C.green}>Mise en ligne &amp; recul :</Strong> URL fonctionnelle et README honnête sur le rôle de l’IA.</div>
         </Col>
       </Card>
     </Box>
     <Box x={120} y={790} w={1680}>
-      <Callout tone="pink" icon="sparkles" title="Félicitations mutuelles" cls={b.on(1)} size={24}>
-        À chaque passage, le groupe partage un point fort marquant au micro !
+      <Callout tone="pink" icon="link" title="Déposez votre URL dans le clavardage" cls={b.on(1)} size={24}>
+        Chacun peut ouvrir les TaskFlow des autres pendant les démos. Après chaque passage : un point fort au micro !
       </Callout>
     </Box>
   </Frame>
@@ -7783,13 +8191,13 @@ const M14_Bilan3J: Page = () => (
       <Card title="À 30 jours" icon="layers" tone="violet" d={220} bsz={22}>
         <Col gap={10}>
           <div>• Constituer votre bibliothèque personnelle de 3 ou 4 <PathChip>SKILL.md</PathChip> dans VS Code</div>
-          <div>• Affiner vos agents <Ic>@Coach-Vibe</Ic>, <Ic>@Designer-UI</Ic> et <Ic>@Testeur-QA</Ic></div>
-          <div>• Partager vos mini-apps avec vos collègues</div>
+          <div>• Affiner vos agents <Ic>@Analyste-PO</Ic>, <Ic>@Dev-JS</Ic> et <Ic>@Testeur-QA</Ic></div>
+          <div>• Partager l’URL GitHub Pages de vos outils avec vos collègues</div>
         </Col>
       </Card>
       <Card title="Pour aller plus loin" icon="rocket" tone="green" d={340} bsz={22}>
         <Col gap={10}>
-          <div>• Explorer la publication sur GitHub Pages</div>
+          <div>• Livrer une 2e fonctionnalité phare avec votre équipe d’agents</div>
           <div>• Connecter une API publique ouverte (météo, Open Data)</div>
           <div>• Approfondir JavaScript ou Python avec votre agent tuteur</div>
         </Col>
@@ -7843,9 +8251,9 @@ M14_Merci.transition = BLOOM;
 
 const PAGES_J3: Page[] = [J3_Cover, J3_QuizRappel];
 const PAGES_M11: Page[] = [M11_Divider, M11_PourquoiVSCode, M11_TourVSCode, M11_TroisModes, M11_DragModes, M11_DiffReview];
-const PAGES_M12: Page[] = [M12_Divider, M12_PyramideContexte, M12_FichierInstructions, M12_SkillsExplique, M12_AgentsExplique, M12_ComposantsVariantes, M12_Pause, M12_Lab12, M12_QCM, M12_Dejeuner];
-const PAGES_M13: Page[] = [M13_Divider, M13_RefactoMulti, M13_ContenuInteractivite, M13_ReadmeRoleIA, M13_ChecklistDemo, M13_Pause];
-const PAGES_M14: Page[] = [M14_LabTPFinal, M14_Restitution, M14_Bilan3J, M14_AutoPosFinal, M14_Merci];
+const PAGES_M12: Page[] = [M12_Divider, M12_PyramideContexte, M12_FichierInstructions, M12_SkillsExplique, M12_AgentsExplique, M12_Orchestration, M12_RefactoMulti, M12_GitLocal, M12_Pause, M12_Lab12, M12_QCM, M12_Dejeuner];
+const PAGES_M13: Page[] = [M13_Divider, M13_Fonctionnalites, M13_SimOrchestration, M13_LabFeature, M13_Pause];
+const PAGES_M14: Page[] = [M14_Divider, M14_GitHubPush, M14_GitHubPages, M14_ReadmeRoleIA, M14_LabPublier, M14_ChecklistDemo, M14_Restitution, M14_Bilan3J, M14_AutoPosFinal, M14_Merci];
 
 const NOTES_J3: string[] = [
   // J3_Cover
@@ -7853,9 +8261,9 @@ const NOTES_J3: string[] = [
 
 OBJECTIF — Accueillir les participants pour la 3e journée et annoncer le passage dans VS Code avec les Agents et les Skills.
 
-DIRE — « Bonjour à toutes et à tous, bienvenue dans cette troisième et dernière journée ! Pendant deux jours, vous avez appris toutes les bases du code et des données en co-créant des mini-applications dans le navigateur avec ChatGPT, Claude ou Gemini. Aujourd’hui, nous passons dans l’atelier professionnel : VS Code, avec les modes Ask, Edit et Agent, les fichiers d’instructions AGENTS.md, les Skills et les Agents personnalisés pour construire et démontrer votre application finale ! »
+DIRE — « Bonjour à toutes et à tous, bienvenue dans cette troisième et dernière journée ! Pendant deux jours, vous avez appris toutes les bases du code et des données en co-créant des mini-applications dans le navigateur avec ChatGPT, Claude ou Gemini. Aujourd’hui, nous passons dans l’atelier professionnel : VS Code. Ce matin, vous montez une équipe de trois agents — un Product Owner, un développeur JavaScript et un testeur — guidée par un Skill. Cet après-midi, cette équipe livre une nouvelle fonctionnalité de TaskFlow, et vous publiez le tout sur GitHub Pages pour la démo finale ! »
 
-ANIMATION — Vérifier que chacun a son dossier contenant le fichier taskflow-v4.html d’hier, renommé index.html, et VS Code ouvert.
+ANIMATION — Vérifier que chacun a son dossier contenant le fichier taskflow-v4.html d’hier, renommé index.html, VS Code ouvert avec GitHub Copilot actif, et un compte GitHub accessible depuis son poste (sinon, le signaler dès maintenant : plan B en partage d’écran).
 
 TRANSITION — « Commençons par notre QCM éclair de réactivation du Jour 2. »`,
   // J3_QuizRappel
@@ -7933,175 +8341,240 @@ const NOTES_M12: string[] = [
   // M12_Divider
   `⏱ 1 min · MODULE 12
 
-DIRE — « Module 12 : industrialiser votre Vibe Coding dans VS Code grâce aux fichiers d’instructions, aux Skills et aux Agents personnalisés, puis générer des composants et effets visuels. »
+DIRE — « Module 12 : on monte votre équipe. Une constitution commune, une recette partagée, et trois agents spécialisés qui se passent le relais. Cet après-midi, c’est cette équipe qui livrera votre nouvelle fonctionnalité. »
 
-TRANSITION — « Regardons la pyramide des 4 couches qui guident l’IA. »`,
+TRANSITION — « D’abord, comprendre les quatre couches qui guident l’IA dans VS Code. »`,
   // M12_PyramideContexte
-  `⏱ 6 min · LES 4 COUCHES DE GUIDAGE DANS VS CODE
+  `⏱ 5 min · LES 4 COUCHES DE GUIDAGE
 
-OBJECTIF — Comprendre le rôle complémentaire de AGENTS.md, SKILL.md, .agent.md et du prompt.
+OBJECTIF — Distinguer ce qui est toujours lu (AGENTS.md), chargé à la demande (Skill), choisi (agent) et ponctuel (prompt).
 
-DIRE — « Pourquoi vos prompts dans le navigateur devenaient-ils de plus en plus longs ? Parce qu’il fallait tout répéter ! Dans VS Code, on répartit l’intelligence en 4 couches : 1. AGENTS.md est toujours lu et pose les règles permanentes du projet. 2. Les fichiers SKILL.md contiennent vos recettes spécialisées et ne se chargent que quand la tâche en a besoin. 3. Les fichiers .agent.md créent vos coéquipiers spécialisés (@Coach-Vibe, @Designer-UI, @Testeur-QA). 4. Votre prompt dans le chat peut alors rester court et droit au but ! »
+DIRE — « Quatre couches, de la plus permanente à la plus ponctuelle. AGENTS.md est lu à chaque message. Un Skill n’est ouvert que si votre demande correspond. Un agent, c’est vous qui le choisissez dans le menu. Et le prompt du moment peut alors tenir en une phrase. »
 
-ANIMATION — → beat 1 : couche 2 (Skills). → beat 2 : couche 3 (Agents). → beat 3 : couche 4 (Prompt).
+ANIMATION — → beat 1 : Skill. → beat 2 : agents, citer les trois rôles de l’équipe. → beat 3 : le prompt court.
 
-TRANSITION — « Voyons concrètement à quoi ressemble un fichier AGENTS.md. »`,
+TRANSITION — « Couche 1 : la constitution de TaskFlow. »`,
   // M12_FichierInstructions
-  `⏱ 5 min · VOTRE FICHIER AGENTS.MD
+  `⏱ 5 min · AGENTS.MD, LA CONSTITUTION COMMUNE
 
-OBJECTIF — Savoir rédiger un fichier AGENTS.md simple en français pour un projet débutant.
+OBJECTIF — Savoir ce qui a sa place dans AGENTS.md, et ce qui n’y va pas.
 
-DIRE — « Regardez comme c’est simple : c’est du texte en français ! On indique que le projet est en HTML, CSS et JS pur sans outil compliqué, qu’il est découpé en 3 fichiers, et que les variables doivent être en français avec les 3 zones et la gestion des listes vides. Dès que ce fichier est dans votre dossier, l’IA obéit automatiquement à ces règles ! »
+DIRE — « Ce fichier, vos trois agents le lisent à chaque requête. On y met ce qui est vrai pour toute demande : la stack sans bibliothèque, les quatre fichiers, les trois zones, l’immutabilité, et la règle d’or : toute règle métier a son test. Ce qu’on n’y met pas : les recettes longues. Elles encombrent chaque requête, même pour renommer un bouton, et noient les règles vitales. »
 
-ANIMATION — → beat 1 : standard ouvert reconnu par tous les outils modernes.
+ANIMATION — Pointer les lignes surlignées. → beat 1 : standard ouvert. Coller le modèle complet dans le clavardage.
 
-TRANSITION — « Deuxième pépite : qu’est-ce qu’un Skill (SKILL.md) ? »`,
+TRANSITION — « La recette longue, justement, va dans un Skill. »`,
   // M12_SkillsExplique
-  `⏱ 6 min · LES SKILLS (.GITHUB/SKILLS/*/SKILL.MD)
+  `⏱ 6 min · LE SKILL FONCTIONNALITE-TASKFLOW
 
-OBJECTIF — Comprendre la structure d’un SKILL.md (name + description + étapes) et son déclenchement automatique.
+OBJECTIF — Comprendre le déclenchement par la description et le rôle d’une Definition of Done partagée.
 
-DIRE — « Un Skill est une fiche recette rangée dans .github/skills/nom-du-skill/SKILL.md. Tout en haut, entre les tirets, il y a deux lignes cruciales : name et description. L’IA lit cette description pour savoir quand utiliser la fiche ! Dès que vous demandez “crée une nouvelle carte” ou “améliore le visuel”, l’agent ouvre tout seul ce fichier composant-ui/SKILL.md et applique votre charte graphique ! »
+DIRE — « Voici la recette que vos trois agents suivront cet après-midi. Retenez deux lignes. La 3 : pas de Date.now() dans une règle métier, la date du jour est passée en paramètre, sinon le test change de résultat chaque jour. Et la Definition of Done : tests verts plus un test de mutation, aucune régression, README à jour. Côté déclenchement, l’agent ne voit que l’en-tête : une description vague, et votre Skill ne sera jamais ouvert. »
 
-ANIMATION — → beat 1 : exemples de 3 Skills utiles.
+ANIMATION — → beat 1 : un seul Skill pour trois agents. Coller le modèle dans le clavardage.
 
-TRANSITION — « Troisième pépite : créer vos propres Agents personnalisés (.agent.md). »`,
+TRANSITION — « Qui sont ces trois agents ? »`,
   // M12_AgentsExplique
-  `⏱ 6 min · LES AGENTS PERSONNALISÉS (.GITHUB/AGENTS/*.AGENT.MD)
+  `⏱ 6 min · TROIS AGENTS AUX DROITS SÉPARÉS
 
-OBJECTIF — Comprendre comment créer et appeler un agent personnalisé comme @Coach-Vibe, @Designer-UI ou @Testeur-QA.
+OBJECTIF — Connaître le rôle de @Analyste-PO, @Testeur-QA et @Dev-JS, et ce que chacun n’a pas le droit de faire.
 
-DIRE — « Alors qu’un Skill est une recette, un Agent est un personnage avec un rôle et une méthode de travail. Regardez coach-vibe.agent.md : on lui demande de proposer un plan en 3 étapes courtes avant de coder, et d’indiquer après chaque modification quelle variable ou condition vous pouvez inspecter. Vous pouvez ainsi avoir @Coach-Vibe pour construire, @Designer-UI pour embellir, et @Testeur-QA pour traquer les bugs ! »
+DIRE — « Trois coéquipiers. L’analyste écrit la spec et ne code jamais. Le testeur écrit les tests et ne touche jamais app.js. Le développeur, expert JavaScript, code une règle à la fois et ne touche jamais tests.js. Regardez la ligne surlignée dans son fichier : si un test lui semble faux, il l’explique au lieu de le modifier. C’est la séparation des droits qui rend l’ensemble fiable. »
 
-ANIMATION — → beat 1 : encadré chef d’orchestre.
+ANIMATION — Pointer le bloc handoffs, on y revient juste après. → beat 1 : pourquoi séparer les droits.
 
-TRANSITION — « Utilisons maintenant ces Skills et Agents pour générer des composants et des variantes visuelles. »`,
-  // M12_ComposantsVariantes
-  `⏱ 5 min · COMPOSANTS, EFFETS VISUELS & VARIANTES
+TRANSITION — « Comment ces agents se passent-ils le travail ? »`,
+  // M12_Orchestration
+  `⏱ 7 min · ORCHESTRER PAR HANDOFFS
 
-OBJECTIF — Savoir demander des composants UI riches, des animations CSS douces et un sélecteur de variantes.
+OBJECTIF — Comprendre le relais Vous → PO → Testeur → Dev → Testeur, la syntaxe handoffs et le rôle de send: false.
 
-DIRE — « Avec un fichier style.css séparé et votre Skill UI, vous pouvez demander à l’IA des composants très valorisants : une fenêtre modale de détail, une bascule Vue Cartes / Vue Tableau, des animations douces au survol, ou même un sélecteur en haut de page qui permet de changer de thème visuel en direct ! »
+DIRE — « Un handoff, c’est un bouton qui apparaît à la fin de la réponse d’un agent. Il bascule vers l’agent suivant avec un prompt déjà écrit. Avec send: false, le prompt n’est pas envoyé : vous relisez le travail, vous ajustez, puis vous lancez. Vous restez le chef d’orchestre. Et à chaque relais : on relit le diff et on commite. Si une passe casse tout, on revient au commit précédent. »
 
-ANIMATION — → beat 1 : avantage de séparer style.css et app.js.
+ANIMATION — Parcourir les cinq étapes. → beat 1 : un relais, un commit. → beat 2 : la boucle Dev ⇄ Testeur.
+Plan B à annoncer : si les boutons de relais n’apparaissent pas (version de VS Code ou de Copilot), on change d’agent à la main dans le menu du Chat et on colle le prompt du relais.
 
-TRANSITION — « Quinze minutes de pause, puis nous passons à la pratique dans VS Code ! »`,
+TRANSITION — « Pour séparer les droits, il faut d’abord séparer les fichiers. »`,
+  // M12_RefactoMulti
+  `⏱ 5 min · DE 1 FICHIER À 4 FICHIERS
+
+OBJECTIF — Savoir demander un découpage sans régression, avec tests.js séparé.
+
+DIRE — « Hier soir, TaskFlow tenait dans un seul fichier. Pour que le testeur et le développeur travaillent chacun chez soi, on découpe : index.html, style.css, app.js, et tests.js pour les auto-tests. Refactoriser, c’est ne rien changer pour l’utilisateur : la preuve, ce sont vos tests qui restent verts. »
+
+ANIMATION — → beat 1 : l’arborescence cible et qui écrit où. → beat 2 : le prompt de découpage.
+
+TRANSITION — « Dernier outil avant l’atelier : Git, votre filet de sécurité. »`,
+  // M12_GitLocal
+  `⏱ 6 min · GIT DANS VS CODE
+
+OBJECTIF — Savoir initialiser un dépôt, commiter et revenir en arrière depuis VS Code.
+
+DIRE — « Git prend une photo de votre projet à chaque commit. Trois gestes dans la vue Contrôle de code source : initialiser une fois, commiter avec un message qui dit quoi et qui, et ignorer les modifications pour revenir à la dernière photo. Regardez l’historique visé ce soir : une ligne par passe d’agent. Il servira dans votre README et votre démo. »
+
+ANIMATION — Montrer en partage d’écran la vue Contrôle de code source (Ctrl+Maj+G). → beat 1 : le filet de sécurité.
+
+TRANSITION — « Quinze minutes de pause, puis vous montez votre équipe. »`,
   // M12_Pause
   `⏱ 15 min · PAUSE MATIN
 
-DIRE — « Quinze minutes de pause loin de l’écran. À la reprise, chacun configure son dossier dans VS Code avec AGENTS.md, un SKILL.md et un Agent ! »
+DIRE — « Quinze minutes de pause loin de l’écran. À la reprise, vous montez votre équipe de trois agents. »
 
-ANIMATION — Lancer le minuteur de 15 minutes.`,
+ANIMATION — Lancer le minuteur de 15 minutes. Pendant la pause, coller dans le clavardage les modèles : AGENTS.md, SKILL.md et les trois fichiers .agent.md.`,
   // M12_Lab12
-  `⏱ 25 min · ATELIER VIBE 12.1 · CONFIGURER VS CODE AVEC AGENTS.MD, SKILL.MD & AGENT
+  `⏱ 50 min · ATELIER VIBE 12.1 · MONTER L’ÉQUIPE
 
-OBJECTIF — Mettre en place AGENTS.md, un SKILL.md et un fichier .agent.md dans son projet et générer une évolution visuelle.
+OBJECTIF — Obtenir un projet VS Code en 4 fichiers versionné, doté d’AGENTS.md, du Skill et des 3 agents, et répéter un relais Testeur → Dev.
 
-DIRE — « Vingt-cinq minutes sur votre poste. Je vous colle dans le clavardage les modèles de AGENTS.md, composant-ui/SKILL.md et coach-vibe.agent.md. Créez-les dans votre dossier de projet, puis demandez en mode Agent d’ajouter un sélecteur de 3 thèmes visuels et une animation douce sur les cartes. Inspectez bien le Diff Vert/Rouge avant d’accepter ! »
+DIRE — « Cinquante minutes, individuellement. Trois étapes. Un : le dossier, Git, le découpage en quatre fichiers, et vos tests doivent rester verts. Deux : les cinq fichiers de l’équipe, modèles dans le clavardage ; vérifiez que les trois agents apparaissent dans le menu du Chat. Trois : la répétition. Le testeur ajoute trois tests sur des cas limites. S’il en trouve un rouge, vous passez le relais au développeur. Et vous vérifiez dans le diff que le testeur n’a pas touché app.js. »
 
-ANIMATION — Coller les 3 modèles dans le clavardage. Lancer le minuteur de 25 minutes. Accompagner en partage d’écran si quelqu’un découvre l’arborescence de dossiers dans VS Code.
+ANIMATION — Lancer le minuteur de 50 minutes. Points d’étape à 15 min (« Découpage fait, tests verts ? »), 30 min (« Les trois agents sont-ils dans le menu ? ») et 45 min (« Combien de commits ? »).
 
-TRANSITION — « Vérifions nos acquis de la matinée avec le QCM des Modules 11 et 12. »`,
+TRANSITION — « Six questions avant le déjeuner, sur les pièges que vous allez rencontrer cet après-midi. »`,
   // M12_QCM
-  `⏱ 7 min · QCM MODULES 11 & 12
+  `⏱ 10 min · QCM MODULES 11 & 12 · SKILLS, AGENTS, ORCHESTRATION
 
-OBJECTIF — Valider la maîtrise de VS Code, Ask/Edit/Agent, AGENTS.md, SKILL.md et du Diff.
+OBJECTIF — Vérifier la compréhension des choix d’architecture : AGENTS.md vs Skill, déclenchement d’un Skill, séparation des droits, tests d’abord, testabilité, send: false.
 
-DIRE — « Quatre questions : votez à voix haute avec A, B, C ou D. »
+DIRE — « Six questions, toutes tirées de situations réelles avec des agents. Votez à voix haute, A, B, C ou D. »
 
-ANIMATION — Parcourir les 4 questions.
+ANIMATION — 30 secondes de lecture, puis vote. Faire justifier par un volontaire.
+Q1 → B : AGENTS.md est lu à chaque requête.
+Q2 → B : la description décide du déclenchement.
+Q3 → B : rejeter le diff, le testeur tranche avec la spec.
+Q4 → C : tester la demande, pas recopier le code.
+Q5 → B : la date du jour doit être un paramètre.
+Q6 → B : prompt pré-rempli, vous relisez.
 
-TRANSITION — « Bravo à tous ! Pause déjeuner d’une heure, on se retrouve à 14 h 00 pour la refactorisation multi-fichiers, le README et le grand TP Final ! »`,
+TRANSITION — « Bon appétit ! Cet après-midi, votre équipe livre une vraie fonctionnalité, puis TaskFlow part en ligne. »`,
   // M12_Dejeuner
-  `⏱ 60 min · PAUSE DÉJEUNER
+  `⏱ 90 min · PAUSE DÉJEUNER
 
-DIRE — « Bon appétit ! Reprise à 14 h 00 pour le dernier après-midi et vos démonstrations finales. »
+DIRE — « Pause déjeuner, reprise à 14 h 00. Pendant la pause, réfléchissez à la fonctionnalité qui vous tente : je vous en présente trois à la reprise. »
 
-ANIMATION — Lancer le minuteur de 60 minutes.`,
+ANIMATION — Lancer le minuteur.`,
 ];
 
 const NOTES_M13: string[] = [
   // M13_Divider
   `⏱ 1 min · MODULE 13 · 14:00
 
-DIRE — « Bon retour ! Module 13 : nous allons découper proprement notre application en plusieurs fichiers, enrichir son interactivité et préparer le fichier README.md pour votre démonstration finale. »
+DIRE — « Bon retour ! Module 13 : votre équipe d’agents livre une fonctionnalité phare. Vous choisissez le sujet, ils se passent le relais, et vous gardez la main à chaque passe. »
 
-TRANSITION — « Commençons par la refactorisation assistée en 3 fichiers. »`,
-  // M13_RefactoMulti
-  `⏱ 6 min · REFACTORISATION ASSISTÉE : 1 FICHIER → 3 FICHIERS PROPRES
+TRANSITION — « Voici les trois sujets au choix. »`,
+  // M13_Fonctionnalites
+  `⏱ 6 min · CHOISIR LA FONCTIONNALITÉ PHARE
 
-OBJECTIF — Comprendre et demander le découpage de index.html en index.html + style.css + app.js sans régression.
+OBJECTIF — Présenter les 3 sujets (A Sprints & burndown, B Dépendances & blocages, C Échéances & calendrier) et la barre commune.
 
-DIRE — « Refactoriser, c’est ranger l’atelier sans changer ce que fait l’application. En une seule consigne en mode Agent dans VS Code, vous demandez de séparer votre gros fichier index.html en trois fichiers clairs : index.html pour la structure, style.css pour le design, et app.js pour les données, les fonctions métier et les auto-tests. Et comment prouve-t-on que le découpage n’a rien cassé ? On ouvre la page et on clique sur le bouton Auto-Tests ✓ ! »
+DIRE — « Trois sujets, choisis parce qu’ils sont utiles à un vrai chef de projet et qu’ils piègent l’IA. A, les sprints : la capacité atteinte pile et le sprint d’un seul jour. B, les dépendances : les cycles, A bloqué par B bloqué par A. C, les échéances : les mois numérotés de zéro à onze et la date du jour qu’il faut injecter pour tester. Même exigence pour les trois. Choisissez au micro : A, B ou C. »
 
-ANIMATION — → beat 1 : arborescence après découpage. → beat 2 : prompt de refactorisation.
+ANIMATION — Recueillir le choix de chacun par prénom et le noter. → beat 1 : la barre commune.
+Pour le formateur — B est le plus algorithmique (détection de cycle), A le plus visuel (burndown SVG), C le plus piégeux sur les dates.
 
-TRANSITION — « Voyons comment enrichir l’interactivité et vérifier le contenu généré par l’IA. »`,
-  // M13_ContenuInteractivite
-  `⏱ 5 min · INTERACTIVITÉ & CONTRÔLE DU CONTENU GÉNÉRÉ
+TRANSITION — « Avant de lancer, voyons à quoi ressemble un relais complet. »`,
+  // M13_SimOrchestration
+  `⏱ 7 min · SIMULATEUR DU RELAIS
 
-OBJECTIF — Ajouter des finitions ergonomiques et vérifier les données générées en 4 points.
+OBJECTIF — Montrer les cinq passes d’une livraison et le rôle humain à chacune, sur l’exemple B.
 
-DIRE — « À gauche, quatre finitions d’interactivité très appréciées en démo : valider avec la touche Entrée, animer les compteurs, soigner l’affichage quand un filtre renvoie zéro résultat, et proposer un bouton d’idée aléatoire. À droite, les 4 contrôles indispensables quand l’IA génère vos textes ou votre JSON : validité technique, pertinence métier, ton professionnel et zéro donnée personnelle. »
+DIRE — « Exemple avec les dépendances. Passe 1, le PO écrit huit critères ; moi, j’en retire un trop ambitieux. Passe 2, le testeur écrit sept tests : ils sont rouges, et c’est voulu. Passe 3, le développeur implémente : 25 sur 25, et je vérifie qu’il n’a pas touché tests.js. Passe 4, la plus importante : le testeur casse volontairement une règle… et tout reste vert. Il y avait un trou dans le filet, il ajoute le test 26. Passe 5, je valide à la main et je commite. »
 
-ANIMATION — → beat 1 : les 4 contrôles sur le contenu.
+ANIMATION — Cliquer les cinq passes dans l’ordre, en utilisant le bouton de relais. Insister sur la passe 4 : un test qui ne rougit jamais ne protège rien.
 
-TRANSITION — « Dernière étape avant le TP Final : rédiger un README.md exemplaire. »`,
-  // M13_ReadmeRoleIA
-  `⏱ 6 min · LE FICHIER README.MD & L’EXPLICATION DU RÔLE DE L’IA
+TRANSITION — « À vous : soixante minutes. »`,
+  // M13_LabFeature
+  `⏱ 60 min · TP FINAL · PHASE 1 · LIVRER LA FONCTIONNALITÉ PHARE
 
-OBJECTIF — Savoir documenter son projet et expliquer honnêtement la répartition du travail entre l’IA et l’humain.
+OBJECTIF — Livrer la fonctionnalité choisie par relais d’agents, avec tests écrits avant le code, migration v4 → v5 et un commit par passe.
 
-DIRE — « Le programme officiel insiste sur un point très important : savoir préparer sa démonstration avec un fichier README.md qui explique le rôle de l’IA. Regardez la section 4 du modèle : vous indiquez en toute transparence ce que l’IA a généré (la structure HTML/CSS, les fonctions de base, le jeu fictif), et surtout ce que VOUS avez piloté et vérifié (les règles métier, les seuils, les retouches dans le code et les 5 auto-tests avec cas limites). C’est cette maturité qui impressionne en entreprise ! »
+DIRE — « Soixante minutes, individuellement. Quinze minutes de spec : le PO va trop loin, c’est à vous de couper. Trente minutes de tests puis de code, et vous refusez tout diff du développeur qui touche tests.js. Quinze minutes de contre-vérification : mutation, et rechargement de votre sauvegarde d’hier, qui doit passer par la migration. »
 
-ANIMATION — → beat 1 : astuce pour faire rédiger la trame du README par l’Agent. Coller le modèle de README.md dans le clavardage.
+ANIMATION — Lancer le minuteur de 60 minutes. Points d’étape à 15 min (« Combien de critères dans votre spec ? »), 30 min (« Vos tests sont-ils rouges pour la bonne raison ? ») et 45 min (« Tout est vert ? »). Si un agent boucle sans converger : revenir au dernier commit et redécouper la demande.
 
-TRANSITION — « Passons en revue notre checklist qualité en 10 points avant de lancer le TP Final. »`,
-  // M13_ChecklistDemo
-  `⏱ 5 min · CHECKLIST INTERACTIVE AVANT DÉMO (10 POINTS)
-
-OBJECTIF — Vérifier collectivement les 6 critères de qualité attendus pour le TP Final.
-
-DIRE — « Voici votre feuille de route sur 10 points pour le TP Final : 1. Architecture en 3 fichiers (index.html, style.css, app.js), 2. Fichier AGENTS.md et au moins un SKILL.md ou Agent, 3. Interactivité complète et barres visuelles, 4. Sauvegarde localStorage, 5. Panneau Auto-Tests au vert, 6. Fichier README.md expliquant le rôle de l’IA. »
-
-ANIMATION — Cocher les 6 lignes à l’écran pour montrer la jauge monter à 10 / 10.
-
-TRANSITION — « Quinze minutes de pause, et place au grand TP Final et au Showtime ! »`,
+TRANSITION — « Quinze minutes de pause, puis on met tout ça en ligne. »`,
   // M13_Pause
   `⏱ 15 min · PAUSE APRÈS-MIDI
 
-DIRE — « Quinze minutes de pause. À la reprise : 70 minutes de co-création pour finaliser votre chef-d’œuvre, suivies des démonstrations finales ! »
+DIRE — « Quinze minutes de pause. À la reprise, TaskFlow part sur GitHub, puis en ligne sur GitHub Pages. »
 
-ANIMATION — Lancer le minuteur de 15 minutes.`,
+ANIMATION — Lancer le minuteur. Pendant la pause, rappeler au clavardage que chacun doit pouvoir se connecter à son compte GitHub.`,
 ];
 
 const NOTES_M14: string[] = [
-  // M14_LabTPFinal
-  `⏱ 70 min · TP FINAL INDIVIDUEL · CO-CRÉER VOTRE MINI-APPLICATION INTERACTIVE
+  // M14_Divider
+  `⏱ 1 min · MODULE 14
 
-OBJECTIF — Réaliser et finaliser en autonomie accompagnée sa mini-application complète co-créée avec l’IA.
+DIRE — « Module 14 : publier. Votre TaskFlow va quitter votre poste pour une adresse publique que vous pourrez partager à vos collègues dès ce soir. »
 
-DIRE — « Vous avez 70 minutes sur votre poste. Trois étapes : 1. (20 min) Découper proprement votre projet en index.html, style.css et app.js avec votre fichier AGENTS.md. 2. (30 min) Ajouter votre fonctionnalité phare à l’aide de votre SKILL.md et de votre Agent, et vérifier vos 5 auto-tests. 3. (20 min) Rédiger votre README.md avec la section sur le rôle de l’IA et tester votre parcours de démo. Je fais un point d’étape oral toutes les 20 minutes ! »
+TRANSITION — « Première étape : pousser le code sur GitHub. »`,
+  // M14_GitHubPush
+  `⏱ 6 min · POUSSER SUR GITHUB DEPUIS VS CODE
 
-ANIMATION — Lancer le minuteur de 70 minutes. Points d’étape à 20, 40 et 55 minutes. Si un participant a besoin d’un coup de pouce, partage d’écran de 2 minutes.
+OBJECTIF — Savoir se connecter, publier un dépôt public et synchroniser, et connaître la règle de confidentialité.
 
-TRANSITION — « Fin du chronomètre : bravo à toutes et à tous ! Place aux grandes démonstrations finales ! »`,
+DIRE — « Votre dépôt local a déjà tout son historique. Trois gestes : se connecter avec son compte GitHub, chacun pour soi dans son navigateur ; publier sur GitHub en dépôt public ; puis synchroniser après chaque commit. Attention : public veut dire lisible par tout le monde, historique compris. Un mot de passe supprimé dans le dernier commit reste visible dans les précédents. »
+
+ANIMATION — Montrer le bouton Comptes et le bouton Publier sur GitHub en partage d’écran. → beat 1 : la règle de confidentialité.
+Pour le formateur — GitHub Pages gratuit exige un dépôt public. Si GitHub est bloqué par le réseau de l’entreprise : le participant suit en partage d’écran et refera la publication depuis un autre poste.
+
+TRANSITION — « Le dépôt est en ligne. Transformons-le en site. »`,
+  // M14_GitHubPages
+  `⏱ 6 min · DÉPLOYER SUR GITHUB PAGES
+
+OBJECTIF — Connaître les réglages Settings → Pages et les quatre pièges : index.html à la racine, casse des noms, chemins absolus, localStorage par adresse.
+
+DIRE — « Dans les réglages du dépôt, rubrique Pages : déployer depuis une branche, main, dossier racine, Save. Une à deux minutes plus tard, votre site est en ligne. Quatre pièges. Pas d’index.html à la racine : 404. Style.css avec une majuscule : Windows ne dit rien, GitHub Pages ne trouve pas le fichier. Un chemin qui commence par une barre oblique vise la racine du domaine, pas votre projet. Et vos tickets d’hier n’apparaissent pas en ligne : localStorage dépend de l’adresse, c’est normal et c’est même rassurant. »
+
+ANIMATION — → beat 1 : pièges 3 et 4. → beat 2 : le réflexe fenêtre privée + F12.
+
+TRANSITION — « Votre dépôt public a besoin d’une vitrine : le README. »`,
+  // M14_ReadmeRoleIA
+  `⏱ 5 min · LE README.MD ET LE RÔLE DE L’IA
+
+OBJECTIF — Savoir structurer le README en 4 parties, lien de démo en tête, et rendre compte honnêtement du travail des agents.
+
+DIRE — « Le README est la première chose qu’on voit sur votre dépôt. En haut, le lien vers la démo. Puis l’objectif, comment lancer, l’architecture, et le rôle de l’IA : quel agent a fait quoi, et surtout vos décisions et vos vérifications. Faites-le rédiger par l’analyste, mais chaque chiffre annoncé doit être vrai. »
+
+ANIMATION — Pointer les lignes surlignées. → beat 1 : le prompt de rédaction. Coller le modèle dans le clavardage.
+
+TRANSITION — « À vous : vingt-cinq minutes pour publier. »`,
+  // M14_LabPublier
+  `⏱ 25 min · TP FINAL · PHASE 2 · PUBLIER SUR GITHUB PAGES
+
+OBJECTIF — Mettre TaskFlow en ligne, vérifier qu’il fonctionne à son adresse publique et lier la démo dans le README.
+
+DIRE — « Vingt-cinq minutes. D’abord, le testeur contrôle que le projet est publiable : chemins relatifs, casse, aucune donnée réelle ni secret. Ensuite vous publiez et vous activez Pages. Enfin vous ouvrez votre adresse en fenêtre privée, vous déroulez votre spec, et vous ajoutez le lien en tête du README. »
+
+ANIMATION — Lancer le minuteur de 25 minutes. Point d’étape à 10 min (« Votre dépôt est-il publié ? »). Faire déposer les URL dans le clavardage au fur et à mesure.
+
+TRANSITION — « Faisons le point avec la checklist avant les démos. »`,
+  // M14_ChecklistDemo
+  `⏱ 4 min · CHECKLIST AVANT DÉMO (10 POINTS)
+
+OBJECTIF — Permettre à chacun de se situer avant de présenter.
+
+DIRE — « Six critères, dix points. Comptez pour vous-même ; je coche à l’écran pour illustrer. À huit et plus, vous êtes prêts. »
+
+ANIMATION — Cocher les critères pour montrer la jauge de score.
+
+TRANSITION — « Place aux démonstrations, en ligne ! »`,
   // M14_Restitution
   `⏱ 30 min · GRANDES DÉMONSTRATIONS FINALES
 
-OBJECTIF — Permettre à chaque participant de présenter sa mini-application, son dossier VS Code et le rôle de l’IA.
+OBJECTIF — Démontrer TaskFlow depuis son adresse publique, expliquer l’orchestration et le rôle de l’IA.
 
-DIRE — « C’est votre moment : 4 à 5 minutes par personne en partage d’écran. 1. Montrez votre application en action (ajout, filtre, KPI, sauvegarde), 2. Montrez votre dossier dans VS Code (AGENTS.md, SKILL.md, une fonction de app.js et le panneau Auto-Tests au vert), 3. Présentez votre README.md et dites-nous ce que l’IA a accéléré et ce que vous avez vérifié ! »
+DIRE — « Quatre à cinq minutes chacun, depuis votre URL GitHub Pages. La fonctionnalité en action et une règle qui refuse, puis votre spec, un diff refusé et votre historique Git, et enfin votre README. Les autres peuvent ouvrir votre URL pendant que vous parlez. Après chaque démo : un point fort au micro. »
 
-ANIMATION — Lancer le minuteur de 5 minutes pour chaque participant appelé par son prénom. Faire donner un point fort au micro par le groupe après chaque démo.
+ANIMATION — Minuteur de 5 minutes par participant. Au-delà de 6 participants : 4 ou 5 volontaires, les autres déposent leur URL dans le clavardage. « Participant suivant ». → beat 1 : URL au clavardage.
 
-TRANSITION — « Un immense bravo pour la qualité de vos applications ! Faisons le bilan de ces trois jours. »`,
+TRANSITION — « Faisons le bilan de ces trois jours. »`,
   // M14_Bilan3J
   `⏱ 5 min · BILAN DES 3 JOURS & FEUILLE DE ROUTE
 
 OBJECTIF — Ancrer la méthode sur le long terme (semaine prochaine, 30 jours, suite du parcours).
 
-DIRE — « Regardez le chemin parcouru depuis lundi 9 h : vous savez désormais lire et piloter les briques du code (variables, conditions, boucles, fonctions, listes d’objets, JSON/CSV, localStorage, tests), utiliser ChatGPT, Claude et Gemini pour prototyper, et structurer un vrai projet dans VS Code avec AGENTS.md, des Skills et des Agents. Notez dès maintenant une petite application que vous allez créer la semaine prochaine ! »
+DIRE — « Regardez le chemin parcouru depuis lundi 9 h : vous savez désormais lire et piloter les briques du code (variables, conditions, boucles, fonctions, listes d’objets, JSON/CSV, localStorage, tests), utiliser ChatGPT, Claude et Gemini pour prototyper, structurer un vrai projet dans VS Code, faire livrer une fonctionnalité par une équipe d’agents que vous orchestrez, et la publier sur GitHub Pages. Notez dès maintenant une petite application que vous allez créer la semaine prochaine ! »
 
 ANIMATION — Faire dire une phrase d’action concrète au micro par chaque participant.
 
