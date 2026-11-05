@@ -11,7 +11,7 @@ const M8_Divider: Page = () => (
       </>
     }
     sub="Relire, détecter, prouver, et faire de Copilot un membre fiable de la revue de code d’équipe."
-    dur="J2 · 15:25 – 17:10"
+    dur="J2 · 15:15 – 16:40"
     labs={<Tag tone="green" size={19}>Atelier 8 · revue de code et livraison</Tag>}
   >
     <SecItem n={1}>Pourquoi ne pas faire confiance au code généré sans vérification</SecItem>
@@ -244,7 +244,7 @@ const M8_Instructions: Page = () => (
   </Frame>
 );
 
-const M8_Pause: Page = () => <BreakPage mod={8} title="Pause" back="Reprise à 16 h 10 : l’Atelier 8, la revue de code finale." minutes={15} />;
+const M8_Pause: Page = () => <BreakPage mod={8} title="Pause" back="Reprise à 16 h 00 : l’Atelier 8, la revue de code finale." minutes={15} />;
 
 // ─── Atelier 8 ──────────────────────────────────────────────────────────────
 const M8_Lab: Page = () => (
@@ -253,7 +253,7 @@ const M8_Lab: Page = () => (
     n="8"
     title="Revue de code et livraison"
     defi="revue"
-    who="Individuel · 40 min"
+    who="Individuel · 30 min"
     objective={
       <>
         Relire <strong>8 suggestions acceptées trop vite</strong> avec la checklist, prouver chaque défaut par un test, le corriger, puis livrer TaskFlow avec un <PathChip size={22}>.github/copilot-instructions.md</PathChip>.
@@ -266,7 +266,7 @@ const M8_Lab: Page = () => (
         <PathChip size={19}>REVUE.md</PathChip> · <PathChip size={19}>revue.test.js</PathChip>
       </>
     }
-    minutes={40}
+    minutes={30}
     crit={
       <>
         <CheckItem id="l8a" size={21}>8 défauts identifiés et classés</CheckItem>
@@ -285,8 +285,8 @@ const M8_Lab: Page = () => (
 // ─── Restitution ────────────────────────────────────────────────────────────
 const M8_Restitution: Page = () => (
   <Frame mod={8} kind="exercice" label="Restitutions">
-    <Title>Restitution : votre TaskFlow, en deux minutes</Title>
-    <Lede>Chacun partage son écran, dans l’ordre de la liste. Minuteur à l’écran, questions au micro.</Lede>
+    <Title>Restitution : deux volontaires, deux minutes</Title>
+    <Lede>Partage d’écran, minuteur à l’écran, questions au micro. Les autres : une capture dans le clavardage.</Lede>
     <div style={{ position: 'absolute', left: 120, top: 262, width: 1060, display: 'flex', flexDirection: 'column', gap: 18 }}>
       <M4Key n={1} tone="blue" title="Le défaut le mieux caché" d={100}>
         Lequel des 8, et le test qui l’a prouvé.
@@ -342,7 +342,7 @@ export const __pages = [M8_Divider, M8_Confiance, M8_Checklist, M8_Hallucination
 
 // @@NOTES-BEGIN
 export const __notes = [
-  `⏱ 1 min · MODULE 8 · 15:25
+  `⏱ 1 min · MODULE 8 · 15:15
 
 OBJECTIF — Annoncer le module de vérification, synthèse de toute la formation.
 
@@ -367,7 +367,7 @@ DIRE — « Trois colonnes, douze points. Logique : la demande, les cas limites,
 ANIMATION — Cocher au fil des réponses. Rappeler : chaque doute devient un test.
 
 TRANSITION — « Un type d’erreur mérite une page : les hallucinations. »`,
-  `⏱ 5 min · HALLUCINATIONS
+  `⏱ 2 min · HALLUCINATIONS (rappel du Module 1, aller vite)
 
 OBJECTIF — Faire reconnaître six formes d’hallucination et leur moyen de détection.
 
@@ -406,10 +406,10 @@ DIRE — « .github/copilot-instructions.md : un fichier Markdown versionné, jo
 ANIMATION — Montrer en direct la référence au fichier sous une réponse du chat.
 
 TRANSITION — « Quinze minutes de pause avant le dernier atelier. »`,
-  `⏱ 15 min · PAUSE · 15:55
+  `⏱ 15 min · PAUSE · 15:45
 
-DIRE — « Dernière pause, quinze minutes. À 16 h 10, l’Atelier 8 : la revue de code finale de TaskFlow. »`,
-  `⏱ 40 min · ATELIER 8 (individuel) · 16:10
+DIRE — « Dernière pause, quinze minutes. À 16 h 00, l’Atelier 8 : la revue de code finale de TaskFlow. »`,
+  `⏱ 30 min · ATELIER 8 (individuel) · 16:00
 
 OBJECTIF — Appliquer la checklist, prouver chaque défaut par un test, livrer avec des règles d’équipe.
 
@@ -418,13 +418,13 @@ DIRE — « Quarante minutes, énoncé dans ateliers/atelier-08-revue. Huit sugg
 ANIMATION — Points d’étape à 10 min (« Combien de défauts trouvés sans outil ? ») et 30 min. Le plus souvent manqué : 07 (dates) et 06 (performance).
 
 TRANSITION — « Place aux restitutions. »`,
-  `⏱ 20 min · RESTITUTION (partage d’écran individuel)
+  `⏱ 5 min · RESTITUTION (2 volontaires, partage d’écran)
 
 OBJECTIF — Chaque participant présente son travail ; rétroaction collective.
 
-DIRE — « Deux minutes chacun, dans l’ordre de la liste. Partagez votre écran : le défaut le mieux caché et son test, ce que Copilot a trouvé ou manqué, et votre règle d’équipe préférée. » Après chacun : « Un point fort, une piste. Participant suivant ! »
+DIRE — « Deux volontaires, deux minutes chacun. Partagez votre écran : le défaut le mieux caché et son test, ce que Copilot a trouvé ou manqué, et votre règle d’équipe préférée. » Après chacun : « Un point fort, une piste. Participant suivant ! »
 
-ANIMATION — Relancer le minuteur à chaque participant. Au-delà de 10 : 5 ou 6 volontaires ; les autres déposent une capture dans le clavardage.
+ANIMATION — Relancer le minuteur à chaque volontaire. Les autres déposent une capture de leur REVUE.md dans le clavardage : le temps gagné sert au Module 9.
 
 TRANSITION — « Un dernier QCM. »`,
   `⏱ 5 min · QCM MODULE 8 (vote oral)
@@ -433,6 +433,6 @@ OBJECTIF — Vérifier les réflexes de vérification.
 
 DIRE — « Quatre questions, votez à voix haute. »
 
-TRANSITION — « Il est temps de conclure. »`,
+TRANSITION — « Dernier module : les agents. »`,
 ];
 // @@NOTES-END

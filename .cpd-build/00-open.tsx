@@ -316,8 +316,9 @@ const O_Programme: Page = () => (
         <OSlot t="9:15" mod="M5" title="Fonctions et blocs de code" sub="Classes, fichiers, API HTTP, parseurs, JSDoc · Atelier 5" tone="teal" d={530} />
         <OSlot t="11:00" mod="M6" title="Refactoring avec Copilot" sub="Renommer, extraire, comparer, legacy · Atelier 6" tone="violet" d={610} />
         <OSlot t="14:00" mod="M7" title="Tests unitaires avec Copilot" sub="Générer, organiser, vérifier, mocks · Atelier 7" tone="pink" d={690} />
-        <OSlot t="15:25" mod="M8" title="Bonnes pratiques et vérification" sub="Checklist, hallucinations, droits, revue · Atelier 8" tone="coral" d={770} />
-        <OSlot t="16:50" title="Restitutions · évaluation · clôture" tone="grey" d={850} />
+        <OSlot t="15:15" mod="M8" title="Bonnes pratiques et vérification" sub="Checklist, hallucinations, droits, revue · Atelier 8" tone="coral" d={770} />
+      <OSlot t="16:40" mod="M9" title="Les agents dans Copilot" sub="Agents, Skills, orchestration · Atelier 9" tone="violet" d={800} />
+        <OSlot t="17:20" title="Évaluation · clôture" tone="grey" d={850} />
       </OHalf>
     </div>
     <div className={A.fade} style={{ position: 'absolute', left: 120, top: 925, display: 'flex', alignItems: 'center', gap: 12, fontSize: 21, color: C.muted, ...dl(1000) }}>

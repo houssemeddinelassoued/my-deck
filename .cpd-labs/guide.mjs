@@ -113,7 +113,7 @@ const sections = (src) => {
 };
 
 // ─── Lecture des ateliers ───────────────────────────────────────────────────
-const TON = { 1: 'blue', 2: 'navy', 3: 'teal', 4: 'green', 5: 'teal', 6: 'violet', 7: 'pink', 8: 'coral' };
+const TON = { 1: 'blue', 2: 'navy', 3: 'teal', 4: 'green', 5: 'teal', 6: 'violet', 7: 'pink', 8: 'coral', 9: 'violet' };
 const ateliers = fs
   .readdirSync(path.join(DEPOT, 'ateliers'))
   .filter((d) => /^atelier-\d\d/.test(d))
@@ -171,7 +171,7 @@ const html = `<!doctype html><html lang="fr"><head><meta charset="utf-8"><title>
   ${logo}
   <div class="kicker">Formation · 2 jours · classe virtuelle</div>
   <h1>GitHub Copilot<br><span>Débutant</span></h1>
-  <p class="sub">Guide des 8 ateliers individuels · fil rouge TaskFlow</p>
+  <p class="sub">Guide des 9 ateliers individuels · fil rouge TaskFlow</p>
   <div class="who">Houssem Eddine LASSOUED · Docaposte Institute</div>
   <div class="foot">Version du 5 novembre 2026 · dépôt <code>taskflow-copilot</code></div>
 </section>
@@ -180,7 +180,7 @@ const html = `<!doctype html><html lang="fr"><head><meta charset="utf-8"><title>
   <p>Pendant deux jours, vous construisez <strong>TaskFlow</strong>, un petit outil de gestion de tickets (backlog et Kanban), avec GitHub Copilot dans VS Code. Chaque atelier ajoute une brique au même dépôt. Les ateliers sont <strong>individuels</strong> : chacun sur son poste, minuteur affiché, points d’étape oraux toutes les 15 à 20 minutes. Bloqué plus de 5 minutes ? Dites-le au micro : partage d’écran de 2 minutes.</p>
   <h3>Installer</h3>${md(readme['Installer (5 minutes, avant la formation)'])}
   <h3>Commandes</h3>${md(readme.Commandes)}
-  <h3>Vue d’ensemble</h3>${md(readme['Les 8 ateliers (individuels)'])}
+  <h3>Vue d’ensemble</h3>${md(readme['Les 9 ateliers (individuels)'])}
   <h3>Règles du jeu</h3>${md(readme['Règles du jeu'])}
 </section>
 ${ateliers.map(pageAtelier).join('\n')}

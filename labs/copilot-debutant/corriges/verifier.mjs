@@ -27,6 +27,8 @@ const CAS = [
   ['Atelier 6 · legacy + contrat', 'npm run test:atelier6 --silent'],
   ['Atelier 7 · kanban + api (tests du corrigé)', 'node --test test/kanban.test.js test/api-charger.test.js'],
   ['Atelier 8 · revue', 'npm run test:revue --silent'],
+  ['Atelier 9 · échéances (agents)', 'npm run test:atelier9 --silent'],
+  ['Atelier 9 · tests du Testeur QA + export (bonus)', 'node --test test/echeances-qa.test.js test/export.test.js'],
   ['Variante Python', 'python -m unittest katas/python/test_tickets.py'],
   ['Variante Java', 'java katas/java/Ticket.java'],
 ];
@@ -35,7 +37,7 @@ let ko = 0;
 const verifier = (phase, attendu) => {
   console.log(`\n── ${phase} (attendu : ${attendu ? 'vert' : 'rouge'})`);
   for (const [nom, cmd] of CAS) {
-    if (!attendu && nom.startsWith('Atelier 7')) continue; // ces tests n'existent que dans le corrigé
+    if (!attendu && (nom.startsWith('Atelier 7') || nom.includes('Testeur QA'))) continue; // ces tests n'existent que dans le corrigé
     let ok = lancer(cmd);
     if (nom === 'Variante Java' && ok) ok = execSync(cmd, { cwd: tmp, encoding: 'utf8' }).includes('6/6 OK');
     const bon = ok === attendu;
@@ -47,8 +49,13 @@ const verifier = (phase, attendu) => {
 verifier('Énoncé', false);
 cpSync(ICI, tmp, { recursive: true, filter: (s) => !/verifier\.mjs$|LISEZMOI/.test(s) });
 verifier('Corrigé', true);
-console.log(`\n── Tests de caractérisation sur le legacy refactoré : ${lancer('node --test test/kanban-legacy.test.js') ? '✓ vert' : '✗ rouge'}`);
-console.log(`── Suite complète npm test : ${lancer('npm test --silent') ? '✓ vert' : '✗ rouge'}`);
+const fin = (nom, ok) => {
+  if (!ok) ko += 1;
+  console.log(`── ${nom} : ${ok ? '✓ vert' : '✗ rouge'}`);
+};
+console.log('');
+fin('Tests de caractérisation sur le legacy refactoré', lancer('node --test test/kanban-legacy.test.js'));
+fin('Suite complète npm test', lancer('npm test --silent'));
 rmSync(tmp, { recursive: true, force: true });
 console.log(ko ? `\n${ko} écart(s)` : '\nTout est conforme.');
 process.exitCode = ko ? 1 : 0;

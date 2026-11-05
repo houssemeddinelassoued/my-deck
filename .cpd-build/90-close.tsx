@@ -205,7 +205,7 @@ export const __pages = [C_Cles, C_AutoPos, C_Plan, C_Ressources, C_Eval, C_Merci
 
 // @@NOTES-BEGIN
 export const __notes = [
-  `⏱ 3 min · LES 10 CLÉS · 17:15
+  `⏱ 3 min · LES 10 CLÉS · 17:20
 
 OBJECTIF — Récapituler la formation en dix réflexes.
 

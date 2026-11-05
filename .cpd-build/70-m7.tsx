@@ -11,7 +11,7 @@ const M7_Divider: Page = () => (
       </>
     }
     sub="Copilot écrit vite des tests. Votre travail : vérifier qu’ils détectent vraiment une erreur."
-    dur="J2 · 14:00 – 15:25"
+    dur="J2 · 14:00 – 15:15"
     labs={<Tag tone="green" size={19}>Atelier 7 · une vraie suite de tests</Tag>}
   >
     <SecItem n={1}>Rappel : qu’est-ce qu’un test unitaire, et pourquoi en écrire ?</SecItem>
@@ -302,7 +302,7 @@ const M7_Lab: Page = () => (
     n="7"
     title="Une vraie suite de tests, générée et vérifiée"
     defi="tests"
-    who="Individuel · 50 min"
+    who="Individuel · 40 min"
     objective={
       <>
         Faire générer une suite <strong>lisible</strong> (AAA, noms en phrases) pour <Ic>deplacerTicket</Ic>, tester <Ic>chargerTickets</Ic> <strong>sans réseau</strong> avec un mock, puis prouver par une mutation que les tests détectent une erreur.
@@ -317,7 +317,7 @@ const M7_Lab: Page = () => (
         <PathChip size={19}>npm run couverture</PathChip>
       </>
     }
-    minutes={50}
+    minutes={40}
     crit={
       <>
         <CheckItem id="l7a" size={21}>10 tests ou plus, groupés par règle</CheckItem>
@@ -428,7 +428,7 @@ OBJECTIF — Montrer un mock simple de fetch avec node:test.
 DIRE — « Un test unitaire ne doit dépendre ni du réseau, ni de la date, ni du hasard. Vous avez déjà préparé le terrain : fetchFn et aujourdHui sont des paramètres. Dans le test, je passe une fausse fonction, créée avec mock.fn, qui répond 500. Je vérifie l’erreur, et que fetch a été appelé une fois. » → beat 1 « Sans excès : vérifiez le résultat, pas chaque appel interne, sinon le moindre refactoring casse vos tests. »
 
 TRANSITION — « À vous : cinquante minutes. »`,
-  `⏱ 50 min · ATELIER 7 (individuel) · 14:30
+  `⏱ 40 min · ATELIER 7 (individuel) · 14:30
 
 OBJECTIF — Générer, durcir et prouver une suite de tests, avec un mock.
 
@@ -436,7 +436,7 @@ DIRE — « Cinquante minutes, énoncé dans ateliers/atelier-07-tests. La liste
 
 ANIMATION — Points d’étape à 15, 30 et 45 min. Pièges : tests tautologiques ; equal sur objets ; date du jour dans un test. Bloqué sur kanban.js : point de reprise reprises/fin-atelier-06.
 
-TRANSITION — « QCM, et nous attaquons le dernier module. »`,
+TRANSITION — « QCM, et nous attaquons les bonnes pratiques. »`,
   `⏱ 5 min · QCM MODULE 7 (vote oral)
 
 OBJECTIF — Vérifier la lecture critique des tests.

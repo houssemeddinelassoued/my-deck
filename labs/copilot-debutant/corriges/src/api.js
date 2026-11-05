@@ -38,3 +38,15 @@ export async function chargerTickets(url, { fetchFn = fetch } = {}) {
   if (!Array.isArray(donnees)) throw new Error('Format inattendu');
   return donnees;
 }
+
+/**
+ * Exporte des tickets au format CSV « titre;type;priorite;points » relu par parserCsv
+ * (Atelier 9, fonctionnalité bonus). Les « ; » et retours à la ligne d'un titre deviennent
+ * des espaces : le CSV de TaskFlow ne gère pas les guillemets.
+ * @param {Array<{ titre: string, type: string, priorite: number, points: number | null }>} tickets
+ * @returns {string}
+ */
+export function exporterCsv(tickets) {
+  const lignes = tickets.map((t) => [String(t.titre).replace(/\s*[;\r\n]+\s*/g, ' ').trim(), t.type, t.priorite, t.points ?? ''].join(';'));
+  return ['titre;type;priorite;points', ...lignes].join('\n') + '\n';
+}

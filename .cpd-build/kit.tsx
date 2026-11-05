@@ -105,6 +105,7 @@ const MOD_TITLES: Record<number, string> = {
   8: 'Bonnes pratiques & vérification',
   9: 'Synthèse & clôture',
   10: 'Jour 2 · Reprise',
+  11: 'Les agents dans Copilot',
 };
 
 // ─── Palette (Docaposte: navy + electric blue, violet accent, light ground) ─
@@ -975,7 +976,7 @@ const KindBadge = ({ kind }: { kind: Kind }) => {
 };
 
 const ProgSq = ({ n, mod, text }: { n: number; mod: number; text?: string }) => {
-  const order = [0, 1, 2, 3, 4, 10, 5, 6, 7, 8, 9];
+  const order = [0, 1, 2, 3, 4, 10, 5, 6, 7, 8, 11, 9];
   const now = n === mod;
   const past = mod !== 0 && order.indexOf(mod) > order.indexOf(n);
   return (
@@ -1019,6 +1020,7 @@ const Progress = ({ mod }: { mod: number }) => (
     <ProgSq n={6} mod={mod} />
     <ProgSq n={7} mod={mod} />
     <ProgSq n={8} mod={mod} />
+    <ProgSq n={11} mod={mod} text="M9" />
   </div>
 );
 
@@ -1050,6 +1052,8 @@ const Header = ({ mod, label, kind }: { mod: number; label?: string; kind?: Kind
         {label ??
           (mod >= 1 && mod <= 8
             ? `Module ${mod} · ${MOD_TITLES[mod]}`
+            : mod === 11
+            ? `Module 9 · ${MOD_TITLES[11]}`
             : mod === 0
               ? 'Ouverture'
               : (MOD_TITLES[mod] ?? 'Clôture'))}
@@ -2814,6 +2818,7 @@ const SecItem = ({ n, children }: { n: number; children: ReactNode }) => (
 
 const Section = ({
   n,
+  num: numIn,
   title,
   sub,
   dur,
@@ -2822,18 +2827,21 @@ const Section = ({
   children,
 }: {
   n: number;
+  num?: number;
   title: ReactNode;
   sub: ReactNode;
   dur: string;
   kind?: Kind;
   labs?: ReactNode;
   children: ReactNode;
-}) => (
+}) => {
+  const num = numIn ?? n;
+  return (
   <Frame mod={n} chrome={false}>
     <Slab x={-60} y={-60} w={700} h={1200} r={56} cls={A.left}>
       <div style={{ position: 'absolute', left: 150, top: 240 }}>
         <div className={A.in} style={{ fontFamily: display, fontWeight: 700, fontSize: 26, letterSpacing: '0.24em', color: '#AEB9E6', ...dl(300) }}>
-          {n <= 4 ? 'MODULE · JOUR 1' : 'MODULE · JOUR 2'}
+          {num <= 4 ? 'MODULE · JOUR 1' : 'MODULE · JOUR 2'}
         </div>
         <div
           className={A.pop}
@@ -2848,7 +2856,7 @@ const Section = ({
             ...dl(450),
           }}
         >
-          {pad(n)}
+          {pad(num)}
         </div>
         <div className={A.grow} style={{ marginTop: 26, width: 150, height: 8, borderRadius: 4, background: G.violet, ...dl(650) }} />
       </div>
@@ -2896,6 +2904,7 @@ const Section = ({
     <Footer left={760} short />
   </Frame>
 );
+};
 
 // ─── Dark code panel (VS Code-like) + token colours ─────────────────────────
 const CodeDark = ({
@@ -3053,6 +3062,7 @@ const DEFIS = {
   refacto: { label: 'Refactoring', icon: 'wand' as IconName, tone: 'violet' as Tone, aide: 'Tests au vert avant et après chaque étape : le comportement ne bouge pas.' },
   tests: { label: 'Suite de tests', icon: 'flask' as IconName, tone: 'pink' as Tone, aide: 'Liste des cas d’abord, génération ensuite, mutation pour finir.' },
   revue: { label: 'Revue de code', icon: 'shieldCheck' as IconName, tone: 'coral' as Tone, aide: 'Trouvez, prouvez, corrigez : chaque défaut reçoit un test qui l’empêche de revenir.' },
+  agents: { label: 'Équipe d’agents', icon: 'users' as IconName, tone: 'violet' as Tone, aide: 'Vous cadrez, ils exécutent : chaque relais se relit, chaque résultat se prouve par un test.' },
   livrer: { label: 'Livraison', icon: 'flag' as IconName, tone: 'navy' as Tone, aide: 'Une fonctionnalité complète : code, documentation, tests, revue, commit.' },
 };
 type Defi = keyof typeof DEFIS;
