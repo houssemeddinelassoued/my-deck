@@ -1,0 +1,331 @@
+<!doctype html><html lang="fr"><head><meta charset="utf-8"><title>Guide des ateliers · GitHub Copilot Débutant</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&family=Open+Sans:ital,wght@0,400;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>@page { size: A4; margin: 12mm 13mm 13mm; }
+:root { --ink: #101828; --soft: #3b4558; --muted: #6b7690; --rule: #dde3ee; --navy: #0b1f5c; --electric: #1e22e8; --blue: #0a62d0; --green: #0e9f6e; --coral: #e04848; --violet: #7442e0; --teal: #0e9aae; --pink: #c2369e; --amber: #d98a00; }
+* { box-sizing: border-box; }
+body { margin: 0; font: 9.7pt/1.46 "Open Sans", "Segoe UI", sans-serif; color: var(--ink); }
+h1, h2, h3, .num, .logo { font-family: "Montserrat", "Segoe UI", sans-serif; }
+code, kbd, pre { font-family: "JetBrains Mono", Consolas, monospace; font-variant-ligatures: none; font-feature-settings: "liga" 0, "calt" 0; }
+code { font-size: 0.86em; background: #eef1f6; color: var(--navy); border-radius: 4px; padding: 0 4px; }
+kbd { font-size: 0.85em; border: 1px solid #a9b3c6; border-bottom-width: 2px; border-radius: 4px; padding: 0 5px; background: #fff; }
+pre { background: #0f1530; color: #e6eaf6; border-radius: 8px; padding: 8px 12px; font-size: 8.4pt; line-height: 1.45; white-space: pre-wrap; margin: 6px 0; }
+pre code { background: none; color: inherit; padding: 0; }
+p { margin: 4px 0 6px; }
+ul, ol { margin: 4px 0 6px; padding-left: 0; list-style: none; }
+ol { counter-reset: n; }
+li { display: flex; gap: 8px; margin: 3px 0; break-inside: avoid; }
+ul > li::before { content: ""; flex: none; width: 6px; height: 6px; margin-top: 7px; border-radius: 1px; background: var(--blue); }
+ol > li { counter-increment: n; }
+ol > li::before { content: counter(n); flex: none; width: 18px; height: 18px; border-radius: 4px; background: var(--navy); color: #fff; font: 700 8pt/18px "Montserrat"; text-align: center; margin-top: 1px; }
+li > div { flex: 1; min-width: 0; }
+li:has(> .box)::before { display: none; }
+.box { flex: none; display: inline-block; width: 11px; height: 11px; border: 1.6px solid var(--muted); border-radius: 2px; margin-top: 4px; }
+table { border-collapse: collapse; width: 100%; margin: 4px 0; font-size: 8.6pt; }
+th, td { border-bottom: 1px solid var(--rule); padding: 2.5px 6px; text-align: left; vertical-align: top; }
+th { background: #eef1f6; font-weight: 700; color: var(--navy); }
+.cap { font: 700 8pt/1.2 "Montserrat"; letter-spacing: .1em; text-transform: uppercase; margin-bottom: 4px; }
+.small { font-size: 8.6pt; color: var(--muted); }
+
+/* Logo */
+.logo { color: var(--electric); display: inline-flex; }
+.logo > div { display: flex; flex-direction: column; align-items: flex-end; line-height: 1; }
+.logo .dap { position: relative; font-weight: 600; font-size: 20pt; letter-spacing: .02em; }
+.logo .dap svg { position: absolute; left: calc(100% + 3px); top: -6px; fill: currentColor; width: 20px; height: 14px; }
+.logo .inst { font-weight: 500; font-size: 19pt; margin-top: -2px; }
+
+/* Cover */
+.cover { height: 265mm; position: relative; padding: 18mm 6mm 0; break-after: page; border-left: 14px solid var(--navy); padding-left: 16mm; }
+.cover .kicker { margin-top: 48mm; font: 600 11pt "Montserrat"; letter-spacing: .14em; text-transform: uppercase; color: var(--violet); }
+.cover h1 { margin: 8mm 0 0; font-size: 46pt; line-height: 1.04; font-weight: 800; color: var(--navy); }
+.cover h1 span { color: var(--electric); }
+.cover .sub { margin-top: 8mm; font-size: 15pt; color: var(--soft); }
+.cover .who { margin-top: 30mm; font: 700 13pt "Montserrat"; color: var(--navy); }
+.cover .foot { position: absolute; bottom: 8mm; font-size: 9pt; color: var(--muted); }
+
+/* Intro & annexe */
+.intro { break-after: page; }
+.annexe { break-before: page; }
+.intro h2, .annexe h2 { font-size: 20pt; color: var(--navy); margin: 0 0 4mm; }
+.intro h3, .annexe h3 { font-size: 11.5pt; color: var(--blue); margin: 5mm 0 1mm; }
+.two { display: grid; grid-template-columns: 1fr 1fr; gap: 8mm; }
+.cl { font: 700 9pt "Montserrat"; margin-top: 3mm; }
+.cl.b { color: var(--blue); } .cl.y { color: var(--amber); } .cl.c { color: var(--coral); }
+
+/* Atelier */
+.atelier { break-before: page; --t: var(--blue); }
+.t-navy { --t: var(--navy); } .t-teal { --t: var(--teal); } .t-green { --t: var(--green); } .t-violet { --t: var(--violet); } .t-pink { --t: var(--pink); } .t-coral { --t: var(--coral); }
+.atelier header { display: flex; gap: 5mm; align-items: stretch; border-bottom: 3px solid var(--t); padding-bottom: 3mm; }
+.atelier .num { flex: none; width: 24mm; background: var(--t); color: #fff; border-radius: 6px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.atelier .num span { font-size: 7pt; letter-spacing: .14em; font-weight: 700; }
+.atelier .num b { font-size: 30pt; line-height: 1; font-weight: 800; }
+.atelier .mod { font: 700 8.5pt "Montserrat"; letter-spacing: .08em; text-transform: uppercase; color: var(--t); }
+.atelier h2 { margin: 1mm 0 2mm; font-size: 17pt; line-height: 1.15; color: var(--navy); }
+.chips { display: flex; gap: 6px; flex-wrap: wrap; }
+.chip { font-size: 8.4pt; background: #eef1f6; border-radius: 99px; padding: 1px 8px; color: var(--soft); }
+.files { margin-top: 2mm; font-size: 8.6pt; color: var(--muted); }
+.obj { margin: 4mm 0; background: #f3f6fc; border-left: 5px solid var(--t); border-radius: 0 8px 8px 0; padding: 2.6mm 4mm; font-size: 10.2pt; }
+.obj .cap { color: var(--t); }
+.grid { display: grid; grid-template-columns: 1.55fr 1fr; gap: 6mm; }
+.main h3 { font-size: 11pt; color: var(--t); margin: 2mm 0 1mm; }
+.steps ol > li::before { background: var(--t); }
+aside > div { border-radius: 8px; padding: 2.6mm 3.2mm; margin-bottom: 2.6mm; font-size: 8.7pt; break-inside: avoid; }
+.done { background: #e2f6ee; } .done .cap { color: #0a7a55; }
+.traps { background: #fde8e8; } .traps .cap { color: #b42f2f; } .traps ul > li::before { background: var(--coral); }
+.bonus { background: #fbe8f5; } .bonus .cap { color: #9c2380; }
+.help { background: #fef3dc; } .help .cap { color: #8a5a00; }
+.notes { margin-top: 3mm; border: 1.5px dashed var(--rule); border-radius: 8px; min-height: 30mm; padding: 3mm 4mm; break-inside: avoid; }
+.notes .cap { color: var(--muted); }
+</style></head><body>
+<section class="cover">
+  <div class="logo"><div><span class="dap">DOCAPOSTE<svg viewBox="0 0 30 20" width="30" height="20"><rect x="0" y="2" width="30" height="3.4" rx="1.7"/><rect x="6" y="8.3" width="24" height="3.4" rx="1.7"/><rect x="12" y="14.6" width="18" height="3.4" rx="1.7"/></svg></span><span class="inst">Institute</span></div></div>
+  <div class="kicker">Formation · 2 jours · classe virtuelle</div>
+  <h1>GitHub Copilot<br><span>Débutant</span></h1>
+  <p class="sub">Guide des 8 ateliers individuels · fil rouge TaskFlow</p>
+  <div class="who">Houssem Eddine LASSOUED · Docaposte Institute</div>
+  <div class="foot">Version du 5 novembre 2026 · dépôt <code>taskflow-copilot</code></div>
+</section>
+<section class="intro">
+  <h2>Mode d’emploi</h2>
+  <p>Pendant deux jours, vous construisez <strong>TaskFlow</strong>, un petit outil de gestion de tickets (backlog et Kanban), avec GitHub Copilot dans VS Code. Chaque atelier ajoute une brique au même dépôt. Les ateliers sont <strong>individuels</strong> : chacun sur son poste, minuteur affiché, points d’étape oraux toutes les 15 à 20 minutes. Bloqué plus de 5 minutes ? Dites-le au micro : partage d’écran de 2 minutes.</p>
+  <h3>Installer</h3><ol><li><div><strong>Node.js 22 ou plus</strong> : <code>node --version</code>. Aucune dépendance à installer : <code>npm install</code> n'est pas nécessaire.</div></li><li><div><strong>VS Code</strong> à jour, connecté à <strong>GitHub Copilot</strong> (icône Copilot dans la barre d'état).</div></li><li><div>Récupérez le dépôt, au choix :
+<ul><li><div><code>git clone https://github.com/houssemeddinelassoued/taskflow-copilot.git</code></div></li><li><div>ou <strong>Code › Download ZIP</strong> sur https://github.com/houssemeddinelassoued/taskflow-copilot, puis décompressez.</div></li></ul>
+<p>Dans VS Code : Fichier › Ouvrir le dossier › <code>taskflow-copilot</code>. Le guide PDF des 8 ateliers est à la racine : <code>Guide-des-ateliers-Copilot-Debutant.pdf</code>.</p></div></li><li><div><code>npm test</code> : des tests échouent, <strong>c'est normal</strong> : vous les ferez passer au vert pendant les ateliers.</div></li><li><div>Facultatif, pour les variantes : Python 3.10+ et/ou un JDK 21+.</div></li></ol>
+  <h3>Commandes</h3><table><thead><tr><th>Commande</th><th>Effet</th></tr></thead><tbody><tr><td><code>npm test</code></td><td>tous les tests du dossier <code>test/</code></td></tr><tr><td><code>npm run test:atelier4</code> (5, 6)</td><td>les tests d'acceptation d'un atelier</td></tr><tr><td><code>npm run test:revue</code></td><td>les tests de la revue (Atelier 8)</td></tr><tr><td><code>npm run couverture</code></td><td>tests + couverture de code</td></tr><tr><td><code>npm run demo</code></td><td>aperçu du backlog dans le terminal</td></tr><tr><td><code>npm run serveur</code></td><td>l'interface Kanban sur http://localhost:3000</td></tr></tbody></table>
+  <h3>Vue d’ensemble</h3><table><thead><tr><th>#</th><th>Atelier</th><th>Module</th><th>Durée</th></tr></thead><tbody><tr><td>1</td><td>Premier contact avec Copilot</td><td>1 · Introduction</td><td>20 min</td></tr><tr><td>2</td><td>Configurer son poste et prendre les réflexes clavier</td><td>2 · Installation et configuration</td><td>30 min</td></tr><tr><td>3</td><td>Le contexte fait la suggestion</td><td>3 · Comprendre les suggestions</td><td>35 min</td></tr><tr><td>4</td><td>TaskFlow v1 : le modèle de ticket</td><td>4 · Génération de code simple</td><td>55 min</td></tr><tr><td>5</td><td>TaskFlow v2 : backlog, classe et import</td><td>5 · Fonctions et blocs de code</td><td>50 min</td></tr><tr><td>6</td><td>Refactorer le Kanban legacy</td><td>6 · Refactoring</td><td>45 min</td></tr><tr><td>7</td><td>Une vraie suite de tests, générée et vérifiée</td><td>7 · Tests unitaires</td><td>50 min</td></tr><tr><td>8</td><td>Revue de code et livraison</td><td>8 · Bonnes pratiques et vérification</td><td>40 min</td></tr></tbody></table>
+  <h3>Règles du jeu</h3><ul><li><div><strong>Données fictives uniquement</strong> : aucun code client, aucun secret, aucune donnée personnelle dans un prompt.</div></li><li><div><strong>Lire avant d'accepter</strong> : une suggestion acceptée devient <em>votre</em> code.</div></li><li><div><strong>Un test au vert vaut mieux qu'une explication convaincante.</strong></div></li><li><div>Bloqué plus de 5 minutes ? Dites-le au micro au prochain point d'étape : partage d'écran de 2 minutes.</div></li></ul>
+</section>
+
+<section class="atelier t-blue">
+  <header>
+    <div class="num"><span>ATELIER</span><b>1</b></div>
+    <div class="ttl">
+      <div class="mod">Module 1 · Introduction à GitHub Copilot</div>
+      <h2>Premier contact avec Copilot</h2>
+      <div class="chips"><span class="chip">⏱ 20 min</span><span class="chip">Jour 1 · 10 h 30</span><span class="chip">Individuel</span></div>
+      <div class="files"><code>katas/01-premiers-pas.js</code>, <code>JOURNAL.md</code></div>
+    </div>
+  </header>
+  <div class="obj"><div class="cap">Objectif</div><p>Voir Copilot travailler sur un vrai dépôt : lui faire <strong>expliquer</strong> le projet TaskFlow, puis obtenir vos premières <strong>suggestions inline</strong>, et noter ce qui est juste… et ce qui ne l'est pas.</p></div>
+  <div class="grid">
+    <div class="main">
+      <h3>Point de départ</h3><p>Le dépôt <code>taskflow-copilot</code> est ouvert dans VS Code (Fichier › Ouvrir le dossier), Copilot est connecté (icône Copilot dans la barre d'état, sans point d'exclamation).</p>
+      <h3>Étapes</h3><div class="steps"><ol><li><div>Ouvrez la vue Chat (<code>Ctrl+Alt+I</code>), choisissez l'agent <strong>Ask</strong> et demandez : « Explique la structure de ce projet en 5 lignes : à quoi sert chaque dossier ? Cite les fichiers. »</div></li><li><div>Comparez sa réponse avec <code>README.md</code>. Notez dans <code>JOURNAL.md</code> <strong>une</strong> affirmation exacte et, si vous en trouvez une, <strong>une</strong> affirmation inventée ou imprécise.</div></li><li><div>Ouvrez <code>katas/01-premiers-pas.js</code>. Pour chaque ligne marquée ▶ : attendez le texte grisé, <strong>lisez-le</strong>, puis <code>Tab</code> (accepter) ou <code>Échap</code> (refuser).</div></li><li><div>Bloc 4 (année bissextile) : vérifiez la suggestion sur 1900, 2000 et 2024. Demandez dans le chat : « Teste mentalement estBissextile(1900). »</div></li><li><div>Complétez la ligne « Atelier 1 » de <code>JOURNAL.md</code> : ce qui vous a surpris, ce que vous avez refusé, et pourquoi.</div></li></ol></div>
+    </div>
+    <aside>
+      <div class="done"><div class="cap">C’est terminé quand…</div><ul><li><span class="box"></span><div><code>JOURNAL.md</code> contient vos 3 observations de l'atelier 1.</div></li><li><span class="box"></span><div>Les 4 blocs de <code>katas/01-premiers-pas.js</code> sont complétés <strong>et relus</strong>.</div></li><li><span class="box"></span><div>Vous savez dire si <code>estBissextile(1900)</code> renvoie la bonne valeur.</div></li></ul></div>
+      <div class="traps"><div class="cap">Pièges à observer</div><ul><li><div>Copilot répond avec aplomb, même quand il devine : une explication fluide n'est pas une preuve.</div></li><li><div>Le bloc 3 (tableau de jours) montre la complétion de motifs : très efficace sur ce qui est répétitif.</div></li><li><div>La règle des années bissextiles est un classique où une suggestion « presque juste » passe inaperçue (divisible par 4, <strong>sauf</strong> par 100, <strong>sauf</strong> par 400).</div></li></ul></div>
+      <div class="bonus"><div class="cap">Bonus</div><p>Posez la même question qu'à l'étape 1 dans une <strong>nouvelle</strong> conversation (<code>Ctrl+N</code> dans le chat). La réponse est-elle identique ? Notez-le : Copilot n'est pas déterministe.</p></div>
+      <div class="help"><div class="cap">Coincé ?</div><p>Aucun texte grisé n'apparaît ? Vérifiez l'icône Copilot de la barre d'état (clic → « Inline suggestions » activé pour JavaScript), puis forcez une suggestion avec <code>Alt+\</code>. Toujours rien : point d'étape au micro, partage d'écran 2 minutes.</p></div>
+    </aside>
+  </div>
+</section>
+
+<section class="atelier t-navy">
+  <header>
+    <div class="num"><span>ATELIER</span><b>2</b></div>
+    <div class="ttl">
+      <div class="mod">Module 2 · Installation et configuration</div>
+      <h2>Configurer son poste et prendre les réflexes clavier</h2>
+      <div class="chips"><span class="chip">⏱ 30 min</span><span class="chip">Jour 1 · 11 h 45</span><span class="chip">Individuel</span></div>
+      <div class="files"><code>.vscode/settings.json</code>, <code>katas/02-raccourcis.js</code></div>
+    </div>
+  </header>
+  <div class="obj"><div class="cap">Objectif</div><p>Vérifier votre licence, régler Copilot pour <strong>votre</strong> façon de travailler (langue, langages actifs, suggestions de modification suivante) dans un fichier <code>.vscode/settings.json</code> versionné, puis enchaîner les <strong>8 gestes clavier</strong> essentiels sans toucher la souris.</p></div>
+  <div class="grid">
+    <div class="main">
+      <h3>Point de départ</h3><p>Atelier 1 terminé. Dépôt <code>taskflow-copilot</code> ouvert dans VS Code.</p>
+      <h3>Étapes</h3><div class="steps"><ol><li><div><strong>Licence</strong> : cliquez sur l'icône Copilot de la barre d'état. Notez votre plan (Free, Pro, Business…) et, si vous êtes en Free, le quota de complétions restant du mois.</div></li><li><div><strong>Réglages</strong> : <code>Ctrl+Maj+P</code> › « Préférences : Ouvrir les paramètres de l'espace de travail (JSON) ». Ajoutez :
+<pre><code>{
+  "github.copilot.chat.localeOverride": "fr",
+  "github.copilot.enable": { "*": true, "markdown": false, "plaintext": false },
+  "github.copilot.nextEditSuggestions.enabled": true,
+  "editor.inlineSuggest.enabled": true
+}</code></pre></div></li><li><div>Vérifiez chaque réglage par son <strong>effet visible</strong> : le chat répond en français ; aucun texte grisé dans <code>README.md</code> ; une flèche apparaît dans la gouttière après un renommage.</div></li><li><div><strong>Parcours clavier</strong> : ouvrez <code>katas/02-raccourcis.js</code> et réalisez les gestes 1 à 8 dans l'ordre. Cochez ci-dessous chaque geste réussi <strong>sans souris</strong>.</div></li></ol>
+<table><thead><tr><th>Geste</th><th>Raccourci</th><th>Fait</th></tr></thead><tbody><tr><td>1 · accepter</td><td><code>Tab</code></td><td><span class="box"></span></td></tr><tr><td>2 · refuser</td><td><code>Échap</code></td><td><span class="box"></span></td></tr><tr><td>3 · accepter mot par mot</td><td><code>Ctrl+→</code></td><td><span class="box"></span></td></tr><tr><td>4 · alternatives</td><td><code>Alt+]</code> / <code>Alt+[</code></td><td><span class="box"></span></td></tr><tr><td>5 · déclencher</td><td><code>Alt+\</code></td><td><span class="box"></span></td></tr><tr><td>6 · chat en ligne</td><td><code>Ctrl+I</code></td><td><span class="box"></span></td></tr><tr><td>7 · vue Chat</td><td><code>Ctrl+Alt+I</code></td><td><span class="box"></span></td></tr><tr><td>8 · modification suivante</td><td><code>Tab</code> (flèche de gouttière)</td><td><span class="box"></span></td></tr></tbody></table></div>
+    </div>
+    <aside>
+      <div class="done"><div class="cap">C’est terminé quand…</div><ul><li><span class="box"></span><div><code>.vscode/settings.json</code> contient vos 4 réglages et chacun a été vérifié par son effet.</div></li><li><span class="box"></span><div>Les 8 gestes sont cochés.</div></li><li><span class="box"></span><div><code>JOURNAL.md</code> : votre plan Copilot et le geste qui vous sera le plus utile.</div></li></ul></div>
+      <div class="traps"><div class="cap">Pièges à observer</div><ul><li><div><code>github.copilot.enable</code> désactive l'inline pour un langage, <strong>pas</strong> le chat.</div></li><li><div>macOS : <code>Ctrl</code> devient <code>Cmd</code> et <code>Alt</code> devient <code>Option</code> (sauf <code>Ctrl+Alt+I</code> → <code>Ctrl+Cmd+I</code>).</div></li><li><div>Sur un clavier AZERTY, <code>Alt+]</code> et <code>Alt+\</code> peuvent ne pas répondre : survolez le texte grisé (barre « 1/3 ») ou réattribuez le raccourci.</div></li></ul></div>
+      <div class="bonus"><div class="cap">Bonus</div><p>Ajoutez <code>"editor.inlineSuggest.edits.showCollapsed": true</code> : les suggestions de modification suivante restent repliées tant que vous n'y allez pas. Puis <code>Ctrl+K Ctrl+S</code>, « inline suggest » : attribuez un raccourci à « accepter la ligne suivante ».</p></div>
+      <div class="help"><div class="cap">Coincé ?</div><p>Les réglages n'ont pas d'effet ? Vérifiez que le fichier est bien <code>.vscode/settings.json</code> <strong>à la racine du dépôt</strong> et que le JSON est valide (pas de virgule finale). Le chat reste en anglais : rechargez la fenêtre (<code>Ctrl+Maj+P</code> › « Recharger la fenêtre »).</p></div>
+    </aside>
+  </div>
+</section>
+
+<section class="atelier t-teal">
+  <header>
+    <div class="num"><span>ATELIER</span><b>3</b></div>
+    <div class="ttl">
+      <div class="mod">Module 3 · Comprendre les suggestions</div>
+      <h2>Le contexte fait la suggestion</h2>
+      <div class="chips"><span class="chip">⏱ 35 min</span><span class="chip">Jour 1 · 14 h 15</span><span class="chip">Individuel</span></div>
+      <div class="files"><code>katas/03-contexte/</code>, <code>JOURNAL.md</code></div>
+    </div>
+  </header>
+  <div class="obj"><div class="cap">Objectif</div><p>Prouver par l'expérience que la qualité d'une suggestion dépend de ce que Copilot <strong>voit</strong> : nom seul, fichier voisin ouvert, commentaire précis, import. Puis repérer, <strong>en lisant</strong>, trois défauts dans du code accepté trop vite.</p></div>
+  <div class="grid">
+    <div class="main">
+      <h3>Point de départ</h3><p>Ateliers 1 et 2 terminés. Dans <code>JOURNAL.md</code>, la grille « Atelier 3 » est prête à remplir.</p>
+      <h3>Étapes</h3><div class="steps"><ol><li><div><strong>Exp. 1 · nom seul</strong> : fermez tous les onglets, ouvrez <code>experience-1-nom-seul.js</code>, placez le curseur dans <code>calculerVelocite</code>. Notez la suggestion (propriétés inventées ? gestion du vide ?).</div></li><li><div><strong>Exp. 2 · avec contexte</strong> : ouvrez <code>sprints-exemple.js</code> dans un onglet voisin, puis <code>experience-2-avec-contexte.js</code>. Même fonction, JSDoc précise : comparez. Exécutez <code>node katas/03-contexte/experience-2-avec-contexte.js</code> : le résultat attendu est <code>21.7</code>.</div></li><li><div><strong>Exp. 3 · commentaires</strong> : dans <code>experience-3-commentaires.js</code>, comparez le bloc A (vague) et le bloc B (précis). Puis décommentez l'import du bloc C et recommencez le bloc A : que change l'import ?</div></li><li><div><strong>Alternatives</strong> : sur le bloc B, parcourez les alternatives (<code>Alt+]</code> ou survol). Gardez celle qui respecte la contrainte d'heure locale.</div></li><li><div><strong>Exp. 4 · lire avant d'accepter</strong> : trouvez les 3 défauts de <code>experience-4-lire-avant-accepter.js</code> <strong>avant</strong> de l'exécuter. Écrivez votre diagnostic, puis exécutez le fichier et demandez à Copilot Chat (Ask) son avis. Corrigez.</div></li></ol></div>
+    </div>
+    <aside>
+      <div class="done"><div class="cap">C’est terminé quand…</div><ul><li><span class="box"></span><div>La grille « Atelier 3 » de <code>JOURNAL.md</code> est remplie pour les 4 expériences (suggestion obtenue, ce qui a changé, pourquoi).</div></li><li><span class="box"></span><div><code>experience-2-avec-contexte.js</code> affiche <code>21.7</code>.</div></li><li><span class="box"></span><div><code>experience-4-lire-avant-accepter.js</code> affiche <code>3</code>, <code>false</code>, <code>5</code>.</div></li></ul></div>
+      <div class="traps"><div class="cap">Pièges à observer</div><ul><li><div>L'expérience 2 ne marche bien que si l'onglet voisin est <strong>ouvert</strong> : un fichier fermé n'est pas dans le contexte de la suggestion inline.</div></li><li><div>Le bloc C (import de <code>date-fns</code>) pousse Copilot vers une bibliothèque <strong>qui n'est pas installée</strong> : une suggestion peut être parfaite… et inutilisable.</div></li><li><div><code>estPrioritaire</code> affecte au lieu de comparer : la suggestion « a l'air » juste.</div></li></ul></div>
+      <div class="bonus"><div class="cap">Bonus</div><p>Refaites l'expérience 1 en changeant seulement le <strong>nom du fichier</strong> en <code>velocite-sprints.js</code>. Le nom du fichier fait-il partie du contexte ? Notez votre conclusion.</p></div>
+      <div class="help"><div class="cap">Coincé ?</div><p>Les suggestions des expériences 1 et 2 sont identiques ? Vérifiez que l'onglet <code>sprints-exemple.js</code> est ouvert <strong>dans le même groupe d'éditeurs</strong>, puis retapez la première ligne du corps de la fonction pour relancer une suggestion.</p></div>
+    </aside>
+  </div>
+</section>
+
+<section class="atelier t-green">
+  <header>
+    <div class="num"><span>ATELIER</span><b>4</b></div>
+    <div class="ttl">
+      <div class="mod">Module 4 · Génération de code simple</div>
+      <h2>TaskFlow v1 : le modèle de ticket</h2>
+      <div class="chips"><span class="chip">⏱ 55 min</span><span class="chip">Jour 1 · 15 h 55</span><span class="chip">Individuel</span></div>
+      <div class="files"><code>src/tickets.js</code>, <code>test/tickets.test.js</code>, <code>katas/python/</code>, <code>katas/java/</code></div>
+    </div>
+  </header>
+  <div class="obj"><div class="cap">Objectif</div><p>Générer avec Copilot, <strong>commentaire par commentaire</strong>, le cœur de données de TaskFlow : constantes du domaine, <code>estPointsValide</code>, <code>validerTicket</code> et <code>creerTicket</code>. Les 8 tests d'acceptation fournis doivent passer au vert, sans jamais modifier les tests.</p></div>
+  <div class="grid">
+    <div class="main">
+      <h3>Point de départ</h3><p><code>src/tickets.js</code> ne contient que des commentaires-guides. <code>npm run test:atelier4</code> échoue : c'est normal.</p>
+      <h3>Étapes</h3><div class="steps"><ol><li><div>Lancez <code>npm run test:atelier4</code> et lisez les échecs : ce sont vos spécifications exécutables.</div></li><li><div><strong>Constantes</strong> : curseur sous le commentaire 1, laissez Copilot proposer. Vérifiez <code>Object.freeze</code> et l'ordre des statuts. Acceptez mot par mot si besoin (<code>Ctrl+→</code>).</div></li><li><div><strong>estPointsValide</strong> : écrivez seulement <code>export function estPointsValide(points) {</code> et laissez compléter. Vérifiez à la main les cas <code>"5"</code> et <code>undefined</code>.</div></li><li><div><strong>validerTicket</strong> puis <strong>creerTicket</strong> : une fonction à la fois, test après chaque fonction. Si une suggestion s'arrête à la première erreur, refusez-la et précisez le commentaire.</div></li><li><div>Quand tout est vert : <code>npm run demo</code> affiche les tickets ; faites un commit « Atelier 4 : modèle de ticket ».</div></li><li><div><strong>Variante au choix</strong> (si vous avez fini) : même cahier en Python (<code>katas/python/tickets.py</code>, tests : <code>python -m unittest katas/python/test_tickets.py</code>) ou en Java (<code>java katas/java/Ticket.java</code> → « 6/6 OK »).</div></li></ol></div>
+    </div>
+    <aside>
+      <div class="done"><div class="cap">C’est terminé quand…</div><ul><li><span class="box"></span><div><code>npm run test:atelier4</code> : <strong>8 tests au vert</strong>, tests non modifiés.</div></li><li><span class="box"></span><div><code>src/tickets.js</code> ne contient aucun <code>new Date()</code>.</div></li><li><span class="box"></span><div>Un commit « Atelier 4 : modèle de ticket ».</div></li></ul></div>
+      <div class="traps"><div class="cap">Pièges à observer</div><ul><li><div>Copilot propose volontiers <code>points &gt; 0 &amp;&amp; points &lt;= 13</code> : 4 passerait. La suite 1-2-3-5-8-13 est une <strong>liste</strong>, pas un intervalle.</div></li><li><div><code>typeof titre === 'string'</code> doit être vérifié <strong>avant</strong> <code>trim()</code>, sinon <code>titre: undefined</code> fait planter au lieu de renvoyer « titre invalide ».</div></li><li><div>En Python, <code>True == 1</code> : <code>est_points_valide(True)</code> doit être faux. Copilot l'oublie presque toujours.</div></li></ul></div>
+      <div class="bonus"><div class="cap">Bonus</div><p>Demandez dans le chat en ligne (<code>Ctrl+I</code>, sélection sur <code>validerTicket</code>) : « Ajoute une règle : un bug doit avoir la priorité 1 ou 2. » Puis écrivez <strong>vous-même</strong> le test qui le prouve.</p></div>
+      <div class="help"><div class="cap">Coincé ?</div><p>Après 45 minutes, si <code>validerTicket</code> résiste : copiez <code>reprises/fin-atelier-04/tickets.js</code> dans <code>src/</code> pour ne pas bloquer le Jour 2, et notez dans <code>JOURNAL.md</code> ce qui a coincé.</p></div>
+    </aside>
+  </div>
+</section>
+
+<section class="atelier t-teal">
+  <header>
+    <div class="num"><span>ATELIER</span><b>5</b></div>
+    <div class="ttl">
+      <div class="mod">Module 5 · Génération de fonctions et blocs de code</div>
+      <h2>TaskFlow v2 : backlog, classe et import</h2>
+      <div class="chips"><span class="chip">⏱ 50 min</span><span class="chip">Jour 2 · 9 h 55</span><span class="chip">Individuel</span></div>
+      <div class="files"><code>src/backlog.js</code>, <code>src/api.js</code>, <code>test/backlog.test.js</code>, <code>test/api-csv.test.js</code></div>
+    </div>
+  </header>
+  <div class="obj"><div class="cap">Objectif</div><p>Générer des <strong>fonctions complètes</strong> (paramètres, valeurs de retour, cas vides), une <strong>classe</strong> <code>Backlog</code> et un <strong>parseur CSV</strong>, chacun documenté en <strong>JSDoc</strong>. Les tests d'acceptation passent et l'interface web de TaskFlow s'allume.</p></div>
+  <div class="grid">
+    <div class="main">
+      <h3>Point de départ</h3><p>Atelier 4 terminé (<code>npm run test:atelier4</code> au vert). Sinon : copiez <code>reprises/fin-atelier-04/tickets.js</code> dans <code>src/</code>.</p>
+      <h3>Étapes</h3><div class="steps"><ol><li><div><strong>Plan d'abord</strong> : dans la vue Chat, agent <strong>Ask</strong>, joignez <code>#file:src/backlog.js</code> et demandez : « Propose les signatures JSDoc des 4 éléments décrits, sans écrire les corps. » Relisez le plan.</div></li><li><div><strong>trierBacklog, filtrerBacklog, statistiques</strong> : pour chacune, écrivez <code>/**</code> + Entrée au-dessus de la signature (Copilot propose la JSDoc), puis laissez compléter le corps. Test après <strong>chaque</strong> fonction : <code>npm run test:atelier5</code>.</div></li><li><div><strong>Classe Backlog</strong> : écrivez <code>export class Backlog {</code> et laissez Copilot proposer constructeur et méthodes, une méthode à la fois. Vérifiez que le constructeur <strong>copie</strong> le tableau.</div></li><li><div><strong>parserCsv</strong> : générez-la depuis le commentaire. Ouvrez <code>data/import.csv</code> dans un onglet voisin pendant la génération. Le test attend <strong>6 tickets et 2 rejets</strong>.</div></li><li><div><strong>chargerTickets</strong> : générez-la, puis lancez <code>npm run serveur</code> et ouvrez <code>http://localhost:3000</code>. Testez <code>chargerTickets('http://localhost:3000/api/panne')</code> dans le chat en ligne ou un petit script : l'erreur doit être « HTTP 500 ».</div></li><li><div>Commit « Atelier 5 : backlog, classe, import ».</div></li></ol></div>
+    </div>
+    <aside>
+      <div class="done"><div class="cap">C’est terminé quand…</div><ul><li><span class="box"></span><div><code>npm run test:atelier5</code> au vert (backlog <strong>et</strong> CSV).</div></li><li><span class="box"></span><div>Chaque fonction exportée a sa JSDoc (<code>@param</code>, <code>@returns</code>).</div></li><li><span class="box"></span><div>L'interface <code>http://localhost:3000</code> affiche le backlog trié, les filtres et les statistiques.</div></li></ul></div>
+      <div class="traps"><div class="cap">Pièges à observer</div><ul><li><div><code>sort()</code> trie <strong>sur place</strong> : <code>tickets.sort(...)</code> modifie le tableau reçu. Exigez <code>[...tickets].sort(...)</code> ou <code>toSorted()</code>.</div></li><li><div>La recherche sans accents demande <code>normalize('NFD')</code> : Copilot propose souvent <code>toLowerCase()</code> seul, et « securite » ne trouve plus « Sécurité ».</div></li><li><div><code>split(',')</code> au lieu de <code>split(';')</code>, ou un numéro de ligne qui oublie l'en-tête : le test des rejets le verra.</div></li><li><div>L'avancement d'une liste vide : <code>0 / 0</code> donne <code>NaN</code>.</div></li></ul></div>
+      <div class="bonus"><div class="cap">Bonus</div><p>Ajoutez <code>exporterCsv(tickets)</code> qui produit le format inverse, et vérifiez l'aller-retour <code>parserCsv(exporterCsv(liste))</code> dans un test. Que se passe-t-il avec un titre contenant « ; » ?</p></div>
+      <div class="help"><div class="cap">Coincé ?</div><p>Une fonction résiste plus de 10 minutes : passez à la suivante, les tests sont indépendants. Retour en fin d'atelier ; point de reprise : <code>reprises/fin-atelier-05/</code>.</p></div>
+    </aside>
+  </div>
+</section>
+
+<section class="atelier t-violet">
+  <header>
+    <div class="num"><span>ATELIER</span><b>6</b></div>
+    <div class="ttl">
+      <div class="mod">Module 6 · Refactoring avec Copilot</div>
+      <h2>Refactorer le Kanban legacy</h2>
+      <div class="chips"><span class="chip">⏱ 45 min</span><span class="chip">Jour 2 · 11 h 35</span><span class="chip">Individuel</span></div>
+      <div class="files"><code>src/legacy/kanban-legacy.js</code>, <code>test/kanban-legacy.test.js</code>, <code>src/kanban.js</code>, <code>test/kanban-contrat.test.js</code></div>
+    </div>
+  </header>
+  <div class="obj"><div class="cap">Objectif</div><p>Transformer <code>traiter(l, i, s, opt)</code>, un code de 2019 illisible, en code clair <strong>sans changer son comportement</strong> (tests de caractérisation toujours verts), puis écrire sa version moderne <code>deplacerTicket</code> : pure, nommée, et <strong>corrigée</strong> du bug de limite WIP.</p></div>
+  <div class="grid">
+    <div class="main">
+      <h3>Point de départ</h3><p><code>npm run test:atelier6</code> : les 9 tests de caractérisation passent, les 3 tests de contrat échouent (<code>src/kanban.js</code> est vide).</p>
+      <h3>Étapes</h3><div class="steps"><ol><li><div><strong>Comprendre</strong> : sélectionnez <code>traiter</code>, chat <strong>Ask</strong> : « Explique ce que fait cette fonction, règle par règle, et liste ses défauts. » Comparez avec les noms des tests de caractérisation.</div></li><li><div><strong>Renommer</strong> : <code>F2</code> sur <code>l</code>, <code>i</code>, <code>s</code>, <code>r</code> → <code>tickets</code>, <code>id</code>, <code>versStatut</code>, <code>ticket</code>. Acceptez les suggestions de modification suivante (<code>Tab</code>). Tests.</div></li><li><div><strong>Simplifier et extraire</strong> : chat en ligne (<code>Ctrl+I</code>) sur la fonction : « Remplace var par const/let, extrais trouverTicket et compterEnCours, garde exactement le même comportement, y compris == et la mutation. » Relisez le diff <strong>avant</strong> d'accepter. Tests.</div></li><li><div><strong>Comparer</strong> : <code>git diff</code> (ou la vue Contrôle de code source) : chaque changement doit être un renommage, une extraction ou une simplification. Commit « refactor : kanban legacy lisible ».</div></li><li><div><strong>Réécrire</strong> : générez <code>src/kanban.js</code> depuis ses commentaires-guides (<code>deplacerTicket</code>, pure, <code>===</code>, messages explicites). Le test de contrat « refuse le 4e ticket en cours » doit passer : c'est la <strong>correction</strong> du bug.</div></li><li><div>Commit séparé « fix : limite WIP respectée dans deplacerTicket ».</div></li></ol></div>
+    </div>
+    <aside>
+      <div class="done"><div class="cap">C’est terminé quand…</div><ul><li><span class="box"></span><div><code>npm run test:atelier6</code> : <strong>12 tests au vert</strong> (9 de caractérisation + 3 de contrat).</div></li><li><span class="box"></span><div><code>kanban-legacy.js</code> lisible, sans <code>var</code>, avec des fonctions extraites.</div></li><li><span class="box"></span><div>Deux commits distincts : refactoring, puis correction.</div></li></ul></div>
+      <div class="traps"><div class="cap">Pièges à observer</div><ul><li><div>« Améliore ce code » produit souvent un refactoring <strong>et</strong> une correction mêlés : le test « ⚠ accepte un 4e ticket » passe alors au rouge. Refactoring = même comportement.</div></li><li><div>Remplacer <code>==</code> par <code>===</code> dans le legacy casse le test « "1" trouve le ticket 1 » : c'est un changement de comportement, pas un nettoyage.</div></li><li><div>Copilot peut supprimer la mutation <code>r.statut = s</code> en « améliorant » : relisez le diff ligne par ligne.</div></li></ul></div>
+      <div class="bonus"><div class="cap">Bonus</div><p>Faites déléguer <code>traiter</code> à <code>deplacerTicket</code> (adaptateur), puis mettez à jour <strong>délibérément</strong> le test « ⚠ » : c'est la décision de corriger le comportement historique, à commiter seule avec un message clair.</p></div>
+      <div class="help"><div class="cap">Coincé ?</div><p>Un test de caractérisation passe au rouge et vous ne voyez pas pourquoi : <code>git diff</code>, puis annulez le dernier pas (<code>git checkout -- src/legacy/kanban-legacy.js</code>) et refaites-le en plus petit. Point de reprise : <code>reprises/fin-atelier-06/</code>.</p></div>
+    </aside>
+  </div>
+</section>
+
+<section class="atelier t-pink">
+  <header>
+    <div class="num"><span>ATELIER</span><b>7</b></div>
+    <div class="ttl">
+      <div class="mod">Module 7 · Tests unitaires avec Copilot</div>
+      <h2>Une vraie suite de tests, générée et vérifiée</h2>
+      <div class="chips"><span class="chip">⏱ 50 min</span><span class="chip">Jour 2 · 14 h 30</span><span class="chip">Individuel</span></div>
+      <div class="files"><code>test/kanban.test.js</code>, <code>test/api-charger.test.js</code> (à créer)</div>
+    </div>
+  </header>
+  <div class="obj"><div class="cap">Objectif</div><p>Faire générer par Copilot une suite de tests <strong>lisible</strong> (Arrange-Act-Assert, noms en français qui décrivent le comportement) pour <code>deplacerTicket</code>, puis tester <code>chargerTickets</code> <strong>sans réseau</strong> grâce à un mock de <code>fetch</code>. Prouver ensuite que les tests détectent une erreur (test de mutation).</p></div>
+  <div class="grid">
+    <div class="main">
+      <h3>Point de départ</h3><p>Atelier 6 terminé (<code>src/kanban.js</code> au vert sur le contrat). Sinon : <code>reprises/fin-atelier-06/kanban.js</code>.</p>
+      <h3>Étapes</h3><div class="steps"><ol><li><div><strong>Liste des cas d'abord</strong> : chat <strong>Ask</strong>, <code>#file:src/kanban.js</code> : « Liste les cas à tester pour deplacerTicket : nominaux, limites, erreurs. Pas de code. » Complétez la liste vous-même (au moins 10 cas, dont : 3 en cours → 4e refusé, 2 en cours → 3e accepté, ticket non estimé, termineLe, immuabilité).</div></li><li><div><strong>Générer</strong> : dans <code>test/kanban.test.js</code>, collez la liste en commentaire, puis <code>/tests</code> (chat en ligne) ou demandez la génération dans le chat. Imposez : <code>node:test</code>, <code>assert/strict</code>, un <code>describe</code> par règle, noms « refuse… / accepte… ».</div></li><li><div><strong>Vérifier chaque assertion</strong> : pour chaque test, demandez-vous « échouerait-il si le code était faux ? ». Supprimez les tests tautologiques (qui recalculent le résultat avec la même logique que le code).</div></li><li><div><strong>Mock de fetch</strong> : dans <code>test/api-charger.test.js</code>, testez <code>chargerTickets</code> avec un faux <code>fetchFn</code> : succès, <code>HTTP 500</code>, JSON qui n'est pas un tableau. Bonus : <code>mock.fn()</code> de <code>node:test</code> pour vérifier l'URL appelée.</div></li><li><div><strong>Mutation</strong> : dans <code>src/kanban.js</code>, changez <code>&gt;=</code> en <code>&gt;</code> dans la règle WIP. Au moins un test doit passer au <strong>rouge</strong>. Sinon, écrivez le test manquant. Rétablissez.</div></li><li><div><code>npm run couverture</code> : notez le pourcentage de lignes de <code>kanban.js</code> et <code>api.js</code>. Commit « test : suite kanban et api ».</div></li></ol></div>
+    </div>
+    <aside>
+      <div class="done"><div class="cap">C’est terminé quand…</div><ul><li><span class="box"></span><div><code>test/kanban.test.js</code> : au moins 10 tests, tous au vert, groupés par règle R1–R4.</div></li><li><span class="box"></span><div><code>test/api-charger.test.js</code> : 3 tests avec mock, aucun appel réseau.</div></li><li><span class="box"></span><div>La mutation <code>&gt;=</code> → <code>&gt;</code> est détectée.</div></li></ul></div>
+      <div class="traps"><div class="cap">Pièges à observer</div><ul><li><div>Un test généré peut <strong>réutiliser la logique du code</strong> pour calculer l'attendu : il passe toujours, même si le code est faux.</div></li><li><div><code>assert.equal</code> sur deux objets compare les <strong>références</strong> : utilisez <code>assert.deepEqual</code> (avec <code>assert/strict</code>).</div></li><li><div>Un mock trop bavard (qui vérifie chaque appel interne) casse au moindre refactoring : vérifiez le <strong>résultat</strong>, pas la recette.</div></li><li><div>Une date « du jour » dans un test le rend instable : passez <code>aujourdHui</code> en paramètre.</div></li></ul></div>
+      <div class="bonus"><div class="cap">Bonus</div><p>Demandez à Copilot un test « paramétré » : un tableau de cas <code>[statutDépart, versStatut, attendu]</code> parcouru par une boucle <code>for…of</code> avec un <code>it</code> par cas.</p></div>
+      <div class="help"><div class="cap">Coincé ?</div><p><code>node --test</code> ne trouve pas votre fichier : il doit se terminer par <code>.test.js</code> et se trouver dans <code>test/</code>. Une erreur <code>ERR_MODULE_NOT_FOUND</code> : vérifiez le chemin <code>../src/kanban.js</code> (avec l'extension <code>.js</code>).</p></div>
+    </aside>
+  </div>
+</section>
+
+<section class="atelier t-coral">
+  <header>
+    <div class="num"><span>ATELIER</span><b>8</b></div>
+    <div class="ttl">
+      <div class="mod">Module 8 · Bonnes pratiques et vérification</div>
+      <h2>Revue de code et livraison</h2>
+      <div class="chips"><span class="chip">⏱ 40 min</span><span class="chip">Jour 2 · 16 h 10</span><span class="chip">Individuel</span></div>
+      <div class="files"><code>ateliers/atelier-08-revue/</code>, <code>.github/copilot-instructions.md</code></div>
+    </div>
+  </header>
+  <div class="obj"><div class="cap">Objectif</div><p>Relire huit suggestions Copilot « acceptées trop vite » avec la <strong>checklist de relecture</strong> (logique, performance, sécurité, licence), prouver chaque défaut par un test, le corriger, puis livrer TaskFlow avec un fichier d'instructions d'équipe et un dernier commit propre.</p></div>
+  <div class="grid">
+    <div class="main">
+      <h3>Point de départ</h3><p>Les 8 fichiers de <code>suggestions/</code> sont des fonctions TaskFlow générées par Copilot. <code>revue.test.js</code> contient un exemple (suggestion 02) qui échoue.</p>
+      <h3>Étapes</h3><div class="steps"><ol><li><div><strong>Relire sans outil</strong> (10 min) : pour chaque suggestion, notez dans <code>REVUE.md</code> le défaut soupçonné et sa catégorie : logique, performance, sécurité, API inventée, licence.</div></li><li><div><strong>Second avis</strong> : sur deux suggestions de votre choix, sélectionnez le code, clic droit › Copilot › revue de code (ou chat Ask : « Fais la revue de ce code ») et comparez avec votre liste : qu'a-t-il trouvé ? Qu'a-t-il manqué ?</div></li><li><div><strong>Prouver</strong> : pour 01 à 07, ajoutez un <code>describe</code> dans <code>revue.test.js</code> qui <strong>échoue</strong> sur la suggestion d'origine (<code>npm run test:revue</code>).</div></li><li><div><strong>Corriger</strong> : corrigez chaque suggestion (vous-même ou avec <code>Ctrl+I</code>) jusqu'au vert. Pour 08, décidez dans <code>REVUE.md</code> : remplacer par <code>structuredClone</code>, et retirer le code copié.</div></li><li><div><strong>Instructions d'équipe</strong> : créez <code>.github/copilot-instructions.md</code> (5 à 8 règles tirées de la formation : <code>node:test</code>, pas de <code>new Date()</code> dans la logique, <code>textContent</code> jamais <code>innerHTML</code>, aucun secret, JSDoc obligatoire…). Vérifiez dans le chat qu'elles sont prises en compte (référence affichée sous la réponse).</div></li><li><div><code>npm test</code> tout au vert, commit « Atelier 8 : revue et instructions d'équipe ». Préparez 2 minutes de restitution (partage d'écran).</div></li></ol></div>
+    </div>
+    <aside>
+      <div class="done"><div class="cap">C’est terminé quand…</div><ul><li><span class="box"></span><div><code>REVUE.md</code> : 8 défauts identifiés, classés, avec la correction choisie.</div></li><li><span class="box"></span><div><code>npm run test:revue</code> : au moins 7 <code>describe</code>, tous au vert après correction.</div></li><li><span class="box"></span><div><code>.github/copilot-instructions.md</code> versionné ; <code>npm test</code> au vert.</div></li></ul></div>
+      <div class="traps"><div class="cap">Pièges à observer</div><ul><li><div><code>sortBy</code> n'existe pas sur les tableaux JavaScript : une <strong>API inventée</strong> se repère vite… à condition d'exécuter le code.</div></li><li><div>La suggestion 05 cumule trois problèmes : jeton en clair, jeton dans l'URL (journaux serveur), HTTP sans TLS.</div></li><li><div>Copilot en mode revue est un <strong>second avis</strong> : il ne remplace ni vos tests ni la relecture humaine.</div></li></ul></div>
+      <div class="bonus"><div class="cap">Bonus</div><p>Ajoutez une règle à <code>.github/copilot-instructions.md</code>, puis redemandez la suggestion 04 dans une nouvelle conversation : le code proposé respecte-t-il maintenant <code>textContent</code> ?</p></div>
+      <div class="help"><div class="cap">Coincé ?</div><p>Vous ne voyez pas le défaut d'une suggestion : exécutez-la avec un cas limite (liste vide, saisie « ( », date de demain). Si rien ne casse, passez à la suivante et revenez-y.</p></div>
+    </aside>
+  </div>
+</section>
+<section class="annexe">
+  <h2>Annexe · Aide-mémoire</h2>
+  <div class="two">
+    <div><h3>Les 8 raccourcis (Windows / Linux)</h3>
+      <table><tbody>
+        <tr><td><kbd>Tab</kbd></td><td>accepter la suggestion</td></tr>
+        <tr><td><kbd>Échap</kbd></td><td>refuser</td></tr>
+        <tr><td><kbd>Ctrl+→</kbd></td><td>accepter mot par mot</td></tr>
+        <tr><td><kbd>Alt+]</kbd> <kbd>Alt+[</kbd></td><td>suggestion suivante / précédente</td></tr>
+        <tr><td><kbd>Alt+\</kbd></td><td>déclencher une suggestion</td></tr>
+        <tr><td><kbd>Ctrl+I</kbd></td><td>chat en ligne (modifier la sélection)</td></tr>
+        <tr><td><kbd>Ctrl+Alt+I</kbd></td><td>vue Chat</td></tr>
+        <tr><td><kbd>Ctrl+N</kbd> (chat)</td><td>nouvelle conversation</td></tr>
+      </tbody></table>
+      <p class="small">macOS : Ctrl devient Cmd, Alt devient Option.</p>
+      <h3>Le commentaire en 5 ingrédients</h3>
+      <p>Entrée · Sortie · Règle · Exemple (dont un cas refusé) · Contrainte</p>
+      <h3>Lire avant d’accepter : 5 questions</h3>
+      <ol><li><div>Fait-elle ce que j’ai demandé ?</div></li><li><div>Ce qu’elle appelle existe-t-il ?</div></li><li><div>Et les cas limites ?</div></li><li><div>A-t-elle des effets de bord ?</div></li><li><div>Puis-je l’expliquer ligne à ligne ?</div></li></ol>
+    </div>
+    <div><h3>Checklist de relecture</h3>
+      <p class="cl b">Logique</p><ul><li><span class="box"></span><div>Fait ce qui est demandé, tout ce qui est demandé</div></li><li><span class="box"></span><div>Cas limites : vide, null, bornes, doublons</div></li><li><span class="box"></span><div>Erreurs gérées, messages clairs</div></li><li><span class="box"></span><div>Fonctions et API qui existent vraiment</div></li></ul>
+      <p class="cl y">Performances</p><ul><li><span class="box"></span><div>Pas de boucle dans une boucle évitable</div></li><li><span class="box"></span><div>Pas de recalcul inutile dans une boucle</div></li><li><span class="box"></span><div>Set ou Map pour les recherches répétées</div></li></ul>
+      <p class="cl c">Sécurité</p><ul><li><span class="box"></span><div>Aucun secret, aucun jeton dans le code</div></li><li><span class="box"></span><div>Entrées utilisateur jamais injectées telles quelles</div></li><li><span class="box"></span><div>Dépendance proposée : existe-t-elle, est-elle sûre ?</div></li><li><span class="box"></span><div>Licence : code recopié d’un dépôt public ?</div></li></ul>
+    </div>
+  </div>
+</section>
+</body></html>
