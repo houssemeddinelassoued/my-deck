@@ -383,12 +383,12 @@ const M4_Quiz: Page = () => (
       </QuizQ>
       <QuizQ q="« Vous êtes à l’aise au téléphone ? » est une question…" explain="Fermée et suggestive : tout candidat répondra oui. Préférez une question comportementale qui demande un exemple.">
         <QOpt>Comportementale</QOpt>
-        <QOpt ok>Fermée et suggestive</QOpt>
-        <QOpt>Situationnelle</QOpt>
+        <QOpt>Fermée et suggestive</QOpt>
+        <QOpt ok>Situationnelle</QOpt>
       </QuizQ>
       <QuizQ q="Dans STAR, le « A » désigne…" explain="Action : ce que la personne a fait, elle, et non l’équipe. C’est le cœur de la réponse.">
-        <QOpt>L’attitude du candidat</QOpt>
-        <QOpt ok>Les actions de la personne elle-même</QOpt>
+        <QOpt ok>L’attitude du candidat</QOpt>
+        <QOpt>Les actions de la personne elle-même</QOpt>
         <QOpt>L’analyse du recruteur</QOpt>
       </QuizQ>
       <QuizQ q="Vous voulez transcrire automatiquement un vrai entretien. Il faut d’abord…" explain="Information et accord du candidat, outil validé par l’entreprise, durée de conservation définie : ce sont des données personnelles.">

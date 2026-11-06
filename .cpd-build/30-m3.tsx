@@ -428,13 +428,13 @@ const M3_Qcm: Page = () => (
     <QuizSeries y={200}>
       <QuizQ q="Pour qu’une suggestion inline utilise votre fichier de données d’exemple, il faut…" explain="L’inline lit le fichier courant et les onglets ouverts. Un fichier fermé n’est pas dans son contexte.">
         <QOpt>Qu’il soit dans le même dossier</QOpt>
-        <QOpt ok>Qu’il soit ouvert dans un onglet</QOpt>
-        <QOpt>Le mentionner dans le chat</QOpt>
+        <QOpt>Qu’il soit ouvert dans un onglet</QOpt>
+        <QOpt ok>Le mentionner dans le chat</QOpt>
       </QuizQ>
       <QuizQ q="Au bout d’une heure de conversation, Copilot oublie votre première consigne. Que faire ?" explain="La fenêtre de contexte est pleine ou diluée. Nouvelle conversation avec la consigne et les seuls fichiers utiles, ou /compact.">
-        <QOpt>Répéter la consigne en majuscules</QOpt>
+        <QOpt ok>Répéter la consigne en majuscules</QOpt>
         <QOpt>Changer de modèle</QOpt>
-        <QOpt ok>Repartir d’une nouvelle conversation avec le contexte utile</QOpt>
+        <QOpt>Repartir d’une nouvelle conversation avec le contexte utile</QOpt>
       </QuizQ>
       <QuizQ q="Copilot propose tickets[tickets.length] pour « le dernier élément ». Quelle question de relecture l’aurait détecté ?" explain="Les cas limites : l’indice length est toujours hors du tableau. Tester mentalement avec [1, 2, 3] suffit.">
         <QOpt>Ce qu’elle appelle existe-t-il ?</QOpt>
@@ -442,9 +442,9 @@ const M3_Qcm: Page = () => (
         <QOpt>A-t-elle des effets de bord ?</QOpt>
       </QuizQ>
       <QuizQ q="Vous voulez seulement comprendre une regex héritée, sans risque de la modifier. Quel outil ?" explain="Ask explique sans toucher au fichier. Ctrl+I propose une modification ; l’inline complète ce que vous tapez.">
-        <QOpt ok>La vue Chat, agent Ask</QOpt>
+        <QOpt>La vue Chat, agent Ask</QOpt>
         <QOpt>Le chat en ligne, Ctrl+I</QOpt>
-        <QOpt>Une suggestion inline sous la regex</QOpt>
+        <QOpt ok>Une suggestion inline sous la regex</QOpt>
       </QuizQ>
     </QuizSeries>
   </Frame>

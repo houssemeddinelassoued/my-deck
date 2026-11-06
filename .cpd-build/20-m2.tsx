@@ -459,17 +459,17 @@ const M2_Qcm: Page = () => (
       </QuizQ>
       <QuizQ q="Les suggestions inline vous gênent dans vos fichiers Markdown. Que faites-vous ?" explain="github.copilot.enable accepte un objet par langage : on coupe markdown sans toucher au reste. Le chat reste disponible.">
         <QOpt>Je désactive Copilot complètement</QOpt>
-        <QOpt ok>« markdown »: false dans github.copilot.enable</QOpt>
-        <QOpt>Je change de modèle dans le chat</QOpt>
+        <QOpt>« markdown »: false dans github.copilot.enable</QOpt>
+        <QOpt ok>Je change de modèle dans le chat</QOpt>
       </QuizQ>
       <QuizQ q="Le mode Agent est grisé sur votre poste d’entreprise. Explication la plus probable ?" explain="Les offres Business et Enterprise permettent à l’administrateur de désactiver des fonctionnalités par politique. Vérifiez auprès de lui avant de chercher une panne.">
-        <QOpt>L’extension est mal installée</QOpt>
-        <QOpt ok>Une politique de l’organisation le désactive</QOpt>
+        <QOpt ok>L’extension est mal installée</QOpt>
+        <QOpt>Une politique de l’organisation le désactive</QOpt>
         <QOpt>Le mode Agent n’existe que sur macOS</QOpt>
       </QuizQ>
       <QuizQ q="Pour comprendre un code sans risquer de le modifier, quel agent choisir ?" explain="Ask répond sans toucher aux fichiers. Agent peut modifier et exécuter ; Plan prépare un plan d’action.">
-        <QOpt ok>Ask</QOpt>
-        <QOpt>Agent</QOpt>
+        <QOpt>Ask</QOpt>
+        <QOpt ok>Agent</QOpt>
         <QOpt>Ctrl+I sur tout le fichier</QOpt>
       </QuizQ>
     </QuizSeries>

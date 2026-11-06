@@ -407,13 +407,13 @@ const M4_Quiz: Page = () => (
     <Title>Quiz du module 4</Title>
     <QuizSeries y={200}>
       <QuizQ q="Votre workflow doit diriger chaque demande vers l’agence du client selon son code postal. Que mettez-vous ?" explain="Une table code postal → agence est exacte, gratuite et instantanée. L’IA n’apporte rien ici, et pourrait se tromper.">
-        <QOpt>Une étape IA qui devine l’agence</QOpt>
-        <QOpt ok>Une règle (table de correspondance)</QOpt>
+        <QOpt ok>Une étape IA qui devine l’agence</QOpt>
+        <QOpt>Une règle (table de correspondance)</QOpt>
         <QOpt>Une validation humaine systématique</QOpt>
       </QuizQ>
       <QuizQ q="Où placer la validation humaine pour un brouillon de réponse envoyé à un client ?" explain="Avant l’action externe : une fois l’email parti, on ne peut plus le rattraper. La relecture après coup sert au contrôle qualité, pas à la protection du client.">
-        <QOpt ok>Avant l’envoi</QOpt>
-        <QOpt>Après l’envoi, en relisant la boîte d’envoi</QOpt>
+        <QOpt>Avant l’envoi</QOpt>
+        <QOpt ok>Après l’envoi, en relisant la boîte d’envoi</QOpt>
         <QOpt>Inutile si le prompt est bon</QOpt>
       </QuizQ>
       <QuizQ q="Une demande arrive en allemand alors que le workflow ne gère que le français. Que doit-il se passer ?" explain="C’est une exception : le cas sort du flux vers un humain, avec une alerte. Le traiter « au mieux » risque une réponse fausse ; l’ignorer perd le client.">
@@ -422,8 +422,8 @@ const M4_Quiz: Page = () => (
         <QOpt ok>Le cas part en file humaine</QOpt>
       </QuizQ>
       <QuizQ q="Quel élément rend un workflow compréhensible par un collègue dans six mois ?" explain="Des étapes nommées, un propriétaire et une page de documentation. Le nombre d’étapes ou l’outil choisi ne changent rien à la lisibilité.">
-        <QOpt>Le plus petit nombre d’étapes possible</QOpt>
-        <QOpt ok>Des étapes nommées, un propriétaire, une page de doc</QOpt>
+        <QOpt ok>Le plus petit nombre d’étapes possible</QOpt>
+        <QOpt>Des étapes nommées, un propriétaire, une page de doc</QOpt>
         <QOpt>Un outil d’automatisation connu</QOpt>
       </QuizQ>
     </QuizSeries>

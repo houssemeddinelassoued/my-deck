@@ -535,8 +535,8 @@ const M3_Quiz: Page = () => (
     <Title>Quiz : la bonne réponse, au bon ton</Title>
     <QuizSeries y={220}>
       <QuizQ q="Un client poste une critique publique sur un réseau social. Votre réponse publique contient…" explain="En public : on reconnaît, on s’excuse si besoin, et on bascule en privé. Aucun montant, aucun numéro de commande, aucune donnée personnelle.">
-        <QOpt>Le détail de sa commande, pour montrer qu’on suit le dossier</QOpt>
-        <QOpt ok>Une reconnaissance brève et une invitation en message privé</QOpt>
+        <QOpt ok>Le détail de sa commande, pour montrer qu’on suit le dossier</QOpt>
+        <QOpt>Une reconnaissance brève et une invitation en message privé</QOpt>
         <QOpt>Rien : on ne répond jamais en public</QOpt>
       </QuizQ>
       <QuizQ q="Vous demandez à l’IA de rendre une réponse « plus chaleureuse ». Elle ajoute « nous vous offrons la livraison ». Que faites-vous ?" explain="L’IA a créé un engagement qui n’existe pas. On le retire, et on précise dans le prompt : « sans promesse ni geste nouveau ».">
@@ -546,12 +546,12 @@ const M3_Quiz: Page = () => (
       </QuizQ>
       <QuizQ q="Où placer la réponse à la question du client ?" explain="Le client cherche d’abord sa réponse. Elle vient tout de suite après la reconnaissance de la situation ; l’explication suit.">
         <QOpt>À la fin, après toutes les explications</QOpt>
-        <QOpt ok>Au début, juste après avoir reconnu la situation</QOpt>
-        <QOpt>Dans une pièce jointe</QOpt>
+        <QOpt>Au début, juste après avoir reconnu la situation</QOpt>
+        <QOpt ok>Dans une pièce jointe</QOpt>
       </QuizQ>
       <QuizQ q="Pour traduire une réponse en allemand, la bonne pratique est…" explain="Rédiger en français (là où vous maîtrisez le fond), traduire en imposant de garder chiffres et références, puis contrôler par une rétro-traduction.">
-        <QOpt>Demander directement à l’IA de répondre en allemand</QOpt>
-        <QOpt ok>Rédiger en français, traduire, puis rétro-traduire pour contrôler</QOpt>
+        <QOpt ok>Demander directement à l’IA de répondre en allemand</QOpt>
+        <QOpt>Rédiger en français, traduire, puis rétro-traduire pour contrôler</QOpt>
         <QOpt>Utiliser un traducteur différent pour chaque phrase</QOpt>
       </QuizQ>
     </QuizSeries>

@@ -422,23 +422,23 @@ const M6_Quiz: Page = () => (
     <Title>Quiz : analyser les interactions</Title>
     <QuizSeries y={220}>
       <QuizQ q="Pour connaître le nombre exact de contacts par motif sur 1 000 conversations, on…" explain="L’IA classe très bien chaque conversation ; pour compter, un tableur est exact à coup sûr. Les additions de l’IA sur de gros volumes peuvent être fausses.">
-        <QOpt>Demande le total directement à l’IA</QOpt>
-        <QOpt ok>Fait classer par l’IA, puis compte avec un tableur</QOpt>
+        <QOpt ok>Demande le total directement à l’IA</QOpt>
+        <QOpt>Fait classer par l’IA, puis compte avec un tableur</QOpt>
         <QOpt>Estime à l’œil</QOpt>
       </QuizQ>
       <QuizQ q="Avant d’envoyer 500 conversations à l’IA, il faut…" explain="Noms, emails, téléphones, adresses, numéros de commande : on anonymise, et on n’utilise que l’outil autorisé par l’entreprise.">
         <QOpt>Les traduire en anglais</QOpt>
-        <QOpt>Les raccourcir à une phrase</QOpt>
-        <QOpt ok>Les anonymiser et utiliser un outil autorisé</QOpt>
+        <QOpt ok>Les raccourcir à une phrase</QOpt>
+        <QOpt>Les anonymiser et utiliser un outil autorisé</QOpt>
       </QuizQ>
       <QuizQ q="L’IA propose une cause à un irritant. C’est…" explain="Une hypothèse plausible, pas un constat. On la vérifie avec les équipes concernées avant d’agir, puis on mesure l’effet de l’action.">
         <QOpt>Un fait établi</QOpt>
-        <QOpt ok>Une hypothèse à vérifier avec les équipes</QOpt>
-        <QOpt>Inutile : seules les données comptent</QOpt>
+        <QOpt>Une hypothèse à vérifier avec les équipes</QOpt>
+        <QOpt ok>Inutile : seules les données comptent</QOpt>
       </QuizQ>
       <QuizQ q="Une bonne recommandation contient…" explain="Une action précise, un responsable et un indicateur : sans eux, la recommandation reste un vœu pieux.">
-        <QOpt>Un constat bien formulé</QOpt>
-        <QOpt ok>Une action, un responsable et un indicateur</QOpt>
+        <QOpt ok>Un constat bien formulé</QOpt>
+        <QOpt>Une action, un responsable et un indicateur</QOpt>
         <QOpt>Un graphique</QOpt>
       </QuizQ>
     </QuizSeries>

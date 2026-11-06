@@ -706,8 +706,8 @@ const M6_Quiz: Page = () => (
     <Title>Quiz du module 6</Title>
     <QuizSeries y={200}>
       <QuizQ q="Pourquoi donner à l’IA vos définitions des indicateurs ?" explain="Sinon elle choisit les siennes. Le délai en heures ouvrées ou calendaires, par exemple, change tout le résultat.">
-        <QOpt>Pour aller plus vite</QOpt>
-        <QOpt ok>Pour que les chiffres correspondent à votre contrat de service</QOpt>
+        <QOpt ok>Pour aller plus vite</QOpt>
+        <QOpt>Pour que les chiffres correspondent à votre contrat de service</QOpt>
         <QOpt>Ce n’est pas utile, elle les connaît</QOpt>
       </QuizQ>
       <QuizQ q="Le total calculé par l’IA ne correspond pas au nombre de lignes. Que faites-vous ?" explain="On ne publie pas : on demande combien de lignes ont été lues et on cherche l’écart (lignes vides, doublons, filtres).">
@@ -717,12 +717,12 @@ const M6_Quiz: Page = () => (
       </QuizQ>
       <QuizQ q="Dans un 5 pourquoi bien mené, la cause racine est souvent…" explain="Un mécanisme ou un trou de processus. Une personne n’est presque jamais une cause racine.">
         <QOpt>Une personne qui s’est trompée</QOpt>
-        <QOpt ok>Un trou dans un processus</QOpt>
-        <QOpt>La faute de l’IA</QOpt>
+        <QOpt>Un trou dans un processus</QOpt>
+        <QOpt ok>La faute de l’IA</QOpt>
       </QuizQ>
       <QuizQ q="Quel rôle donner à l’IA pendant un 5 pourquoi ?" explain="Animatrice : elle pose les questions, l’équipe répond avec ce qu’elle sait. Elle ne connaît pas votre infrastructure.">
-        <QOpt>Elle trouve la cause seule</QOpt>
-        <QOpt ok>Elle anime et pose les questions</QOpt>
+        <QOpt ok>Elle trouve la cause seule</QOpt>
+        <QOpt>Elle anime et pose les questions</QOpt>
         <QOpt>Elle désigne le responsable</QOpt>
       </QuizQ>
     </QuizSeries>

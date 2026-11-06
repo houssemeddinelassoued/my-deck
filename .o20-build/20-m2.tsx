@@ -434,8 +434,8 @@ const M2_Quiz: Page = () => (
     <QuizSeries y={200}>
       <QuizQ q="« Ton chaleureux, 150 mots maximum, sans jargon » : de quelle brique s’agit-il ?" explain="Ce sont des contraintes : elles cadrent le ton, la longueur, ce qu’il faut inclure ou éviter.">
         <QOpt>Le contexte</QOpt>
-        <QOpt ok>Les contraintes</QOpt>
-        <QOpt>Le rôle</QOpt>
+        <QOpt>Les contraintes</QOpt>
+        <QOpt ok>Le rôle</QOpt>
       </QuizQ>
       <QuizQ q="La réponse de l’IA est générique et passe à côté de votre situation. La cause la plus probable ?" explain="L’IA ne connaît que ce que vous lui dites : sans contexte, elle comble les trous avec du générique.">
         <QOpt ok>Le prompt manque de contexte</QOpt>
@@ -449,13 +449,13 @@ const M2_Quiz: Page = () => (
       </QuizQ>
       <QuizQ q="La réponse est presque bonne mais trop longue. Que faites-vous ?" explain="On itère dans la même conversation : l’IA garde le contexte, il suffit de préciser ce qui ne va pas.">
         <QOpt>Vous recommencez une nouvelle conversation de zéro</QOpt>
-        <QOpt ok>Vous demandez « plus court de moitié » dans la même conversation</QOpt>
-        <QOpt>Vous raccourcissez à la main en supprimant la fin</QOpt>
+        <QOpt>Vous demandez « plus court de moitié » dans la même conversation</QOpt>
+        <QOpt ok>Vous raccourcissez à la main en supprimant la fin</QOpt>
       </QuizQ>
       <QuizQ q="Quelle formule limite le risque d’invention ?" explain="Autoriser explicitement l’IA à dire qu’elle ne sait pas réduit sa tendance à combler les manques par des inventions plausibles.">
-        <QOpt>« Réponds vite. »</QOpt>
+        <QOpt ok>« Réponds vite. »</QOpt>
         <QOpt>« Sois créatif. »</QOpt>
-        <QOpt ok>« Si tu ne sais pas, dis-le. »</QOpt>
+        <QOpt>« Si tu ne sais pas, dis-le. »</QOpt>
       </QuizQ>
     </QuizSeries>
   </Frame>

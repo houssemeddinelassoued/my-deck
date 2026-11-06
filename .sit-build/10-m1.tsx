@@ -695,8 +695,8 @@ const M1_Quiz: Page = () => (
     <Title>Quiz du module 1</Title>
     <QuizSeries y={200}>
       <QuizQ q="Que fait fondamentalement un modèle de langage ?" explain="Il prédit la suite la plus probable, mot après mot. C’est puissant, mais il ne vérifie pas ce qu’il écrit.">
-        <QOpt>Il cherche la réponse dans une base de données vérifiée</QOpt>
-        <QOpt ok>Il produit la suite de texte la plus probable</QOpt>
+        <QOpt ok>Il cherche la réponse dans une base de données vérifiée</QOpt>
+        <QOpt>Il produit la suite de texte la plus probable</QOpt>
         <QOpt>Il exécute toujours un calcul exact</QOpt>
       </QuizQ>
       <QuizQ q="Copilot Chat, sans licence Microsoft 365 Copilot, peut-il lire vos e-mails ?" explain="Non : Copilot Chat travaille sur le web et sur ce que vous lui donnez. C’est la licence Microsoft 365 Copilot qui ouvre l’accès à vos données via Microsoft Graph.">
@@ -705,13 +705,13 @@ const M1_Quiz: Page = () => (
         <QOpt>Oui, mais seulement les e-mails non lus</QOpt>
       </QuizQ>
       <QuizQ q="Vous devez analyser un rapport d’audit de 120 pages et citer les passages. Votre premier choix ?" explain="Claude lit les très longs documents d’un bloc et cite les passages exacts. Copilot convient aussi pour des documents plus courts.">
-        <QOpt ok>Claude</QOpt>
+        <QOpt>Claude</QOpt>
         <QOpt>Copilot dans Outlook</QOpt>
-        <QOpt>Aucun, c’est trop long pour une IA</QOpt>
+        <QOpt ok>Aucun, c’est trop long pour une IA</QOpt>
       </QuizQ>
       <QuizQ q="L’IA vous propose une commande PowerShell inconnue. Que faites-vous ?" explain="On vérifie dans la documentation officielle et on teste en lecture seule. Le ton assuré ne prouve rien.">
-        <QOpt>Je l’exécute : l’IA a l’air sûre d’elle</QOpt>
-        <QOpt ok>Je vérifie la documentation et je teste en lecture seule</QOpt>
+        <QOpt ok>Je l’exécute : l’IA a l’air sûre d’elle</QOpt>
+        <QOpt>Je vérifie la documentation et je teste en lecture seule</QOpt>
         <QOpt>Je l’exécute en administrateur pour éviter les erreurs</QOpt>
       </QuizQ>
     </QuizSeries>

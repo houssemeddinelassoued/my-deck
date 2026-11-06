@@ -76,8 +76,8 @@ const M1_QuizFlash: Page = () => (
     <Title>Quiz flash : ce que l’IA générative ne fait pas (bien)</Title>
     <QuizSeries y={220}>
       <QuizQ q="« L’IA calcule de façon fiable la TVA de 500 lignes de factures. »" explain="Un modèle de langage prédit du texte ; il peut se tromper sur un calcul. On lui fait extraire les montants, et une formule ou l’outil d’automatisation calcule.">
-        <QOpt>Vrai, c’est un ordinateur</QOpt>
-        <QOpt ok>Faux : extraction par l’IA, calcul par une règle</QOpt>
+        <QOpt ok>Vrai, c’est un ordinateur</QOpt>
+        <QOpt>Faux : extraction par l’IA, calcul par une règle</QOpt>
         <QOpt>Vrai, si on lui demande d’être précise</QOpt>
       </QuizQ>
       <QuizQ q="« Le même prompt donne toujours exactement la même réponse. »" explain="La génération comporte une part d’aléatoire. Dans un workflow, on réduit l’écart avec un format imposé, des exemples, des valeurs autorisées… et on contrôle la sortie.">
@@ -96,8 +96,8 @@ const M1_QuizFlash: Page = () => (
         <QOpt>Faux, avec les modèles récents</QOpt>
       </QuizQ>
       <QuizQ q="« Pour lire 300 emails par jour, l’IA est plus rapide qu’une personne. »" explain="Vrai, en quelques secondes par email. Le gain réel dépend du temps de contrôle qu’on garde : c’est ce qu’on calculera avec le simulateur de gain.">
-        <QOpt ok>Vrai</QOpt>
-        <QOpt>Faux</QOpt>
+        <QOpt>Vrai</QOpt>
+        <QOpt ok>Faux</QOpt>
         <QOpt>Seulement en anglais</QOpt>
       </QuizQ>
     </QuizSeries>

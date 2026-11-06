@@ -331,12 +331,12 @@ const M6_Quiz: Page = () => (
     <QuizSeries y={220}>
       <QuizQ q="L’IA annonce un total de 14 980 €. Que faites-vous ?" explain="L’IA peut se tromper en additionnant. Le total se vérifie avec une formule (SOMME) dans le tableur, qui fait foi.">
         <QOpt>Je le reporte tel quel</QOpt>
-        <QOpt ok>Je le vérifie avec une formule SOMME</QOpt>
-        <QOpt>Je lui demande si elle est sûre</QOpt>
+        <QOpt>Je le vérifie avec une formule SOMME</QOpt>
+        <QOpt ok>Je lui demande si elle est sûre</QOpt>
       </QuizQ>
       <QuizQ q="« Les demandes baissent en août à cause des congés. » Comment présenter cette phrase ?" explain="L’IA voit les chiffres, pas les causes. Une explication proposée par l’IA reste une hypothèse à confirmer.">
-        <QOpt>Comme un fait établi</QOpt>
-        <QOpt ok>Comme une hypothèse à vérifier</QOpt>
+        <QOpt ok>Comme un fait établi</QOpt>
+        <QOpt>Comme une hypothèse à vérifier</QOpt>
         <QOpt>Il faut la supprimer</QOpt>
       </QuizQ>
       <QuizQ q="Vous devez nettoyer un fichier de 2 000 contacts clients réels. Le bon réflexe ?" explain="Des données personnelles réelles ne vont pas dans un assistant non autorisé. On demande la méthode et les formules, puis on les applique soi-même dans le tableur.">
@@ -346,8 +346,8 @@ const M6_Quiz: Page = () => (
       </QuizQ>
       <QuizQ q="Dans un prompt de reporting, pourquoi écrire « ne recalcule rien » ?" explain="On veut que l’IA commente les chiffres du tableur, pas qu’elle en produise de nouveaux, potentiellement faux.">
         <QOpt>Pour aller plus vite</QOpt>
-        <QOpt ok>Pour qu’elle n’utilise que les chiffres fournis</QOpt>
-        <QOpt>Parce qu’elle ne sait pas compter du tout</QOpt>
+        <QOpt>Pour qu’elle n’utilise que les chiffres fournis</QOpt>
+        <QOpt ok>Parce qu’elle ne sait pas compter du tout</QOpt>
       </QuizQ>
     </QuizSeries>
   </Frame>

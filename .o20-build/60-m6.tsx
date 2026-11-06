@@ -421,24 +421,24 @@ const M6_Quiz: Page = () => (
         <QOpt>couper les caméras</QOpt>
       </QuizQ>
       <QuizQ q="Quel outil sert d’abord à extraire automatiquement les actions (qui, quoi, quand) d’une réunion ?" explain="Fireflies.ai produit le compte rendu et détecte les actions et engagements pris à l’oral.">
-        <QOpt ok>Fireflies.ai</QOpt>
+        <QOpt>Fireflies.ai</QOpt>
         <QOpt>DeepL</QOpt>
-        <QOpt>Adobe Firefly</QOpt>
+        <QOpt ok>Adobe Firefly</QOpt>
       </QuizQ>
       <QuizQ q="« Où en est le projet Horizon ? » Pour une réponse tirée de vos pages de projet, quel outil ?" explain="Notion AI répond à partir de tout votre espace de travail Notion, avec les pages sources.">
-        <QOpt>Consensus</QOpt>
-        <QOpt ok>Notion AI</QOpt>
+        <QOpt ok>Consensus</QOpt>
+        <QOpt>Notion AI</QOpt>
         <QOpt>CapCut</QOpt>
       </QuizQ>
       <QuizQ q="Peut-on transcrire un entretien annuel avec un outil grand public ?" explain="Non : un entretien individuel RH est sensible et confidentiel. On prend des notes à la main.">
         <QOpt>Oui, si le salarié ne parle pas trop</QOpt>
-        <QOpt>Oui, en supprimant le fichier ensuite</QOpt>
-        <QOpt ok>Non : c’est un échange sensible et confidentiel</QOpt>
+        <QOpt ok>Oui, en supprimant le fichier ensuite</QOpt>
+        <QOpt>Non : c’est un échange sensible et confidentiel</QOpt>
       </QuizQ>
       <QuizQ q="Le compte rendu IA attribue une échéance que personne n’a dite. Que faites-vous ?" explain="L’IA peut déduire ou inventer une information. On la fait confirmer par la personne concernée avant d’envoyer.">
         <QOpt>Vous l’envoyez : elle paraît logique</QOpt>
-        <QOpt ok>Vous la faites confirmer avant l’envoi</QOpt>
-        <QOpt>Vous supprimez toutes les échéances</QOpt>
+        <QOpt>Vous la faites confirmer avant l’envoi</QOpt>
+        <QOpt ok>Vous supprimez toutes les échéances</QOpt>
       </QuizQ>
     </QuizSeries>
   </Frame>

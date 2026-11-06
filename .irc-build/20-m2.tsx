@@ -688,23 +688,23 @@ const M2_Quiz: Page = () => (
     <QuizSeries y={220}>
       <QuizQ q="Pourquoi donner à l’IA une liste fermée de catégories ?" explain="Avec une liste fermée, chaque demande tombe dans une case connue : les statistiques sont comparables d’un jour à l’autre et le routage reste fiable.">
         <QOpt>Pour qu’elle aille plus vite</QOpt>
-        <QOpt ok>Pour que les catégories restent cohérentes et exploitables</QOpt>
-        <QOpt>Ce n’est pas utile, elle trouve seule</QOpt>
+        <QOpt>Pour que les catégories restent cohérentes et exploitables</QOpt>
+        <QOpt ok>Ce n’est pas utile, elle trouve seule</QOpt>
       </QuizQ>
       <QuizQ q="« Ma plaque fait des étincelles, est-ce normal ? » Message calme et poli. Priorité ?" explain="La sécurité passe avant le ton. On donne immédiatement la consigne (ne plus utiliser, couper l’alimentation), puis on traite en priorité.">
-        <QOpt>P4 : simple question, client calme</QOpt>
+        <QOpt ok>P4 : simple question, client calme</QOpt>
         <QOpt>P3 : panne classique</QOpt>
-        <QOpt ok>P1 : risque pour la sécurité</QOpt>
+        <QOpt>P1 : risque pour la sécurité</QOpt>
       </QuizQ>
       <QuizQ q="Le numéro de commande n’apparaît pas dans le message. L’IA doit…" explain="« Non précisé » est une réponse utile : elle vous dit quoi demander au client. Un numéro inventé, lui, peut faire traiter le mauvais dossier.">
-        <QOpt ok>Écrire « non précisé »</QOpt>
-        <QOpt>Proposer le numéro le plus probable</QOpt>
+        <QOpt>Écrire « non précisé »</QOpt>
+        <QOpt ok>Proposer le numéro le plus probable</QOpt>
         <QOpt>Laisser le champ vide sans le signaler</QOpt>
       </QuizQ>
       <QuizQ q="« Bravo le service client 👏 » publié sur un réseau social. Émotion ?" explain="C’est de l’ironie : le client est mécontent, et en public. L’IA peut s’y tromper ; c’est typiquement un point que le conseiller vérifie.">
         <QOpt>Satisfait, il félicite l’équipe</QOpt>
-        <QOpt ok>Exaspéré, sur le ton de l’ironie</QOpt>
-        <QOpt>Neutre</QOpt>
+        <QOpt>Exaspéré, sur le ton de l’ironie</QOpt>
+        <QOpt ok>Neutre</QOpt>
       </QuizQ>
     </QuizSeries>
   </Frame>

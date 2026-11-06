@@ -5084,8 +5084,8 @@ const R_Quiz: Page = () => (
         q="Pour que les complétions inline respectent une convention, le levier le plus direct est…"
         explain="L’inline lit le fichier courant et les onglets voisins : un exemple bien placé et un commentaire structuré pèsent plus que toute instruction."
       >
-        <QOpt>Une règle dans .github/copilot-instructions.md</QOpt>
-        <QOpt ok>Un fichier exemplaire ouvert à côté et un commentaire structuré</QOpt>
+        <QOpt ok>Une règle dans .github/copilot-instructions.md</QOpt>
+        <QOpt>Un fichier exemplaire ouvert à côté et un commentaire structuré</QOpt>
         <QOpt>Un modèle plus puissant dans le sélecteur</QOpt>
       </QuizQ>
       <QuizQ

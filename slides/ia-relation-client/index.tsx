@@ -4146,13 +4146,13 @@ const M1_QuizFlash: Page = () => (
     <Title>Quiz flash : vrai ou faux ?</Title>
     <QuizSeries y={220}>
       <QuizQ q="« L’IA connaît nos conditions de retour et nos délais de livraison. »" explain="Elle ne connaît que ce que vous lui donnez : la procédure collée dans la demande, ou une base de connaissances branchée sur l’outil. Sinon, elle invente un délai plausible.">
-        <QOpt>Vrai, elle a été entraînée sur Internet</QOpt>
-        <QOpt ok>Faux, sauf si on les lui fournit</QOpt>
+        <QOpt ok>Vrai, elle a été entraînée sur Internet</QOpt>
+        <QOpt>Faux, sauf si on les lui fournit</QOpt>
         <QOpt>Vrai, si notre site est public</QOpt>
       </QuizQ>
       <QuizQ q="« L’IA peut se tromper tout en ayant l’air sûre d’elle. »" explain="C’est l’hallucination : une réponse fausse, bien rédigée. D’où la relecture systématique avant envoi, surtout sur les montants, les délais et les engagements.">
-        <QOpt ok>Vrai, et c’est le principal piège</QOpt>
-        <QOpt>Faux, elle dit toujours « je ne sais pas »</QOpt>
+        <QOpt>Vrai, et c’est le principal piège</QOpt>
+        <QOpt ok>Faux, elle dit toujours « je ne sais pas »</QOpt>
         <QOpt>Faux, avec les versions récentes</QOpt>
       </QuizQ>
       <QuizQ q="« Je peux coller l’email d’un client avec son adresse et son IBAN dans une IA grand public. »" explain="Jamais dans un outil non autorisé : les données peuvent être conservées ou réutilisées. On utilise l’outil validé par l’entreprise et on retire les données inutiles (module 7).">
@@ -4161,8 +4161,8 @@ const M1_QuizFlash: Page = () => (
         <QOpt ok>Faux : outil autorisé et données minimales</QOpt>
       </QuizQ>
       <QuizQ q="« Le même prompt donne toujours exactement la même réponse. »" explain="La génération comporte une part de hasard : deux essais donnent deux formulations. C’est pour cela qu’on crée des modèles cadrés et qu’on relit toujours.">
-        <QOpt>Vrai</QOpt>
-        <QOpt ok>Faux : la formulation varie d’un essai à l’autre</QOpt>
+        <QOpt ok>Vrai</QOpt>
+        <QOpt>Faux : la formulation varie d’un essai à l’autre</QOpt>
         <QOpt>Vrai, si on écrit en majuscules</QOpt>
       </QuizQ>
       <QuizQ q="« Avec l’IA, le conseiller n’est plus responsable de la réponse envoyée. »" explain="La réponse part au nom de l’entreprise et du conseiller. L’IA est un outil de préparation : la décision et la responsabilité restent humaines.">
@@ -5188,23 +5188,23 @@ const M2_Quiz: Page = () => (
     <QuizSeries y={220}>
       <QuizQ q="Pourquoi donner à l’IA une liste fermée de catégories ?" explain="Avec une liste fermée, chaque demande tombe dans une case connue : les statistiques sont comparables d’un jour à l’autre et le routage reste fiable.">
         <QOpt>Pour qu’elle aille plus vite</QOpt>
-        <QOpt ok>Pour que les catégories restent cohérentes et exploitables</QOpt>
-        <QOpt>Ce n’est pas utile, elle trouve seule</QOpt>
+        <QOpt>Pour que les catégories restent cohérentes et exploitables</QOpt>
+        <QOpt ok>Ce n’est pas utile, elle trouve seule</QOpt>
       </QuizQ>
       <QuizQ q="« Ma plaque fait des étincelles, est-ce normal ? » Message calme et poli. Priorité ?" explain="La sécurité passe avant le ton. On donne immédiatement la consigne (ne plus utiliser, couper l’alimentation), puis on traite en priorité.">
-        <QOpt>P4 : simple question, client calme</QOpt>
+        <QOpt ok>P4 : simple question, client calme</QOpt>
         <QOpt>P3 : panne classique</QOpt>
-        <QOpt ok>P1 : risque pour la sécurité</QOpt>
+        <QOpt>P1 : risque pour la sécurité</QOpt>
       </QuizQ>
       <QuizQ q="Le numéro de commande n’apparaît pas dans le message. L’IA doit…" explain="« Non précisé » est une réponse utile : elle vous dit quoi demander au client. Un numéro inventé, lui, peut faire traiter le mauvais dossier.">
-        <QOpt ok>Écrire « non précisé »</QOpt>
-        <QOpt>Proposer le numéro le plus probable</QOpt>
+        <QOpt>Écrire « non précisé »</QOpt>
+        <QOpt ok>Proposer le numéro le plus probable</QOpt>
         <QOpt>Laisser le champ vide sans le signaler</QOpt>
       </QuizQ>
       <QuizQ q="« Bravo le service client 👏 » publié sur un réseau social. Émotion ?" explain="C’est de l’ironie : le client est mécontent, et en public. L’IA peut s’y tromper ; c’est typiquement un point que le conseiller vérifie.">
         <QOpt>Satisfait, il félicite l’équipe</QOpt>
-        <QOpt ok>Exaspéré, sur le ton de l’ironie</QOpt>
-        <QOpt>Neutre</QOpt>
+        <QOpt>Exaspéré, sur le ton de l’ironie</QOpt>
+        <QOpt ok>Neutre</QOpt>
       </QuizQ>
     </QuizSeries>
   </Frame>
@@ -5776,8 +5776,8 @@ const M3_Quiz: Page = () => (
     <Title>Quiz : la bonne réponse, au bon ton</Title>
     <QuizSeries y={220}>
       <QuizQ q="Un client poste une critique publique sur un réseau social. Votre réponse publique contient…" explain="En public : on reconnaît, on s’excuse si besoin, et on bascule en privé. Aucun montant, aucun numéro de commande, aucune donnée personnelle.">
-        <QOpt>Le détail de sa commande, pour montrer qu’on suit le dossier</QOpt>
-        <QOpt ok>Une reconnaissance brève et une invitation en message privé</QOpt>
+        <QOpt ok>Le détail de sa commande, pour montrer qu’on suit le dossier</QOpt>
+        <QOpt>Une reconnaissance brève et une invitation en message privé</QOpt>
         <QOpt>Rien : on ne répond jamais en public</QOpt>
       </QuizQ>
       <QuizQ q="Vous demandez à l’IA de rendre une réponse « plus chaleureuse ». Elle ajoute « nous vous offrons la livraison ». Que faites-vous ?" explain="L’IA a créé un engagement qui n’existe pas. On le retire, et on précise dans le prompt : « sans promesse ni geste nouveau ».">
@@ -5787,12 +5787,12 @@ const M3_Quiz: Page = () => (
       </QuizQ>
       <QuizQ q="Où placer la réponse à la question du client ?" explain="Le client cherche d’abord sa réponse. Elle vient tout de suite après la reconnaissance de la situation ; l’explication suit.">
         <QOpt>À la fin, après toutes les explications</QOpt>
-        <QOpt ok>Au début, juste après avoir reconnu la situation</QOpt>
-        <QOpt>Dans une pièce jointe</QOpt>
+        <QOpt>Au début, juste après avoir reconnu la situation</QOpt>
+        <QOpt ok>Dans une pièce jointe</QOpt>
       </QuizQ>
       <QuizQ q="Pour traduire une réponse en allemand, la bonne pratique est…" explain="Rédiger en français (là où vous maîtrisez le fond), traduire en imposant de garder chiffres et références, puis contrôler par une rétro-traduction.">
-        <QOpt>Demander directement à l’IA de répondre en allemand</QOpt>
-        <QOpt ok>Rédiger en français, traduire, puis rétro-traduire pour contrôler</QOpt>
+        <QOpt ok>Demander directement à l’IA de répondre en allemand</QOpt>
+        <QOpt>Rédiger en français, traduire, puis rétro-traduire pour contrôler</QOpt>
         <QOpt>Utiliser un traducteur différent pour chaque phrase</QOpt>
       </QuizQ>
     </QuizSeries>
@@ -6453,17 +6453,17 @@ const M4_Quiz: Page = () => (
       </QuizQ>
       <QuizQ q="Quelle phrase reconnaît l’insatisfaction sans reconnaître de faute juridique ?" explain="On reconnaît la gêne et ce qui est légitime (« ce délai n’est pas normal ») sans écrire « c’est notre faute » ni « nous sommes responsables du préjudice ».">
         <QOpt>« Nous reconnaissons notre entière responsabilité. »</QOpt>
-        <QOpt ok>« Je comprends votre exaspération, ce délai n’est pas normal. »</QOpt>
-        <QOpt>« Ce n’est pas de notre faute. »</QOpt>
+        <QOpt>« Je comprends votre exaspération, ce délai n’est pas normal. »</QOpt>
+        <QOpt ok>« Ce n’est pas de notre faute. »</QOpt>
       </QuizQ>
       <QuizQ q="Une bonne note d’escalade contient surtout…" explain="Le responsable doit pouvoir décider sans tout relire : situation, ce qui a déjà été fait, la demande, le risque, et votre proposition. Factuel, sans adjectifs.">
-        <QOpt>Tout l’historique copié-collé</QOpt>
+        <QOpt ok>Tout l’historique copié-collé</QOpt>
         <QOpt>Votre avis sur le client</QOpt>
-        <QOpt ok>Situation, déjà fait, demande, risque, proposition</QOpt>
+        <QOpt>Situation, déjà fait, demande, risque, proposition</QOpt>
       </QuizQ>
       <QuizQ q="À quoi sert la simulation de réclamation avec l’IA ?" explain="C’est un entraînement : répéter les phrases difficiles, sans risque pour un vrai client, et recevoir un retour immédiat. Jamais avec des données réelles.">
-        <QOpt ok>À s’entraîner sans risque, et à recevoir un retour</QOpt>
-        <QOpt>À laisser l’IA répondre aux vrais clients en colère</QOpt>
+        <QOpt>À s’entraîner sans risque, et à recevoir un retour</QOpt>
+        <QOpt ok>À laisser l’IA répondre aux vrais clients en colère</QOpt>
         <QOpt>À évaluer officiellement les conseillers</QOpt>
       </QuizQ>
     </QuizSeries>
@@ -7000,23 +7000,23 @@ const M5_Quiz: Page = () => (
     <QuizSeries y={220}>
       <QuizQ q="Vous posez une question absente de la documentation fournie. La meilleure réponse de l’IA est…" explain="Avec la règle « uniquement à partir du document », l’IA doit signaler l’absence d’information. Une réponse inventée serait diffusée à tous les clients.">
         <QOpt>Une réponse générale tirée de ses connaissances</QOpt>
-        <QOpt ok>« Information absente du document. »</QOpt>
-        <QOpt>La règle la plus probable dans le secteur</QOpt>
+        <QOpt>« Information absente du document. »</QOpt>
+        <QOpt ok>La règle la plus probable dans le secteur</QOpt>
       </QuizQ>
       <QuizQ q="Pourquoi écrire les questions de la FAQ avec les mots des clients ?" explain="Le conseiller et le client cherchent avec leurs propres mots (« mon colis », pas « litige transporteur ») : la fiche doit être trouvable avec ces mots.">
-        <QOpt>Pour faire plus sympathique</QOpt>
-        <QOpt ok>Pour qu’on retrouve la fiche avec les mots qu’on tape vraiment</QOpt>
+        <QOpt ok>Pour faire plus sympathique</QOpt>
+        <QOpt>Pour qu’on retrouve la fiche avec les mots qu’on tape vraiment</QOpt>
         <QOpt>Parce que l’IA ne comprend pas le vocabulaire métier</QOpt>
       </QuizQ>
       <QuizQ q="Qu’est-ce qui rend une fiche de connaissance fiable dans le temps ?" explain="Une source, une date et un responsable : on sait d’où vient l’information, quand elle a été vérifiée, et qui la met à jour.">
         <QOpt>Sa longueur</QOpt>
-        <QOpt>Le fait qu’elle ait été générée par l’IA</QOpt>
-        <QOpt ok>Sa source, sa date de mise à jour et son responsable</QOpt>
+        <QOpt ok>Le fait qu’elle ait été générée par l’IA</QOpt>
+        <QOpt>Sa source, sa date de mise à jour et son responsable</QOpt>
       </QuizQ>
       <QuizQ q="Un arbre de décision bien construit…" explain="Une question fermée par étape (oui / non), et chaque branche se termine par une action concrète. Sinon, le conseiller reste bloqué au milieu.">
-        <QOpt ok>Pose des questions fermées et finit toujours par une action</QOpt>
+        <QOpt>Pose des questions fermées et finit toujours par une action</QOpt>
         <QOpt>Contient toutes les exceptions possibles</QOpt>
-        <QOpt>Remplace la procédure écrite</QOpt>
+        <QOpt ok>Remplace la procédure écrite</QOpt>
       </QuizQ>
     </QuizSeries>
   </Frame>
@@ -7475,23 +7475,23 @@ const M6_Quiz: Page = () => (
     <Title>Quiz : analyser les interactions</Title>
     <QuizSeries y={220}>
       <QuizQ q="Pour connaître le nombre exact de contacts par motif sur 1 000 conversations, on…" explain="L’IA classe très bien chaque conversation ; pour compter, un tableur est exact à coup sûr. Les additions de l’IA sur de gros volumes peuvent être fausses.">
-        <QOpt>Demande le total directement à l’IA</QOpt>
-        <QOpt ok>Fait classer par l’IA, puis compte avec un tableur</QOpt>
+        <QOpt ok>Demande le total directement à l’IA</QOpt>
+        <QOpt>Fait classer par l’IA, puis compte avec un tableur</QOpt>
         <QOpt>Estime à l’œil</QOpt>
       </QuizQ>
       <QuizQ q="Avant d’envoyer 500 conversations à l’IA, il faut…" explain="Noms, emails, téléphones, adresses, numéros de commande : on anonymise, et on n’utilise que l’outil autorisé par l’entreprise.">
         <QOpt>Les traduire en anglais</QOpt>
-        <QOpt>Les raccourcir à une phrase</QOpt>
-        <QOpt ok>Les anonymiser et utiliser un outil autorisé</QOpt>
+        <QOpt ok>Les raccourcir à une phrase</QOpt>
+        <QOpt>Les anonymiser et utiliser un outil autorisé</QOpt>
       </QuizQ>
       <QuizQ q="L’IA propose une cause à un irritant. C’est…" explain="Une hypothèse plausible, pas un constat. On la vérifie avec les équipes concernées avant d’agir, puis on mesure l’effet de l’action.">
         <QOpt>Un fait établi</QOpt>
-        <QOpt ok>Une hypothèse à vérifier avec les équipes</QOpt>
-        <QOpt>Inutile : seules les données comptent</QOpt>
+        <QOpt>Une hypothèse à vérifier avec les équipes</QOpt>
+        <QOpt ok>Inutile : seules les données comptent</QOpt>
       </QuizQ>
       <QuizQ q="Une bonne recommandation contient…" explain="Une action précise, un responsable et un indicateur : sans eux, la recommandation reste un vœu pieux.">
-        <QOpt>Un constat bien formulé</QOpt>
-        <QOpt ok>Une action, un responsable et un indicateur</QOpt>
+        <QOpt ok>Un constat bien formulé</QOpt>
+        <QOpt>Une action, un responsable et un indicateur</QOpt>
         <QOpt>Un graphique</QOpt>
       </QuizQ>
     </QuizSeries>
@@ -7981,13 +7981,13 @@ const F_Quiz: Page = () => (
         <QOpt>Question, réponse, source, signature, émoji</QOpt>
       </QuizQ>
       <QuizQ q="Analyser une demande, c’est identifier…" explain="Intention, catégorie, informations clés, urgence, émotion : la fiche d’analyse du module 2.">
-        <QOpt ok>Intention, catégorie, infos clés, urgence, émotion</QOpt>
+        <QOpt>Intention, catégorie, infos clés, urgence, émotion</QOpt>
         <QOpt>Le nom, l’âge et l’adresse du client</QOpt>
-        <QOpt>Le nombre de mots et de fautes</QOpt>
+        <QOpt ok>Le nombre de mots et de fautes</QOpt>
       </QuizQ>
       <QuizQ q="Dans une bonne réponse, la solution arrive…" explain="Saluer, reconnaître, puis répondre : la solution vient tôt, l’explication ensuite, puis la prochaine étape.">
-        <QOpt>Tout à la fin</QOpt>
-        <QOpt ok>Juste après avoir reconnu la situation</QOpt>
+        <QOpt ok>Tout à la fin</QOpt>
+        <QOpt>Juste après avoir reconnu la situation</QOpt>
         <QOpt>Dans un second message</QOpt>
       </QuizQ>
       <QuizQ q="Face à un client en colère, quelle phrase éviter ?" explain="« Calmez-vous » nie l’émotion et la fait monter. On reformule avec un fait précis et on propose une action.">
@@ -7997,23 +7997,23 @@ const F_Quiz: Page = () => (
       </QuizQ>
       <QuizQ q="Pour une recherche fiable dans la documentation, l’IA doit…" explain="Répondre uniquement à partir du document, citer la section, et dire quand l’information est absente.">
         <QOpt>Compléter avec ses connaissances générales</QOpt>
-        <QOpt ok>Répondre seulement à partir du document, en citant la section</QOpt>
-        <QOpt>Donner la réponse la plus probable</QOpt>
+        <QOpt>Répondre seulement à partir du document, en citant la section</QOpt>
+        <QOpt ok>Donner la réponse la plus probable</QOpt>
       </QuizQ>
       <QuizQ q="Pour compter les motifs de contact sur 1 000 conversations…" explain="L’IA classe, le tableur compte, l’humain interprète.">
-        <QOpt>On demande le total à l’IA</QOpt>
-        <QOpt ok>L’IA classe, un tableur compte</QOpt>
+        <QOpt ok>On demande le total à l’IA</QOpt>
+        <QOpt>L’IA classe, un tableur compte</QOpt>
         <QOpt>On lit un échantillon de 10</QOpt>
       </QuizQ>
       <QuizQ q="Laquelle de ces données ne doit jamais aller dans une IA ?" explain="Les données bancaires, les mots de passe et les données de santé ne servent pas à rédiger une réponse : jamais, même dans l’outil autorisé.">
         <QOpt>La description de la panne</QOpt>
-        <QOpt>La date de livraison</QOpt>
-        <QOpt ok>Le numéro de carte bancaire</QOpt>
+        <QOpt ok>La date de livraison</QOpt>
+        <QOpt>Le numéro de carte bancaire</QOpt>
       </QuizQ>
       <QuizQ q="Qui décide d’un geste commercial ?" explain="Le conseiller dans sa délégation, ou son responsable au-delà, selon la procédure. L’IA peut préparer la note, jamais décider.">
         <QOpt>L’IA, si elle le propose</QOpt>
-        <QOpt ok>Le conseiller ou son responsable, selon la procédure</QOpt>
-        <QOpt>Le client</QOpt>
+        <QOpt>Le conseiller ou son responsable, selon la procédure</QOpt>
+        <QOpt ok>Le client</QOpt>
       </QuizQ>
     </QuizSeries>
   </Frame>

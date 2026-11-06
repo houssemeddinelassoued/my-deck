@@ -323,8 +323,8 @@ const M5_Quiz: Page = () => (
       </QuizQ>
       <QuizQ q="Pour qu’un planning proposé par l’IA soit utile, il faut d’abord lui donner…" explain="Sans vos contraintes (réunions, horaires, échéances), l’IA produit une journée théorique qui ne tient pas compte de votre agenda réel.">
         <QOpt>Votre mot de passe d’agenda</QOpt>
-        <QOpt ok>Vos tâches et vos contraintes horaires</QOpt>
-        <QOpt>Rien, elle connaît les bonnes pratiques</QOpt>
+        <QOpt>Vos tâches et vos contraintes horaires</QOpt>
+        <QOpt ok>Rien, elle connaît les bonnes pratiques</QOpt>
       </QuizQ>
       <QuizQ q="Quelle question poser à l’IA après avoir créé une checklist ?" explain="« Qu’ai-je oublié ? » fait relire la liste sous un autre angle et fait souvent remonter des points manquants.">
         <QOpt ok>« Qu’ai-je oublié ? »</QOpt>

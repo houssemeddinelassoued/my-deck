@@ -373,12 +373,12 @@ const M3_Quiz: Page = () => (
     <QuizSeries y={220}>
       <QuizQ q="Que faut-il absolument préciser pour faire reformuler un message ?" explain="Sans cette consigne, l’IA peut ajouter une excuse, une promesse ou un détail qui n’existait pas. Une reformulation change la forme, pas le fond.">
         <QOpt>La police de caractères</QOpt>
-        <QOpt ok>« Garde tous les faits, n’ajoute rien »</QOpt>
-        <QOpt>Le nombre de paragraphes</QOpt>
+        <QOpt>« Garde tous les faits, n’ajoute rien »</QOpt>
+        <QOpt ok>Le nombre de paragraphes</QOpt>
       </QuizQ>
       <QuizQ q="Dans la méthode A·R·S·S, que signifie le R ?" explain="Accuser réception, Reconnaître le problème (sans forcément reconnaître une faute juridique), proposer une Solution, annoncer la Suite.">
-        <QOpt>Rembourser</QOpt>
-        <QOpt ok>Reconnaître le problème du client</QOpt>
+        <QOpt ok>Rembourser</QOpt>
+        <QOpt>Reconnaître le problème du client</QOpt>
         <QOpt>Relancer</QOpt>
       </QuizQ>
       <QuizQ q="L’IA propose dans une réponse « un avoir de 20 % ». Personne ne l’a décidé. Que faire ?" explain="Un engagement commercial se décide par l’entreprise, pas par l’IA. On retire la phrase et on précise dans le prompt ce qui peut ou non être proposé.">
@@ -388,13 +388,13 @@ const M3_Quiz: Page = () => (
       </QuizQ>
       <QuizQ q="Pourquoi écrire « 3 November » plutôt que « 03/11 » à un interlocuteur américain ?" explain="Aux États-Unis, la date s’écrit mois/jour : 03/11 se lit « 11 mars ». Le mois en toutes lettres évite toute ambiguïté.">
         <QOpt>C’est plus élégant</QOpt>
-        <QOpt ok>03/11 peut se lire « 11 mars »</QOpt>
-        <QOpt>Les chiffres ne se traduisent pas</QOpt>
+        <QOpt>03/11 peut se lire « 11 mars »</QOpt>
+        <QOpt ok>Les chiffres ne se traduisent pas</QOpt>
       </QuizQ>
       <QuizQ q="Une relance à J + 30 annonce une transmission au recouvrement. Qui valide ?" explain="Annoncer une suite contentieuse engage l’entreprise : la décision et la validation reviennent au responsable, l’IA ne fait que rédiger.">
-        <QOpt>Personne, c’est un modèle</QOpt>
+        <QOpt ok>Personne, c’est un modèle</QOpt>
         <QOpt>L’IA, qui a fait le calcul des jours</QOpt>
-        <QOpt ok>Votre responsable</QOpt>
+        <QOpt>Votre responsable</QOpt>
       </QuizQ>
     </QuizSeries>
   </Frame>

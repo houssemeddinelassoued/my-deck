@@ -429,8 +429,8 @@ const M1_Quiz: Page = () => (
     </Title>
     <QuizSeries y={220}>
       <QuizQ q="« L’IA connaît les prix et les offres d’Ardente. »" explain="Elle ne connaît que ce qu’on lui donne dans la conversation. Sinon, elle invente des tarifs plausibles… et faux.">
-        <QOpt>Vrai, tout est sur Internet</QOpt>
-        <QOpt ok>Faux, sauf si on les lui fournit</QOpt>
+        <QOpt ok>Vrai, tout est sur Internet</QOpt>
+        <QOpt>Faux, sauf si on les lui fournit</QOpt>
         <QOpt>Vrai, si la marque est connue</QOpt>
       </QuizQ>
       <QuizQ q="« Un texte bien écrit par l’IA peut être publié sans relecture. »" explain="Bien écrit ne veut pas dire exact. Un chiffre inventé ou une promesse non validée engage la marque : relecture systématique.">

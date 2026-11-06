@@ -47,12 +47,12 @@ const J2_Quiz: Page = () => (
       </QuizQ>
       <QuizQ q="Quel geste accepte une suggestion mot par mot ?" explain="Ctrl+→ (Cmd+→ sur macOS). Tab accepte tout, Alt+] change de proposition.">
         <QOpt>Tab</QOpt>
-        <QOpt ok>Ctrl+→</QOpt>
-        <QOpt>Alt+]</QOpt>
+        <QOpt>Ctrl+→</QOpt>
+        <QOpt ok>Alt+]</QOpt>
       </QuizQ>
       <QuizQ q="Une suggestion inline peut-elle s’appuyer sur un fichier fermé du projet ?" explain="Non : l’inline lit le fichier courant et les onglets ouverts. Ouvrez le fichier utile dans un onglet voisin.">
-        <QOpt>Oui, il indexe tout le projet</QOpt>
-        <QOpt ok>Non, seulement le fichier courant et les onglets ouverts</QOpt>
+        <QOpt ok>Oui, il indexe tout le projet</QOpt>
+        <QOpt>Non, seulement le fichier courant et les onglets ouverts</QOpt>
         <QOpt>Oui, si le fichier est dans le même dossier</QOpt>
       </QuizQ>
       <QuizQ q="Quel ingrédient d’un commentaire ferme le mieux les cas limites ?" explain="Les exemples, surtout négatifs : « 4 → false » empêche la suggestion « intervalle ».">
@@ -62,8 +62,8 @@ const J2_Quiz: Page = () => (
       </QuizQ>
       <QuizQ q="À l’Atelier 4, un test d’acceptation échoue. Que faites-vous ?" explain="Les tests fournis sont la spécification : on corrige le code (ou le commentaire qui le guide), jamais le test.">
         <QOpt>Je modifie le test pour qu’il passe</QOpt>
-        <QOpt ok>Je corrige le code ou je précise le commentaire-guide</QOpt>
-        <QOpt>Je supprime le test</QOpt>
+        <QOpt>Je corrige le code ou je précise le commentaire-guide</QOpt>
+        <QOpt ok>Je supprime le test</QOpt>
       </QuizQ>
     </QuizSeries>
   </Frame>

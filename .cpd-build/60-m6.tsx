@@ -369,12 +369,12 @@ const M6_Qcm: Page = () => (
       </QuizQ>
       <QuizQ q="Remplacer == par === dans le legacy, c’est…" explain="Un changement de comportement : le texte « 1 » ne trouve plus le ticket 1. Peut-être souhaitable, mais à décider et commiter séparément.">
         <QOpt>Un simple nettoyage sans risque</QOpt>
-        <QOpt ok>Un changement de comportement, à traiter à part</QOpt>
-        <QOpt>Obligatoire pour que les tests passent</QOpt>
+        <QOpt>Un changement de comportement, à traiter à part</QOpt>
+        <QOpt ok>Obligatoire pour que les tests passent</QOpt>
       </QuizQ>
       <QuizQ q="Quel est le bon découpage des commits ?" explain="Un commit de refactoring (même comportement) puis un commit de correction (comportement changé, test mis à jour exprès) : la revue et l’annulation restent simples.">
-        <QOpt>Un seul gros commit « nettoyage »</QOpt>
-        <QOpt ok>Refactoring d’abord, correction du bug ensuite</QOpt>
+        <QOpt ok>Un seul gros commit « nettoyage »</QOpt>
+        <QOpt>Refactoring d’abord, correction du bug ensuite</QOpt>
         <QOpt>Correction d’abord, refactoring jamais</QOpt>
       </QuizQ>
       <QuizQ q="Un test de caractérisation sert à…" explain="Il fige le comportement actuel, bugs compris, pour détecter tout changement involontaire pendant le refactoring.">

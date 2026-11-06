@@ -430,8 +430,8 @@ const M1_Qcm: Page = () => (
     <Title>QCM · Module 1 en quatre questions</Title>
     <QuizSeries y={200}>
       <QuizQ q="Sur quoi repose une suggestion de Copilot ?" explain="Un modèle de langage prédit la suite la plus probable à partir du contexte envoyé. Il n’exécute rien et ne « comprend » pas votre besoin.">
-        <QOpt>Une base de données de solutions validées par GitHub</QOpt>
-        <QOpt ok>Une prédiction du code le plus probable, à partir du contexte envoyé</QOpt>
+        <QOpt ok>Une base de données de solutions validées par GitHub</QOpt>
+        <QOpt>Une prédiction du code le plus probable, à partir du contexte envoyé</QOpt>
         <QOpt>L’exécution de votre code pour trouver ce qui marche</QOpt>
       </QuizQ>
       <QuizQ q="Sur l’offre Copilot Free, qu’est-ce qui ne consomme pas de crédits IA ?" explain="Depuis juin 2026, complétions et suggestions de modification suivante sont hors crédits (avec un plafond de 2 000 complétions par mois sur Free). Chat et agents consomment des crédits.">
@@ -445,8 +445,8 @@ const M1_Qcm: Page = () => (
         <QOpt ok>Je la lis ligne à ligne et je la vérifie sur des cas limites</QOpt>
       </QuizQ>
       <QuizQ q="Parmi les nouveautés d’octobre 2026, laquelle permet de faire travailler plusieurs modèles sur la même tâche ?" explain="« Comparer les résultats de modèles », en préversion dans la fenêtre Agents. La fenêtre Agents en est le cadre, les connecteurs apportent du contexte externe.">
-        <QOpt>Les connecteurs Copilot</QOpt>
-        <QOpt ok>La comparaison des résultats de modèles</QOpt>
+        <QOpt ok>Les connecteurs Copilot</QOpt>
+        <QOpt>La comparaison des résultats de modèles</QOpt>
         <QOpt>Le bac à sable local</QOpt>
       </QuizQ>
     </QuizSeries>

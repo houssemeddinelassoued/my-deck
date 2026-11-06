@@ -464,17 +464,17 @@ const M4_Quiz: Page = () => (
       </QuizQ>
       <QuizQ q="Quelle phrase reconnaît l’insatisfaction sans reconnaître de faute juridique ?" explain="On reconnaît la gêne et ce qui est légitime (« ce délai n’est pas normal ») sans écrire « c’est notre faute » ni « nous sommes responsables du préjudice ».">
         <QOpt>« Nous reconnaissons notre entière responsabilité. »</QOpt>
-        <QOpt ok>« Je comprends votre exaspération, ce délai n’est pas normal. »</QOpt>
-        <QOpt>« Ce n’est pas de notre faute. »</QOpt>
+        <QOpt>« Je comprends votre exaspération, ce délai n’est pas normal. »</QOpt>
+        <QOpt ok>« Ce n’est pas de notre faute. »</QOpt>
       </QuizQ>
       <QuizQ q="Une bonne note d’escalade contient surtout…" explain="Le responsable doit pouvoir décider sans tout relire : situation, ce qui a déjà été fait, la demande, le risque, et votre proposition. Factuel, sans adjectifs.">
-        <QOpt>Tout l’historique copié-collé</QOpt>
+        <QOpt ok>Tout l’historique copié-collé</QOpt>
         <QOpt>Votre avis sur le client</QOpt>
-        <QOpt ok>Situation, déjà fait, demande, risque, proposition</QOpt>
+        <QOpt>Situation, déjà fait, demande, risque, proposition</QOpt>
       </QuizQ>
       <QuizQ q="À quoi sert la simulation de réclamation avec l’IA ?" explain="C’est un entraînement : répéter les phrases difficiles, sans risque pour un vrai client, et recevoir un retour immédiat. Jamais avec des données réelles.">
-        <QOpt ok>À s’entraîner sans risque, et à recevoir un retour</QOpt>
-        <QOpt>À laisser l’IA répondre aux vrais clients en colère</QOpt>
+        <QOpt>À s’entraîner sans risque, et à recevoir un retour</QOpt>
+        <QOpt ok>À laisser l’IA répondre aux vrais clients en colère</QOpt>
         <QOpt>À évaluer officiellement les conseillers</QOpt>
       </QuizQ>
     </QuizSeries>

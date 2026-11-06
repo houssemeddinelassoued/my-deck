@@ -357,8 +357,8 @@ const M5_Qcm: Page = () => (
     <Title>QCM · Module 5 en quatre questions</Title>
     <QuizSeries y={200}>
       <QuizQ q="Copilot propose return tickets.sort(…) pour trierBacklog. Que vérifiez-vous en premier ?" explain="sort trie sur place : le tableau reçu est modifié. Il faut trier une copie ([...tickets] ou toSorted).">
-        <QOpt>Que sort existe bien en JavaScript</QOpt>
-        <QOpt ok>Que le tableau reçu n’est pas modifié</QOpt>
+        <QOpt ok>Que sort existe bien en JavaScript</QOpt>
+        <QOpt>Que le tableau reçu n’est pas modifié</QOpt>
         <QOpt>Que la fonction est assez courte</QOpt>
       </QuizQ>
       <QuizQ q="Pourquoi passer fetchFn en paramètre de chargerTickets ?" explain="L’injection de dépendance permet de remplacer fetch par un faux (mock) dans les tests : aucun réseau, résultats déterministes.">
@@ -368,12 +368,12 @@ const M5_Qcm: Page = () => (
       </QuizQ>
       <QuizQ q="Avant de générer un parseur CSV, le geste le plus utile est…" explain="Ouvrir le fichier réel dans un onglet voisin : Copilot voit le séparateur, l’en-tête et les cas réels.">
         <QOpt>Choisir un modèle plus puissant</QOpt>
-        <QOpt ok>Ouvrir le fichier de données dans un onglet voisin</QOpt>
-        <QOpt>Écrire « fais un parseur robuste »</QOpt>
+        <QOpt>Ouvrir le fichier de données dans un onglet voisin</QOpt>
+        <QOpt ok>Écrire « fais un parseur robuste »</QOpt>
       </QuizQ>
       <QuizQ q="Quelle JSDoc est la plus utile ?" explain="Une doc décrit le contrat : paramètres, retour, erreurs, exemple. La paraphrase du nom n’apporte rien.">
-        <QOpt>« Cette fonction trie le backlog. »</QOpt>
-        <QOpt ok>@param, @returns « un nouveau tableau », @throws, un @example</QOpt>
+        <QOpt ok>« Cette fonction trie le backlog. »</QOpt>
+        <QOpt>@param, @returns « un nouveau tableau », @throws, un @example</QOpt>
         <QOpt>Le nom de l’auteur et la date</QOpt>
       </QuizQ>
     </QuizSeries>
