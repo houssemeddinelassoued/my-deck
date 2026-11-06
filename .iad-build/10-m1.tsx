@@ -390,8 +390,8 @@ const M1_Quiz: Page = () => (
     <Title>Quiz : vrai ou faux ?</Title>
     <QuizSeries y={220}>
       <QuizQ q="« L’IA connaît les tarifs et les procédures de mon entreprise. »" explain="Elle ne sait que ce que vous lui donnez dans la conversation (texte collé, document joint). Sinon, elle invente une réponse plausible.">
-        <QOpt ok>Vrai, elle a tout lu sur Internet</QOpt>
-        <QOpt>Faux, sauf si je les lui fournis</QOpt>
+        <QOpt ok>Faux, sauf si je les lui fournis</QOpt>
+        <QOpt>Vrai, elle a tout lu sur Internet</QOpt>
         <QOpt>Vrai, si mon entreprise a un site web</QOpt>
       </QuizQ>
       <QuizQ q="« Une réponse bien écrite et sûre d’elle est forcément juste. »" explain="C’est le piège principal : l’IA peut inventer avec aplomb (hallucination). Plus l’enjeu est fort, plus on vérifie à la source.">
@@ -401,12 +401,12 @@ const M1_Quiz: Page = () => (
       </QuizQ>
       <QuizQ q="Pour additionner 200 lignes de notes de frais, le mieux est…" explain="L’IA prédit du texte : elle peut se tromper sur un calcul. Elle peut en revanche vous écrire la formule à utiliser dans le tableur.">
         <QOpt>de demander le total à l’IA</QOpt>
-        <QOpt>d’utiliser une formule du tableur (que l’IA peut m’aider à écrire)</QOpt>
-        <QOpt ok>de demander deux fois à l’IA et de comparer</QOpt>
+        <QOpt>de demander deux fois à l’IA et de comparer</QOpt>
+        <QOpt ok>d’utiliser une formule du tableur (que l’IA peut m’aider à écrire)</QOpt>
       </QuizQ>
       <QuizQ q="Quel compte utiliser pour un usage professionnel ?" explain="Le compte fourni par l’employeur est encadré : contrat, paramètres de confidentialité, règles internes. Un compte personnel ne l’est pas.">
-        <QOpt ok>Mon compte personnel gratuit, c’est plus simple</QOpt>
-        <QOpt>Le compte professionnel autorisé par mon organisation</QOpt>
+        <QOpt ok>Le compte professionnel autorisé par mon organisation</QOpt>
+        <QOpt>Mon compte personnel gratuit, c’est plus simple</QOpt>
         <QOpt>Peu importe, ce sont les mêmes outils</QOpt>
       </QuizQ>
       <QuizQ q="Votre premier jet ne convient pas. Que faire ?" explain="On dialogue : on précise ce qui ne va pas (« trop long », « plus formel », « ajoute la date »). C’est souvent au 2e ou 3e échange que le texte devient bon.">

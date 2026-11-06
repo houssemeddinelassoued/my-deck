@@ -4872,8 +4872,8 @@ const M1_Quiz: Page = () => (
     <Title>Quiz du module 1</Title>
     <QuizSeries y={200}>
       <QuizQ q="Que fait fondamentalement un modèle de langage ?" explain="Il prédit la suite la plus probable, mot après mot. C’est puissant, mais il ne vérifie pas ce qu’il écrit.">
-        <QOpt ok>Il cherche la réponse dans une base de données vérifiée</QOpt>
-        <QOpt>Il produit la suite de texte la plus probable</QOpt>
+        <QOpt ok>Il produit la suite de texte la plus probable</QOpt>
+        <QOpt>Il cherche la réponse dans une base de données vérifiée</QOpt>
         <QOpt>Il exécute toujours un calcul exact</QOpt>
       </QuizQ>
       <QuizQ q="Copilot Chat, sans licence Microsoft 365 Copilot, peut-il lire vos e-mails ?" explain="Non : Copilot Chat travaille sur le web et sur ce que vous lui donnez. C’est la licence Microsoft 365 Copilot qui ouvre l’accès à vos données via Microsoft Graph.">
@@ -4882,13 +4882,13 @@ const M1_Quiz: Page = () => (
         <QOpt>Oui, mais seulement les e-mails non lus</QOpt>
       </QuizQ>
       <QuizQ q="Vous devez analyser un rapport d’audit de 120 pages et citer les passages. Votre premier choix ?" explain="Claude lit les très longs documents d’un bloc et cite les passages exacts. Copilot convient aussi pour des documents plus courts.">
-        <QOpt>Claude</QOpt>
+        <QOpt>Aucun, c’est trop long pour une IA</QOpt>
         <QOpt>Copilot dans Outlook</QOpt>
-        <QOpt ok>Aucun, c’est trop long pour une IA</QOpt>
+        <QOpt ok>Claude</QOpt>
       </QuizQ>
       <QuizQ q="L’IA vous propose une commande PowerShell inconnue. Que faites-vous ?" explain="On vérifie dans la documentation officielle et on teste en lecture seule. Le ton assuré ne prouve rien.">
-        <QOpt ok>Je l’exécute : l’IA a l’air sûre d’elle</QOpt>
-        <QOpt>Je vérifie la documentation et je teste en lecture seule</QOpt>
+        <QOpt ok>Je vérifie la documentation et je teste en lecture seule</QOpt>
+        <QOpt>Je l’exécute : l’IA a l’air sûre d’elle</QOpt>
         <QOpt>Je l’exécute en administrateur pour éviter les erreurs</QOpt>
       </QuizQ>
     </QuizSeries>
@@ -5483,8 +5483,8 @@ const M2_Quiz: Page = () => (
       </QuizQ>
       <QuizQ q="La première réponse est trop technique pour les utilisateurs. Que faites-vous ?" explain="On relance dans la même conversation : l’IA garde le contexte et corrige la cible.">
         <QOpt>Je recommence une nouvelle conversation</QOpt>
-        <QOpt>Je relance : « Réécris pour un non-technicien »</QOpt>
-        <QOpt ok>Je corrige tout à la main</QOpt>
+        <QOpt>Je corrige tout à la main</QOpt>
+        <QOpt ok>Je relance : « Réécris pour un non-technicien »</QOpt>
       </QuizQ>
       <QuizQ q="Vous ne savez pas quoi préciser pour une procédure. Le meilleur réflexe ?" explain="« Pose-moi d’abord tes questions » : l’IA liste ce qui lui manque, vous répondez, elle rédige.">
         <QOpt ok>Demander à l’IA de poser d’abord ses questions</QOpt>
@@ -5493,8 +5493,8 @@ const M2_Quiz: Page = () => (
       </QuizQ>
       <QuizQ q="Dans Microsoft 365 Copilot, à quoi sert « / » dans un prompt ?" explain="À citer un fichier, un e-mail ou une réunion précis, sans le télécharger ni le copier.">
         <QOpt>À commenter le prompt</QOpt>
-        <QOpt ok>À changer de langue</QOpt>
-        <QOpt>À citer un fichier, un e-mail ou une réunion</QOpt>
+        <QOpt ok>À citer un fichier, un e-mail ou une réunion</QOpt>
+        <QOpt>À changer de langue</QOpt>
       </QuizQ>
     </QuizSeries>
   </Frame>
@@ -6099,12 +6099,12 @@ const M3_Quiz: Page = () => (
     <QuizSeries y={200}>
       <QuizQ q="Pourquoi synthétiser un long rapport en trois passes ?" explain="On vérifie que tout a été lu (la carte), on récupère des faits sourcés (l’essentiel), puis on rédige pour le lecteur (la décision).">
         <QOpt>Parce que l’IA ne sait pas faire plus court</QOpt>
-        <QOpt>Pour garder la main et obtenir des faits sourcés</QOpt>
-        <QOpt ok>Pour consommer moins de licences</QOpt>
+        <QOpt>Pour consommer moins de licences</QOpt>
+        <QOpt ok>Pour garder la main et obtenir des faits sourcés</QOpt>
       </QuizQ>
       <QuizQ q="Le titre d’un article de base de connaissances doit décrire…" explain="Le symptôme, avec les mots de l’utilisateur : c’est ce qu’il tapera dans la recherche.">
-        <QOpt ok>La cause technique</QOpt>
-        <QOpt>Le symptôme, avec les mots de l’utilisateur</QOpt>
+        <QOpt ok>Le symptôme, avec les mots de l’utilisateur</QOpt>
+        <QOpt>La cause technique</QOpt>
         <QOpt>Le numéro du ticket</QOpt>
       </QuizQ>
       <QuizQ q="Copilot peut-il résumer une réunion Teams qui n’était ni transcrite ni enregistrée ?" explain="Non : sans transcription, il n’a rien à lire. Il peut seulement résumer le fil de conversation écrit.">
@@ -6114,8 +6114,8 @@ const M3_Quiz: Page = () => (
       </QuizQ>
       <QuizQ q="Quelle demande prépare le mieux un comité de changement ?" explain="Faire jouer à l’IA un membre exigeant permet de préparer les réponses aux objections avant la réunion.">
         <QOpt>« Écris-moi un beau discours »</QOpt>
-        <QOpt>« Pose-moi les cinq questions les plus difficiles du comité »</QOpt>
-        <QOpt ok>« Dis-moi si le comité va accepter »</QOpt>
+        <QOpt>« Dis-moi si le comité va accepter »</QOpt>
+        <QOpt ok>« Pose-moi les cinq questions les plus difficiles du comité »</QOpt>
       </QuizQ>
     </QuizSeries>
   </Frame>
@@ -6642,8 +6642,8 @@ const M4_Quiz: Page = () => (
     <Title>Quiz du module 4</Title>
     <QuizSeries y={200}>
       <QuizQ q="Un extrait de journal contient des adresses IP et des identifiants. Avant de l’envoyer à l’IA…" explain="On anonymise en local, sur son poste. Une IP ou un identifiant sont des données personnelles au sens du RGPD.">
-        <QOpt ok>Rien : l’outil est professionnel</QOpt>
-        <QOpt>J’anonymise en local, avant l’envoi</QOpt>
+        <QOpt ok>J’anonymise en local, avant l’envoi</QOpt>
+        <QOpt>Rien : l’outil est professionnel</QOpt>
         <QOpt>Je demande à l’IA d’anonymiser elle-même</QOpt>
       </QuizQ>
       <QuizQ q="Vous avez collé par erreur un mot de passe dans une conversation. Que faire ?" explain="Un secret exposé est considéré comme compromis : on le change, et on signale selon la charte.">
@@ -6653,13 +6653,13 @@ const M4_Quiz: Page = () => (
       </QuizQ>
       <QuizQ q="Quelle est la première règle avant d’exécuter un script écrit par l’IA ?" explain="Savoir l’expliquer ligne par ligne. Sinon, on demande l’explication ; on n’exécute jamais à l’aveugle.">
         <QOpt>L’exécuter en administrateur</QOpt>
-        <QOpt>Savoir l’expliquer ligne par ligne</QOpt>
-        <QOpt ok>Vérifier qu’il est court</QOpt>
+        <QOpt>Vérifier qu’il est court</QOpt>
+        <QOpt ok>Savoir l’expliquer ligne par ligne</QOpt>
       </QuizQ>
       <QuizQ q="Qu’est-ce que l’injection d’instructions ?" explain="Des consignes cachées dans un contenu (e-mail, document, page web) que l’IA lit et risque de suivre.">
-        <QOpt ok>Une mise à jour du modèle</QOpt>
+        <QOpt ok>Des consignes cachées dans un contenu lu par l’IA</QOpt>
         <QOpt>Un prompt trop long</QOpt>
-        <QOpt>Des consignes cachées dans un contenu lu par l’IA</QOpt>
+        <QOpt>Une mise à jour du modèle</QOpt>
       </QuizQ>
     </QuizSeries>
   </Frame>
@@ -6824,18 +6824,18 @@ const J2_Quiz: Page = () => (
     <Title>Quiz flash : cinq questions pour se réveiller</Title>
     <QuizSeries y={200}>
       <QuizQ q="L’information est dans vos e-mails et vos réunions Teams. Quel outil ?" explain="Microsoft 365 Copilot lit vos données Microsoft 365 sur place, dans la limite de vos droits.">
-        <QOpt>Microsoft 365 Copilot</QOpt>
-        <QOpt ok>Claude, en copiant tout</QOpt>
+        <QOpt>Claude, en copiant tout</QOpt>
+        <QOpt ok>Microsoft 365 Copilot</QOpt>
         <QOpt>N’importe lequel</QOpt>
       </QuizQ>
       <QuizQ q="Quel ingrédient du prompt adapte la réponse au lecteur ?" explain="Les contraintes (ton, jargon, longueur) et le rôle adaptent la réponse au lecteur ; le contexte apporte les faits.">
         <QOpt>Le format</QOpt>
-        <QOpt>Les contraintes</QOpt>
-        <QOpt ok>La politesse</QOpt>
+        <QOpt>La politesse</QOpt>
+        <QOpt ok>Les contraintes</QOpt>
       </QuizQ>
       <QuizQ q="Première passe d’une synthèse de long rapport ?" explain="La carte : le plan et ce que couvre chaque partie. On vérifie ainsi que tout a été lu.">
-        <QOpt ok>La note finale</QOpt>
-        <QOpt>La carte du document</QOpt>
+        <QOpt ok>La carte du document</QOpt>
+        <QOpt>La note finale</QOpt>
         <QOpt>Les fautes d’orthographe</QOpt>
       </QuizQ>
       <QuizQ q="Un export de tickets contient des noms d’utilisateurs. Feu…" explain="Orange : utile, mais on anonymise d’abord, en local.">
@@ -6845,8 +6845,8 @@ const J2_Quiz: Page = () => (
       </QuizQ>
       <QuizQ q="Que fait l’option -WhatIf d’une commande PowerShell ?" explain="Elle simule : la commande décrit ce qu’elle ferait, sans rien modifier.">
         <QOpt>Elle accélère la commande</QOpt>
-        <QOpt>Elle simule sans rien modifier</QOpt>
-        <QOpt ok>Elle demande un mot de passe</QOpt>
+        <QOpt>Elle demande un mot de passe</QOpt>
+        <QOpt ok>Elle simule sans rien modifier</QOpt>
       </QuizQ>
     </QuizSeries>
   </Frame>
@@ -7841,8 +7841,8 @@ const M6_Quiz: Page = () => (
     <Title>Quiz du module 6</Title>
     <QuizSeries y={200}>
       <QuizQ q="Pourquoi donner à l’IA vos définitions des indicateurs ?" explain="Sinon elle choisit les siennes. Le délai en heures ouvrées ou calendaires, par exemple, change tout le résultat.">
-        <QOpt ok>Pour aller plus vite</QOpt>
-        <QOpt>Pour que les chiffres correspondent à votre contrat de service</QOpt>
+        <QOpt ok>Pour que les chiffres correspondent à votre contrat de service</QOpt>
+        <QOpt>Pour aller plus vite</QOpt>
         <QOpt>Ce n’est pas utile, elle les connaît</QOpt>
       </QuizQ>
       <QuizQ q="Le total calculé par l’IA ne correspond pas au nombre de lignes. Que faites-vous ?" explain="On ne publie pas : on demande combien de lignes ont été lues et on cherche l’écart (lignes vides, doublons, filtres).">
@@ -7852,12 +7852,12 @@ const M6_Quiz: Page = () => (
       </QuizQ>
       <QuizQ q="Dans un 5 pourquoi bien mené, la cause racine est souvent…" explain="Un mécanisme ou un trou de processus. Une personne n’est presque jamais une cause racine.">
         <QOpt>Une personne qui s’est trompée</QOpt>
-        <QOpt>Un trou dans un processus</QOpt>
-        <QOpt ok>La faute de l’IA</QOpt>
+        <QOpt>La faute de l’IA</QOpt>
+        <QOpt ok>Un trou dans un processus</QOpt>
       </QuizQ>
       <QuizQ q="Quel rôle donner à l’IA pendant un 5 pourquoi ?" explain="Animatrice : elle pose les questions, l’équipe répond avec ce qu’elle sait. Elle ne connaît pas votre infrastructure.">
-        <QOpt ok>Elle trouve la cause seule</QOpt>
-        <QOpt>Elle anime et pose les questions</QOpt>
+        <QOpt ok>Elle anime et pose les questions</QOpt>
+        <QOpt>Elle trouve la cause seule</QOpt>
         <QOpt>Elle désigne le responsable</QOpt>
       </QuizQ>
     </QuizSeries>
@@ -8722,12 +8722,12 @@ const M7_Quiz: Page = () => (
       </QuizQ>
       <QuizQ q="Quelle phrase rend un agent fiable ?" explain="« Réponds uniquement à partir des articles fournis » : sans elle, l’agent improvise.">
         <QOpt>« Sois créatif »</QOpt>
-        <QOpt>« Réponds uniquement à partir des articles fournis »</QOpt>
-        <QOpt ok>« Réponds toujours, même sans source »</QOpt>
+        <QOpt>« Réponds toujours, même sans source »</QOpt>
+        <QOpt ok>« Réponds uniquement à partir des articles fournis »</QOpt>
       </QuizQ>
       <QuizQ q="Qu’est-ce que le vibe coding ?" explain="Décrire le résultat en langage naturel ; l’IA écrit le code et l’explique ; vous restez responsable du test.">
-        <QOpt ok>Apprendre PowerShell en accéléré</QOpt>
-        <QOpt>Faire écrire le code par l’IA à partir d’une description</QOpt>
+        <QOpt ok>Faire écrire le code par l’IA à partir d’une description</QOpt>
+        <QOpt>Apprendre PowerShell en accéléré</QOpt>
         <QOpt>Copier un script trouvé sur un forum</QOpt>
       </QuizQ>
       <QuizQ q="Le script affiche une erreur rouge. Le premier réflexe ?" explain="Coller le message à l’IA et demander une explication simple et une correction, puis vérifier ce que la correction modifie.">
@@ -8934,13 +8934,13 @@ const M8_Qcm: Page = () => (
     <Title>QCM final : huit questions sur les deux jours</Title>
     <QuizSeries y={200}>
       <QuizQ q="Pour résumer un long fil d’e-mails dans Outlook, quel outil en premier ?" explain="Microsoft 365 Copilot lit le fil sur place, sans copier-coller, dans la limite de vos droits.">
-        <QOpt>Copilot dans Outlook</QOpt>
+        <QOpt>Aucun, c’est trop long</QOpt>
         <QOpt>Une IA grand public, en copiant le fil</QOpt>
-        <QOpt ok>Aucun, c’est trop long</QOpt>
+        <QOpt ok>Copilot dans Outlook</QOpt>
       </QuizQ>
       <QuizQ q="Quel ingrédient du prompt est le plus souvent oublié ?" explain="Le contexte : les faits, les documents, la situation. Sans lui, l’IA reste générique.">
-        <QOpt ok>Le rôle</QOpt>
-        <QOpt>Le contexte</QOpt>
+        <QOpt ok>Le contexte</QOpt>
+        <QOpt>Le rôle</QOpt>
         <QOpt>La politesse</QOpt>
       </QuizQ>
       <QuizQ q="Une synthèse de rapport est prête. Avant de l’envoyer…" explain="On vérifie la page source de chaque fait, trois chiffres, et ce qui a été écarté.">
@@ -8950,12 +8950,12 @@ const M8_Qcm: Page = () => (
       </QuizQ>
       <QuizQ q="Un export de tickets avec noms d’utilisateurs est classé…" explain="Orange : on anonymise d’abord, en local, avant de le donner à l’IA.">
         <QOpt>Vert</QOpt>
-        <QOpt>Orange</QOpt>
-        <QOpt ok>Rouge</QOpt>
+        <QOpt>Rouge</QOpt>
+        <QOpt ok>Orange</QOpt>
       </QuizQ>
       <QuizQ q="Le total de tickets calculé ne correspond pas au nombre de lignes. Vous…" explain="Ne publiez pas : cherchez l’écart (lignes vides, doublons, filtres) et demandez combien de lignes ont été lues.">
-        <QOpt ok>Arrondissez</QOpt>
-        <QOpt>Cherchez l’écart avant de publier</QOpt>
+        <QOpt ok>Cherchez l’écart avant de publier</QOpt>
+        <QOpt>Arrondissez</QOpt>
         <QOpt>Gardez le chiffre de l’IA</QOpt>
       </QuizQ>
       <QuizQ q="La cause racine de l’incident FS-02 était…" explain="Un trou dans la procédure de changement, qui ne prévoyait pas de vérifier la supervision.">
@@ -8965,12 +8965,12 @@ const M8_Qcm: Page = () => (
       </QuizQ>
       <QuizQ q="Pour automatiser une réponse récurrente simple, la bonne marche est souvent…" explain="La plus basse qui suffit : un prompt enregistré ou un modèle, avant un agent ou un flux.">
         <QOpt>Un script</QOpt>
-        <QOpt>Un prompt enregistré ou un modèle</QOpt>
-        <QOpt ok>Un flux complet</QOpt>
+        <QOpt>Un flux complet</QOpt>
+        <QOpt ok>Un prompt enregistré ou un modèle</QOpt>
       </QuizQ>
       <QuizQ q="Avant de lancer un script écrit par l’IA, il faut d’abord…" explain="Savoir l’expliquer ligne par ligne et vérifier qu’il ne modifie rien sans le vouloir, puis le tester sans risque.">
-        <QOpt ok>Le lancer en administrateur</QOpt>
-        <QOpt>Savoir l’expliquer et le tester sans risque</QOpt>
+        <QOpt ok>Savoir l’expliquer et le tester sans risque</QOpt>
+        <QOpt>Le lancer en administrateur</QOpt>
         <QOpt>Vérifier qu’il fait moins de dix lignes</QOpt>
       </QuizQ>
     </QuizSeries>

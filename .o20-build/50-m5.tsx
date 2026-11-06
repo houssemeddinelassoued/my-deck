@@ -424,8 +424,8 @@ const M5_Quiz: Page = () => (
     <QuizSeries y={200}>
       <QuizQ q="Vous devez traduire une plaquette PowerPoint en allemand sans casser la mise en page. Quel outil ?" explain="DeepL traduit des documents Word, PowerPoint ou PDF entiers en conservant leur mise en page.">
         <QOpt>Grammarly</QOpt>
-        <QOpt>DeepL (traduction de documents)</QOpt>
-        <QOpt ok>Consensus</QOpt>
+        <QOpt>Consensus</QOpt>
+        <QOpt ok>DeepL (traduction de documents)</QOpt>
       </QuizQ>
       <QuizQ q="Grammarly est surtout recommandé pour…" explain="Grammarly est pensé d’abord pour l’anglais : idéal pour corriger et ajuster le ton de vos écrits en anglais.">
         <QOpt ok>vos emails et documents en anglais</QOpt>
@@ -439,12 +439,12 @@ const M5_Quiz: Page = () => (
       </QuizQ>
       <QuizQ q="Votre affiche Canva doit exister aussi en post carré et en story. Le plus rapide ?" explain="Le redimensionnement magique décline un design en plusieurs formats en un clic, à retoucher ensuite.">
         <QOpt>Tout refaire trois fois</QOpt>
-        <QOpt>Le redimensionnement magique</QOpt>
-        <QOpt ok>Une capture d’écran recadrée</QOpt>
+        <QOpt>Une capture d’écran recadrée</QOpt>
+        <QOpt ok>Le redimensionnement magique</QOpt>
       </QuizQ>
       <QuizQ q="Avec la version gratuite de DeepL, vous pouvez traduire…" explain="En version gratuite, les textes peuvent être conservés pour améliorer le service : réservez-la aux contenus non confidentiels.">
-        <QOpt ok>le contrat de travail d’un salarié</QOpt>
-        <QOpt>une fiche produit déjà publique</QOpt>
+        <QOpt ok>une fiche produit déjà publique</QOpt>
+        <QOpt>le contrat de travail d’un salarié</QOpt>
         <QOpt>le fichier clients</QOpt>
       </QuizQ>
     </QuizSeries>

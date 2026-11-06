@@ -340,12 +340,12 @@ const M7_Qcm: Page = () => (
     <QuizSeries y={200}>
       <QuizQ q="Un test généré calcule l’attendu avec tickets.filter(…), exactement comme le code testé. Problème ?" explain="C’est un test tautologique : si la logique est fausse, l’attendu l’est aussi, et le test reste vert. L’attendu doit venir de la règle (une valeur écrite à la main).">
         <QOpt>Aucun, c’est plus court</QOpt>
-        <QOpt>Il ne peut pas détecter une erreur de cette logique</QOpt>
-        <QOpt ok>Il sera trop lent</QOpt>
+        <QOpt>Il sera trop lent</QOpt>
+        <QOpt ok>Il ne peut pas détecter une erreur de cette logique</QOpt>
       </QuizQ>
       <QuizQ q="Pour comparer deux objets dans un test node:test, on utilise…" explain="deepEqual compare le contenu ; equal compare les références (deux objets distincts ne sont jamais « égaux »).">
-        <QOpt ok>assert.equal</QOpt>
-        <QOpt>assert.deepEqual</QOpt>
+        <QOpt ok>assert.deepEqual</QOpt>
+        <QOpt>assert.equal</QOpt>
         <QOpt>assert.ok</QOpt>
       </QuizQ>
       <QuizQ q="Vous changez >= en > dans la règle WIP et tous les tests restent verts. Conclusion ?" explain="La mutation survit : aucun test ne vérifie la limite exacte (3 en cours → le 4e refusé). Il faut écrire ce test.">
@@ -355,8 +355,8 @@ const M7_Qcm: Page = () => (
       </QuizQ>
       <QuizQ q="Pourquoi passer fetchFn et aujourdHui en paramètres ?" explain="Pour les remplacer dans les tests par des valeurs contrôlées : pas de réseau, pas de date qui change, des tests déterministes.">
         <QOpt>Pour respecter une convention JavaScript</QOpt>
-        <QOpt>Pour pouvoir les simuler et rendre les tests déterministes</QOpt>
-        <QOpt ok>Pour que Copilot comprenne mieux</QOpt>
+        <QOpt>Pour que Copilot comprenne mieux</QOpt>
+        <QOpt ok>Pour pouvoir les simuler et rendre les tests déterministes</QOpt>
       </QuizQ>
     </QuizSeries>
   </Frame>

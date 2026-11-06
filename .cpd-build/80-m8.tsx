@@ -313,8 +313,8 @@ const M8_Qcm: Page = () => (
     <Title>QCM · Module 8 en quatre questions</Title>
     <QuizSeries y={200}>
       <QuizQ q="Copilot propose npm install csv-taskflow-utils. Votre premier réflexe ?" explain="Un paquet suggéré peut ne pas exister, ou avoir été créé par un attaquant sur un nom « halluciné » plausible. On vérifie qu’il existe, qui le maintient, sa popularité.">
-        <QOpt ok>Je l’installe, Copilot connaît l’écosystème</QOpt>
-        <QOpt>Je vérifie qu’il existe et qu’il est fiable avant tout</QOpt>
+        <QOpt ok>Je vérifie qu’il existe et qu’il est fiable avant tout</QOpt>
+        <QOpt>Je l’installe, Copilot connaît l’écosystème</QOpt>
         <QOpt>Je demande à Copilot s’il est sûr</QOpt>
       </QuizQ>
       <QuizQ q="Une suggestion arrive avec un en-tête « Licensed under the GPL v3 ». Que faites-vous ?" explain="C’est un signal de code recopié sous licence copyleft. On ne l’intègre pas tel quel : on réécrit, on utilise une alternative (ici structuredClone), ou on suit la politique de l’entreprise.">
@@ -324,13 +324,13 @@ const M8_Qcm: Page = () => (
       </QuizQ>
       <QuizQ q="Où mettre la règle « textContent, jamais innerHTML » pour que toute l’équipe en profite avec Copilot ?" explain="Le fichier .github/copilot-instructions.md est versionné avec le dépôt et joint automatiquement aux demandes du chat et des agents.">
         <QOpt>Dans un message du chat, à chaque fois</QOpt>
-        <QOpt>Dans .github/copilot-instructions.md</QOpt>
-        <QOpt ok>Dans les réglages personnels de VS Code</QOpt>
+        <QOpt>Dans les réglages personnels de VS Code</QOpt>
+        <QOpt ok>Dans .github/copilot-instructions.md</QOpt>
       </QuizQ>
       <QuizQ q="La revue Copilot d’une pull request ne trouve rien. Peut-on fusionner ?" explain="La revue automatique est un second avis : elle ne remplace ni la relecture humaine ni les tests de la CI.">
-        <QOpt ok>Oui, elle a tout vérifié</QOpt>
+        <QOpt ok>Non : relecture humaine et tests restent nécessaires</QOpt>
         <QOpt>Oui, si le code a été généré par Copilot</QOpt>
-        <QOpt>Non : relecture humaine et tests restent nécessaires</QOpt>
+        <QOpt>Oui, elle a tout vérifié</QOpt>
       </QuizQ>
     </QuizSeries>
   </Frame>

@@ -258,12 +258,12 @@ const M6_Quiz: Page = () => (
     <QuizSeries y={200}>
       <QuizQ q="Pour préparer l’entretien annuel de Karim, vous collez dans l’IA…" explain="Des faits anonymisés suffisent pour obtenir une trame et des questions. Nom, santé ou disciplinaire n’apportent rien et exposent des données sensibles.">
         <QOpt>Son dossier complet, arrêts maladie compris</QOpt>
-        <QOpt>Des faits de l’année, anonymisés, sans donnée sensible</QOpt>
-        <QOpt ok>Rien : l’IA est interdite pour les entretiens annuels</QOpt>
+        <QOpt>Rien : l’IA est interdite pour les entretiens annuels</QOpt>
+        <QOpt ok>Des faits de l’année, anonymisés, sans donnée sensible</QOpt>
       </QuizQ>
       <QuizQ q="Dans le modèle 70 / 20 / 10, les 70 % correspondent à…" explain="L’essentiel du développement se fait en situation de travail ; la formation formelle n’en représente qu’une petite part.">
-        <QOpt ok>La formation en salle</QOpt>
-        <QOpt>L’apprentissage en situation de travail</QOpt>
+        <QOpt ok>L’apprentissage en situation de travail</QOpt>
+        <QOpt>La formation en salle</QOpt>
         <QOpt>Le mentorat</QOpt>
       </QuizQ>
       <QuizQ q="L’IA a identifié 5 besoins de formation dans 30 comptes rendus. Avant de décider…" explain="L’IA peut regrouper trop largement ou oublier un thème rare : on vérifie sur un échantillon avant d’engager un budget.">

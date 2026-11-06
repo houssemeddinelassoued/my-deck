@@ -491,8 +491,8 @@ const M4_Quiz: Page = () => (
     <Title>Quiz du module 4</Title>
     <QuizSeries y={200}>
       <QuizQ q="Un extrait de journal contient des adresses IP et des identifiants. Avant de l’envoyer à l’IA…" explain="On anonymise en local, sur son poste. Une IP ou un identifiant sont des données personnelles au sens du RGPD.">
-        <QOpt ok>Rien : l’outil est professionnel</QOpt>
-        <QOpt>J’anonymise en local, avant l’envoi</QOpt>
+        <QOpt ok>J’anonymise en local, avant l’envoi</QOpt>
+        <QOpt>Rien : l’outil est professionnel</QOpt>
         <QOpt>Je demande à l’IA d’anonymiser elle-même</QOpt>
       </QuizQ>
       <QuizQ q="Vous avez collé par erreur un mot de passe dans une conversation. Que faire ?" explain="Un secret exposé est considéré comme compromis : on le change, et on signale selon la charte.">
@@ -502,13 +502,13 @@ const M4_Quiz: Page = () => (
       </QuizQ>
       <QuizQ q="Quelle est la première règle avant d’exécuter un script écrit par l’IA ?" explain="Savoir l’expliquer ligne par ligne. Sinon, on demande l’explication ; on n’exécute jamais à l’aveugle.">
         <QOpt>L’exécuter en administrateur</QOpt>
-        <QOpt>Savoir l’expliquer ligne par ligne</QOpt>
-        <QOpt ok>Vérifier qu’il est court</QOpt>
+        <QOpt>Vérifier qu’il est court</QOpt>
+        <QOpt ok>Savoir l’expliquer ligne par ligne</QOpt>
       </QuizQ>
       <QuizQ q="Qu’est-ce que l’injection d’instructions ?" explain="Des consignes cachées dans un contenu (e-mail, document, page web) que l’IA lit et risque de suivre.">
-        <QOpt ok>Une mise à jour du modèle</QOpt>
+        <QOpt ok>Des consignes cachées dans un contenu lu par l’IA</QOpt>
         <QOpt>Un prompt trop long</QOpt>
-        <QOpt>Des consignes cachées dans un contenu lu par l’IA</QOpt>
+        <QOpt>Une mise à jour du modèle</QOpt>
       </QuizQ>
     </QuizSeries>
   </Frame>

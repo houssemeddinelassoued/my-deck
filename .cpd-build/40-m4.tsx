@@ -350,8 +350,8 @@ const M4_Qcm: Page = () => (
     <Title>QCM · Module 4 en quatre questions</Title>
     <QuizSeries y={200}>
       <QuizQ q="Copilot propose points > 0 && points <= 13 pour valider une estimation. Le problème ?" explain="La suite 1-2-3-5-8-13 est une liste, pas un intervalle : 4, 6 ou 7 passeraient. Un exemple négatif dans le commentaire (« 4 → false ») l’évite.">
-        <QOpt ok>Aucun, c’est plus court</QOpt>
-        <QOpt>4, 6, 7… passeraient : c’est une liste, pas un intervalle</QOpt>
+        <QOpt ok>4, 6, 7… passeraient : c’est une liste, pas un intervalle</QOpt>
+        <QOpt>Aucun, c’est plus court</QOpt>
         <QOpt>Il faudrait points {'>='} 0</QOpt>
       </QuizQ>
       <QuizQ q="Quel ingrédient de commentaire réduit le plus les cas limites oubliés ?" explain="Les exemples, surtout négatifs (4 → false, null → true), forcent la suggestion à couvrir les bords.">
@@ -361,12 +361,12 @@ const M4_Qcm: Page = () => (
       </QuizQ>
       <QuizQ q="Dans un fichier rempli de var et de ==, Copilot propose du code… avec var et ==. Pourquoi ?" explain="Il imite le style visible dans le contexte. Nettoyer le fichier (ou générer dans un fichier propre) change les suggestions.">
         <QOpt>Son modèle date de 2015</QOpt>
-        <QOpt>Il prolonge le style qu’il voit dans le fichier</QOpt>
-        <QOpt ok>Les réglages de VS Code l’imposent</QOpt>
+        <QOpt>Les réglages de VS Code l’imposent</QOpt>
+        <QOpt ok>Il prolonge le style qu’il voit dans le fichier</QOpt>
       </QuizQ>
       <QuizQ q="En Python, quel cas Copilot oublie-t-il souvent pour est_points_valide ?" explain="True == 1 en Python : sans vérifier type(points) is int, un booléen serait accepté comme 1 point.">
-        <QOpt ok>None</QOpt>
-        <QOpt>True, qui vaut 1</QOpt>
+        <QOpt ok>True, qui vaut 1</QOpt>
+        <QOpt>None</QOpt>
         <QOpt>13</QOpt>
       </QuizQ>
     </QuizSeries>

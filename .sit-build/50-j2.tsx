@@ -58,18 +58,18 @@ const J2_Quiz: Page = () => (
     <Title>Quiz flash : cinq questions pour se réveiller</Title>
     <QuizSeries y={200}>
       <QuizQ q="L’information est dans vos e-mails et vos réunions Teams. Quel outil ?" explain="Microsoft 365 Copilot lit vos données Microsoft 365 sur place, dans la limite de vos droits.">
-        <QOpt>Microsoft 365 Copilot</QOpt>
-        <QOpt ok>Claude, en copiant tout</QOpt>
+        <QOpt>Claude, en copiant tout</QOpt>
+        <QOpt ok>Microsoft 365 Copilot</QOpt>
         <QOpt>N’importe lequel</QOpt>
       </QuizQ>
       <QuizQ q="Quel ingrédient du prompt adapte la réponse au lecteur ?" explain="Les contraintes (ton, jargon, longueur) et le rôle adaptent la réponse au lecteur ; le contexte apporte les faits.">
         <QOpt>Le format</QOpt>
-        <QOpt>Les contraintes</QOpt>
-        <QOpt ok>La politesse</QOpt>
+        <QOpt>La politesse</QOpt>
+        <QOpt ok>Les contraintes</QOpt>
       </QuizQ>
       <QuizQ q="Première passe d’une synthèse de long rapport ?" explain="La carte : le plan et ce que couvre chaque partie. On vérifie ainsi que tout a été lu.">
-        <QOpt ok>La note finale</QOpt>
-        <QOpt>La carte du document</QOpt>
+        <QOpt ok>La carte du document</QOpt>
+        <QOpt>La note finale</QOpt>
         <QOpt>Les fautes d’orthographe</QOpt>
       </QuizQ>
       <QuizQ q="Un export de tickets contient des noms d’utilisateurs. Feu…" explain="Orange : utile, mais on anonymise d’abord, en local.">
@@ -79,8 +79,8 @@ const J2_Quiz: Page = () => (
       </QuizQ>
       <QuizQ q="Que fait l’option -WhatIf d’une commande PowerShell ?" explain="Elle simule : la commande décrit ce qu’elle ferait, sans rien modifier.">
         <QOpt>Elle accélère la commande</QOpt>
-        <QOpt>Elle simule sans rien modifier</QOpt>
-        <QOpt ok>Elle demande un mot de passe</QOpt>
+        <QOpt>Elle demande un mot de passe</QOpt>
+        <QOpt ok>Elle simule sans rien modifier</QOpt>
       </QuizQ>
     </QuizSeries>
   </Frame>

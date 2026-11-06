@@ -558,8 +558,8 @@ const M2_Quiz: Page = () => (
       </QuizQ>
       <QuizQ q="La première réponse est trop technique pour les utilisateurs. Que faites-vous ?" explain="On relance dans la même conversation : l’IA garde le contexte et corrige la cible.">
         <QOpt>Je recommence une nouvelle conversation</QOpt>
-        <QOpt>Je relance : « Réécris pour un non-technicien »</QOpt>
-        <QOpt ok>Je corrige tout à la main</QOpt>
+        <QOpt>Je corrige tout à la main</QOpt>
+        <QOpt ok>Je relance : « Réécris pour un non-technicien »</QOpt>
       </QuizQ>
       <QuizQ q="Vous ne savez pas quoi préciser pour une procédure. Le meilleur réflexe ?" explain="« Pose-moi d’abord tes questions » : l’IA liste ce qui lui manque, vous répondez, elle rédige.">
         <QOpt ok>Demander à l’IA de poser d’abord ses questions</QOpt>
@@ -568,8 +568,8 @@ const M2_Quiz: Page = () => (
       </QuizQ>
       <QuizQ q="Dans Microsoft 365 Copilot, à quoi sert « / » dans un prompt ?" explain="À citer un fichier, un e-mail ou une réunion précis, sans le télécharger ni le copier.">
         <QOpt>À commenter le prompt</QOpt>
-        <QOpt ok>À changer de langue</QOpt>
-        <QOpt>À citer un fichier, un e-mail ou une réunion</QOpt>
+        <QOpt ok>À citer un fichier, un e-mail ou une réunion</QOpt>
+        <QOpt>À changer de langue</QOpt>
       </QuizQ>
     </QuizSeries>
   </Frame>

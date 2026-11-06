@@ -5,8 +5,8 @@ const C_Quiz: Page = () => (
     <Title>Quiz final : l’après-midi en six questions</Title>
     <QuizSeries y={200}>
       <QuizQ q="Dans le workflow d’une feature IA, qui définit ce qu’est une « bonne réponse » ?" explain="Le PO, avec le métier, via le guide d’annotation : c’est une règle de produit, pas une question technique.">
-        <QOpt ok>Le data scientist</QOpt>
-        <QOpt>Le PO, avec le métier</QOpt>
+        <QOpt ok>Le PO, avec le métier</QOpt>
+        <QOpt>Le data scientist</QOpt>
         <QOpt>Le modèle, à partir des données</QOpt>
       </QuizQ>
       <QuizQ q="Le jeu de test (« golden set ») sert à…" explain="Juger le modèle sur des cas qu’il n’a jamais vus. Personne n’y touche pendant le développement.">
@@ -31,8 +31,8 @@ const C_Quiz: Page = () => (
       </QuizQ>
       <QuizQ q="La part des champs corrigés par les utilisateurs remonte brutalement. C’est probablement…" explain="Une dérive : les données ont changé (nouveau format de ticket). On analyse, on ajoute des exemples, on ré-entraîne.">
         <QOpt>Un bug d’affichage</QOpt>
-        <QOpt>Une dérive : le monde a changé, pas le modèle</QOpt>
-        <QOpt ok>Des utilisateurs qui testent l’outil</QOpt>
+        <QOpt>Des utilisateurs qui testent l’outil</QOpt>
+        <QOpt ok>Une dérive : le monde a changé, pas le modèle</QOpt>
       </QuizQ>
     </QuizSeries>
   </Frame>

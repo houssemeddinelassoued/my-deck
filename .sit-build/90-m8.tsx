@@ -165,13 +165,13 @@ const M8_Qcm: Page = () => (
     <Title>QCM final : huit questions sur les deux jours</Title>
     <QuizSeries y={200}>
       <QuizQ q="Pour résumer un long fil d’e-mails dans Outlook, quel outil en premier ?" explain="Microsoft 365 Copilot lit le fil sur place, sans copier-coller, dans la limite de vos droits.">
-        <QOpt>Copilot dans Outlook</QOpt>
+        <QOpt>Aucun, c’est trop long</QOpt>
         <QOpt>Une IA grand public, en copiant le fil</QOpt>
-        <QOpt ok>Aucun, c’est trop long</QOpt>
+        <QOpt ok>Copilot dans Outlook</QOpt>
       </QuizQ>
       <QuizQ q="Quel ingrédient du prompt est le plus souvent oublié ?" explain="Le contexte : les faits, les documents, la situation. Sans lui, l’IA reste générique.">
-        <QOpt ok>Le rôle</QOpt>
-        <QOpt>Le contexte</QOpt>
+        <QOpt ok>Le contexte</QOpt>
+        <QOpt>Le rôle</QOpt>
         <QOpt>La politesse</QOpt>
       </QuizQ>
       <QuizQ q="Une synthèse de rapport est prête. Avant de l’envoyer…" explain="On vérifie la page source de chaque fait, trois chiffres, et ce qui a été écarté.">
@@ -181,12 +181,12 @@ const M8_Qcm: Page = () => (
       </QuizQ>
       <QuizQ q="Un export de tickets avec noms d’utilisateurs est classé…" explain="Orange : on anonymise d’abord, en local, avant de le donner à l’IA.">
         <QOpt>Vert</QOpt>
-        <QOpt>Orange</QOpt>
-        <QOpt ok>Rouge</QOpt>
+        <QOpt>Rouge</QOpt>
+        <QOpt ok>Orange</QOpt>
       </QuizQ>
       <QuizQ q="Le total de tickets calculé ne correspond pas au nombre de lignes. Vous…" explain="Ne publiez pas : cherchez l’écart (lignes vides, doublons, filtres) et demandez combien de lignes ont été lues.">
-        <QOpt ok>Arrondissez</QOpt>
-        <QOpt>Cherchez l’écart avant de publier</QOpt>
+        <QOpt ok>Cherchez l’écart avant de publier</QOpt>
+        <QOpt>Arrondissez</QOpt>
         <QOpt>Gardez le chiffre de l’IA</QOpt>
       </QuizQ>
       <QuizQ q="La cause racine de l’incident FS-02 était…" explain="Un trou dans la procédure de changement, qui ne prévoyait pas de vérifier la supervision.">
@@ -196,12 +196,12 @@ const M8_Qcm: Page = () => (
       </QuizQ>
       <QuizQ q="Pour automatiser une réponse récurrente simple, la bonne marche est souvent…" explain="La plus basse qui suffit : un prompt enregistré ou un modèle, avant un agent ou un flux.">
         <QOpt>Un script</QOpt>
-        <QOpt>Un prompt enregistré ou un modèle</QOpt>
-        <QOpt ok>Un flux complet</QOpt>
+        <QOpt>Un flux complet</QOpt>
+        <QOpt ok>Un prompt enregistré ou un modèle</QOpt>
       </QuizQ>
       <QuizQ q="Avant de lancer un script écrit par l’IA, il faut d’abord…" explain="Savoir l’expliquer ligne par ligne et vérifier qu’il ne modifie rien sans le vouloir, puis le tester sans risque.">
-        <QOpt ok>Le lancer en administrateur</QOpt>
-        <QOpt>Savoir l’expliquer et le tester sans risque</QOpt>
+        <QOpt ok>Savoir l’expliquer et le tester sans risque</QOpt>
+        <QOpt>Le lancer en administrateur</QOpt>
         <QOpt>Vérifier qu’il fait moins de dix lignes</QOpt>
       </QuizQ>
     </QuizSeries>

@@ -472,8 +472,8 @@ const M4_Quiz: Page = () => (
     <Title>Quiz · Module 4</Title>
     <QuizSeries y={200}>
       <QuizQ q="Vous voulez interroger uniquement le règlement intérieur et l’accord télétravail de votre entreprise. Quel outil ?" explain="NotebookLM répond uniquement à partir des documents que vous lui donnez, avec des citations vers le passage exact.">
-        <QOpt ok>Consensus</QOpt>
-        <QOpt>NotebookLM</QOpt>
+        <QOpt ok>NotebookLM</QOpt>
+        <QOpt>Consensus</QOpt>
         <QOpt>Runway</QOpt>
       </QuizQ>
       <QuizQ q="Perplexity cite 5 sources dans sa réponse. Vous pouvez donc…" explain="Une source citée doit être ouverte et lue : vérifier qui parle, la date, et que la phrase dit bien ce qui est affirmé.">
@@ -482,18 +482,18 @@ const M4_Quiz: Page = () => (
         <QOpt>citer Perplexity comme source dans votre note</QOpt>
       </QuizQ>
       <QuizQ q="« Les études montrent-elles que X améliore Y ? » Quel outil donne une répartition oui / non / peut-être ?" explain="Le Consensus Meter de Consensus montre la répartition des conclusions des études sur une question fermée.">
-        <QOpt>Consensus</QOpt>
+        <QOpt>DeepL</QOpt>
         <QOpt>Gamma</QOpt>
-        <QOpt ok>DeepL</QOpt>
+        <QOpt ok>Consensus</QOpt>
       </QuizQ>
       <QuizQ q="Quelle source est la plus fiable pour une règle administrative ?" explain="Un site officiel à jour fait foi pour une règle ; les blogs commerciaux et forums ne suffisent jamais seuls.">
-        <QOpt ok>Un forum très fréquenté</QOpt>
+        <QOpt ok>Un site officiel mis à jour récemment</QOpt>
         <QOpt>Le blog d’un éditeur de logiciel</QOpt>
-        <QOpt>Un site officiel mis à jour récemment</QOpt>
+        <QOpt>Un forum très fréquenté</QOpt>
       </QuizQ>
       <QuizQ q="Elicit vous extrait un résultat d’étude intéressant. Avant de le citer…" explain="Une étude isolée n’est pas une vérité : on lit au moins le résumé de l’article pour vérifier le contexte, la population et la méthode.">
-        <QOpt>vous lisez au moins le résumé de l’article</QOpt>
-        <QOpt ok>vous le citez : Elicit ne se trompe jamais</QOpt>
+        <QOpt>vous le citez : Elicit ne se trompe jamais</QOpt>
+        <QOpt ok>vous lisez au moins le résumé de l’article</QOpt>
         <QOpt>vous le traduisez dans DeepL</QOpt>
       </QuizQ>
     </QuizSeries>

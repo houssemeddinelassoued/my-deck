@@ -499,23 +499,23 @@ const M5_Quiz: Page = () => (
     <QuizSeries y={220}>
       <QuizQ q="Vous posez une question absente de la documentation fournie. La meilleure réponse de l’IA est…" explain="Avec la règle « uniquement à partir du document », l’IA doit signaler l’absence d’information. Une réponse inventée serait diffusée à tous les clients.">
         <QOpt>Une réponse générale tirée de ses connaissances</QOpt>
-        <QOpt>« Information absente du document. »</QOpt>
-        <QOpt ok>La règle la plus probable dans le secteur</QOpt>
+        <QOpt>La règle la plus probable dans le secteur</QOpt>
+        <QOpt ok>« Information absente du document. »</QOpt>
       </QuizQ>
       <QuizQ q="Pourquoi écrire les questions de la FAQ avec les mots des clients ?" explain="Le conseiller et le client cherchent avec leurs propres mots (« mon colis », pas « litige transporteur ») : la fiche doit être trouvable avec ces mots.">
-        <QOpt ok>Pour faire plus sympathique</QOpt>
-        <QOpt>Pour qu’on retrouve la fiche avec les mots qu’on tape vraiment</QOpt>
+        <QOpt ok>Pour qu’on retrouve la fiche avec les mots qu’on tape vraiment</QOpt>
+        <QOpt>Pour faire plus sympathique</QOpt>
         <QOpt>Parce que l’IA ne comprend pas le vocabulaire métier</QOpt>
       </QuizQ>
       <QuizQ q="Qu’est-ce qui rend une fiche de connaissance fiable dans le temps ?" explain="Une source, une date et un responsable : on sait d’où vient l’information, quand elle a été vérifiée, et qui la met à jour.">
         <QOpt>Sa longueur</QOpt>
-        <QOpt ok>Le fait qu’elle ait été générée par l’IA</QOpt>
-        <QOpt>Sa source, sa date de mise à jour et son responsable</QOpt>
+        <QOpt ok>Sa source, sa date de mise à jour et son responsable</QOpt>
+        <QOpt>Le fait qu’elle ait été générée par l’IA</QOpt>
       </QuizQ>
       <QuizQ q="Un arbre de décision bien construit…" explain="Une question fermée par étape (oui / non), et chaque branche se termine par une action concrète. Sinon, le conseiller reste bloqué au milieu.">
-        <QOpt>Pose des questions fermées et finit toujours par une action</QOpt>
+        <QOpt>Remplace la procédure écrite</QOpt>
         <QOpt>Contient toutes les exceptions possibles</QOpt>
-        <QOpt ok>Remplace la procédure écrite</QOpt>
+        <QOpt ok>Pose des questions fermées et finit toujours par une action</QOpt>
       </QuizQ>
     </QuizSeries>
   </Frame>

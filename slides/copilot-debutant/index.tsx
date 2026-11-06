@@ -4412,8 +4412,8 @@ const M1_Qcm: Page = () => (
     <Title>QCM · Module 1 en quatre questions</Title>
     <QuizSeries y={200}>
       <QuizQ q="Sur quoi repose une suggestion de Copilot ?" explain="Un modèle de langage prédit la suite la plus probable à partir du contexte envoyé. Il n’exécute rien et ne « comprend » pas votre besoin.">
-        <QOpt>Une base de données de solutions validées par GitHub</QOpt>
         <QOpt ok>Une prédiction du code le plus probable, à partir du contexte envoyé</QOpt>
+        <QOpt>Une base de données de solutions validées par GitHub</QOpt>
         <QOpt>L’exécution de votre code pour trouver ce qui marche</QOpt>
       </QuizQ>
       <QuizQ q="Sur l’offre Copilot Free, qu’est-ce qui ne consomme pas de crédits IA ?" explain="Depuis juin 2026, complétions et suggestions de modification suivante sont hors crédits (avec un plafond de 2 000 complétions par mois sur Free). Chat et agents consomment des crédits.">
@@ -4427,8 +4427,8 @@ const M1_Qcm: Page = () => (
         <QOpt ok>Je la lis ligne à ligne et je la vérifie sur des cas limites</QOpt>
       </QuizQ>
       <QuizQ q="Parmi les nouveautés d’octobre 2026, laquelle permet de faire travailler plusieurs modèles sur la même tâche ?" explain="« Comparer les résultats de modèles », en préversion dans la fenêtre Agents. La fenêtre Agents en est le cadre, les connecteurs apportent du contexte externe.">
-        <QOpt>Les connecteurs Copilot</QOpt>
         <QOpt ok>La comparaison des résultats de modèles</QOpt>
+        <QOpt>Les connecteurs Copilot</QOpt>
         <QOpt>Le bac à sable local</QOpt>
       </QuizQ>
     </QuizSeries>
@@ -6613,17 +6613,17 @@ const M2_Qcm: Page = () => (
       </QuizQ>
       <QuizQ q="Les suggestions inline vous gênent dans vos fichiers Markdown. Que faites-vous ?" explain="github.copilot.enable accepte un objet par langage : on coupe markdown sans toucher au reste. Le chat reste disponible.">
         <QOpt>Je désactive Copilot complètement</QOpt>
-        <QOpt ok>« markdown »: false dans github.copilot.enable</QOpt>
         <QOpt>Je change de modèle dans le chat</QOpt>
+        <QOpt ok>« markdown »: false dans github.copilot.enable</QOpt>
       </QuizQ>
       <QuizQ q="Le mode Agent est grisé sur votre poste d’entreprise. Explication la plus probable ?" explain="Les offres Business et Enterprise permettent à l’administrateur de désactiver des fonctionnalités par politique. Vérifiez auprès de lui avant de chercher une panne.">
-        <QOpt>L’extension est mal installée</QOpt>
         <QOpt ok>Une politique de l’organisation le désactive</QOpt>
+        <QOpt>L’extension est mal installée</QOpt>
         <QOpt>Le mode Agent n’existe que sur macOS</QOpt>
       </QuizQ>
       <QuizQ q="Pour comprendre un code sans risquer de le modifier, quel agent choisir ?" explain="Ask répond sans toucher aux fichiers. Agent peut modifier et exécuter ; Plan prépare un plan d’action.">
-        <QOpt ok>Ask</QOpt>
         <QOpt>Agent</QOpt>
+        <QOpt ok>Ask</QOpt>
         <QOpt>Ctrl+I sur tout le fichier</QOpt>
       </QuizQ>
     </QuizSeries>
@@ -7062,13 +7062,13 @@ const M3_Qcm: Page = () => (
     <QuizSeries y={200}>
       <QuizQ q="Pour qu’une suggestion inline utilise votre fichier de données d’exemple, il faut…" explain="L’inline lit le fichier courant et les onglets ouverts. Un fichier fermé n’est pas dans son contexte.">
         <QOpt>Qu’il soit dans le même dossier</QOpt>
-        <QOpt ok>Qu’il soit ouvert dans un onglet</QOpt>
         <QOpt>Le mentionner dans le chat</QOpt>
+        <QOpt ok>Qu’il soit ouvert dans un onglet</QOpt>
       </QuizQ>
       <QuizQ q="Au bout d’une heure de conversation, Copilot oublie votre première consigne. Que faire ?" explain="La fenêtre de contexte est pleine ou diluée. Nouvelle conversation avec la consigne et les seuls fichiers utiles, ou /compact.">
-        <QOpt>Répéter la consigne en majuscules</QOpt>
-        <QOpt>Changer de modèle</QOpt>
         <QOpt ok>Repartir d’une nouvelle conversation avec le contexte utile</QOpt>
+        <QOpt>Changer de modèle</QOpt>
+        <QOpt>Répéter la consigne en majuscules</QOpt>
       </QuizQ>
       <QuizQ q="Copilot propose tickets[tickets.length] pour « le dernier élément ». Quelle question de relecture l’aurait détecté ?" explain="Les cas limites : l’indice length est toujours hors du tableau. Tester mentalement avec [1, 2, 3] suffit.">
         <QOpt>Ce qu’elle appelle existe-t-il ?</QOpt>
@@ -7076,9 +7076,9 @@ const M3_Qcm: Page = () => (
         <QOpt>A-t-elle des effets de bord ?</QOpt>
       </QuizQ>
       <QuizQ q="Vous voulez seulement comprendre une regex héritée, sans risque de la modifier. Quel outil ?" explain="Ask explique sans toucher au fichier. Ctrl+I propose une modification ; l’inline complète ce que vous tapez.">
-        <QOpt ok>La vue Chat, agent Ask</QOpt>
-        <QOpt>Le chat en ligne, Ctrl+I</QOpt>
         <QOpt>Une suggestion inline sous la regex</QOpt>
+        <QOpt>Le chat en ligne, Ctrl+I</QOpt>
+        <QOpt ok>La vue Chat, agent Ask</QOpt>
       </QuizQ>
     </QuizSeries>
   </Frame>
@@ -7438,8 +7438,8 @@ const M4_Qcm: Page = () => (
     <Title>QCM · Module 4 en quatre questions</Title>
     <QuizSeries y={200}>
       <QuizQ q="Copilot propose points > 0 && points <= 13 pour valider une estimation. Le problème ?" explain="La suite 1-2-3-5-8-13 est une liste, pas un intervalle : 4, 6 ou 7 passeraient. Un exemple négatif dans le commentaire (« 4 → false ») l’évite.">
-        <QOpt>Aucun, c’est plus court</QOpt>
         <QOpt ok>4, 6, 7… passeraient : c’est une liste, pas un intervalle</QOpt>
+        <QOpt>Aucun, c’est plus court</QOpt>
         <QOpt>Il faudrait points {'>='} 0</QOpt>
       </QuizQ>
       <QuizQ q="Quel ingrédient de commentaire réduit le plus les cas limites oubliés ?" explain="Les exemples, surtout négatifs (4 → false, null → true), forcent la suggestion à couvrir les bords.">
@@ -7449,12 +7449,12 @@ const M4_Qcm: Page = () => (
       </QuizQ>
       <QuizQ q="Dans un fichier rempli de var et de ==, Copilot propose du code… avec var et ==. Pourquoi ?" explain="Il imite le style visible dans le contexte. Nettoyer le fichier (ou générer dans un fichier propre) change les suggestions.">
         <QOpt>Son modèle date de 2015</QOpt>
-        <QOpt ok>Il prolonge le style qu’il voit dans le fichier</QOpt>
         <QOpt>Les réglages de VS Code l’imposent</QOpt>
+        <QOpt ok>Il prolonge le style qu’il voit dans le fichier</QOpt>
       </QuizQ>
       <QuizQ q="En Python, quel cas Copilot oublie-t-il souvent pour est_points_valide ?" explain="True == 1 en Python : sans vérifier type(points) is int, un booléen serait accepté comme 1 point.">
-        <QOpt>None</QOpt>
         <QOpt ok>True, qui vaut 1</QOpt>
+        <QOpt>None</QOpt>
         <QOpt>13</QOpt>
       </QuizQ>
     </QuizSeries>
@@ -7579,12 +7579,12 @@ const J2_Quiz: Page = () => (
       </QuizQ>
       <QuizQ q="Quel geste accepte une suggestion mot par mot ?" explain="Ctrl+→ (Cmd+→ sur macOS). Tab accepte tout, Alt+] change de proposition.">
         <QOpt>Tab</QOpt>
-        <QOpt ok>Ctrl+→</QOpt>
         <QOpt>Alt+]</QOpt>
+        <QOpt ok>Ctrl+→</QOpt>
       </QuizQ>
       <QuizQ q="Une suggestion inline peut-elle s’appuyer sur un fichier fermé du projet ?" explain="Non : l’inline lit le fichier courant et les onglets ouverts. Ouvrez le fichier utile dans un onglet voisin.">
-        <QOpt>Oui, il indexe tout le projet</QOpt>
         <QOpt ok>Non, seulement le fichier courant et les onglets ouverts</QOpt>
+        <QOpt>Oui, il indexe tout le projet</QOpt>
         <QOpt>Oui, si le fichier est dans le même dossier</QOpt>
       </QuizQ>
       <QuizQ q="Quel ingrédient d’un commentaire ferme le mieux les cas limites ?" explain="Les exemples, surtout négatifs : « 4 → false » empêche la suggestion « intervalle ».">
@@ -7594,8 +7594,8 @@ const J2_Quiz: Page = () => (
       </QuizQ>
       <QuizQ q="À l’Atelier 4, un test d’acceptation échoue. Que faites-vous ?" explain="Les tests fournis sont la spécification : on corrige le code (ou le commentaire qui le guide), jamais le test.">
         <QOpt>Je modifie le test pour qu’il passe</QOpt>
-        <QOpt ok>Je corrige le code ou je précise le commentaire-guide</QOpt>
         <QOpt>Je supprime le test</QOpt>
+        <QOpt ok>Je corrige le code ou je précise le commentaire-guide</QOpt>
       </QuizQ>
     </QuizSeries>
   </Frame>
@@ -7984,8 +7984,8 @@ const M5_Qcm: Page = () => (
     <Title>QCM · Module 5 en quatre questions</Title>
     <QuizSeries y={200}>
       <QuizQ q="Copilot propose return tickets.sort(…) pour trierBacklog. Que vérifiez-vous en premier ?" explain="sort trie sur place : le tableau reçu est modifié. Il faut trier une copie ([...tickets] ou toSorted).">
-        <QOpt>Que sort existe bien en JavaScript</QOpt>
         <QOpt ok>Que le tableau reçu n’est pas modifié</QOpt>
+        <QOpt>Que sort existe bien en JavaScript</QOpt>
         <QOpt>Que la fonction est assez courte</QOpt>
       </QuizQ>
       <QuizQ q="Pourquoi passer fetchFn en paramètre de chargerTickets ?" explain="L’injection de dépendance permet de remplacer fetch par un faux (mock) dans les tests : aucun réseau, résultats déterministes.">
@@ -7995,12 +7995,12 @@ const M5_Qcm: Page = () => (
       </QuizQ>
       <QuizQ q="Avant de générer un parseur CSV, le geste le plus utile est…" explain="Ouvrir le fichier réel dans un onglet voisin : Copilot voit le séparateur, l’en-tête et les cas réels.">
         <QOpt>Choisir un modèle plus puissant</QOpt>
-        <QOpt ok>Ouvrir le fichier de données dans un onglet voisin</QOpt>
         <QOpt>Écrire « fais un parseur robuste »</QOpt>
+        <QOpt ok>Ouvrir le fichier de données dans un onglet voisin</QOpt>
       </QuizQ>
       <QuizQ q="Quelle JSDoc est la plus utile ?" explain="Une doc décrit le contrat : paramètres, retour, erreurs, exemple. La paraphrase du nom n’apporte rien.">
-        <QOpt>« Cette fonction trie le backlog. »</QOpt>
         <QOpt ok>@param, @returns « un nouveau tableau », @throws, un @example</QOpt>
+        <QOpt>« Cette fonction trie le backlog. »</QOpt>
         <QOpt>Le nom de l’auteur et la date</QOpt>
       </QuizQ>
     </QuizSeries>
@@ -8382,12 +8382,12 @@ const M6_Qcm: Page = () => (
       </QuizQ>
       <QuizQ q="Remplacer == par === dans le legacy, c’est…" explain="Un changement de comportement : le texte « 1 » ne trouve plus le ticket 1. Peut-être souhaitable, mais à décider et commiter séparément.">
         <QOpt>Un simple nettoyage sans risque</QOpt>
-        <QOpt ok>Un changement de comportement, à traiter à part</QOpt>
         <QOpt>Obligatoire pour que les tests passent</QOpt>
+        <QOpt ok>Un changement de comportement, à traiter à part</QOpt>
       </QuizQ>
       <QuizQ q="Quel est le bon découpage des commits ?" explain="Un commit de refactoring (même comportement) puis un commit de correction (comportement changé, test mis à jour exprès) : la revue et l’annulation restent simples.">
-        <QOpt>Un seul gros commit « nettoyage »</QOpt>
         <QOpt ok>Refactoring d’abord, correction du bug ensuite</QOpt>
+        <QOpt>Un seul gros commit « nettoyage »</QOpt>
         <QOpt>Correction d’abord, refactoring jamais</QOpt>
       </QuizQ>
       <QuizQ q="Un test de caractérisation sert à…" explain="Il fige le comportement actuel, bugs compris, pour détecter tout changement involontaire pendant le refactoring.">
@@ -8745,12 +8745,12 @@ const M7_Qcm: Page = () => (
     <QuizSeries y={200}>
       <QuizQ q="Un test généré calcule l’attendu avec tickets.filter(…), exactement comme le code testé. Problème ?" explain="C’est un test tautologique : si la logique est fausse, l’attendu l’est aussi, et le test reste vert. L’attendu doit venir de la règle (une valeur écrite à la main).">
         <QOpt>Aucun, c’est plus court</QOpt>
-        <QOpt ok>Il ne peut pas détecter une erreur de cette logique</QOpt>
         <QOpt>Il sera trop lent</QOpt>
+        <QOpt ok>Il ne peut pas détecter une erreur de cette logique</QOpt>
       </QuizQ>
       <QuizQ q="Pour comparer deux objets dans un test node:test, on utilise…" explain="deepEqual compare le contenu ; equal compare les références (deux objets distincts ne sont jamais « égaux »).">
-        <QOpt>assert.equal</QOpt>
         <QOpt ok>assert.deepEqual</QOpt>
+        <QOpt>assert.equal</QOpt>
         <QOpt>assert.ok</QOpt>
       </QuizQ>
       <QuizQ q="Vous changez >= en > dans la règle WIP et tous les tests restent verts. Conclusion ?" explain="La mutation survit : aucun test ne vérifie la limite exacte (3 en cours → le 4e refusé). Il faut écrire ce test.">
@@ -8760,8 +8760,8 @@ const M7_Qcm: Page = () => (
       </QuizQ>
       <QuizQ q="Pourquoi passer fetchFn et aujourdHui en paramètres ?" explain="Pour les remplacer dans les tests par des valeurs contrôlées : pas de réseau, pas de date qui change, des tests déterministes.">
         <QOpt>Pour respecter une convention JavaScript</QOpt>
-        <QOpt ok>Pour pouvoir les simuler et rendre les tests déterministes</QOpt>
         <QOpt>Pour que Copilot comprenne mieux</QOpt>
+        <QOpt ok>Pour pouvoir les simuler et rendre les tests déterministes</QOpt>
       </QuizQ>
     </QuizSeries>
   </Frame>
@@ -9084,8 +9084,8 @@ const M8_Qcm: Page = () => (
     <Title>QCM · Module 8 en quatre questions</Title>
     <QuizSeries y={200}>
       <QuizQ q="Copilot propose npm install csv-taskflow-utils. Votre premier réflexe ?" explain="Un paquet suggéré peut ne pas exister, ou avoir été créé par un attaquant sur un nom « halluciné » plausible. On vérifie qu’il existe, qui le maintient, sa popularité.">
-        <QOpt>Je l’installe, Copilot connaît l’écosystème</QOpt>
         <QOpt ok>Je vérifie qu’il existe et qu’il est fiable avant tout</QOpt>
+        <QOpt>Je l’installe, Copilot connaît l’écosystème</QOpt>
         <QOpt>Je demande à Copilot s’il est sûr</QOpt>
       </QuizQ>
       <QuizQ q="Une suggestion arrive avec un en-tête « Licensed under the GPL v3 ». Que faites-vous ?" explain="C’est un signal de code recopié sous licence copyleft. On ne l’intègre pas tel quel : on réécrit, on utilise une alternative (ici structuredClone), ou on suit la politique de l’entreprise.">
@@ -9095,13 +9095,13 @@ const M8_Qcm: Page = () => (
       </QuizQ>
       <QuizQ q="Où mettre la règle « textContent, jamais innerHTML » pour que toute l’équipe en profite avec Copilot ?" explain="Le fichier .github/copilot-instructions.md est versionné avec le dépôt et joint automatiquement aux demandes du chat et des agents.">
         <QOpt>Dans un message du chat, à chaque fois</QOpt>
-        <QOpt ok>Dans .github/copilot-instructions.md</QOpt>
         <QOpt>Dans les réglages personnels de VS Code</QOpt>
+        <QOpt ok>Dans .github/copilot-instructions.md</QOpt>
       </QuizQ>
       <QuizQ q="La revue Copilot d’une pull request ne trouve rien. Peut-on fusionner ?" explain="La revue automatique est un second avis : elle ne remplace ni la relecture humaine ni les tests de la CI.">
-        <QOpt>Oui, elle a tout vérifié</QOpt>
-        <QOpt>Oui, si le code a été généré par Copilot</QOpt>
         <QOpt ok>Non : relecture humaine et tests restent nécessaires</QOpt>
+        <QOpt>Oui, si le code a été généré par Copilot</QOpt>
+        <QOpt>Oui, elle a tout vérifié</QOpt>
       </QuizQ>
     </QuizSeries>
   </Frame>

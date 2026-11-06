@@ -368,9 +368,9 @@ const M7_Quiz: Page = () => (
     <Title>Quiz final : êtes-vous prêt·e pour lundi ?</Title>
     <QuizSeries y={220}>
       <QuizQ q="Une collègue vous demande de faire résumer par l’IA le dossier disciplinaire d’un salarié. Feu…" explain="Données RH et sanctions : feu rouge. Elles ne vont pas dans un assistant IA, sauf règle interne explicite avec un outil validé.">
-        <QOpt ok>Vert</QOpt>
+        <QOpt ok>Rouge</QOpt>
         <QOpt>Orange, en anonymisant</QOpt>
-        <QOpt>Rouge</QOpt>
+        <QOpt>Vert</QOpt>
       </QuizQ>
       <QuizQ q="Dans le cas fil rouge, pourquoi relire après chaque étape ?" explain="Chaque étape réutilise la précédente : une erreur d’analyse se retrouve dans l’email, la fiche, la synthèse… jusqu’au client.">
         <QOpt>Pour faire plaisir au responsable</QOpt>
@@ -378,13 +378,13 @@ const M7_Quiz: Page = () => (
         <QOpt>Ce n’est pas utile si le prompt est bon</QOpt>
       </QuizQ>
       <QuizQ q="Quel est le premier réflexe pour un prompt qui marche bien ?" explain="Un bon prompt se range dans la bibliothèque, avec des [CROCHETS] pour ce qui change : il resservira la semaine prochaine.">
-        <QOpt>Le ranger dans ma bibliothèque, avec des [CROCHETS]</QOpt>
+        <QOpt>Le réécrire de mémoire la prochaine fois</QOpt>
         <QOpt>Le garder dans l’historique de l’outil</QOpt>
-        <QOpt ok>Le réécrire de mémoire la prochaine fois</QOpt>
+        <QOpt ok>Le ranger dans ma bibliothèque, avec des [CROCHETS]</QOpt>
       </QuizQ>
       <QuizQ q="Un email généré contient une date que vous ne retrouvez dans aucune source. Vous…" explain="Une information introuvable dans les sources est probablement inventée : on la supprime ou on la vérifie avant tout envoi.">
-        <QOpt ok>la gardez, l’IA a sûrement raison</QOpt>
-        <QOpt>la vérifiez ou la retirez avant l’envoi</QOpt>
+        <QOpt ok>la vérifiez ou la retirez avant l’envoi</QOpt>
+        <QOpt>la gardez, l’IA a sûrement raison</QOpt>
         <QOpt>ajoutez « sous réserve »</QOpt>
       </QuizQ>
       <QuizQ q="Qui est responsable d’un courrier rédigé avec l’IA et envoyé à un client ?" explain="L’IA est un outil. La personne qui envoie, et l’organisation au nom de laquelle elle écrit, restent responsables du contenu.">

@@ -394,8 +394,8 @@ const M2_Quiz: Page = () => (
     <Title>Quiz : quatre situations d’offre</Title>
     <QuizSeries y={200}>
       <QuizQ q="Le manager veut « un jeune pour dynamiser l’équipe ». Vous écrivez…" explain="On décrit le comportement attendu, jamais l’âge. « Jeune » est un critère discriminatoire, même s’il est sous-entendu.">
-        <QOpt ok>« Profil junior, idéalement moins de 30 ans »</QOpt>
-        <QOpt>« Vous aimez proposer des idées et faire bouger les habitudes »</QOpt>
+        <QOpt ok>« Vous aimez proposer des idées et faire bouger les habitudes »</QOpt>
+        <QOpt>« Profil junior, idéalement moins de 30 ans »</QOpt>
         <QOpt>« Jeune diplômé·e » sans mention d’âge</QOpt>
       </QuizQ>
       <QuizQ q="L’IA a ajouté « certification RGE exigée » au profil. Vous…" explain="L’IA comble les blancs avec des éléments plausibles du secteur. Toute exigence doit venir du manager, pas du modèle.">
@@ -405,12 +405,12 @@ const M2_Quiz: Page = () => (
       </QuizQ>
       <QuizQ q="Pour un post sur un réseau professionnel, le plus important est…" explain="Le fil d’actualité coupe après deux lignes : l’accroche humaine décide si l’on clique sur « voir plus ».">
         <QOpt>Reprendre l’offre complète à l’identique</QOpt>
-        <QOpt>Une accroche humaine dans les deux premières lignes</QOpt>
-        <QOpt ok>Le maximum de hashtags</QOpt>
+        <QOpt>Le maximum de hashtags</QOpt>
+        <QOpt ok>Une accroche humaine dans les deux premières lignes</QOpt>
       </QuizQ>
       <QuizQ q="Quelle information manque le plus souvent aux yeux des candidats ?" explain="Les enquêtes candidats placent la rémunération en tête des informations attendues ; l’afficher filtre aussi les candidatures hors budget.">
-        <QOpt ok>L’historique de l’entreprise</QOpt>
-        <QOpt>La rémunération</QOpt>
+        <QOpt ok>La rémunération</QOpt>
+        <QOpt>L’historique de l’entreprise</QOpt>
         <QOpt>Le nombre de salariés</QOpt>
       </QuizQ>
     </QuizSeries>

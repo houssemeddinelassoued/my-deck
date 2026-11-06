@@ -5650,23 +5650,23 @@ const R_Quiz: Page = () => (
     <Title>Quiz flash : la matinée en six questions</Title>
     <QuizSeries y={200}>
       <QuizQ q="« IA générative » désigne…" explain="Des modèles qui produisent du contenu nouveau : texte, image, code. C’est le plus petit cercle des poupées russes.">
-        <QOpt ok>Tout système qui apprend à partir de données</QOpt>
-        <QOpt>Des modèles qui produisent du contenu nouveau</QOpt>
+        <QOpt ok>Des modèles qui produisent du contenu nouveau</QOpt>
+        <QOpt>Tout système qui apprend à partir de données</QOpt>
         <QOpt>Les modèles qui prévoient des chiffres</QOpt>
       </QuizQ>
       <QuizQ q="Un modèle juste à 95 %, appliqué aux 180 000 justificatifs mensuels de Spendo, c’est…" explain="5 % de 180 000 : 9 000 erreurs chaque mois. D’où la question : que se passe-t-il quand il se trompe ?">
         <QOpt>Quasiment aucune erreur</QOpt>
-        <QOpt ok>900 erreurs par mois</QOpt>
-        <QOpt>9 000 erreurs par mois</QOpt>
+        <QOpt ok>9 000 erreurs par mois</QOpt>
+        <QOpt>900 erreurs par mois</QOpt>
       </QuizQ>
       <QuizQ q="Baisser le seuil d’alerte d’un détecteur de fraude…" explain="On détecte plus de fraudes (rappel), au prix de plus de fausses alertes (précision). C’est un arbitrage métier.">
-        <QOpt>Augmente les fraudes détectées et les fausses alertes</QOpt>
+        <QOpt>Oblige à ré-entraîner le modèle</QOpt>
         <QOpt>Rend le modèle plus précis</QOpt>
-        <QOpt ok>Oblige à ré-entraîner le modèle</QOpt>
+        <QOpt ok>Augmente les fraudes détectées et les fausses alertes</QOpt>
       </QuizQ>
       <QuizQ q="Pour qu’un assistant réponde juste sur la politique voyage d’un client, il faut…" explain="Lui fournir les documents du client au moment de répondre, et exiger qu’il les cite : c’est le RAG.">
-        <QOpt ok>Un modèle plus gros</QOpt>
-        <QOpt>Lui donner les documents du client au moment de répondre</QOpt>
+        <QOpt ok>Lui donner les documents du client au moment de répondre</QOpt>
+        <QOpt>Un modèle plus gros</QOpt>
         <QOpt>Une température plus élevée</QOpt>
       </QuizQ>
       <QuizQ q="Laquelle de ces idées n’a pas besoin d’IA ?" explain="Une règle connue, stable et explicable s’écrit en une ligne : paramétrable par client, sans modèle.">
@@ -7273,8 +7273,8 @@ const C_Quiz: Page = () => (
     <Title>Quiz final : l’après-midi en six questions</Title>
     <QuizSeries y={200}>
       <QuizQ q="Dans le workflow d’une feature IA, qui définit ce qu’est une « bonne réponse » ?" explain="Le PO, avec le métier, via le guide d’annotation : c’est une règle de produit, pas une question technique.">
-        <QOpt ok>Le data scientist</QOpt>
-        <QOpt>Le PO, avec le métier</QOpt>
+        <QOpt ok>Le PO, avec le métier</QOpt>
+        <QOpt>Le data scientist</QOpt>
         <QOpt>Le modèle, à partir des données</QOpt>
       </QuizQ>
       <QuizQ q="Le jeu de test (« golden set ») sert à…" explain="Juger le modèle sur des cas qu’il n’a jamais vus. Personne n’y touche pendant le développement.">
@@ -7299,8 +7299,8 @@ const C_Quiz: Page = () => (
       </QuizQ>
       <QuizQ q="La part des champs corrigés par les utilisateurs remonte brutalement. C’est probablement…" explain="Une dérive : les données ont changé (nouveau format de ticket). On analyse, on ajoute des exemples, on ré-entraîne.">
         <QOpt>Un bug d’affichage</QOpt>
-        <QOpt>Une dérive : le monde a changé, pas le modèle</QOpt>
-        <QOpt ok>Des utilisateurs qui testent l’outil</QOpt>
+        <QOpt>Des utilisateurs qui testent l’outil</QOpt>
+        <QOpt ok>Une dérive : le monde a changé, pas le modèle</QOpt>
       </QuizQ>
     </QuizSeries>
   </Frame>

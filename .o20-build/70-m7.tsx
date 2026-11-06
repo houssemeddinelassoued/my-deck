@@ -359,13 +359,13 @@ const M7_Quiz: Page = () => (
     <Title>Quiz · Module 7</Title>
     <QuizSeries y={200}>
       <QuizQ q="Vous voulez retirer un objet gênant dans une photo existante. Quelle fonction ?" explain="Le remplissage génératif (Firefly, aussi intégré à Photoshop) ajoute, retire ou remplace un élément d’une image.">
-        <QOpt ok>La traduction de documents</QOpt>
-        <QOpt>Le remplissage génératif</QOpt>
+        <QOpt ok>Le remplissage génératif</QOpt>
+        <QOpt>La traduction de documents</QOpt>
         <QOpt>Le Consensus Meter</QOpt>
       </QuizQ>
       <QuizQ q="Quel outil sert d’abord à monter une vidéo avec sous-titres automatiques ?" explain="CapCut AI génère des sous-titres automatiques, recadre en vertical et propose des voix off synthétiques.">
-        <QOpt>CapCut AI</QOpt>
-        <QOpt ok>Elicit</QOpt>
+        <QOpt>Elicit</QOpt>
+        <QOpt ok>CapCut AI</QOpt>
         <QOpt>Grammarly</QOpt>
       </QuizQ>
       <QuizQ q="Pour une vidéo promotionnelle, faire parler un célèbre chef cuisinier grâce à l’IA est…" explain="Imiter le visage ou la voix d’une personne réelle sans accord est un hypertrucage : atteinte à ses droits et obligation de transparence.">
@@ -374,8 +374,8 @@ const M7_Quiz: Page = () => (
         <QOpt ok>interdit sans son accord : c’est un hypertrucage</QOpt>
       </QuizQ>
       <QuizQ q="Dans un prompt d’image, « espace libre à droite pour un titre » relève de…" explain="C’est la composition : cadrage, point de vue, placement des éléments et espaces réservés.">
-        <QOpt ok>du style</QOpt>
-        <QOpt>de la composition</QOpt>
+        <QOpt ok>de la composition</QOpt>
+        <QOpt>du style</QOpt>
         <QOpt>de la lumière</QOpt>
       </QuizQ>
       <QuizQ q="Pour garder le contrôle du rendu d’une vidéo Runway, le mieux est de partir…" explain="Partir d’une image validée donne beaucoup plus de contrôle qu’une description textuelle seule.">

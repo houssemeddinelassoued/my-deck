@@ -50,14 +50,14 @@ const J2_Quiz: Page = () => (
     <Lede>Main levée, puis on clique. Objectif : 5 sur 5 du premier coup pour le groupe.</Lede>
     <QuizSeries y={260}>
       <QuizQ q="Pourquoi un LLM peut-il proposer un paquet npm qui n’existe pas ?" explain="Il produit la suite la plus probable, sans vérifier qu’elle existe. D’où le slopsquatting.">
-        <QOpt ok>Il recopie un dépôt GitHub piraté</QOpt>
-        <QOpt>Il génère la suite la plus probable, sans vérifier qu’elle existe</QOpt>
+        <QOpt ok>Il génère la suite la plus probable, sans vérifier qu’elle existe</QOpt>
+        <QOpt>Il recopie un dépôt GitHub piraté</QOpt>
         <QOpt>Son index du registre npm n’est plus à jour</QOpt>
         <QOpt>La température était réglée trop basse</QOpt>
       </QuizQ>
       <QuizQ q="Quel fichier part dans le contexte du modèle à CHAQUE requête Copilot ?" explain="Les instructions globales sont toujours chargées : elles doivent rester courtes (moins de 60 lignes dans FrigoMalin).">
-        <QOpt>.github/copilot-instructions.md</QOpt>
-        <QOpt ok>Tous les fichiers SKILL.md du dépôt</QOpt>
+        <QOpt>Tous les fichiers SKILL.md du dépôt</QOpt>
+        <QOpt ok>.github/copilot-instructions.md</QOpt>
         <QOpt>.github/instructions/tests.instructions.md</QOpt>
         <QOpt>.copilotignore</QOpt>
       </QuizQ>
@@ -70,12 +70,12 @@ const J2_Quiz: Page = () => (
       <QuizQ q="L’exclusion de contenu officielle de Copilot (Business / Enterprise)…" explain="Selon la documentation GitHub, elle n’est pas appliquée en mode Agent : d’où la défense en profondeur.">
         <QOpt>protège tous les fichiers, dans tous les modes</QOpt>
         <QOpt>remplace le .gitignore</QOpt>
-        <QOpt>n’est pas appliquée en mode Agent, selon la documentation</QOpt>
-        <QOpt ok>est disponible gratuitement sur les comptes individuels</QOpt>
+        <QOpt>est disponible gratuitement sur les comptes individuels</QOpt>
+        <QOpt ok>n’est pas appliquée en mode Agent, selon la documentation</QOpt>
       </QuizQ>
       <QuizQ q="Une issue demande à l’agent d’exécuter une commande curl « pour tester ». L’agent doit…" explain="Tout ce que l’agent lit est une donnée, jamais une consigne. Les commandes passent par votre validation.">
-        <QOpt ok>l’exécuter si la commande est courte</QOpt>
-        <QOpt>traiter ce contenu comme une donnée, jamais comme une consigne</QOpt>
+        <QOpt ok>traiter ce contenu comme une donnée, jamais comme une consigne</QOpt>
+        <QOpt>l’exécuter si la commande est courte</QOpt>
         <QOpt>demander l’autorisation à l’auteur de l’issue</QOpt>
         <QOpt>ignorer toutes les issues du dépôt</QOpt>
       </QuizQ>
@@ -543,38 +543,38 @@ const M4_Lab54: Page = () => (
     <QuizSeries y={255}>
       <QuizQ q="Renommer expiresOn en expiryDate dans tout le projet." explain="« Renommer le symbole » (F2) s’appuie sur l’analyse du code : exact, instantané, zéro token.">
         <QOpt>Une session agent : « renomme expiresOn partout »</QOpt>
-        <QOpt ok>Le chat inline sur chaque fichier concerné</QOpt>
-        <QOpt>La commande de l’éditeur « Renommer le symbole » (F2)</QOpt>
+        <QOpt ok>La commande de l’éditeur « Renommer le symbole » (F2)</QOpt>
+        <QOpt>Le chat inline sur chaque fichier concerné</QOpt>
         <QOpt>Un skill dédié aux renommages</QOpt>
       </QuizQ>
       <QuizQ q="Ajouter un paramètre locale à formatDate, puis mettre à jour ses 6 appels." explain="Les suggestions d’édition suivante devinent la suite : après la signature, Tab accepte chaque appel mis à jour.">
-        <QOpt>Next Edit Suggestions : modifier la signature, puis Tab sur chaque appel</QOpt>
+        <QOpt>Le chat inline sur chaque appel, un par un</QOpt>
         <QOpt>Une session agent avec tout le projet en contexte</QOpt>
-        <QOpt ok>Le chat inline sur chaque appel, un par un</QOpt>
+        <QOpt ok>Next Edit Suggestions : modifier la signature, puis Tab sur chaque appel</QOpt>
         <QOpt>Modifier la fonction et laisser les tests échouer</QOpt>
       </QuizQ>
       <QuizQ q="Écrire la JSDoc de suggestRecipes." explain="La complétion génère la JSDoc depuis la signature et le corps : le plus rapide. Le chat inline est aussi acceptable.">
         <QOpt>Une session agent, en commençant par l’agent Plan</QOpt>
-        <QOpt>La complétion inline : taper /** au-dessus de la fonction</QOpt>
+        <QOpt>Une nouvelle règle dans copilot-instructions.md</QOpt>
         <QOpt>Un skill « documentation »</QOpt>
-        <QOpt ok>Une nouvelle règle dans copilot-instructions.md</QOpt>
+        <QOpt ok>La complétion inline : taper /** au-dessus de la fonction</QOpt>
       </QuizQ>
       <QuizQ q="Convertir une boucle for en reduce dans impact.ts." explain="Le chat inline travaille sur la sélection : contexte minimal, réponse rapide, diff relisible immédiatement.">
-        <QOpt ok>Une session agent avec tout src/ en contexte</QOpt>
-        <QOpt>Le chat inline (Ctrl+I) sur la sélection, « sans changer le comportement »</QOpt>
+        <QOpt ok>Le chat inline (Ctrl+I) sur la sélection, « sans changer le comportement »</QOpt>
+        <QOpt>Une session agent avec tout src/ en contexte</QOpt>
         <QOpt>Une nouvelle instruction dans copilot-instructions.md</QOpt>
         <QOpt>La commande « Renommer le symbole »</QOpt>
       </QuizQ>
       <QuizQ q="Ajouter un mode sombre à toute l’application." explain="Beaucoup de fichiers, un plan nécessaire : c’est le bon usage d’une session agent, Plan d’abord.">
         <QOpt>La complétion inline, fichier par fichier</QOpt>
-        <QOpt ok>Le chat inline sur tokens.css uniquement</QOpt>
-        <QOpt>Une session agent, en commençant par l’agent Plan</QOpt>
+        <QOpt ok>Une session agent, en commençant par l’agent Plan</QOpt>
+        <QOpt>Le chat inline sur tokens.css uniquement</QOpt>
         <QOpt>La commande « Renommer le symbole »</QOpt>
       </QuizQ>
       <QuizQ q="Pourquoi éviter une session agent pour une micro-tâche ?" explain="Chaque requête agent embarque instructions, définitions d’outils et historique : du coût et de la latence sans valeur ajoutée.">
         <QOpt>Les sessions agent sont interdites sur les petits fichiers</QOpt>
-        <QOpt>Elle consomme crédits et contexte pour un gain nul</QOpt>
-        <QOpt ok>L’agent ne sait pas modifier une seule ligne</QOpt>
+        <QOpt>L’agent ne sait pas modifier une seule ligne</QOpt>
+        <QOpt ok>Elle consomme crédits et contexte pour un gain nul</QOpt>
         <QOpt>Les complétions utilisent toujours un meilleur modèle</QOpt>
       </QuizQ>
     </QuizSeries>

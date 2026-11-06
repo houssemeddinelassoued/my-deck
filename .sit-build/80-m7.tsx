@@ -828,12 +828,12 @@ const M7_Quiz: Page = () => (
       </QuizQ>
       <QuizQ q="Quelle phrase rend un agent fiable ?" explain="« Réponds uniquement à partir des articles fournis » : sans elle, l’agent improvise.">
         <QOpt>« Sois créatif »</QOpt>
-        <QOpt>« Réponds uniquement à partir des articles fournis »</QOpt>
-        <QOpt ok>« Réponds toujours, même sans source »</QOpt>
+        <QOpt>« Réponds toujours, même sans source »</QOpt>
+        <QOpt ok>« Réponds uniquement à partir des articles fournis »</QOpt>
       </QuizQ>
       <QuizQ q="Qu’est-ce que le vibe coding ?" explain="Décrire le résultat en langage naturel ; l’IA écrit le code et l’explique ; vous restez responsable du test.">
-        <QOpt ok>Apprendre PowerShell en accéléré</QOpt>
-        <QOpt>Faire écrire le code par l’IA à partir d’une description</QOpt>
+        <QOpt ok>Faire écrire le code par l’IA à partir d’une description</QOpt>
+        <QOpt>Apprendre PowerShell en accéléré</QOpt>
         <QOpt>Copier un script trouvé sur un forum</QOpt>
       </QuizQ>
       <QuizQ q="Le script affiche une erreur rouge. Le premier réflexe ?" explain="Coller le message à l’IA et demander une explication simple et une correction, puis vérifier ce que la correction modifie.">

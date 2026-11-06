@@ -401,12 +401,12 @@ const M7_Quiz: Page = () => (
     <QuizSeries y={200}>
       <QuizQ q="Pseudonymiser un CV (« Candidate C ») suffit-il toujours à protéger la personne ?" explain="Non : des détails précis (employeur rare, dates, ville) permettent parfois de la retrouver. On retire aussi les détails trop identifiants.">
         <QOpt>Oui, sans nom elle est anonyme</QOpt>
-        <QOpt>Non, elle peut rester identifiable par recoupement</QOpt>
-        <QOpt ok>Oui, si l’outil est payant</QOpt>
+        <QOpt>Oui, si l’outil est payant</QOpt>
+        <QOpt ok>Non, elle peut rester identifiable par recoupement</QOpt>
       </QuizQ>
       <QuizQ q="Un outil propose de ne retenir que les candidats habitant à moins de 20 km. C’est…" explain="Le lieu de résidence est un critère de discrimination interdit (L.1132-1). Parlez plutôt des horaires et des déplacements réels du poste.">
-        <QOpt ok>Une bonne pratique pour limiter le turnover</QOpt>
-        <QOpt>Un critère de discrimination interdit</QOpt>
+        <QOpt ok>Un critère de discrimination interdit</QOpt>
+        <QOpt>Une bonne pratique pour limiter le turnover</QOpt>
         <QOpt>Autorisé si le candidat est d’accord</QOpt>
       </QuizQ>
       <QuizQ q="Vous validez systématiquement les suggestions de l’IA depuis trois mois sans en modifier aucune. Le risque principal ?" explain="Le biais d’automatisation : la validation devient un tampon, et la décision est de fait automatisée.">
@@ -416,8 +416,8 @@ const M7_Quiz: Page = () => (
       </QuizQ>
       <QuizQ q="Dans la note de Julien, quel critère faut-il questionner ?" explain="« Un bon électricien motivé » : la motivation n’est pas un critère observable. À traduire en indices concrets avec Julien (projets, formation suivie…). Et l’habilitation électrique est, elle, un vrai prérequis légal.">
         <QOpt>L’habilitation électrique</QOpt>
-        <QOpt>« Motivé » : à traduire en indices observables</QOpt>
-        <QOpt ok>Le salaire de 28 à 32 k€</QOpt>
+        <QOpt>Le salaire de 28 à 32 k€</QOpt>
+        <QOpt ok>« Motivé » : à traduire en indices observables</QOpt>
       </QuizQ>
     </QuizSeries>
   </Frame>

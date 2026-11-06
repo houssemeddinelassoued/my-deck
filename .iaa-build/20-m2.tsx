@@ -728,23 +728,23 @@ const M2_Quiz: Page = () => (
     <QuizSeries y={200}>
       <QuizQ q="Pourquoi imposer une liste fermée de catégories ?" explain="La condition suivante teste une valeur exacte. Une catégorie inventée ou mal orthographiée fait sortir le cas du flux sans bruit.">
         <QOpt>Pour que la réponse soit plus courte</QOpt>
-        <QOpt>Pour que les conditions du workflow puissent la tester</QOpt>
-        <QOpt ok>Parce que l’IA ne connaît pas d’autres mots</QOpt>
+        <QOpt>Parce que l’IA ne connaît pas d’autres mots</QOpt>
+        <QOpt ok>Pour que les conditions du workflow puissent la tester</QOpt>
       </QuizQ>
       <QuizQ q="L’IA ne trouve pas le numéro de commande dans l’email. Que doit dire le prompt ?" explain="null est une information exploitable : le workflow peut demander le numéro au client. Une valeur inventée, elle, passe inaperçue.">
-        <QOpt ok>Déduis-le à partir du contexte</QOpt>
-        <QOpt>Mets null si l’information est absente</QOpt>
+        <QOpt ok>Mets null si l’information est absente</QOpt>
+        <QOpt>Déduis-le à partir du contexte</QOpt>
         <QOpt>Écris « 00000 »</QOpt>
       </QuizQ>
       <QuizQ q="Quel est le principal intérêt du chaînage de prompts ?" explain="Chaque maillon a une entrée, une sortie et un test : on localise et on corrige les erreurs, maillon par maillon.">
         <QOpt>Utiliser moins de jetons</QOpt>
-        <QOpt ok>Rendre l’IA plus créative</QOpt>
-        <QOpt>Tester et corriger chaque étape séparément</QOpt>
+        <QOpt ok>Tester et corriger chaque étape séparément</QOpt>
+        <QOpt>Rendre l’IA plus créative</QOpt>
       </QuizQ>
       <QuizQ q="Que contient une bonne fiche prompt réutilisable ?" explain="Nom, version, entrées, format de sortie, jeu de tests et propriétaire : c’est un composant, pas un texte jetable.">
         <QOpt>Le prompt seul, c’est suffisant</QOpt>
-        <QOpt>Entrées, format de sortie, version, tests, propriétaire</QOpt>
-        <QOpt ok>Le nom de la personne qui l’a écrit</QOpt>
+        <QOpt>Le nom de la personne qui l’a écrit</QOpt>
+        <QOpt ok>Entrées, format de sortie, version, tests, propriétaire</QOpt>
       </QuizQ>
     </QuizSeries>
   </Frame>

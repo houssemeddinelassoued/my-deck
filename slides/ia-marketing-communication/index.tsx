@@ -4473,8 +4473,8 @@ const M1_Quiz: Page = () => (
     </Title>
     <QuizSeries y={220}>
       <QuizQ q="« L’IA connaît les prix et les offres d’Ardente. »" explain="Elle ne connaît que ce qu’on lui donne dans la conversation. Sinon, elle invente des tarifs plausibles… et faux.">
-        <QOpt ok>Vrai, tout est sur Internet</QOpt>
-        <QOpt>Faux, sauf si on les lui fournit</QOpt>
+        <QOpt ok>Faux, sauf si on les lui fournit</QOpt>
+        <QOpt>Vrai, tout est sur Internet</QOpt>
         <QOpt>Vrai, si la marque est connue</QOpt>
       </QuizQ>
       <QuizQ q="« Un texte bien écrit par l’IA peut être publié sans relecture. »" explain="Bien écrit ne veut pas dire exact. Un chiffre inventé ou une promesse non validée engage la marque : relecture systématique.">
@@ -6939,28 +6939,28 @@ const M5_Quiz: Page = () => (
     <QuizSeries y={220}>
       <QuizQ q="Vous écrivez à une DRH que vous n’avez jamais rencontrée. Quel format ?" explain="Email direct : court, contextualisé, sans image, une seule question fermée. La newsletter s’adresse à des abonnés.">
         <QOpt>Une newsletter illustrée de 300 mots</QOpt>
-        <QOpt>Un email court, personnalisé, avec une question fermée</QOpt>
-        <QOpt ok>Un carrousel Instagram</QOpt>
+        <QOpt>Un carrousel Instagram</QOpt>
+        <QOpt ok>Un email court, personnalisé, avec une question fermée</QOpt>
       </QuizQ>
       <QuizQ q="Sur Instagram, qu’est-ce qui porte le message en premier ?" explain="Le visuel. La légende complète, engage par une question et des hashtags de niche.">
-        <QOpt ok>La légende</QOpt>
+        <QOpt ok>Le visuel</QOpt>
         <QOpt>Les hashtags</QOpt>
-        <QOpt>Le visuel</QOpt>
+        <QOpt>La légende</QOpt>
       </QuizQ>
       <QuizQ q="Un prospect découvre tout juste la marque. Quel message ?" explain="En découverte, on parle de son problème, pas de notre offre. L’essai gratuit vient à l’étape décision.">
-        <QOpt>Un contenu utile sur son problème, sans parler de nous</QOpt>
-        <QOpt ok>Le tarif détaillé et le bon de commande</QOpt>
+        <QOpt>Le tarif détaillé et le bon de commande</QOpt>
+        <QOpt ok>Un contenu utile sur son problème, sans parler de nous</QOpt>
         <QOpt>Une remise de 50 % immédiate</QOpt>
       </QuizQ>
       <QuizQ q="Pour personnaliser 2 000 emails, que donnez-vous à l’assistant IA ?" explain="L’IA rédige le modèle avec des variables ; c’est l’outil d’emailing ou le CRM qui insère les données. Le fichier clients reste dans les outils validés.">
         <QOpt>Le fichier clients complet</QOpt>
-        <QOpt>Rien de personnel : il rédige un modèle avec des variables</QOpt>
-        <QOpt ok>Les prénoms et emails seulement</QOpt>
+        <QOpt>Les prénoms et emails seulement</QOpt>
+        <QOpt ok>Rien de personnel : il rédige un modèle avec des variables</QOpt>
       </QuizQ>
       <QuizQ q="Vous réduisez un article à un objet d’email. Que doit-on préciser à l’IA ?" explain="Ce qui doit absolument rester : sinon elle garde parfois le détail et perd le bénéfice ou la date limite.">
-        <QOpt ok>Rien, elle sait résumer</QOpt>
+        <QOpt ok>Les éléments à garder obligatoirement</QOpt>
         <QOpt>Le nombre exact de caractères seulement</QOpt>
-        <QOpt>Les éléments à garder obligatoirement</QOpt>
+        <QOpt>Rien, elle sait résumer</QOpt>
       </QuizQ>
     </QuizSeries>
   </Frame>

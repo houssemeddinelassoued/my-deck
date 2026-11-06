@@ -564,8 +564,8 @@ const M1_Quiz: Page = () => (
     <Title>Quiz · Module 1</Title>
     <QuizSeries y={200}>
       <QuizQ q="Une IA générative comme ChatGPT produit sa réponse…" explain="Elle prédit, mot après mot, la suite la plus probable. Elle ne consulte pas une base de faits vérifiés.">
-        <QOpt ok>en cherchant la bonne réponse dans une base de faits vérifiés</QOpt>
-        <QOpt>en prédisant la suite de mots la plus probable</QOpt>
+        <QOpt ok>en prédisant la suite de mots la plus probable</QOpt>
+        <QOpt>en cherchant la bonne réponse dans une base de faits vérifiés</QOpt>
         <QOpt>en comprenant le sens comme un humain</QOpt>
       </QuizQ>
       <QuizQ q="Vous demandez « Résume notre rapport annuel » sans le joindre. Le risque principal ?" explain="Sans source, l’IA peut inventer un résumé plausible : chiffres, études, citations. C’est une hallucination.">
@@ -575,8 +575,8 @@ const M1_Quiz: Page = () => (
       </QuizQ>
       <QuizQ q="Quelle tâche devez-vous garder humaine ?" explain="Les situations à forte charge émotionnelle ou à enjeu de décision restent humaines. L’IA peut aider à préparer, pas à annoncer.">
         <QOpt>Corriger l’orthographe d’un rapport</QOpt>
-        <QOpt>Annoncer une mauvaise nouvelle à un collaborateur</QOpt>
-        <QOpt ok>Proposer dix idées de titres</QOpt>
+        <QOpt>Proposer dix idées de titres</QOpt>
+        <QOpt ok>Annoncer une mauvaise nouvelle à un collaborateur</QOpt>
       </QuizQ>
       <QuizQ q="Vous travaillez toute la journée dans Outlook, Word et Teams. L’assistant le plus intégré ?" explain="Microsoft Copilot est intégré à l’environnement Microsoft 365 : il travaille là où sont vos emails et documents.">
         <QOpt ok>Microsoft Copilot</QOpt>

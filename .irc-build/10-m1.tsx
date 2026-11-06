@@ -285,13 +285,13 @@ const M1_QuizFlash: Page = () => (
     <Title>Quiz flash : vrai ou faux ?</Title>
     <QuizSeries y={220}>
       <QuizQ q="« L’IA connaît nos conditions de retour et nos délais de livraison. »" explain="Elle ne connaît que ce que vous lui donnez : la procédure collée dans la demande, ou une base de connaissances branchée sur l’outil. Sinon, elle invente un délai plausible.">
-        <QOpt ok>Vrai, elle a été entraînée sur Internet</QOpt>
-        <QOpt>Faux, sauf si on les lui fournit</QOpt>
+        <QOpt ok>Faux, sauf si on les lui fournit</QOpt>
+        <QOpt>Vrai, elle a été entraînée sur Internet</QOpt>
         <QOpt>Vrai, si notre site est public</QOpt>
       </QuizQ>
       <QuizQ q="« L’IA peut se tromper tout en ayant l’air sûre d’elle. »" explain="C’est l’hallucination : une réponse fausse, bien rédigée. D’où la relecture systématique avant envoi, surtout sur les montants, les délais et les engagements.">
-        <QOpt>Vrai, et c’est le principal piège</QOpt>
-        <QOpt ok>Faux, elle dit toujours « je ne sais pas »</QOpt>
+        <QOpt>Faux, elle dit toujours « je ne sais pas »</QOpt>
+        <QOpt ok>Vrai, et c’est le principal piège</QOpt>
         <QOpt>Faux, avec les versions récentes</QOpt>
       </QuizQ>
       <QuizQ q="« Je peux coller l’email d’un client avec son adresse et son IBAN dans une IA grand public. »" explain="Jamais dans un outil non autorisé : les données peuvent être conservées ou réutilisées. On utilise l’outil validé par l’entreprise et on retire les données inutiles (module 7).">
@@ -300,8 +300,8 @@ const M1_QuizFlash: Page = () => (
         <QOpt ok>Faux : outil autorisé et données minimales</QOpt>
       </QuizQ>
       <QuizQ q="« Le même prompt donne toujours exactement la même réponse. »" explain="La génération comporte une part de hasard : deux essais donnent deux formulations. C’est pour cela qu’on crée des modèles cadrés et qu’on relit toujours.">
-        <QOpt ok>Vrai</QOpt>
-        <QOpt>Faux : la formulation varie d’un essai à l’autre</QOpt>
+        <QOpt ok>Faux : la formulation varie d’un essai à l’autre</QOpt>
+        <QOpt>Vrai</QOpt>
         <QOpt>Vrai, si on écrit en majuscules</QOpt>
       </QuizQ>
       <QuizQ q="« Avec l’IA, le conseiller n’est plus responsable de la réponse envoyée. »" explain="La réponse part au nom de l’entreprise et du conseiller. L’IA est un outil de préparation : la décision et la responsabilité restent humaines.">

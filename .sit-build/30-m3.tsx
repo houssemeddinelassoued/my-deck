@@ -569,12 +569,12 @@ const M3_Quiz: Page = () => (
     <QuizSeries y={200}>
       <QuizQ q="Pourquoi synthétiser un long rapport en trois passes ?" explain="On vérifie que tout a été lu (la carte), on récupère des faits sourcés (l’essentiel), puis on rédige pour le lecteur (la décision).">
         <QOpt>Parce que l’IA ne sait pas faire plus court</QOpt>
-        <QOpt>Pour garder la main et obtenir des faits sourcés</QOpt>
-        <QOpt ok>Pour consommer moins de licences</QOpt>
+        <QOpt>Pour consommer moins de licences</QOpt>
+        <QOpt ok>Pour garder la main et obtenir des faits sourcés</QOpt>
       </QuizQ>
       <QuizQ q="Le titre d’un article de base de connaissances doit décrire…" explain="Le symptôme, avec les mots de l’utilisateur : c’est ce qu’il tapera dans la recherche.">
-        <QOpt ok>La cause technique</QOpt>
-        <QOpt>Le symptôme, avec les mots de l’utilisateur</QOpt>
+        <QOpt ok>Le symptôme, avec les mots de l’utilisateur</QOpt>
+        <QOpt>La cause technique</QOpt>
         <QOpt>Le numéro du ticket</QOpt>
       </QuizQ>
       <QuizQ q="Copilot peut-il résumer une réunion Teams qui n’était ni transcrite ni enregistrée ?" explain="Non : sans transcription, il n’a rien à lire. Il peut seulement résumer le fil de conversation écrit.">
@@ -584,8 +584,8 @@ const M3_Quiz: Page = () => (
       </QuizQ>
       <QuizQ q="Quelle demande prépare le mieux un comité de changement ?" explain="Faire jouer à l’IA un membre exigeant permet de préparer les réponses aux objections avant la réunion.">
         <QOpt>« Écris-moi un beau discours »</QOpt>
-        <QOpt>« Pose-moi les cinq questions les plus difficiles du comité »</QOpt>
-        <QOpt ok>« Dis-moi si le comité va accepter »</QOpt>
+        <QOpt>« Dis-moi si le comité va accepter »</QOpt>
+        <QOpt ok>« Pose-moi les cinq questions les plus difficiles du comité »</QOpt>
       </QuizQ>
     </QuizSeries>
   </Frame>

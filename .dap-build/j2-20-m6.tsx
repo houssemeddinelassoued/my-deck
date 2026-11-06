@@ -579,33 +579,33 @@ const M6_Lab72: Page = () => (
     <QuizSeries y={255}>
       <QuizQ q="Depuis ce matin, la même session enchaîne inventaire, bug CSS et question Git. Nouvelle tâche :" explain="Une tâche = une session : l’historique précédent est du contexte payé à chaque requête, sans valeur.">
         <QOpt>Continuer dans la même session : l’agent garde tout en mémoire</QOpt>
-        <QOpt>Ouvrir une nouvelle session (Ctrl+N) dédiée à la tâche</QOpt>
+        <QOpt>Désactiver les fichiers d’instructions</QOpt>
         <QOpt>Coller un résumé des échanges précédents</QOpt>
-        <QOpt ok>Désactiver les fichiers d’instructions</QOpt>
+        <QOpt ok>Ouvrir une nouvelle session (Ctrl+N) dédiée à la tâche</QOpt>
       </QuizQ>
       <QuizQ q="Vous voulez qu’un agent ajoute un filtre à l’écran Inventaire." explain="Des mentions précises donnent un contexte petit et pertinent ; l’agent sait chercher le reste.">
-        <QOpt ok>« Voici tout le projet #codebase, ajoute un filtre »</QOpt>
-        <QOpt>Nommer les 2 ou 3 fichiers utiles avec #</QOpt>
+        <QOpt ok>Nommer les 2 ou 3 fichiers utiles avec #</QOpt>
+        <QOpt>« Voici tout le projet #codebase, ajoute un filtre »</QOpt>
         <QOpt>Coller le contenu de tous les fichiers de src/</QOpt>
         <QOpt>Ne donner aucun contexte</QOpt>
       </QuizQ>
       <QuizQ q="À chaque exécution, npm test affiche 400 lignes que l’agent relit." explain="Les sorties d’outils sont souvent le premier poste de tokens : une règle de test concise profite à toutes les sessions.">
         <QOpt>Désactiver les tests pendant le développement</QOpt>
-        <QOpt ok>Demander à l’agent de ne jamais lire la sortie</QOpt>
-        <QOpt>Règle dans tests.instructions.md : tests ciblés, rapporteur concis</QOpt>
+        <QOpt ok>Règle dans tests.instructions.md : tests ciblés, rapporteur concis</QOpt>
+        <QOpt>Demander à l’agent de ne jamais lire la sortie</QOpt>
         <QOpt>Passer à un modèle avec une plus grande fenêtre</QOpt>
       </QuizQ>
       <QuizQ q="L’agent a besoin de la documentation de Dexie (3 000 lignes)." explain="Un skill n’est chargé que lorsqu’il sert, et sa version réduite coûte peu.">
         <QOpt>La coller en entier à chaque session</QOpt>
-        <QOpt>Un skill réduit aux 30 lignes utiles, chargé à la demande</QOpt>
-        <QOpt ok>L’ajouter dans copilot-instructions.md</QOpt>
+        <QOpt>L’ajouter dans copilot-instructions.md</QOpt>
+        <QOpt ok>Un skill réduit aux 30 lignes utiles, chargé à la demande</QOpt>
         <QOpt>Laisser l’agent deviner l’API</QOpt>
       </QuizQ>
       <QuizQ q="La session s’allonge, vous voulez continuer sans perdre les décisions prises." explain="/compact résume l’historique ; le faire vous-même évite qu’un compactage automatique efface un détail.">
-        <QOpt>Lancer /compact au bon moment</QOpt>
+        <QOpt>Recommencer la tâche depuis le début</QOpt>
         <QOpt>Fermer et rouvrir VS Code</QOpt>
         <QOpt>Ajouter « souviens-toi de tout » au prompt</QOpt>
-        <QOpt ok>Recommencer la tâche depuis le début</QOpt>
+        <QOpt ok>Lancer /compact au bon moment</QOpt>
       </QuizQ>
       <QuizQ q="Vous voulez essayer une approche alternative sans encombrer la session." explain="/fork copie la session jusqu’au message courant : la variante hérite du contexte, la session principale reste propre.">
         <QOpt ok>Lancer /fork pour explorer la variante</QOpt>
@@ -632,19 +632,19 @@ const M6_Lab73: Page = () => (
       </QuizQ>
       <QuizQ q="Pour du pur code, les serveurs MCP GitHub et Playwright sont actifs avec tous leurs outils." explain="Chaque outil déclaré ajoute sa définition au contexte : n’exposer que l’utile réduit tokens et erreurs.">
         <QOpt>Les laisser : plus d’outils, plus de capacités</QOpt>
-        <QOpt>Désactiver les outils inutiles (Configure Tools)</QOpt>
-        <QOpt ok>Ajouter un serveur MCP supplémentaire</QOpt>
+        <QOpt>Ajouter un serveur MCP supplémentaire</QOpt>
+        <QOpt ok>Désactiver les outils inutiles (Configure Tools)</QOpt>
         <QOpt>Supprimer .mcp.json</QOpt>
       </QuizQ>
       <QuizQ q="Il faut générer 40 fiches recettes au même format." explain="Une boucle coûte moins cher dans un script que dans une conversation : l’agent écrit le script une fois.">
         <QOpt>Demander 40 fois à l’agent</QOpt>
-        <QOpt>Faire écrire un script de génération, puis l’exécuter</QOpt>
+        <QOpt>Ouvrir 40 sessions en parallèle</QOpt>
         <QOpt>Copier-coller 40 fois la même réponse</QOpt>
-        <QOpt ok>Ouvrir 40 sessions en parallèle</QOpt>
+        <QOpt ok>Faire écrire un script de génération, puis l’exécuter</QOpt>
       </QuizQ>
       <QuizQ q="En pleine session, vous hésitez à modifier copilot-instructions.md ou à changer de modèle." explain="Le cache de prompt réutilise le début stable de la requête : le modifier en cours de session l’invalide.">
-        <QOpt ok>Aucun impact</QOpt>
-        <QOpt>Ça casse le cache de prompt : faites-le en début de session</QOpt>
+        <QOpt ok>Ça casse le cache de prompt : faites-le en début de session</QOpt>
+        <QOpt>Aucun impact</QOpt>
         <QOpt>Ça accélère toujours les réponses</QOpt>
         <QOpt>C’est recommandé toutes les 10 requêtes</QOpt>
       </QuizQ>
@@ -656,8 +656,8 @@ const M6_Lab73: Page = () => (
       </QuizQ>
       <QuizQ q="Où voir le coût d’une réponse pendant que vous travaillez ?" explain="Le survol du pied de réponse affiche la consommation ; le sélecteur de modèles compare les coûts.">
         <QOpt>Uniquement sur la facture mensuelle</QOpt>
-        <QOpt>Au survol du pied de la réponse (et dans le sélecteur de modèles)</QOpt>
-        <QOpt ok>Dans package.json</QOpt>
+        <QOpt>Dans package.json</QOpt>
+        <QOpt ok>Au survol du pied de la réponse (et dans le sélecteur de modèles)</QOpt>
         <QOpt>Dans l’onglet Actions de GitHub</QOpt>
       </QuizQ>
     </QuizSeries>

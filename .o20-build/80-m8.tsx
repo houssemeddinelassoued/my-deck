@@ -459,13 +459,13 @@ const M8_Quiz: Page = () => (
     <Title>Quiz · Module 8</Title>
     <QuizSeries y={200}>
       <QuizQ q="Dans un workflow, « un nouvel email arrive dans la boîte contact » est…" explain="C’est le déclencheur : l’événement qui lance le workflow.">
-        <QOpt>le déclencheur</QOpt>
+        <QOpt>la validation humaine</QOpt>
         <QOpt>l’action finale</QOpt>
-        <QOpt ok>la validation humaine</QOpt>
+        <QOpt ok>le déclencheur</QOpt>
       </QuizQ>
       <QuizQ q="Votre entreprise travaille sous Outlook, Teams et SharePoint. L’outil d’automatisation le plus naturel ?" explain="Power Automate est intégré à l’écosystème Microsoft 365 et souvent déjà inclus dans les licences.">
-        <QOpt ok>CapCut</QOpt>
-        <QOpt>Microsoft Power Automate</QOpt>
+        <QOpt ok>Microsoft Power Automate</QOpt>
+        <QOpt>CapCut</QOpt>
         <QOpt>Consensus</QOpt>
       </QuizQ>
       <QuizQ q="Quelle tâche ne faut-il pas automatiser entièrement ?" explain="Une décision qui touche une personne ou engage l’entreprise exige une validation humaine.">
@@ -475,12 +475,12 @@ const M8_Quiz: Page = () => (
       </QuizQ>
       <QuizQ q="Un email client avec nom, adresse et réclamation : où peut-il aller ?" explain="Données personnelles : uniquement dans un outil professionnel validé par l’entreprise, en minimisant ce qui est transmis.">
         <QOpt>Dans n’importe quel assistant gratuit</QOpt>
-        <QOpt>Seulement dans un outil professionnel validé</QOpt>
-        <QOpt ok>Sur un forum pour demander conseil</QOpt>
+        <QOpt>Sur un forum pour demander conseil</QOpt>
+        <QOpt ok>Seulement dans un outil professionnel validé</QOpt>
       </QuizQ>
       <QuizQ q="Dans votre mini-plan, la colonne « contrôle humain » doit préciser…" explain="Un contrôle efficace est précis : qui vérifie, quoi exactement, et à quel moment.">
-        <QOpt ok>« je ferai attention »</QOpt>
-        <QOpt>qui vérifie quoi, et quand</QOpt>
+        <QOpt ok>qui vérifie quoi, et quand</QOpt>
+        <QOpt>« je ferai attention »</QOpt>
         <QOpt>rien si l’outil est payant</QOpt>
       </QuizQ>
     </QuizSeries>

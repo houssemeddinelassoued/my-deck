@@ -5,23 +5,23 @@ const R_Quiz: Page = () => (
     <Title>Quiz flash : la matinée en six questions</Title>
     <QuizSeries y={200}>
       <QuizQ q="« IA générative » désigne…" explain="Des modèles qui produisent du contenu nouveau : texte, image, code. C’est le plus petit cercle des poupées russes.">
-        <QOpt ok>Tout système qui apprend à partir de données</QOpt>
-        <QOpt>Des modèles qui produisent du contenu nouveau</QOpt>
+        <QOpt ok>Des modèles qui produisent du contenu nouveau</QOpt>
+        <QOpt>Tout système qui apprend à partir de données</QOpt>
         <QOpt>Les modèles qui prévoient des chiffres</QOpt>
       </QuizQ>
       <QuizQ q="Un modèle juste à 95 %, appliqué aux 180 000 justificatifs mensuels de Spendo, c’est…" explain="5 % de 180 000 : 9 000 erreurs chaque mois. D’où la question : que se passe-t-il quand il se trompe ?">
         <QOpt>Quasiment aucune erreur</QOpt>
-        <QOpt ok>900 erreurs par mois</QOpt>
-        <QOpt>9 000 erreurs par mois</QOpt>
+        <QOpt ok>9 000 erreurs par mois</QOpt>
+        <QOpt>900 erreurs par mois</QOpt>
       </QuizQ>
       <QuizQ q="Baisser le seuil d’alerte d’un détecteur de fraude…" explain="On détecte plus de fraudes (rappel), au prix de plus de fausses alertes (précision). C’est un arbitrage métier.">
-        <QOpt>Augmente les fraudes détectées et les fausses alertes</QOpt>
+        <QOpt>Oblige à ré-entraîner le modèle</QOpt>
         <QOpt>Rend le modèle plus précis</QOpt>
-        <QOpt ok>Oblige à ré-entraîner le modèle</QOpt>
+        <QOpt ok>Augmente les fraudes détectées et les fausses alertes</QOpt>
       </QuizQ>
       <QuizQ q="Pour qu’un assistant réponde juste sur la politique voyage d’un client, il faut…" explain="Lui fournir les documents du client au moment de répondre, et exiger qu’il les cite : c’est le RAG.">
-        <QOpt ok>Un modèle plus gros</QOpt>
-        <QOpt>Lui donner les documents du client au moment de répondre</QOpt>
+        <QOpt ok>Lui donner les documents du client au moment de répondre</QOpt>
+        <QOpt>Un modèle plus gros</QOpt>
         <QOpt>Une température plus élevée</QOpt>
       </QuizQ>
       <QuizQ q="Laquelle de ces idées n’a pas besoin d’IA ?" explain="Une règle connue, stable et explicable s’écrit en une ligne : paramétrable par client, sans modèle.">

@@ -4626,8 +4626,8 @@ const M1_Quiz: Page = () => (
     <Title>Quiz · Module 1</Title>
     <QuizSeries y={200}>
       <QuizQ q="Une IA générative comme ChatGPT produit sa réponse…" explain="Elle prédit, mot après mot, la suite la plus probable. Elle ne consulte pas une base de faits vérifiés.">
-        <QOpt ok>en cherchant la bonne réponse dans une base de faits vérifiés</QOpt>
-        <QOpt>en prédisant la suite de mots la plus probable</QOpt>
+        <QOpt ok>en prédisant la suite de mots la plus probable</QOpt>
+        <QOpt>en cherchant la bonne réponse dans une base de faits vérifiés</QOpt>
         <QOpt>en comprenant le sens comme un humain</QOpt>
       </QuizQ>
       <QuizQ q="Vous demandez « Résume notre rapport annuel » sans le joindre. Le risque principal ?" explain="Sans source, l’IA peut inventer un résumé plausible : chiffres, études, citations. C’est une hallucination.">
@@ -4637,8 +4637,8 @@ const M1_Quiz: Page = () => (
       </QuizQ>
       <QuizQ q="Quelle tâche devez-vous garder humaine ?" explain="Les situations à forte charge émotionnelle ou à enjeu de décision restent humaines. L’IA peut aider à préparer, pas à annoncer.">
         <QOpt>Corriger l’orthographe d’un rapport</QOpt>
-        <QOpt>Annoncer une mauvaise nouvelle à un collaborateur</QOpt>
-        <QOpt ok>Proposer dix idées de titres</QOpt>
+        <QOpt>Proposer dix idées de titres</QOpt>
+        <QOpt ok>Annoncer une mauvaise nouvelle à un collaborateur</QOpt>
       </QuizQ>
       <QuizQ q="Vous travaillez toute la journée dans Outlook, Word et Teams. L’assistant le plus intégré ?" explain="Microsoft Copilot est intégré à l’environnement Microsoft 365 : il travaille là où sont vos emails et documents.">
         <QOpt ok>Microsoft Copilot</QOpt>
@@ -5092,8 +5092,8 @@ const M2_Quiz: Page = () => (
     <QuizSeries y={200}>
       <QuizQ q="« Ton chaleureux, 150 mots maximum, sans jargon » : de quelle brique s’agit-il ?" explain="Ce sont des contraintes : elles cadrent le ton, la longueur, ce qu’il faut inclure ou éviter.">
         <QOpt>Le contexte</QOpt>
-        <QOpt>Les contraintes</QOpt>
-        <QOpt ok>Le rôle</QOpt>
+        <QOpt>Le rôle</QOpt>
+        <QOpt ok>Les contraintes</QOpt>
       </QuizQ>
       <QuizQ q="La réponse de l’IA est générique et passe à côté de votre situation. La cause la plus probable ?" explain="L’IA ne connaît que ce que vous lui dites : sans contexte, elle comble les trous avec du générique.">
         <QOpt ok>Le prompt manque de contexte</QOpt>
@@ -5107,13 +5107,13 @@ const M2_Quiz: Page = () => (
       </QuizQ>
       <QuizQ q="La réponse est presque bonne mais trop longue. Que faites-vous ?" explain="On itère dans la même conversation : l’IA garde le contexte, il suffit de préciser ce qui ne va pas.">
         <QOpt>Vous recommencez une nouvelle conversation de zéro</QOpt>
-        <QOpt>Vous demandez « plus court de moitié » dans la même conversation</QOpt>
-        <QOpt ok>Vous raccourcissez à la main en supprimant la fin</QOpt>
+        <QOpt>Vous raccourcissez à la main en supprimant la fin</QOpt>
+        <QOpt ok>Vous demandez « plus court de moitié » dans la même conversation</QOpt>
       </QuizQ>
       <QuizQ q="Quelle formule limite le risque d’invention ?" explain="Autoriser explicitement l’IA à dire qu’elle ne sait pas réduit sa tendance à combler les manques par des inventions plausibles.">
-        <QOpt ok>« Réponds vite. »</QOpt>
+        <QOpt ok>« Si tu ne sais pas, dis-le. »</QOpt>
         <QOpt>« Sois créatif. »</QOpt>
-        <QOpt>« Si tu ne sais pas, dis-le. »</QOpt>
+        <QOpt>« Réponds vite. »</QOpt>
       </QuizQ>
     </QuizSeries>
   </Frame>
@@ -5541,23 +5541,23 @@ const M3_Quiz: Page = () => (
       </QuizQ>
       <QuizQ q="Copilot dans Microsoft 365 peut accéder…" explain="Copilot respecte vos droits : il voit ce que vous pouvez voir. Un partage trop large devient donc visible. D’où l’importance de bien gérer les droits.">
         <QOpt>à tous les fichiers de l’entreprise, sans exception</QOpt>
-        <QOpt>aux fichiers et emails auxquels vous avez déjà accès</QOpt>
-        <QOpt ok>uniquement à internet</QOpt>
+        <QOpt>uniquement à internet</QOpt>
+        <QOpt ok>aux fichiers et emails auxquels vous avez déjà accès</QOpt>
       </QuizQ>
       <QuizQ q="Pour analyser un contrat de 120 pages, le meilleur réflexe est…" explain="Les assistants à large contexte comme Claude ou Gemini lisent de longs documents ; demander la page citée rend la vérification rapide.">
-        <QOpt ok>de demander un résumé sans joindre le contrat</QOpt>
-        <QOpt>de le joindre et demander de citer la page de chaque point</QOpt>
+        <QOpt ok>de le joindre et demander de citer la page de chaque point</QOpt>
+        <QOpt>de demander un résumé sans joindre le contrat</QOpt>
         <QOpt>de le coller dans un outil de traduction</QOpt>
       </QuizQ>
       <QuizQ q="Vous utilisez un compte personnel gratuit. Que pouvez-vous y coller ?" explain="Avec un compte personnel gratuit, vos échanges peuvent servir à l’entraînement ou être relus : uniquement des contenus non sensibles.">
         <QOpt>Le fichier clients pour le segmenter</QOpt>
-        <QOpt ok>Les bulletins de salaire de l’équipe</QOpt>
-        <QOpt>Un texte public ou un cas anonymisé</QOpt>
+        <QOpt ok>Un texte public ou un cas anonymisé</QOpt>
+        <QOpt>Les bulletins de salaire de l’équipe</QOpt>
       </QuizQ>
       <QuizQ q="Au banc d’essai, la bonne conclusion est généralement…" explain="Chaque assistant a ses forces : on choisit l’outil selon l’étape (rechercher, analyser, rédiger) et selon l’environnement de travail.">
         <QOpt>« un seul outil est le meilleur pour tout »</QOpt>
-        <QOpt>« tel outil pour telle étape, selon mon environnement »</QOpt>
-        <QOpt ok>« le plus cher est toujours le meilleur »</QOpt>
+        <QOpt>« le plus cher est toujours le meilleur »</QOpt>
+        <QOpt ok>« tel outil pour telle étape, selon mon environnement »</QOpt>
       </QuizQ>
     </QuizSeries>
   </Frame>
@@ -6039,8 +6039,8 @@ const M4_Quiz: Page = () => (
     <Title>Quiz · Module 4</Title>
     <QuizSeries y={200}>
       <QuizQ q="Vous voulez interroger uniquement le règlement intérieur et l’accord télétravail de votre entreprise. Quel outil ?" explain="NotebookLM répond uniquement à partir des documents que vous lui donnez, avec des citations vers le passage exact.">
-        <QOpt ok>Consensus</QOpt>
-        <QOpt>NotebookLM</QOpt>
+        <QOpt ok>NotebookLM</QOpt>
+        <QOpt>Consensus</QOpt>
         <QOpt>Runway</QOpt>
       </QuizQ>
       <QuizQ q="Perplexity cite 5 sources dans sa réponse. Vous pouvez donc…" explain="Une source citée doit être ouverte et lue : vérifier qui parle, la date, et que la phrase dit bien ce qui est affirmé.">
@@ -6049,18 +6049,18 @@ const M4_Quiz: Page = () => (
         <QOpt>citer Perplexity comme source dans votre note</QOpt>
       </QuizQ>
       <QuizQ q="« Les études montrent-elles que X améliore Y ? » Quel outil donne une répartition oui / non / peut-être ?" explain="Le Consensus Meter de Consensus montre la répartition des conclusions des études sur une question fermée.">
-        <QOpt>Consensus</QOpt>
+        <QOpt>DeepL</QOpt>
         <QOpt>Gamma</QOpt>
-        <QOpt ok>DeepL</QOpt>
+        <QOpt ok>Consensus</QOpt>
       </QuizQ>
       <QuizQ q="Quelle source est la plus fiable pour une règle administrative ?" explain="Un site officiel à jour fait foi pour une règle ; les blogs commerciaux et forums ne suffisent jamais seuls.">
-        <QOpt ok>Un forum très fréquenté</QOpt>
+        <QOpt ok>Un site officiel mis à jour récemment</QOpt>
         <QOpt>Le blog d’un éditeur de logiciel</QOpt>
-        <QOpt>Un site officiel mis à jour récemment</QOpt>
+        <QOpt>Un forum très fréquenté</QOpt>
       </QuizQ>
       <QuizQ q="Elicit vous extrait un résultat d’étude intéressant. Avant de le citer…" explain="Une étude isolée n’est pas une vérité : on lit au moins le résumé de l’article pour vérifier le contexte, la population et la méthode.">
-        <QOpt>vous lisez au moins le résumé de l’article</QOpt>
-        <QOpt ok>vous le citez : Elicit ne se trompe jamais</QOpt>
+        <QOpt>vous le citez : Elicit ne se trompe jamais</QOpt>
+        <QOpt ok>vous lisez au moins le résumé de l’article</QOpt>
         <QOpt>vous le traduisez dans DeepL</QOpt>
       </QuizQ>
     </QuizSeries>
@@ -6495,8 +6495,8 @@ const M5_Quiz: Page = () => (
     <QuizSeries y={200}>
       <QuizQ q="Vous devez traduire une plaquette PowerPoint en allemand sans casser la mise en page. Quel outil ?" explain="DeepL traduit des documents Word, PowerPoint ou PDF entiers en conservant leur mise en page.">
         <QOpt>Grammarly</QOpt>
-        <QOpt>DeepL (traduction de documents)</QOpt>
-        <QOpt ok>Consensus</QOpt>
+        <QOpt>Consensus</QOpt>
+        <QOpt ok>DeepL (traduction de documents)</QOpt>
       </QuizQ>
       <QuizQ q="Grammarly est surtout recommandé pour…" explain="Grammarly est pensé d’abord pour l’anglais : idéal pour corriger et ajuster le ton de vos écrits en anglais.">
         <QOpt ok>vos emails et documents en anglais</QOpt>
@@ -6510,12 +6510,12 @@ const M5_Quiz: Page = () => (
       </QuizQ>
       <QuizQ q="Votre affiche Canva doit exister aussi en post carré et en story. Le plus rapide ?" explain="Le redimensionnement magique décline un design en plusieurs formats en un clic, à retoucher ensuite.">
         <QOpt>Tout refaire trois fois</QOpt>
-        <QOpt>Le redimensionnement magique</QOpt>
-        <QOpt ok>Une capture d’écran recadrée</QOpt>
+        <QOpt>Une capture d’écran recadrée</QOpt>
+        <QOpt ok>Le redimensionnement magique</QOpt>
       </QuizQ>
       <QuizQ q="Avec la version gratuite de DeepL, vous pouvez traduire…" explain="En version gratuite, les textes peuvent être conservés pour améliorer le service : réservez-la aux contenus non confidentiels.">
-        <QOpt ok>le contrat de travail d’un salarié</QOpt>
-        <QOpt>une fiche produit déjà publique</QOpt>
+        <QOpt ok>une fiche produit déjà publique</QOpt>
+        <QOpt>le contrat de travail d’un salarié</QOpt>
         <QOpt>le fichier clients</QOpt>
       </QuizQ>
     </QuizSeries>
@@ -6947,24 +6947,24 @@ const M6_Quiz: Page = () => (
         <QOpt>couper les caméras</QOpt>
       </QuizQ>
       <QuizQ q="Quel outil sert d’abord à extraire automatiquement les actions (qui, quoi, quand) d’une réunion ?" explain="Fireflies.ai produit le compte rendu et détecte les actions et engagements pris à l’oral.">
-        <QOpt>Fireflies.ai</QOpt>
+        <QOpt>Adobe Firefly</QOpt>
         <QOpt>DeepL</QOpt>
-        <QOpt ok>Adobe Firefly</QOpt>
+        <QOpt ok>Fireflies.ai</QOpt>
       </QuizQ>
       <QuizQ q="« Où en est le projet Horizon ? » Pour une réponse tirée de vos pages de projet, quel outil ?" explain="Notion AI répond à partir de tout votre espace de travail Notion, avec les pages sources.">
-        <QOpt ok>Consensus</QOpt>
-        <QOpt>Notion AI</QOpt>
+        <QOpt ok>Notion AI</QOpt>
+        <QOpt>Consensus</QOpt>
         <QOpt>CapCut</QOpt>
       </QuizQ>
       <QuizQ q="Peut-on transcrire un entretien annuel avec un outil grand public ?" explain="Non : un entretien individuel RH est sensible et confidentiel. On prend des notes à la main.">
         <QOpt>Oui, si le salarié ne parle pas trop</QOpt>
-        <QOpt ok>Oui, en supprimant le fichier ensuite</QOpt>
-        <QOpt>Non : c’est un échange sensible et confidentiel</QOpt>
+        <QOpt ok>Non : c’est un échange sensible et confidentiel</QOpt>
+        <QOpt>Oui, en supprimant le fichier ensuite</QOpt>
       </QuizQ>
       <QuizQ q="Le compte rendu IA attribue une échéance que personne n’a dite. Que faites-vous ?" explain="L’IA peut déduire ou inventer une information. On la fait confirmer par la personne concernée avant d’envoyer.">
         <QOpt>Vous l’envoyez : elle paraît logique</QOpt>
-        <QOpt>Vous la faites confirmer avant l’envoi</QOpt>
-        <QOpt ok>Vous supprimez toutes les échéances</QOpt>
+        <QOpt>Vous supprimez toutes les échéances</QOpt>
+        <QOpt ok>Vous la faites confirmer avant l’envoi</QOpt>
       </QuizQ>
     </QuizSeries>
   </Frame>
@@ -7333,13 +7333,13 @@ const M7_Quiz: Page = () => (
     <Title>Quiz · Module 7</Title>
     <QuizSeries y={200}>
       <QuizQ q="Vous voulez retirer un objet gênant dans une photo existante. Quelle fonction ?" explain="Le remplissage génératif (Firefly, aussi intégré à Photoshop) ajoute, retire ou remplace un élément d’une image.">
-        <QOpt ok>La traduction de documents</QOpt>
-        <QOpt>Le remplissage génératif</QOpt>
+        <QOpt ok>Le remplissage génératif</QOpt>
+        <QOpt>La traduction de documents</QOpt>
         <QOpt>Le Consensus Meter</QOpt>
       </QuizQ>
       <QuizQ q="Quel outil sert d’abord à monter une vidéo avec sous-titres automatiques ?" explain="CapCut AI génère des sous-titres automatiques, recadre en vertical et propose des voix off synthétiques.">
-        <QOpt>CapCut AI</QOpt>
-        <QOpt ok>Elicit</QOpt>
+        <QOpt>Elicit</QOpt>
+        <QOpt ok>CapCut AI</QOpt>
         <QOpt>Grammarly</QOpt>
       </QuizQ>
       <QuizQ q="Pour une vidéo promotionnelle, faire parler un célèbre chef cuisinier grâce à l’IA est…" explain="Imiter le visage ou la voix d’une personne réelle sans accord est un hypertrucage : atteinte à ses droits et obligation de transparence.">
@@ -7348,8 +7348,8 @@ const M7_Quiz: Page = () => (
         <QOpt ok>interdit sans son accord : c’est un hypertrucage</QOpt>
       </QuizQ>
       <QuizQ q="Dans un prompt d’image, « espace libre à droite pour un titre » relève de…" explain="C’est la composition : cadrage, point de vue, placement des éléments et espaces réservés.">
-        <QOpt ok>du style</QOpt>
-        <QOpt>de la composition</QOpt>
+        <QOpt ok>de la composition</QOpt>
+        <QOpt>du style</QOpt>
         <QOpt>de la lumière</QOpt>
       </QuizQ>
       <QuizQ q="Pour garder le contrôle du rendu d’une vidéo Runway, le mieux est de partir…" explain="Partir d’une image validée donne beaucoup plus de contrôle qu’une description textuelle seule.">
@@ -7824,13 +7824,13 @@ const M8_Quiz: Page = () => (
     <Title>Quiz · Module 8</Title>
     <QuizSeries y={200}>
       <QuizQ q="Dans un workflow, « un nouvel email arrive dans la boîte contact » est…" explain="C’est le déclencheur : l’événement qui lance le workflow.">
-        <QOpt>le déclencheur</QOpt>
+        <QOpt>la validation humaine</QOpt>
         <QOpt>l’action finale</QOpt>
-        <QOpt ok>la validation humaine</QOpt>
+        <QOpt ok>le déclencheur</QOpt>
       </QuizQ>
       <QuizQ q="Votre entreprise travaille sous Outlook, Teams et SharePoint. L’outil d’automatisation le plus naturel ?" explain="Power Automate est intégré à l’écosystème Microsoft 365 et souvent déjà inclus dans les licences.">
-        <QOpt ok>CapCut</QOpt>
-        <QOpt>Microsoft Power Automate</QOpt>
+        <QOpt ok>Microsoft Power Automate</QOpt>
+        <QOpt>CapCut</QOpt>
         <QOpt>Consensus</QOpt>
       </QuizQ>
       <QuizQ q="Quelle tâche ne faut-il pas automatiser entièrement ?" explain="Une décision qui touche une personne ou engage l’entreprise exige une validation humaine.">
@@ -7840,12 +7840,12 @@ const M8_Quiz: Page = () => (
       </QuizQ>
       <QuizQ q="Un email client avec nom, adresse et réclamation : où peut-il aller ?" explain="Données personnelles : uniquement dans un outil professionnel validé par l’entreprise, en minimisant ce qui est transmis.">
         <QOpt>Dans n’importe quel assistant gratuit</QOpt>
-        <QOpt>Seulement dans un outil professionnel validé</QOpt>
-        <QOpt ok>Sur un forum pour demander conseil</QOpt>
+        <QOpt>Sur un forum pour demander conseil</QOpt>
+        <QOpt ok>Seulement dans un outil professionnel validé</QOpt>
       </QuizQ>
       <QuizQ q="Dans votre mini-plan, la colonne « contrôle humain » doit préciser…" explain="Un contrôle efficace est précis : qui vérifie, quoi exactement, et à quel moment.">
-        <QOpt ok>« je ferai attention »</QOpt>
-        <QOpt>qui vérifie quoi, et quand</QOpt>
+        <QOpt ok>qui vérifie quoi, et quand</QOpt>
+        <QOpt>« je ferai attention »</QOpt>
         <QOpt>rien si l’outil est payant</QOpt>
       </QuizQ>
     </QuizSeries>
@@ -7900,18 +7900,18 @@ const C_Quiz: Page = () => (
         <QOpt>Parce qu’elle manque de mémoire vive</QOpt>
       </QuizQ>
       <QuizQ q="Quelles sont les 5 briques d’un bon prompt ?" explain="Contexte, objectif, rôle, contraintes, format : avec elles, l’IA ne devine plus, elle exécute.">
-        <QOpt>Contexte, objectif, rôle, contraintes, format</QOpt>
+        <QOpt>Titre, sous-titre, image, lien, signature</QOpt>
         <QOpt>Politesse, longueur, anglais, émojis, urgence</QOpt>
-        <QOpt ok>Titre, sous-titre, image, lien, signature</QOpt>
+        <QOpt ok>Contexte, objectif, rôle, contraintes, format</QOpt>
       </QuizQ>
       <QuizQ q="Vous voulez une réponse fondée uniquement sur vos procédures internes. Quel outil ?" explain="NotebookLM répond uniquement à partir des documents chargés, avec des citations vers les passages exacts.">
-        <QOpt ok>Runway</QOpt>
-        <QOpt>NotebookLM</QOpt>
+        <QOpt ok>NotebookLM</QOpt>
+        <QOpt>Runway</QOpt>
         <QOpt>Grammarly</QOpt>
       </QuizQ>
       <QuizQ q="Votre réunion est terminée. Pour obtenir actions et responsables automatiquement ?" explain="Fireflies.ai (ou Otter.ai) transcrit la réunion et extrait les actions — après information et accord des participants.">
-        <QOpt>Fireflies.ai, annoncé aux participants</QOpt>
-        <QOpt ok>Adobe Firefly</QOpt>
+        <QOpt>Adobe Firefly</QOpt>
+        <QOpt ok>Fireflies.ai, annoncé aux participants</QOpt>
         <QOpt>Consensus</QOpt>
       </QuizQ>
       <QuizQ q="Transformer une note en présentation de 8 slides en une minute ?" explain="Gamma génère une présentation complète à partir d’un texte ; choisissez de conserver votre texte pour éviter les ajouts.">
@@ -7920,8 +7920,8 @@ const C_Quiz: Page = () => (
         <QOpt ok>Gamma</QOpt>
       </QuizQ>
       <QuizQ q="La règle qui résume la journée ?" explain="L’IA propose un premier jet, vous vérifiez, ajustez et décidez. La responsabilité reste humaine.">
-        <QOpt ok>« L’IA décide, je valide sans lire »</QOpt>
-        <QOpt>« L’IA propose, vous disposez »</QOpt>
+        <QOpt ok>« L’IA propose, vous disposez »</QOpt>
+        <QOpt>« L’IA décide, je valide sans lire »</QOpt>
         <QOpt>« Plus l’outil est cher, plus il est fiable »</QOpt>
       </QuizQ>
     </QuizSeries>

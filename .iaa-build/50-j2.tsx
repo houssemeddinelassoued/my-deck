@@ -58,23 +58,23 @@ const J2_Rappel: Page = () => (
       </QuizQ>
       <QuizQ q="Que doit renvoyer une étape IA dont la sortie est lue par une condition ?" explain="Un format imposé avec des valeurs autorisées : la condition teste une valeur exacte.">
         <QOpt>Un texte bien rédigé</QOpt>
-        <QOpt>Un JSON avec des valeurs autorisées</QOpt>
-        <QOpt ok>Un résumé en puces</QOpt>
+        <QOpt>Un résumé en puces</QOpt>
+        <QOpt ok>Un JSON avec des valeurs autorisées</QOpt>
       </QuizQ>
       <QuizQ q="L’IA ne trouve pas une information dans le document. Elle doit…" explain="null est une information exploitable ; une valeur inventée passe inaperçue.">
-        <QOpt ok>La déduire du contexte</QOpt>
+        <QOpt ok>Renvoyer null</QOpt>
         <QOpt>Laisser un texte d’excuse</QOpt>
-        <QOpt>Renvoyer null</QOpt>
+        <QOpt>La déduire du contexte</QOpt>
       </QuizQ>
       <QuizQ q="Calculer un montant TTC dans un workflow : IA ou règle ?" explain="Une formule : gratuite, instantanée, exacte. L’IA extrait les montants, la règle calcule.">
-        <QOpt>Règle</QOpt>
-        <QOpt ok>IA</QOpt>
+        <QOpt>IA</QOpt>
+        <QOpt ok>Règle</QOpt>
         <QOpt>Les deux, pour comparer</QOpt>
       </QuizQ>
       <QuizQ q="Où placer la validation humaine d’une réponse envoyée à un client ?" explain="Avant l’action externe : une fois partie, la réponse ne se rattrape pas.">
         <QOpt>Après l’envoi</QOpt>
-        <QOpt>Avant l’envoi</QOpt>
-        <QOpt ok>Nulle part si le prompt est testé</QOpt>
+        <QOpt>Nulle part si le prompt est testé</QOpt>
+        <QOpt ok>Avant l’envoi</QOpt>
       </QuizQ>
     </QuizSeries>
   </Frame>

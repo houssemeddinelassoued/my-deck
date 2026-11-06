@@ -4855,8 +4855,8 @@ const M2_Quiz: Page = () => (
     <Title>Quiz : quatre situations d’offre</Title>
     <QuizSeries y={200}>
       <QuizQ q="Le manager veut « un jeune pour dynamiser l’équipe ». Vous écrivez…" explain="On décrit le comportement attendu, jamais l’âge. « Jeune » est un critère discriminatoire, même s’il est sous-entendu.">
-        <QOpt ok>« Profil junior, idéalement moins de 30 ans »</QOpt>
-        <QOpt>« Vous aimez proposer des idées et faire bouger les habitudes »</QOpt>
+        <QOpt ok>« Vous aimez proposer des idées et faire bouger les habitudes »</QOpt>
+        <QOpt>« Profil junior, idéalement moins de 30 ans »</QOpt>
         <QOpt>« Jeune diplômé·e » sans mention d’âge</QOpt>
       </QuizQ>
       <QuizQ q="L’IA a ajouté « certification RGE exigée » au profil. Vous…" explain="L’IA comble les blancs avec des éléments plausibles du secteur. Toute exigence doit venir du manager, pas du modèle.">
@@ -4866,12 +4866,12 @@ const M2_Quiz: Page = () => (
       </QuizQ>
       <QuizQ q="Pour un post sur un réseau professionnel, le plus important est…" explain="Le fil d’actualité coupe après deux lignes : l’accroche humaine décide si l’on clique sur « voir plus ».">
         <QOpt>Reprendre l’offre complète à l’identique</QOpt>
-        <QOpt>Une accroche humaine dans les deux premières lignes</QOpt>
-        <QOpt ok>Le maximum de hashtags</QOpt>
+        <QOpt>Le maximum de hashtags</QOpt>
+        <QOpt ok>Une accroche humaine dans les deux premières lignes</QOpt>
       </QuizQ>
       <QuizQ q="Quelle information manque le plus souvent aux yeux des candidats ?" explain="Les enquêtes candidats placent la rémunération en tête des informations attendues ; l’afficher filtre aussi les candidatures hors budget.">
-        <QOpt ok>L’historique de l’entreprise</QOpt>
-        <QOpt>La rémunération</QOpt>
+        <QOpt ok>La rémunération</QOpt>
+        <QOpt>L’historique de l’entreprise</QOpt>
         <QOpt>Le nombre de salariés</QOpt>
       </QuizQ>
     </QuizSeries>
@@ -5817,12 +5817,12 @@ const M4_Quiz: Page = () => (
       </QuizQ>
       <QuizQ q="« Vous êtes à l’aise au téléphone ? » est une question…" explain="Fermée et suggestive : tout candidat répondra oui. Préférez une question comportementale qui demande un exemple.">
         <QOpt>Comportementale</QOpt>
-        <QOpt>Fermée et suggestive</QOpt>
-        <QOpt ok>Situationnelle</QOpt>
+        <QOpt>Situationnelle</QOpt>
+        <QOpt ok>Fermée et suggestive</QOpt>
       </QuizQ>
       <QuizQ q="Dans STAR, le « A » désigne…" explain="Action : ce que la personne a fait, elle, et non l’équipe. C’est le cœur de la réponse.">
-        <QOpt ok>L’attitude du candidat</QOpt>
-        <QOpt>Les actions de la personne elle-même</QOpt>
+        <QOpt ok>Les actions de la personne elle-même</QOpt>
+        <QOpt>L’attitude du candidat</QOpt>
         <QOpt>L’analyse du recruteur</QOpt>
       </QuizQ>
       <QuizQ q="Vous voulez transcrire automatiquement un vrai entretien. Il faut d’abord…" explain="Information et accord du candidat, outil validé par l’entreprise, durée de conservation définie : ce sont des données personnelles.">
@@ -6587,12 +6587,12 @@ const M6_Quiz: Page = () => (
     <QuizSeries y={200}>
       <QuizQ q="Pour préparer l’entretien annuel de Karim, vous collez dans l’IA…" explain="Des faits anonymisés suffisent pour obtenir une trame et des questions. Nom, santé ou disciplinaire n’apportent rien et exposent des données sensibles.">
         <QOpt>Son dossier complet, arrêts maladie compris</QOpt>
-        <QOpt>Des faits de l’année, anonymisés, sans donnée sensible</QOpt>
-        <QOpt ok>Rien : l’IA est interdite pour les entretiens annuels</QOpt>
+        <QOpt>Rien : l’IA est interdite pour les entretiens annuels</QOpt>
+        <QOpt ok>Des faits de l’année, anonymisés, sans donnée sensible</QOpt>
       </QuizQ>
       <QuizQ q="Dans le modèle 70 / 20 / 10, les 70 % correspondent à…" explain="L’essentiel du développement se fait en situation de travail ; la formation formelle n’en représente qu’une petite part.">
-        <QOpt ok>La formation en salle</QOpt>
-        <QOpt>L’apprentissage en situation de travail</QOpt>
+        <QOpt ok>L’apprentissage en situation de travail</QOpt>
+        <QOpt>La formation en salle</QOpt>
         <QOpt>Le mentorat</QOpt>
       </QuizQ>
       <QuizQ q="L’IA a identifié 5 besoins de formation dans 30 comptes rendus. Avant de décider…" explain="L’IA peut regrouper trop largement ou oublier un thème rare : on vérifie sur un échantillon avant d’engager un budget.">
@@ -7036,12 +7036,12 @@ const M7_Quiz: Page = () => (
     <QuizSeries y={200}>
       <QuizQ q="Pseudonymiser un CV (« Candidate C ») suffit-il toujours à protéger la personne ?" explain="Non : des détails précis (employeur rare, dates, ville) permettent parfois de la retrouver. On retire aussi les détails trop identifiants.">
         <QOpt>Oui, sans nom elle est anonyme</QOpt>
-        <QOpt>Non, elle peut rester identifiable par recoupement</QOpt>
-        <QOpt ok>Oui, si l’outil est payant</QOpt>
+        <QOpt>Oui, si l’outil est payant</QOpt>
+        <QOpt ok>Non, elle peut rester identifiable par recoupement</QOpt>
       </QuizQ>
       <QuizQ q="Un outil propose de ne retenir que les candidats habitant à moins de 20 km. C’est…" explain="Le lieu de résidence est un critère de discrimination interdit (L.1132-1). Parlez plutôt des horaires et des déplacements réels du poste.">
-        <QOpt ok>Une bonne pratique pour limiter le turnover</QOpt>
-        <QOpt>Un critère de discrimination interdit</QOpt>
+        <QOpt ok>Un critère de discrimination interdit</QOpt>
+        <QOpt>Une bonne pratique pour limiter le turnover</QOpt>
         <QOpt>Autorisé si le candidat est d’accord</QOpt>
       </QuizQ>
       <QuizQ q="Vous validez systématiquement les suggestions de l’IA depuis trois mois sans en modifier aucune. Le risque principal ?" explain="Le biais d’automatisation : la validation devient un tampon, et la décision est de fait automatisée.">
@@ -7051,8 +7051,8 @@ const M7_Quiz: Page = () => (
       </QuizQ>
       <QuizQ q="Dans la note de Julien, quel critère faut-il questionner ?" explain="« Un bon électricien motivé » : la motivation n’est pas un critère observable. À traduire en indices concrets avec Julien (projets, formation suivie…). Et l’habilitation électrique est, elle, un vrai prérequis légal.">
         <QOpt>L’habilitation électrique</QOpt>
-        <QOpt>« Motivé » : à traduire en indices observables</QOpt>
-        <QOpt ok>Le salaire de 28 à 32 k€</QOpt>
+        <QOpt>Le salaire de 28 à 32 k€</QOpt>
+        <QOpt ok>« Motivé » : à traduire en indices observables</QOpt>
       </QuizQ>
     </QuizSeries>
   </Frame>

@@ -418,23 +418,23 @@ const M3_Quiz: Page = () => (
       </QuizQ>
       <QuizQ q="Copilot dans Microsoft 365 peut accéder…" explain="Copilot respecte vos droits : il voit ce que vous pouvez voir. Un partage trop large devient donc visible. D’où l’importance de bien gérer les droits.">
         <QOpt>à tous les fichiers de l’entreprise, sans exception</QOpt>
-        <QOpt>aux fichiers et emails auxquels vous avez déjà accès</QOpt>
-        <QOpt ok>uniquement à internet</QOpt>
+        <QOpt>uniquement à internet</QOpt>
+        <QOpt ok>aux fichiers et emails auxquels vous avez déjà accès</QOpt>
       </QuizQ>
       <QuizQ q="Pour analyser un contrat de 120 pages, le meilleur réflexe est…" explain="Les assistants à large contexte comme Claude ou Gemini lisent de longs documents ; demander la page citée rend la vérification rapide.">
-        <QOpt ok>de demander un résumé sans joindre le contrat</QOpt>
-        <QOpt>de le joindre et demander de citer la page de chaque point</QOpt>
+        <QOpt ok>de le joindre et demander de citer la page de chaque point</QOpt>
+        <QOpt>de demander un résumé sans joindre le contrat</QOpt>
         <QOpt>de le coller dans un outil de traduction</QOpt>
       </QuizQ>
       <QuizQ q="Vous utilisez un compte personnel gratuit. Que pouvez-vous y coller ?" explain="Avec un compte personnel gratuit, vos échanges peuvent servir à l’entraînement ou être relus : uniquement des contenus non sensibles.">
         <QOpt>Le fichier clients pour le segmenter</QOpt>
-        <QOpt ok>Les bulletins de salaire de l’équipe</QOpt>
-        <QOpt>Un texte public ou un cas anonymisé</QOpt>
+        <QOpt ok>Un texte public ou un cas anonymisé</QOpt>
+        <QOpt>Les bulletins de salaire de l’équipe</QOpt>
       </QuizQ>
       <QuizQ q="Au banc d’essai, la bonne conclusion est généralement…" explain="Chaque assistant a ses forces : on choisit l’outil selon l’étape (rechercher, analyser, rédiger) et selon l’environnement de travail.">
         <QOpt>« un seul outil est le meilleur pour tout »</QOpt>
-        <QOpt>« tel outil pour telle étape, selon mon environnement »</QOpt>
-        <QOpt ok>« le plus cher est toujours le meilleur »</QOpt>
+        <QOpt>« le plus cher est toujours le meilleur »</QOpt>
+        <QOpt ok>« tel outil pour telle étape, selon mon environnement »</QOpt>
       </QuizQ>
     </QuizSeries>
   </Frame>

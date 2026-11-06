@@ -4171,8 +4171,8 @@ const M1_Quiz: Page = () => (
     <Title>Quiz : vrai ou faux ?</Title>
     <QuizSeries y={220}>
       <QuizQ q="« L’IA connaît les tarifs et les procédures de mon entreprise. »" explain="Elle ne sait que ce que vous lui donnez dans la conversation (texte collé, document joint). Sinon, elle invente une réponse plausible.">
-        <QOpt ok>Vrai, elle a tout lu sur Internet</QOpt>
-        <QOpt>Faux, sauf si je les lui fournis</QOpt>
+        <QOpt ok>Faux, sauf si je les lui fournis</QOpt>
+        <QOpt>Vrai, elle a tout lu sur Internet</QOpt>
         <QOpt>Vrai, si mon entreprise a un site web</QOpt>
       </QuizQ>
       <QuizQ q="« Une réponse bien écrite et sûre d’elle est forcément juste. »" explain="C’est le piège principal : l’IA peut inventer avec aplomb (hallucination). Plus l’enjeu est fort, plus on vérifie à la source.">
@@ -4182,12 +4182,12 @@ const M1_Quiz: Page = () => (
       </QuizQ>
       <QuizQ q="Pour additionner 200 lignes de notes de frais, le mieux est…" explain="L’IA prédit du texte : elle peut se tromper sur un calcul. Elle peut en revanche vous écrire la formule à utiliser dans le tableur.">
         <QOpt>de demander le total à l’IA</QOpt>
-        <QOpt>d’utiliser une formule du tableur (que l’IA peut m’aider à écrire)</QOpt>
-        <QOpt ok>de demander deux fois à l’IA et de comparer</QOpt>
+        <QOpt>de demander deux fois à l’IA et de comparer</QOpt>
+        <QOpt ok>d’utiliser une formule du tableur (que l’IA peut m’aider à écrire)</QOpt>
       </QuizQ>
       <QuizQ q="Quel compte utiliser pour un usage professionnel ?" explain="Le compte fourni par l’employeur est encadré : contrat, paramètres de confidentialité, règles internes. Un compte personnel ne l’est pas.">
-        <QOpt ok>Mon compte personnel gratuit, c’est plus simple</QOpt>
-        <QOpt>Le compte professionnel autorisé par mon organisation</QOpt>
+        <QOpt ok>Le compte professionnel autorisé par mon organisation</QOpt>
+        <QOpt>Mon compte personnel gratuit, c’est plus simple</QOpt>
         <QOpt>Peu importe, ce sont les mêmes outils</QOpt>
       </QuizQ>
       <QuizQ q="Votre premier jet ne convient pas. Que faire ?" explain="On dialogue : on précise ce qui ne va pas (« trop long », « plus formel », « ajoute la date »). C’est souvent au 2e ou 3e échange que le texte devient bon.">
@@ -5176,12 +5176,12 @@ const M3_Quiz: Page = () => (
     <QuizSeries y={220}>
       <QuizQ q="Que faut-il absolument préciser pour faire reformuler un message ?" explain="Sans cette consigne, l’IA peut ajouter une excuse, une promesse ou un détail qui n’existait pas. Une reformulation change la forme, pas le fond.">
         <QOpt>La police de caractères</QOpt>
-        <QOpt>« Garde tous les faits, n’ajoute rien »</QOpt>
-        <QOpt ok>Le nombre de paragraphes</QOpt>
+        <QOpt>Le nombre de paragraphes</QOpt>
+        <QOpt ok>« Garde tous les faits, n’ajoute rien »</QOpt>
       </QuizQ>
       <QuizQ q="Dans la méthode A·R·S·S, que signifie le R ?" explain="Accuser réception, Reconnaître le problème (sans forcément reconnaître une faute juridique), proposer une Solution, annoncer la Suite.">
-        <QOpt ok>Rembourser</QOpt>
-        <QOpt>Reconnaître le problème du client</QOpt>
+        <QOpt ok>Reconnaître le problème du client</QOpt>
+        <QOpt>Rembourser</QOpt>
         <QOpt>Relancer</QOpt>
       </QuizQ>
       <QuizQ q="L’IA propose dans une réponse « un avoir de 20 % ». Personne ne l’a décidé. Que faire ?" explain="Un engagement commercial se décide par l’entreprise, pas par l’IA. On retire la phrase et on précise dans le prompt ce qui peut ou non être proposé.">
@@ -5191,13 +5191,13 @@ const M3_Quiz: Page = () => (
       </QuizQ>
       <QuizQ q="Pourquoi écrire « 3 November » plutôt que « 03/11 » à un interlocuteur américain ?" explain="Aux États-Unis, la date s’écrit mois/jour : 03/11 se lit « 11 mars ». Le mois en toutes lettres évite toute ambiguïté.">
         <QOpt>C’est plus élégant</QOpt>
-        <QOpt>03/11 peut se lire « 11 mars »</QOpt>
-        <QOpt ok>Les chiffres ne se traduisent pas</QOpt>
+        <QOpt>Les chiffres ne se traduisent pas</QOpt>
+        <QOpt ok>03/11 peut se lire « 11 mars »</QOpt>
       </QuizQ>
       <QuizQ q="Une relance à J + 30 annonce une transmission au recouvrement. Qui valide ?" explain="Annoncer une suite contentieuse engage l’entreprise : la décision et la validation reviennent au responsable, l’IA ne fait que rédiger.">
-        <QOpt ok>Personne, c’est un modèle</QOpt>
+        <QOpt ok>Votre responsable</QOpt>
         <QOpt>L’IA, qui a fait le calcul des jours</QOpt>
-        <QOpt>Votre responsable</QOpt>
+        <QOpt>Personne, c’est un modèle</QOpt>
       </QuizQ>
     </QuizSeries>
   </Frame>
@@ -6007,8 +6007,8 @@ const M5_Quiz: Page = () => (
       </QuizQ>
       <QuizQ q="Pour qu’un planning proposé par l’IA soit utile, il faut d’abord lui donner…" explain="Sans vos contraintes (réunions, horaires, échéances), l’IA produit une journée théorique qui ne tient pas compte de votre agenda réel.">
         <QOpt>Votre mot de passe d’agenda</QOpt>
-        <QOpt>Vos tâches et vos contraintes horaires</QOpt>
-        <QOpt ok>Rien, elle connaît les bonnes pratiques</QOpt>
+        <QOpt>Rien, elle connaît les bonnes pratiques</QOpt>
+        <QOpt ok>Vos tâches et vos contraintes horaires</QOpt>
       </QuizQ>
       <QuizQ q="Quelle question poser à l’IA après avoir créé une checklist ?" explain="« Qu’ai-je oublié ? » fait relire la liste sous un autre angle et fait souvent remonter des points manquants.">
         <QOpt ok>« Qu’ai-je oublié ? »</QOpt>
@@ -6359,12 +6359,12 @@ const M6_Quiz: Page = () => (
     <QuizSeries y={220}>
       <QuizQ q="L’IA annonce un total de 14 980 €. Que faites-vous ?" explain="L’IA peut se tromper en additionnant. Le total se vérifie avec une formule (SOMME) dans le tableur, qui fait foi.">
         <QOpt>Je le reporte tel quel</QOpt>
-        <QOpt>Je le vérifie avec une formule SOMME</QOpt>
-        <QOpt ok>Je lui demande si elle est sûre</QOpt>
+        <QOpt>Je lui demande si elle est sûre</QOpt>
+        <QOpt ok>Je le vérifie avec une formule SOMME</QOpt>
       </QuizQ>
       <QuizQ q="« Les demandes baissent en août à cause des congés. » Comment présenter cette phrase ?" explain="L’IA voit les chiffres, pas les causes. Une explication proposée par l’IA reste une hypothèse à confirmer.">
-        <QOpt ok>Comme un fait établi</QOpt>
-        <QOpt>Comme une hypothèse à vérifier</QOpt>
+        <QOpt ok>Comme une hypothèse à vérifier</QOpt>
+        <QOpt>Comme un fait établi</QOpt>
         <QOpt>Il faut la supprimer</QOpt>
       </QuizQ>
       <QuizQ q="Vous devez nettoyer un fichier de 2 000 contacts clients réels. Le bon réflexe ?" explain="Des données personnelles réelles ne vont pas dans un assistant non autorisé. On demande la méthode et les formules, puis on les applique soi-même dans le tableur.">
@@ -6374,8 +6374,8 @@ const M6_Quiz: Page = () => (
       </QuizQ>
       <QuizQ q="Dans un prompt de reporting, pourquoi écrire « ne recalcule rien » ?" explain="On veut que l’IA commente les chiffres du tableur, pas qu’elle en produise de nouveaux, potentiellement faux.">
         <QOpt>Pour aller plus vite</QOpt>
-        <QOpt>Pour qu’elle n’utilise que les chiffres fournis</QOpt>
-        <QOpt ok>Parce qu’elle ne sait pas compter du tout</QOpt>
+        <QOpt>Parce qu’elle ne sait pas compter du tout</QOpt>
+        <QOpt ok>Pour qu’elle n’utilise que les chiffres fournis</QOpt>
       </QuizQ>
     </QuizSeries>
   </Frame>
@@ -6753,9 +6753,9 @@ const M7_Quiz: Page = () => (
     <Title>Quiz final : êtes-vous prêt·e pour lundi ?</Title>
     <QuizSeries y={220}>
       <QuizQ q="Une collègue vous demande de faire résumer par l’IA le dossier disciplinaire d’un salarié. Feu…" explain="Données RH et sanctions : feu rouge. Elles ne vont pas dans un assistant IA, sauf règle interne explicite avec un outil validé.">
-        <QOpt ok>Vert</QOpt>
+        <QOpt ok>Rouge</QOpt>
         <QOpt>Orange, en anonymisant</QOpt>
-        <QOpt>Rouge</QOpt>
+        <QOpt>Vert</QOpt>
       </QuizQ>
       <QuizQ q="Dans le cas fil rouge, pourquoi relire après chaque étape ?" explain="Chaque étape réutilise la précédente : une erreur d’analyse se retrouve dans l’email, la fiche, la synthèse… jusqu’au client.">
         <QOpt>Pour faire plaisir au responsable</QOpt>
@@ -6763,13 +6763,13 @@ const M7_Quiz: Page = () => (
         <QOpt>Ce n’est pas utile si le prompt est bon</QOpt>
       </QuizQ>
       <QuizQ q="Quel est le premier réflexe pour un prompt qui marche bien ?" explain="Un bon prompt se range dans la bibliothèque, avec des [CROCHETS] pour ce qui change : il resservira la semaine prochaine.">
-        <QOpt>Le ranger dans ma bibliothèque, avec des [CROCHETS]</QOpt>
+        <QOpt>Le réécrire de mémoire la prochaine fois</QOpt>
         <QOpt>Le garder dans l’historique de l’outil</QOpt>
-        <QOpt ok>Le réécrire de mémoire la prochaine fois</QOpt>
+        <QOpt ok>Le ranger dans ma bibliothèque, avec des [CROCHETS]</QOpt>
       </QuizQ>
       <QuizQ q="Un email généré contient une date que vous ne retrouvez dans aucune source. Vous…" explain="Une information introuvable dans les sources est probablement inventée : on la supprime ou on la vérifie avant tout envoi.">
-        <QOpt ok>la gardez, l’IA a sûrement raison</QOpt>
-        <QOpt>la vérifiez ou la retirez avant l’envoi</QOpt>
+        <QOpt ok>la vérifiez ou la retirez avant l’envoi</QOpt>
+        <QOpt>la gardez, l’IA a sûrement raison</QOpt>
         <QOpt>ajoutez « sous réserve »</QOpt>
       </QuizQ>
       <QuizQ q="Qui est responsable d’un courrier rédigé avec l’IA et envoyé à un client ?" explain="L’IA est un outil. La personne qui envoie, et l’organisation au nom de laquelle elle écrit, restent responsables du contenu.">

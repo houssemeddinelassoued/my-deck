@@ -10,13 +10,13 @@ const F_Quiz: Page = () => (
         <QOpt>Question, réponse, source, signature, émoji</QOpt>
       </QuizQ>
       <QuizQ q="Analyser une demande, c’est identifier…" explain="Intention, catégorie, informations clés, urgence, émotion : la fiche d’analyse du module 2.">
-        <QOpt>Intention, catégorie, infos clés, urgence, émotion</QOpt>
+        <QOpt>Le nombre de mots et de fautes</QOpt>
         <QOpt>Le nom, l’âge et l’adresse du client</QOpt>
-        <QOpt ok>Le nombre de mots et de fautes</QOpt>
+        <QOpt ok>Intention, catégorie, infos clés, urgence, émotion</QOpt>
       </QuizQ>
       <QuizQ q="Dans une bonne réponse, la solution arrive…" explain="Saluer, reconnaître, puis répondre : la solution vient tôt, l’explication ensuite, puis la prochaine étape.">
-        <QOpt ok>Tout à la fin</QOpt>
-        <QOpt>Juste après avoir reconnu la situation</QOpt>
+        <QOpt ok>Juste après avoir reconnu la situation</QOpt>
+        <QOpt>Tout à la fin</QOpt>
         <QOpt>Dans un second message</QOpt>
       </QuizQ>
       <QuizQ q="Face à un client en colère, quelle phrase éviter ?" explain="« Calmez-vous » nie l’émotion et la fait monter. On reformule avec un fait précis et on propose une action.">
@@ -26,23 +26,23 @@ const F_Quiz: Page = () => (
       </QuizQ>
       <QuizQ q="Pour une recherche fiable dans la documentation, l’IA doit…" explain="Répondre uniquement à partir du document, citer la section, et dire quand l’information est absente.">
         <QOpt>Compléter avec ses connaissances générales</QOpt>
-        <QOpt>Répondre seulement à partir du document, en citant la section</QOpt>
-        <QOpt ok>Donner la réponse la plus probable</QOpt>
+        <QOpt>Donner la réponse la plus probable</QOpt>
+        <QOpt ok>Répondre seulement à partir du document, en citant la section</QOpt>
       </QuizQ>
       <QuizQ q="Pour compter les motifs de contact sur 1 000 conversations…" explain="L’IA classe, le tableur compte, l’humain interprète.">
-        <QOpt ok>On demande le total à l’IA</QOpt>
-        <QOpt>L’IA classe, un tableur compte</QOpt>
+        <QOpt ok>L’IA classe, un tableur compte</QOpt>
+        <QOpt>On demande le total à l’IA</QOpt>
         <QOpt>On lit un échantillon de 10</QOpt>
       </QuizQ>
       <QuizQ q="Laquelle de ces données ne doit jamais aller dans une IA ?" explain="Les données bancaires, les mots de passe et les données de santé ne servent pas à rédiger une réponse : jamais, même dans l’outil autorisé.">
         <QOpt>La description de la panne</QOpt>
-        <QOpt ok>La date de livraison</QOpt>
-        <QOpt>Le numéro de carte bancaire</QOpt>
+        <QOpt ok>Le numéro de carte bancaire</QOpt>
+        <QOpt>La date de livraison</QOpt>
       </QuizQ>
       <QuizQ q="Qui décide d’un geste commercial ?" explain="Le conseiller dans sa délégation, ou son responsable au-delà, selon la procédure. L’IA peut préparer la note, jamais décider.">
         <QOpt>L’IA, si elle le propose</QOpt>
-        <QOpt>Le conseiller ou son responsable, selon la procédure</QOpt>
-        <QOpt ok>Le client</QOpt>
+        <QOpt>Le client</QOpt>
+        <QOpt ok>Le conseiller ou son responsable, selon la procédure</QOpt>
       </QuizQ>
     </QuizSeries>
   </Frame>

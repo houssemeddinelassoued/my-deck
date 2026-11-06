@@ -44,18 +44,18 @@ const C_Quiz: Page = () => (
         <QOpt>Parce qu’elle manque de mémoire vive</QOpt>
       </QuizQ>
       <QuizQ q="Quelles sont les 5 briques d’un bon prompt ?" explain="Contexte, objectif, rôle, contraintes, format : avec elles, l’IA ne devine plus, elle exécute.">
-        <QOpt>Contexte, objectif, rôle, contraintes, format</QOpt>
+        <QOpt>Titre, sous-titre, image, lien, signature</QOpt>
         <QOpt>Politesse, longueur, anglais, émojis, urgence</QOpt>
-        <QOpt ok>Titre, sous-titre, image, lien, signature</QOpt>
+        <QOpt ok>Contexte, objectif, rôle, contraintes, format</QOpt>
       </QuizQ>
       <QuizQ q="Vous voulez une réponse fondée uniquement sur vos procédures internes. Quel outil ?" explain="NotebookLM répond uniquement à partir des documents chargés, avec des citations vers les passages exacts.">
-        <QOpt ok>Runway</QOpt>
-        <QOpt>NotebookLM</QOpt>
+        <QOpt ok>NotebookLM</QOpt>
+        <QOpt>Runway</QOpt>
         <QOpt>Grammarly</QOpt>
       </QuizQ>
       <QuizQ q="Votre réunion est terminée. Pour obtenir actions et responsables automatiquement ?" explain="Fireflies.ai (ou Otter.ai) transcrit la réunion et extrait les actions — après information et accord des participants.">
-        <QOpt>Fireflies.ai, annoncé aux participants</QOpt>
-        <QOpt ok>Adobe Firefly</QOpt>
+        <QOpt>Adobe Firefly</QOpt>
+        <QOpt ok>Fireflies.ai, annoncé aux participants</QOpt>
         <QOpt>Consensus</QOpt>
       </QuizQ>
       <QuizQ q="Transformer une note en présentation de 8 slides en une minute ?" explain="Gamma génère une présentation complète à partir d’un texte ; choisissez de conserver votre texte pour éviter les ajouts.">
@@ -64,8 +64,8 @@ const C_Quiz: Page = () => (
         <QOpt ok>Gamma</QOpt>
       </QuizQ>
       <QuizQ q="La règle qui résume la journée ?" explain="L’IA propose un premier jet, vous vérifiez, ajustez et décidez. La responsabilité reste humaine.">
-        <QOpt ok>« L’IA décide, je valide sans lire »</QOpt>
-        <QOpt>« L’IA propose, vous disposez »</QOpt>
+        <QOpt ok>« L’IA propose, vous disposez »</QOpt>
+        <QOpt>« L’IA décide, je valide sans lire »</QOpt>
         <QOpt>« Plus l’outil est cher, plus il est fiable »</QOpt>
       </QuizQ>
     </QuizSeries>
