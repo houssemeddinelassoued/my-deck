@@ -662,3 +662,4 @@ TRANSITION — « Pause de quinze minutes. Ensuite, on installe et on configure 
 DIRE — « Quinze minutes loin de l’écran. On reprend à 11 h 10 avec l’installation. »`,
 ];
 // @@NOTES-END
+

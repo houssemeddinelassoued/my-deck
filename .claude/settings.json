@@ -1,7 +1,9 @@
 {
   "permissions": {
     "allow": [
-      "Bash(node build.mjs all)"
+      "Bash(node build.mjs all)",
+      "Bash(git diff *)",
+      "Bash(git check-ignore *)"
     ]
   }
 }
