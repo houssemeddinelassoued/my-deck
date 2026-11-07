@@ -1,0 +1,101 @@
+<!doctype html><html lang="fr"><head><meta charset="utf-8"><title>GitHub Copilot · Débutant · Fiche d'accueil</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&family=Open+Sans:ital,wght@0,400;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>@page { size: A4; margin: 12mm 13mm 13mm; }
+:root { --ink: #101828; --soft: #3b4558; --muted: #6b7690; --rule: #dde3ee; --navy: #0b1f5c; --electric: #1e22e8; --blue: #0a62d0; --green: #0e9f6e; --coral: #e04848; --violet: #7442e0; --teal: #0e9aae; --pink: #c2369e; --amber: #d98a00; }
+* { box-sizing: border-box; }
+body { margin: 0; font: 9.7pt/1.46 "Open Sans", "Segoe UI", sans-serif; color: var(--ink); }
+h1, h2, h3, .num, .logo { font-family: "Montserrat", "Segoe UI", sans-serif; }
+code, kbd, pre { font-family: "JetBrains Mono", Consolas, monospace; font-variant-ligatures: none; font-feature-settings: "liga" 0, "calt" 0; }
+code { font-size: 0.86em; background: #eef1f6; color: var(--navy); border-radius: 4px; padding: 0 4px; }
+kbd { font-size: 0.85em; border: 1px solid #a9b3c6; border-bottom-width: 2px; border-radius: 4px; padding: 0 5px; background: #fff; }
+pre { background: #0f1530; color: #e6eaf6; border-radius: 8px; padding: 8px 12px; font-size: 8.4pt; line-height: 1.45; white-space: pre-wrap; margin: 6px 0; }
+pre code { background: none; color: inherit; padding: 0; }
+p { margin: 4px 0 6px; }
+ul, ol { margin: 4px 0 6px; padding-left: 0; list-style: none; }
+ol { counter-reset: n; }
+li { display: flex; gap: 8px; margin: 3px 0; break-inside: avoid; }
+ul > li::before { content: ""; flex: none; width: 6px; height: 6px; margin-top: 7px; border-radius: 1px; background: var(--blue); }
+ol > li { counter-increment: n; }
+ol > li::before { content: counter(n); flex: none; width: 18px; height: 18px; border-radius: 4px; background: var(--navy); color: #fff; font: 700 8pt/18px "Montserrat"; text-align: center; margin-top: 1px; }
+li > div { flex: 1; min-width: 0; }
+li:has(> .box)::before { display: none; }
+.box { flex: none; display: inline-block; width: 11px; height: 11px; border: 1.6px solid var(--muted); border-radius: 2px; margin-top: 4px; }
+table { border-collapse: collapse; width: 100%; margin: 4px 0; font-size: 8.6pt; }
+th, td { border-bottom: 1px solid var(--rule); padding: 2.5px 6px; text-align: left; vertical-align: top; }
+th { background: #eef1f6; font-weight: 700; color: var(--navy); }
+.cap { font: 700 8pt/1.2 "Montserrat"; letter-spacing: .1em; text-transform: uppercase; margin-bottom: 4px; }
+.small { font-size: 8.6pt; color: var(--muted); }
+
+/* Logo */
+.logo { color: var(--electric); display: inline-flex; }
+.logo > div { display: flex; flex-direction: column; align-items: flex-end; line-height: 1; }
+.logo .dap { position: relative; font-weight: 600; font-size: 20pt; letter-spacing: .02em; }
+.logo .dap svg { position: absolute; left: calc(100% + 3px); top: -6px; fill: currentColor; width: 20px; height: 14px; }
+.logo .inst { font-weight: 500; font-size: 19pt; margin-top: -2px; }
+
+/* Cover */
+.cover { height: 265mm; position: relative; padding: 18mm 6mm 0; break-after: page; border-left: 14px solid var(--navy); padding-left: 16mm; }
+.cover .kicker { margin-top: 48mm; font: 600 11pt "Montserrat"; letter-spacing: .14em; text-transform: uppercase; color: var(--violet); }
+.cover h1 { margin: 8mm 0 0; font-size: 46pt; line-height: 1.04; font-weight: 800; color: var(--navy); }
+.cover h1 span { color: var(--electric); }
+.cover .sub { margin-top: 8mm; font-size: 15pt; color: var(--soft); }
+.cover .who { margin-top: 30mm; font: 700 13pt "Montserrat"; color: var(--navy); }
+.cover .foot { position: absolute; bottom: 8mm; font-size: 9pt; color: var(--muted); }
+
+/* Intro & annexe */
+.intro { break-after: page; }
+.annexe { break-before: page; }
+.intro h2, .annexe h2 { font-size: 20pt; color: var(--navy); margin: 0 0 4mm; }
+.intro h3, .annexe h3 { font-size: 11.5pt; color: var(--blue); margin: 5mm 0 1mm; }
+.two { display: grid; grid-template-columns: 1fr 1fr; gap: 8mm; }
+.cl { font: 700 9pt "Montserrat"; margin-top: 3mm; }
+.cl.b { color: var(--blue); } .cl.y { color: var(--amber); } .cl.c { color: var(--coral); }
+
+/* Atelier */
+.atelier { break-before: page; --t: var(--blue); }
+.t-navy { --t: var(--navy); } .t-teal { --t: var(--teal); } .t-green { --t: var(--green); } .t-violet { --t: var(--violet); } .t-pink { --t: var(--pink); } .t-coral { --t: var(--coral); }
+.atelier header { display: flex; gap: 5mm; align-items: stretch; border-bottom: 3px solid var(--t); padding-bottom: 3mm; }
+.atelier .num { flex: none; width: 24mm; background: var(--t); color: #fff; border-radius: 6px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.atelier .num span { font-size: 7pt; letter-spacing: .14em; font-weight: 700; }
+.atelier .num b { font-size: 30pt; line-height: 1; font-weight: 800; }
+.atelier .mod { font: 700 8.5pt "Montserrat"; letter-spacing: .08em; text-transform: uppercase; color: var(--t); }
+.atelier h2 { margin: 1mm 0 2mm; font-size: 17pt; line-height: 1.15; color: var(--navy); }
+.chips { display: flex; gap: 6px; flex-wrap: wrap; }
+.chip { font-size: 8.4pt; background: #eef1f6; border-radius: 99px; padding: 1px 8px; color: var(--soft); }
+.files { margin-top: 2mm; font-size: 8.6pt; color: var(--muted); }
+.obj { margin: 4mm 0; background: #f3f6fc; border-left: 5px solid var(--t); border-radius: 0 8px 8px 0; padding: 2.6mm 4mm; font-size: 10.2pt; }
+.obj .cap { color: var(--t); }
+.grid { display: grid; grid-template-columns: 1.55fr 1fr; gap: 6mm; }
+.main h3 { font-size: 11pt; color: var(--t); margin: 2mm 0 1mm; }
+.steps ol > li::before { background: var(--t); }
+aside > div { border-radius: 8px; padding: 2.6mm 3.2mm; margin-bottom: 2.6mm; font-size: 8.7pt; break-inside: avoid; }
+.done { background: #e2f6ee; } .done .cap { color: #0a7a55; }
+.traps { background: #fde8e8; } .traps .cap { color: #b42f2f; } .traps ul > li::before { background: var(--coral); }
+.bonus { background: #fbe8f5; } .bonus .cap { color: #9c2380; }
+.help { background: #fef3dc; } .help .cap { color: #8a5a00; }
+.eco { background: #e4f0fb; } .eco .cap { color: #1f5fa8; }
+.notes { margin-top: 3mm; border: 1.5px dashed var(--rule); border-radius: 8px; min-height: 30mm; padding: 3mm 4mm; break-inside: avoid; }
+.notes .cap { color: var(--muted); }
+
+.fiche { page-break-after: auto; } .fiche h2 { margin-top: 5mm; } .fiche .logo { margin-bottom: 6mm; }</style></head><body>
+<section class="intro fiche"><div class="logo"><div><span class="dap">DOCAPOSTE<svg viewBox="0 0 30 20" width="30" height="20"><rect x="0" y="2" width="30" height="3.4" rx="1.7"/><rect x="6" y="8.3" width="24" height="3.4" rx="1.7"/><rect x="12" y="14.6" width="18" height="3.4" rx="1.7"/></svg></span><span class="inst">Institute</span></div></div><h2>GitHub Copilot · Débutant · Fiche d'accueil</h2>
+<p><strong>Docaposte Institute · 2 jours en classe virtuelle · 9 h – 17 h 30</strong> À lire et à faire <strong>au moins une semaine avant</strong> la formation (15 minutes). La partie 4 est à transmettre à votre service informatique.</p>
+<h3>1. Votre poste de travail</h3>
+<table><thead><tr><th>Élément</th><th>Attendu</th></tr></thead><tbody><tr><td>Ordinateur</td><td>Windows 10/11, macOS ou Linux, droit d'installer des logiciels (ou installés par votre service informatique)</td></tr><tr><td>Écrans</td><td><strong>Deux écrans</strong> de préférence : la classe virtuelle sur l'un, VS Code sur l'autre</td></tr><tr><td>Son et image</td><td>Micro-casque, caméra si possible</td></tr><tr><td>Connexion</td><td>Stable, assez pour une visioconférence et GitHub en même temps</td></tr><tr><td>Classe virtuelle</td><td>Le lien Teams ou Zoom de votre convocation, testé la veille</td></tr></tbody></table>
+<h3>2. Logiciels à installer</h3>
+<table><thead><tr><th>Logiciel</th><th>Version</th><th>Vérification</th></tr></thead><tbody><tr><td>Node.js</td><td>22 LTS ou plus récent (https://nodejs.org)</td><td><code>node --version</code></td></tr><tr><td>Git</td><td>récent (https://git-scm.com)</td><td><code>git --version</code></td></tr><tr><td>VS Code</td><td>à jour (Aide › Rechercher les mises à jour). GitHub Copilot y est intégré</td><td>menu Aide › À propos</td></tr><tr><td>Python 3.10+ ou JDK 21+</td><td>facultatif (bonus de l'Atelier 4)</td><td><code>python --version</code>, <code>java -version</code></td></tr><tr><td>App GitHub Copilot</td><td>facultatif (démonstration et reprise de session)</td><td>s'ouvre et vous connecte</td></tr></tbody></table>
+<p>Aucune autre dépendance : le dépôt de la formation n'utilise que Node.js.</p>
+<h3>3. Votre compte</h3>
+<ul><li><div>Un <strong>compte GitHub</strong> à votre nom, avec <strong>GitHub Copilot</strong> : le plan <strong>Copilot Free</strong> suffit pour tous les ateliers.</div></li></ul>
+<p>  Si votre entreprise vous fournit une licence Copilot Business ou Enterprise, connectez-vous avec ce compte.</p>
+<ul><li><div>Depuis juin 2026, le chat et les agents consomment des <strong>crédits IA</strong> ; les suggestions inline n'en consomment pas.</div></li></ul>
+<p>  Les ateliers sont conçus pour rester dans les limites du plan Free.</p>
+<h3>4. À faire vérifier par votre service informatique</h3>
+<table><thead><tr><th>Point</th><th>Pourquoi</th></tr></thead><tbody><tr><td>Accès réseau à <code>github.com</code>, <code>api.github.com</code>, <code>*.githubusercontent.com</code>, <code>*.githubcopilot.com</code>, <code>default.exp-tas.com</code> (liste complète : « Copilot allowlist reference » dans la documentation GitHub)</td><td>Copilot ne fonctionne pas derrière un proxy qui les bloque</td></tr><tr><td>Copilot activé pour votre compte, et les politiques <strong>agents</strong>, <strong>serveurs MCP</strong> et <strong>agent plugins</strong> autorisées (Business / Enterprise)</td><td>Ateliers 5 à 9</td></tr><tr><td>Politique <strong>Copilot app</strong> activée (Business / Enterprise)</td><td>Démonstration de reprise de session</td></tr><tr><td>Lancer <code>node</code> et un petit serveur local (port 3000) sans blocage par l'antivirus</td><td>Ateliers 8 et 9</td></tr><tr><td>Clonage de dépôts publics GitHub autorisé</td><td>Récupérer le dépôt de la formation</td></tr></tbody></table>
+<p>Si une fonction est bloquée par votre organisation, la formation reste possible : le formateur la montre en démonstration et un point de reprise vous permet de continuer.</p>
+<h3>5. Le test du poste (5 minutes)</h3>
+<ol><li><div>Récupérez le dépôt de la formation : <strong>Use this template</strong> sur https://github.com/houssemeddinelassoued/parafo-copilot (ou <strong>Code › Download ZIP</strong>), dans un dossier simple et <strong>non synchronisé</strong> (pas OneDrive), par exemple <code>C:\formation\parafo-copilot</code>.</div></li><li><div>Ouvrez ce dossier dans VS Code, puis dans le terminal intégré :
+<pre><code>npm run verifier-poste</code></pre></div></li><li><div>Dans la vue Chat de VS Code, cible de session <strong>Copilot</strong>, demandez : « Explique ce dépôt en 3 phrases. »</div></li><li><div><strong>Répondez au mail de convocation</strong> en collant le résumé affiché par <code>verifier-poste</code> (« poste prêt » ou la liste des points à corriger). Le formateur vous recontacte si besoin.</div></li></ol>
+<h3>6. Le jour J</h3>
+<ul><li><div>Connexion <strong>10 minutes avant</strong> 9 h : vérification du son, de la caméra et du partage d'écran.</div></li><li><div>Micro coupé hors des échanges, caméra si possible.</div></li><li><div>Tous les ateliers sont <strong>individuels</strong>, sur votre poste, guidés pas à pas. Les textes à copier sont collés dans le Chat.</div></li><li><div>Les données de la formation sont <strong>fictives</strong> : n'utilisez ni code ni donnée de votre entreprise.</div></li></ul></section>
+</body></html>

@@ -22,6 +22,7 @@ import {
   useState,
 } from 'react';
 import formateur from '@assets/houssem-formateur.png';
+import labsPack from './assets/labs-copilot-debutant-v2.zip?url';
 
 export const design: DesignSystem = {
   palette: { bg: '#F6F8FC', text: '#101828', accent: '#0A62D0' },
@@ -10323,6 +10324,7 @@ export const meta: SlideMeta = {
   title: "GitHub Copilot · Débutant v2 — Docaposte Institute (2 jours)",
   createdAt: '2026-11-07T02:21:00.305Z',
   theme: 'docaposte-institute',
+  labs: labsPack,
 };
 
 export default [
