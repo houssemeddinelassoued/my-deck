@@ -1,0 +1,9 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "parafo-qualite",
+  "version": "1.0.0",
+  "description": "Qualité Parafo : agent Refactoreur, skills refactoring-sur et tests-node, annuaire MCP des signataires (fictif).",
+  "author": { "name": "Participant de la formation GitHub Copilot · Débutant" },
+  "license": "MIT",
+  "keywords": ["parafo", "refactoring", "tests", "mcp", "formation"]
+}

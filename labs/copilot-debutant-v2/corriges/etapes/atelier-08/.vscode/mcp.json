@@ -1,0 +1,9 @@
+{
+  "servers": {
+    "annuaire-parafo": {
+      "type": "stdio",
+      "command": "node",
+      "args": ["${workspaceFolder}/mcp/annuaire.mjs"]
+    }
+  }
+}

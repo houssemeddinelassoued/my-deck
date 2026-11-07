@@ -1,0 +1,26 @@
+{
+  // ── Atelier 2 : confort et économie ────────────────────────────────────
+  "editor.inlineSuggest.enabled": true,
+  "github.copilot.nextEditSuggestions.enabled": true,
+  "files.eol": "\n",
+
+  // ── Atelier 5 : le harnais réglé ───────────────────────────────────────
+  // Seuls les tests passent sans demander. Tout le reste demande une approbation.
+  "chat.tools.terminal.autoApprove": {
+    "/^npm (test|run test:atelier\\d)$/": true,
+    "/^node --test( \\S+)*$/": true,
+    "/^git (push|reset|clean)\\b/": false,
+    "/^(rm|del|rmdir|Remove-Item)\\b/": false,
+    "/^(npm|npx) (install|i|add|exec)\\b/": false,
+    "/\\|\\s*(sh|bash|iex|Invoke-Expression)\\b/": false
+  },
+
+  // Permissions par défaut des nouvelles sessions : approbation manuelle
+  "chat.permissions.default": "default"
+
+  // Bac à sable de l'agent : à activer seulement si votre système le permet
+  // (macOS 15+, Linux/WSL2, Windows 11 récent en expérimental). Sinon les commandes
+  // ne se lancent pas du tout : laissez ces lignes en commentaire.
+  // "chat.agent.sandbox.enabled": "on",
+  // "chat.agent.sandbox.network.allowNetwork": false
+}

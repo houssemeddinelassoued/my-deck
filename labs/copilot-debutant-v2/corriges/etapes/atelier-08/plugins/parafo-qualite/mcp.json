@@ -1,0 +1,11 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/mcp.schema.json",
+  "mcpServers": {
+    "annuaire-parafo": {
+      "type": "stdio",
+      "command": "node",
+      "args": ["${PLUGIN_ROOT}/mcp/annuaire.mjs"],
+      "env": { "ANNUAIRE_FICHIER": "${PLUGIN_ROOT}/data/annuaire.json" }
+    }
+  }
+}
