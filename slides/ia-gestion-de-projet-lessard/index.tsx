@@ -38,7 +38,7 @@ export const design: DesignSystem = {
 // ─── Webfonts (module-level, slide-keyed) ───────────────────────────────────
 const FONT_HREF =
   'https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Barlow+Condensed:wght@500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap';
-const FONT_LINK_ID = 'osd-webfont-ia-gestion-de-projet';
+const FONT_LINK_ID = 'osd-webfont-ia-gestion-de-projet-lessard';
 if (typeof document !== 'undefined') {
   let link = document.getElementById(FONT_LINK_ID) as HTMLLinkElement | null;
   if (!link) {
@@ -89,11 +89,11 @@ if (typeof window !== 'undefined') {
 }
 
 // ─── Deck identity ──────────────────────────────────────────────────────────
-const SLIDE_ID = 'ia-gestion-de-projet';
-const P = 'gp'; // CSS class prefix, unique per deck
+const SLIDE_ID = 'ia-gestion-de-projet-lessard';
+const P = 'gpl'; // CSS class prefix, unique per deck
 const DAY: number = 1;
 // Combined 2-day deck: pages after DAY_SPLIT belong to day 2 (0 = single-day deck).
-const DAY_SPLIT: number = 65;
+const DAY_SPLIT: number = 66;
 const useDay = (): number => {
   const { current } = useSlidePageNumber();
   return DAY_SPLIT > 0 && current > DAY_SPLIT ? 2 : DAY;
@@ -693,6 +693,25 @@ const ICONS = {
       <path d="M5 12.5v8h14v-8M10 20.5v-5h4v5" />
     </>
   ),
+  facade: (
+    <>
+      <rect x={4} y={3} width={16} height={18} rx={1.5} />
+      <path d="M4 9h16M4 15h16M9.3 3v18M14.7 3v18" />
+    </>
+  ),
+  camera: (
+    <>
+      <path d="M3 8.5a2 2 0 0 1 2-2h2.5l1.5-2h6l1.5 2H19a2 2 0 0 1 2 2V18a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+      <circle cx={12} cy={13} r={3.6} />
+    </>
+  ),
+  helmet: (
+    <>
+      <path d="M3 17.5h18" />
+      <path d="M5 17.5v-3a7 7 0 0 1 14 0v3" />
+      <path d="M10 8V5.5h4V8" />
+    </>
+  ),
 };
 type IconName = keyof typeof ICONS;
 
@@ -785,7 +804,7 @@ const Squares = ({
 }) => {
   const o = Math.round(s * 0.33);
   return (
-    <div className={cls} style={{ position: 'absolute', left: x, top: y, width: s + o, height: s + o, ...style, translate: '52.88px -582.01px' }}>
+    <div className={cls} style={{ position: 'absolute', left: x, top: y, width: s + o, height: s + o, ...style }}>
       <div
         className={anim ? k('sqb') : undefined}
         style={{ position: 'absolute', left: o, top: o, width: s, height: s, background: G.yellow, ...dl(delay) }}
@@ -2828,6 +2847,11 @@ const APPS = {
   otter: { name: 'Otter.ai', short: 'Otter', mono: 'Ot', bg: 'linear-gradient(135deg, #2A6DF4 0%, #173E9C 100%)' },
   zoom: { name: 'Zoom', short: 'Zoom', mono: 'Zm', bg: 'linear-gradient(135deg, #2D8CFF 0%, #0B5CD5 100%)' },
   excel: { name: 'Excel', short: 'Excel', mono: 'X', bg: 'linear-gradient(135deg, #1D9A5B 0%, #107040 100%)' },
+  word: { name: 'Word', short: 'Word', mono: 'W', bg: 'linear-gradient(135deg, #2B7CD3 0%, #185ABD 100%)' },
+  automate: { name: 'Power Automate', short: 'Automate', mono: 'PA', bg: 'linear-gradient(135deg, #2D7FF9 0%, #0B4FB3 100%)' },
+  smartsheet: { name: 'Smartsheet', short: 'Smartsheet', mono: 'Ss', bg: 'linear-gradient(135deg, #1F4F9C 0%, #0E2F66 100%)' },
+  procore: { name: 'Procore', short: 'Procore', mono: 'Pc', bg: 'linear-gradient(135deg, #F47E42 0%, #D9582A 100%)' },
+  bluebeam: { name: 'Bluebeam', short: 'Bluebeam', mono: 'Bb', bg: 'linear-gradient(135deg, #2F7FCB 0%, #1C4E86 100%)' },
 };
 type AppId = keyof typeof APPS;
 
@@ -2916,13 +2940,13 @@ const AnswerBox = ({ id = 'chatgpt', children, label, size = 23, cls, style }: {
   </div>
 );
 
-// ─── Fil rouge : Vélo Fleuve inc. et le projet Limoilou (fictifs) ───────────
+// ─── Fil rouge : le projet Centre sportif des Méandres (fictif) ─────────────
 const CAST = {
-  karim: { name: 'Karim', role: 'Chargé de projet', tone: 'blue' as Tone, icon: 'target' as IconName },
-  luc: { name: 'Luc', role: 'Directeur des opérations', tone: 'teal' as Tone, icon: 'org' as IconName },
-  julie: { name: 'Julie', role: 'Conseillère RH', tone: 'green' as Tone, icon: 'users' as IconName },
-  maxime: { name: 'Maxime', role: 'Responsable marketing', tone: 'yellow' as Tone, icon: 'megaphone' as IconName },
-  annie: { name: 'Annie', role: 'Analyste TI', tone: 'violet' as Tone, icon: 'server' as IconName },
+  mathieu: { name: 'Mathieu', role: 'Chargé de projet', tone: 'blue' as Tone, icon: 'target' as IconName },
+  helene: { name: 'Hélène', role: 'Directrice de projets', tone: 'teal' as Tone, icon: 'org' as IconName },
+  nadia: { name: 'Nadia', role: 'Adjointe chargée de projet', tone: 'green' as Tone, icon: 'inbox' as IconName },
+  eric: { name: 'Éric', role: 'Estimateur · ventes', tone: 'yellow' as Tone, icon: 'money' as IconName },
+  patrice: { name: 'Patrice', role: 'Contremaître d’installation', tone: 'violet' as Tone, icon: 'helmet' as IconName },
 };
 type CastId = keyof typeof CAST;
 
@@ -3057,6 +3081,10 @@ const GP_Cover: Page = () => (
       <p className={A.in} style={{ margin: '26px 0 0', fontSize: 36, lineHeight: 1.3, color: C.soft, ...dl(240) }}>
         Utiliser l’intelligence artificielle pour planifier, suivre et automatiser efficacement les projets
       </p>
+      <div className={A.in} style={{ marginTop: 30, display: 'inline-flex', alignItems: 'center', gap: 14, padding: '10px 22px', borderRadius: 999, background: C.panel, fontSize: 27, fontWeight: 600, color: C.ink, ...dl(360) }}>
+        <Icon name="facade" size={30} color={C.blue} />
+        Préparé pour le Groupe Lessard
+      </div>
     </div>
     <div className={A.in} style={{ position: 'absolute', left: 120, top: 870, display: 'flex', alignItems: 'center', gap: 22, ...dl(520) }}>
       <img
@@ -3073,28 +3101,28 @@ const GP_Cover: Page = () => (
     <Squares s={250} x={1470} y={640} delay={200} />
     <div
       className={A.in}
-      style={{ position: 'absolute', left: 1130, top: 250, width: 680, height: 560, background: C.card, borderRadius: 22, boxShadow: SHADOW, ...dl(300), translate: '46.88px 176.02px' }}
+      style={{ position: 'absolute', left: 1130, top: 250, width: 680, height: 560, background: C.card, borderRadius: 22, boxShadow: SHADOW, ...dl(300) }}
     >
       <div style={{ position: 'absolute', left: 28, top: 26, display: 'flex', alignItems: 'center', gap: 12 }}>
         <Icon name="gantt" size={30} color={C.blue} />
         <span style={{ fontFamily: display, fontWeight: 700, fontSize: 26, letterSpacing: '0.08em', color: C.ink }}>PLAN DE PROJET</span>
       </div>
-      <CovBar label="Cadrage" x={0} w={110} row={0} tone="blue" d={700} />
-      <CovBar label="Planification" x={70} w={160} row={1} tone="teal" d={900} />
-      <CovBar label="Exécution" x={180} w={230} row={2} tone="green" d={1100} />
-      <CovBar label="Suivi" x={150} w={290} row={3} tone="violet" d={1300} />
-      <CovBar label="Communication" x={30} w={390} row={4} tone="yellow" d={1500} />
+      <CovBar label="Transfert" x={0} w={80} row={0} tone="blue" d={700} />
+      <CovBar label="Dessins" x={50} w={150} row={1} tone="teal" d={900} />
+      <CovBar label="Commande" x={170} w={100} row={2} tone="green" d={1100} />
+      <CovBar label="Fabrication" x={230} w={150} row={3} tone="violet" d={1300} />
+      <CovBar label="Installation" x={330} w={110} row={4} tone="yellow" d={1500} />
       <div className={A.fade} style={{ position: 'absolute', left: 28, top: 462, fontSize: 21, fontWeight: 600, color: C.coral, lineHeight: '40px', ...dl(1700) }}>
-        Ouverture
+        Bâtiment fermé
       </div>
       <div style={{ position: 'absolute', left: 622, top: 469, width: 26, height: 26, transform: 'rotate(45deg)' }}>
         <div className={A.pop} style={{ width: 26, height: 26, background: C.coral, ...dl(1800) }} />
       </div>
     </div>
-    <div className={A.float} style={{ position: 'absolute', left: 1075, top: 745, width: 150, height: 150, translate: '5.01px -39.99px' }}>
+    <div className={A.float} style={{ position: 'absolute', left: 1075, top: 745, width: 150, height: 150 }}>
       <div
         className={A.pop}
-        style={{ width: 150, height: 150, borderRadius: 32, background: C.card, boxShadow: '0 30px 60px -28px rgba(20,60,100,.55), 0 0 0 1px rgba(0,0,0,.04)', display: 'flex', alignItems: 'center', justifyContent: 'center', ...dl(1900), translate: '340.86px 172.5px' }}
+        style={{ width: 150, height: 150, borderRadius: 32, background: C.card, boxShadow: '0 30px 60px -28px rgba(20,60,100,.55), 0 0 0 1px rgba(0,0,0,.04)', display: 'flex', alignItems: 'center', justifyContent: 'center', ...dl(1900) }}
       >
         <Icon name="sparkles" size={84} color={C.blue} sw={1.8} />
       </div>
@@ -3130,10 +3158,10 @@ const GP_Trainer: Page = () => (
           De l’IA expliquée simplement, sans jargon ni équations
         </Pledge>
         <Pledge icon="tool" tone="teal" d={640}>
-          Des outils que vous avez déjà (ou presque), testés en direct
+          Copilot dans vos outils : Outlook, Teams, Word, Excel
         </Pledge>
         <Pledge icon="note" tone="green" d={780}>
-          Des modèles de demandes (prompts) prêts à réutiliser lundi
+          Des modèles de demandes (prompts) pour vos courriels, relances et comptes rendus
         </Pledge>
         <Pledge icon="shieldCheck" tone="yellow" d={920}>
           Un regard lucide : ce que l’IA fait bien… et ce qu’elle rate
@@ -3162,9 +3190,9 @@ const GP_Roundtable: Page = () => (
     <Title>Tour de table</Title>
     <Lede>Une minute par personne, micro ouvert, trois questions. Puis un sondage éclair.</Lede>
     <div style={{ position: 'absolute', left: 120, top: 290, width: 800, display: 'flex', flexDirection: 'column', gap: 20 }}>
-      <AskCard n={1} title="Qui êtes-vous ?" sub="Prénom, rôle, service (RH, marketing, TI…)" d={100} />
-      <AskCard n={2} title="Quel projet menez-vous en ce moment ?" sub="Une phrase : son objectif et son échéance" d={220} />
-      <AskCard n={3} title="Qu’est-ce qui vous prend le plus de temps ?" sub="Planifier, relancer, rédiger, faire des rapports…" d={340} />
+      <AskCard n={1} title="Qui êtes-vous ?" sub="Prénom, rôle (chargé de projet, adjointe…), années chez Lessard" d={100} />
+      <AskCard n={2} title="Quel projet vous occupe le plus ?" sub="Une phrase : le bâtiment, les systèmes, l’échéance" d={220} />
+      <AskCard n={3} title="Qu’est-ce qui vous prend le plus de temps ?" sub="Courriels, relances, comptes rendus, classement…" d={340} />
     </div>
     <Timer id="tour" minutes={15} label="Tour de table" compact cls={A.in} style={{ position: 'absolute', left: 120, top: 770, ...dl(460) }} />
     <div style={{ position: 'absolute', left: 990, top: 290, width: 810 }}>
@@ -3210,13 +3238,13 @@ const GP_Objectives: Page = () => (
       Les usages concrets de l’IA pour planifier, suivre et communiquer
     </ObjStep>
     <ObjStep i={2} h={450} tone="teal" verb="UTILISER" day={1}>
-      Les outils génériques et intégrés pour générer un plan de projet
+      Copilot et les autres assistants pour planifier et rédiger
     </ObjStep>
     <ObjStep i={3} h={500} tone="green" verb="AUTOMATISER" day={2}>
-      Comptes rendus, résumés de réunions et suivi des tâches
+      Comptes rendus de réunion et de visite, tri des courriels, relances
     </ObjStep>
     <ObjStep i={4} h={550} tone="yellow" verb="COLLABORER" day={2}>
-      Mettre en place des pratiques d’équipe efficaces avec l’IA
+      Des pratiques communes entre chargés de projet et adjointes
     </ObjStep>
     <ObjStep i={5} h={600} tone="coral" verb="MAÎTRISER" day={2}>
       Les limites, les risques et les enjeux éthiques de l’IA
@@ -3295,10 +3323,10 @@ const ProgramCols = ({ today }: { today: number }) => (
         Dîner
       </ProgBreak>
       <ProgRow t="13:00" n={2} d={450}>
-        Outils du quotidien et bonnes demandes
+        Copilot au quotidien et bonnes demandes
       </ProgRow>
       <ProgRow t="13:45" n={3} tone="yellow" d={510}>
-        Atelier 1 · générer un plan de projet
+        Atelier 1 · plan de projet et courriels
       </ProgRow>
       <ProgBreak t="14:30" d={570}>
         Pause
@@ -3315,7 +3343,7 @@ const ProgramCols = ({ today }: { today: number }) => (
         Réactivation
       </ProgRow>
       <ProgRow t="9:15" n={4} d={360}>
-        Automatiser et collaborer avec l’IA
+        Réunions, visites, relances : automatiser
       </ProgRow>
       <ProgBreak t="10:30" d={420}>
         Pause
@@ -3403,8 +3431,8 @@ const GP_HowWeWork: Page = () => (
       <RuleChip icon="lock" d={700}>
         Aucune donnée confidentielle dans les outils
       </RuleChip>
-      <RuleChip icon="bike" d={800}>
-        Fil rouge : Vélo Fleuve inc.
+      <RuleChip icon="facade" d={800}>
+        Fil rouge : le Centre sportif des Méandres
       </RuleChip>
     </div>
     <Callout
@@ -3420,7 +3448,7 @@ const GP_HowWeWork: Page = () => (
   </Frame>
 );
 
-// ─── Running case: Vélo Fleuve inc. ─────────────────────────────────────────
+// ─── Running case: Centre sportif des Méandres ──────────────────────────────────────────────────────────────────────
 const Fact = ({ icon, children }: { icon: IconName; children: ReactNode }) => (
   <div style={{ display: 'flex', alignItems: 'center', gap: 16, fontSize: 27, color: C.ink }}>
     <Icon name={icon} size={30} color={C.teal} />
@@ -3440,46 +3468,47 @@ const CastCard = ({ id, d, children }: { id: CastId; d: number; children: ReactN
   </div>
 );
 
-const GP_Velo: Page = () => (
+const GP_Case: Page = () => (
   <Frame mod={0} kind="cas" label="Ouverture · Fil rouge">
-    <Title>Notre fil rouge : Vélo Fleuve inc.</Title>
-    <Lede>Une entreprise fictive aux chiffres réalistes. Nous la retrouverons dans chaque module.</Lede>
+    <Title>Notre fil rouge : le Centre sportif des Méandres</Title>
+    <Lede>Un projet fictif, mais typique de vos dossiers. Nous le retrouverons dans chaque module.</Lede>
     <div
       className={A.left}
       style={{ position: 'absolute', left: 120, top: 290, width: 540, height: 650, boxSizing: 'border-box', padding: '30px 32px', background: C.card, borderRadius: 'var(--osd-radius)', boxShadow: `${SHADOW}, inset 0 8px 0 ${C.teal}`, display: 'flex', flexDirection: 'column' }}
     >
       <div style={{ display: 'flex', alignItems: 'center', gap: 20 }}>
-        <IconTile name="bike" tone="teal" size={76} solid />
+        <IconTile name="facade" tone="teal" size={76} solid />
         <div>
-          <div style={{ fontFamily: display, fontWeight: 700, fontSize: 40, lineHeight: 1.05, color: C.ink }}>Vélo Fleuve inc.</div>
-          <div style={{ fontSize: 22, color: C.muted }}>Vélos électriques · Lévis</div>
+          <div style={{ fontFamily: display, fontWeight: 700, fontSize: 36, lineHeight: 1.05, color: C.ink }}>Centre sportif des Méandres</div>
+          <div style={{ fontSize: 22, color: C.muted }}>Ville de Rivière-Claire · institutionnel</div>
         </div>
       </div>
       <div style={{ marginTop: 28, display: 'flex', flexDirection: 'column', gap: 16 }}>
-        <Fact icon="users">180 employés</Fact>
-        <Fact icon="store">3 boutiques-ateliers</Fact>
-        <Fact icon="map">Lévis, Sherbrooke, Trois-Rivières</Fact>
-        <Fact icon="trend">Ventes en hausse de 30 %</Fact>
+        <Fact icon="facade">Mur-rideau du hall · 420 m²</Fact>
+        <Fact icon="layers">46 fenêtres · 6 portes d’entrée</Fact>
+        <Fact icon="sparkles">1 verrière au-dessus de l’accueil</Fact>
+        <Fact icon="org">EG : Construction Boréa</Fact>
+        <Fact icon="doc">Architecte : Atelier Mercier</Fact>
       </div>
-      <Callout title="Le projet" icon="flag" tone="yellow" size={25} style={{ marginTop: 'auto', padding: '16px 22px' }}>
-        Ouvrir une 4ᵉ boutique-atelier à Québec, dans Limoilou, au printemps.
+      <Callout title="Le mandat" icon="flag" tone="yellow" size={25} style={{ marginTop: 'auto', padding: '16px 22px' }}>
+        Concevoir, fabriquer et installer l’enveloppe en aluminium et verre.
       </Callout>
     </div>
     <div style={{ position: 'absolute', left: 700, top: 290, width: 1100, display: 'flex', flexDirection: 'column', gap: 18 }}>
-      <CastCard id="karim" d={200}>
-        Premier grand projet. Vient de l’atelier, pas de la gestion de projet.
+      <CastCard id="mathieu" d={200}>
+        Suit 13 projets en parallèle, dont celui-ci. Reçoit plus de 80 courriels par jour.
       </CastCard>
-      <CastCard id="luc" d={320}>
-        Veut une ouverture à la date prévue et un budget tenu.
+      <CastCard id="helene" d={320}>
+        Veut voir chaque vendredi où en est chaque projet, sans fouiller.
       </CastCard>
-      <CastCard id="julie" d={440}>
-        Doit recruter et former 8 personnes pour la boutique.
+      <CastCard id="nadia" d={440}>
+        Reçoit les transferts de Mathieu, fait les suivis, classe les documents.
       </CastCard>
-      <CastCard id="maxime" d={560}>
-        Prépare la campagne locale et la journée portes ouvertes.
+      <CastCard id="eric" d={560}>
+        A vendu le contrat. Transmet la soumission, les exclusions et ses promesses.
       </CastCard>
-      <CastCard id="annie" d={680}>
-        Installe la caisse, l’inventaire, le Wi-Fi et la prise de rendez-vous.
+      <CastCard id="patrice" d={680}>
+        Prend les relevés au chantier, dirige la pose, signale les déficiences.
       </CastCard>
     </div>
   </Frame>
@@ -3502,36 +3531,36 @@ const Pain = ({ icon, d, children }: { icon: IconName; d: number; children: Reac
 
 const GP_Brief: Page = () => (
   <Frame mod={0} kind="cas" label="Ouverture · Fil rouge">
-    <Title>Le projet Limoilou en quatre chiffres</Title>
-    <Lede>Karim a reçu le mandat lundi. Il a beaucoup à organiser… et peu de temps pour le faire.</Lede>
+    <Title>Le projet des Méandres en quatre chiffres</Title>
+    <Lede>Éric a transmis le dossier lundi. Mathieu doit le lancer… entre douze autres projets.</Lede>
     <div style={{ position: 'absolute', left: 120, top: 290, width: 1680, display: 'flex', gap: 28 }}>
-      <KeyNum value="22 sem." label="pour ouvrir, le samedi 10 avril" tone="blue" d={100} />
-      <KeyNum value="420 k$" label="de budget, travaux compris" tone="green" d={220} />
-      <KeyNum value="5" label="services impliqués dans l’équipe" tone="yellow" d={340} />
-      <KeyNum value="8" label="embauches avant l’ouverture" tone="violet" d={460} />
+      <KeyNum value="27 sem." label="avant le bâtiment fermé, le vendredi 14 mai" tone="blue" d={100} />
+      <KeyNum value="1,2 M$" label="de contrat pour le lot enveloppe" tone="green" d={220} />
+      <KeyNum value="8 sem." label="de délai pour le verre, une fois commandé" tone="yellow" d={340} />
+      <KeyNum value="13" label="projets suivis par Mathieu en même temps" tone="violet" d={460} />
     </div>
     <div style={{ position: 'absolute', left: 120, top: 560, width: 1000 }}>
       <Eyebrow cls={A.in} c={C.coral} style={dl(560)}>
-        Ce qui inquiète Karim
+        Ce qui inquiète Mathieu
       </Eyebrow>
       <div style={{ marginTop: 20, display: 'flex', flexDirection: 'column', gap: 18 }}>
         <Pain icon="calendar" d={640}>
-          Bâtir un échéancier réaliste à partir de zéro
+          Tenir l’échéancier : dessins d’atelier, verre, usine, pose
         </Pain>
-        <Pain icon="chat" d={760}>
-          Une réunion de suivi par semaine… et ses comptes rendus
+        <Pain icon="mail" d={760}>
+          80 courriels par jour : quoi traiter, transférer à Nadia, classer ?
         </Pain>
-        <Pain icon="bell" d={880}>
-          Savoir à temps ce qui glisse, sans relancer tout le monde
+        <Pain icon="chat" d={880}>
+          Réunions de chantier et visites : des comptes rendus chaque semaine
         </Pain>
-        <Pain icon="mail" d={1000}>
-          Informer Luc, l’équipe et les fournisseurs, chacun à sa façon
+        <Pain icon="bell" d={1000}>
+          Relancer l’architecte, le verrier et l’EG, sans y passer ses matinées
         </Pain>
       </div>
     </div>
     <div className={A.right} style={{ position: 'absolute', left: 1200, top: 560, width: 600, ...dl(1100) }}>
       <Callout title="Notre question pour 2 jours" icon="sparkles" tone="blue" size={28} style={{ padding: '26px 30px' }}>
-        Où l’IA peut-elle faire gagner du temps à Karim, sans lui faire perdre le contrôle de son projet ?
+        Où l’IA peut-elle faire gagner du temps à Mathieu et à Nadia, sans leur faire perdre le contrôle de leurs projets ?
       </Callout>
     </div>
   </Frame>
@@ -3545,20 +3574,20 @@ const GP_Quiz0: Page = () => (
     </Title>
     <Qcm
       multi
-      q="Pour Karim, que peut faire l’IA dès aujourd’hui ?"
-      explain="L’IA accélère la préparation : plans, comptes rendus, rapports. Mais elle ne connaît ni le contexte réel ni les engagements pris. Karim reste responsable de ce qui sort : c’est le fil de ces 2 jours."
+      q="Pour Mathieu, que peut faire l’IA dès aujourd’hui ?"
+      explain="L’IA accélère la préparation : résumés, brouillons, comptes rendus. Mais elle ne connaît ni les engagements pris ni la réalité du chantier. Mathieu reste responsable de ce qui sort : c’est le fil de ces 2 jours."
     >
-      <Opt ok why="Oui : à partir d’un bon brief, un assistant produit en une minute une première découpe des tâches que Karim va ensuite corriger.">
-        Proposer une première liste de tâches pour le projet
+      <Opt why="Piège ! L’IA ne sait pas ce que le verrier a réellement en usine. Elle propose des délais plausibles, pas des engagements.">
+        Garantir la date de livraison du verre
       </Opt>
-      <Opt why="Piège ! L’IA ne sait pas ce que l’entrepreneur ou le fournisseur ont promis. Elle propose des durées plausibles, pas des engagements.">
-        Garantir que l’échéancier proposé sera respecté
+      <Opt ok why="Oui : collé dans Copilot, un fil de 25 courriels devient en une minute un résumé des demandes, des réponses et de ce qui reste ouvert.">
+        Résumer un long fil de courriels avec l’entrepreneur général
       </Opt>
-      <Opt ok why="Oui : à partir d’une transcription ou de notes, elle sépare décisions, actions et points ouverts. Karim relit avant d’envoyer.">
-        Rédiger le compte rendu de la réunion de suivi
+      <Opt why="Piège ! Accepter un avis de modification engage Lessard : c’est une décision humaine. L’IA peut comparer le prix au devis, pas trancher.">
+        Accepter seule un avis de modification de 18 000 $
       </Opt>
-      <Opt why="Piège ! Une décision de budget engage l’organisation : elle reste humaine. L’IA peut préparer les options, pas trancher.">
-        Décider seule de couper 30 000 $ dans le budget
+      <Opt ok why="Oui : à partir des faits donnés par Mathieu (dessins envoyés le 23 novembre, toujours pas de retour), elle propose une relance polie et précise. Mathieu relit avant d’envoyer.">
+        Rédiger une relance à l’architecte pour les dessins d’atelier
       </Opt>
     </Qcm>
   </Frame>
@@ -3690,7 +3719,7 @@ const M1_RulesVsLearn: Page = () => (
         ALORS pourriel
       </div>
       <div className={b.fade(1)} style={{ marginTop: 18, display: 'flex', alignItems: 'center', gap: 12, fontSize: 25, color: T.coral.fg }}>
-        <Icon name="alert" size={28} /> « Livraison gratuite de vos vélos » → bloqué à tort
+        <Icon name="alert" size={28} /> « Échantillons gratuits de quincaillerie » → bloqué à tort
       </div>
     </M1Panel>
     <M1Panel x={980} title="Apprentissage automatique" tone="blue" cls={b.on(2)}>
@@ -3850,9 +3879,9 @@ const M1_Families: Page = () => (
     <Title>Trois grandes familles d’IA</Title>
     <Lede>Toutes apprennent à partir d’exemples. Elles diffèrent par ce qu’elles produisent.</Lede>
     <div style={{ position: 'absolute', left: 120, top: 290, width: 1680, display: 'flex', gap: 30 }}>
-      <M1Fam n={1} icon="trend" tone="green" name="L’IA qui prédit" what="Elle classe, estime, anticipe." ex="filtre anti-pourriel, détection de fraude bancaire." pm="estimer une durée, signaler une tâche à risque." />
-      <M1Fam n={2} icon="eye" tone="teal" name="L’IA qui perçoit" what="Elle voit et entend." ex="reconnaissance du visage, dictée vocale." pm="transcrire une réunion, lire une facture numérisée." />
-      <M1Fam n={3} icon="sparkles" tone="violet" name="L’IA qui génère" what="Elle produit du nouveau contenu." ex="ChatGPT, Gemini, Copilot, Claude." pm="rédiger un plan, un compte rendu, un courriel." />
+      <M1Fam n={1} icon="trend" tone="green" name="L’IA qui prédit" what="Elle classe, estime, anticipe." ex="filtre anti-pourriel, détection de fraude bancaire." pm="estimer une durée de pose, signaler une commande à risque." />
+      <M1Fam n={2} icon="eye" tone="teal" name="L’IA qui perçoit" what="Elle voit et entend." ex="reconnaissance du visage, dictée vocale." pm="transcrire une réunion de chantier, lire un bon de livraison numérisé." />
+      <M1Fam n={3} icon="sparkles" tone="violet" name="L’IA qui génère" what="Elle produit du nouveau contenu." ex="Copilot, ChatGPT, Claude, Gemini." pm="rédiger un plan, un compte rendu, un courriel." />
     </div>
   </Frame>
 );
@@ -3864,8 +3893,8 @@ const M1_SEQ: { pick: string; cands: M1Cand[] }[] = [
   { pick: ' prochain', cands: [{ w: 'prochain', p: 46 }, { w: 'matin', p: 29 }, { w: '10 h', p: 12 }, { w: 'midi', p: 8 }] },
   { pick: ',', cands: [{ w: ',', p: 44 }, { w: 'à', p: 30 }, { w: '.', p: 18 }, { w: 'en', p: 5 }] },
   { pick: ' car', cands: [{ w: 'car', p: 35 }, { w: 'en', p: 33 }, { w: 'afin', p: 14 }, { w: 'dans', p: 9 }] },
-  { pick: ' le', cands: [{ w: 'le', p: 40 }, { w: 'l’', p: 27 }, { w: 'plusieurs', p: 15 }, { w: 'Luc', p: 6 }] },
-  { pick: ' fournisseur', cands: [{ w: 'fournisseur', p: 34 }, { w: 'local', p: 21 }, { w: 'chantier', p: 19 }, { w: 'budget', p: 11 }] },
+  { pick: ' le', cands: [{ w: 'le', p: 40 }, { w: 'l’', p: 27 }, { w: 'plusieurs', p: 15 }, { w: 'l’EG', p: 6 }] },
+  { pick: ' fournisseur', cands: [{ w: 'fournisseur', p: 34 }, { w: 'verrier', p: 21 }, { w: 'chantier', p: 19 }, { w: 'budget', p: 11 }] },
 ];
 
 const M1CandRow = ({ c, top }: { c: M1Cand | undefined; top: boolean }) => (
@@ -3887,14 +3916,14 @@ const M1_NextWord: Page = () => {
   const cands = done ? [] : M1_SEQ[step].cands;
   return (
     <Frame mod={1} kind="exercice">
-      <Title>Comment ChatGPT écrit : un mot à la fois</Title>
+      <Title>Comment Copilot écrit : un mot à la fois</Title>
       <Lede>Un modèle de langage (LLM) devine le mot le plus probable, puis recommence.</Lede>
       <div className={A.in} style={{ position: 'absolute', left: 120, top: 280, width: 1060, height: 650, boxSizing: 'border-box', background: C.card, borderRadius: 18, boxShadow: SHADOW, padding: '30px 36px' }}>
         <Eyebrow c={C.muted} size={22}>
           Texte en cours
         </Eyebrow>
         <div style={{ marginTop: 12, minHeight: 130, fontSize: 38, lineHeight: 1.4, color: C.ink }}>
-          La réunion de suivi du projet est reportée à<span style={{ color: C.blue, fontWeight: 600 }}>{text}</span>
+          La réunion de chantier est reportée à<span style={{ color: C.blue, fontWeight: 600 }}>{text}</span>
           <span className={A.blink} style={{ display: 'inline-block', width: 4, height: 40, marginLeft: 4, verticalAlign: '-6px', background: C.blue }} />
         </div>
         <Eyebrow c={C.muted} size={22} style={{ marginTop: 18 }}>
@@ -3959,24 +3988,24 @@ const M1Why = ({ n, title, children }: { n: number; title: string; children: Rea
 const M1_Plausible: Page = () => (
   <Frame mod={1} beats={4}>
     <Title>Probable ne veut pas dire vrai</Title>
-    <Lede>Karim demande une durée de travaux. La réponse est claire, précise… et en partie inventée.</Lede>
+    <Lede>Mathieu demande un délai de fabrication. La réponse est claire, précise… et en partie inventée.</Lede>
     <PromptBox cls={A.in} style={{ position: 'absolute', left: 120, top: 280, width: 960, ...dl(100) }}>
-      Combien de temps durent en moyenne les travaux d’aménagement d’une boutique de 250 m² à Québec ?
+      Quel est le délai moyen de fabrication des unités scellées pour un mur-rideau au Québec ?
     </PromptBox>
     <AnswerBox cls={A.in} size={27} style={{ position: 'absolute', left: 120, top: 470, width: 960, ...dl(300) }}>
-      Comptez en moyenne <span className={k('m1fl1')}>11,4 semaines</span>, selon{' '}
-      <span className={k('m1fl2')}>l’étude 2023 de l’Observatoire québécois des chantiers commerciaux</span>. Prévoyez aussi{' '}
-      <span className={k('m1fl3')}>2 semaines pour le permis</span> de la Ville de Québec.
+      Comptez en moyenne <span className={k('m1fl1')}>6,8 semaines</span>, selon{' '}
+      <span className={k('m1fl2')}>l’étude 2024 de l’Observatoire québécois du vitrage commercial</span>. Prévoyez aussi{' '}
+      <span className={k('m1fl3')}>1 semaine de transport</span> depuis l’usine du verrier.
     </AnswerBox>
     <div style={{ position: 'absolute', left: 1140, top: 280, width: 660, display: 'flex', flexDirection: 'column', gap: 18 }}>
       <M1Why n={1} title="Une fausse précision">
-        « 11,4 » sonne scientifique. Rien ne dit d’où vient ce chiffre.
+        « 6,8 » sonne scientifique. Rien ne dit d’où vient ce chiffre.
       </M1Why>
       <M1Why n={2} title="Une source introuvable">
         L’IA a produit un nom plausible. Cette étude n’existe pas.
       </M1Why>
       <M1Why n={3} title="Un délai à vérifier">
-        Peut-être juste, peut-être pas : seule la Ville le sait.
+        Peut-être juste, peut-être pas : seul votre verrier le sait.
       </M1Why>
     </div>
     <Callout cls={b.on(4)} title="Ça s’appelle une hallucination" tone="coral" icon="alert" style={{ position: 'absolute', left: 120, top: 790, width: 1680 }}>
@@ -4027,7 +4056,7 @@ const M1_History: Page = () => (
       ChatGPT : l’IA générative pour tous.
     </M1Year>
     <M1Year x={1650} i={7} year="2023 +" up={false}>
-      L’IA entre dans Outlook, Teams, Notion…
+      L’IA entre dans Outlook, Teams, Procore…
     </M1Year>
   </Frame>
 );
@@ -4062,8 +4091,8 @@ const M1_AiOrNot: Page = () => (
       <M1Flip icon="bell" q="Outlook vous rappelle une réunion 15 minutes avant" ai={false} why="Une règle fixe : « 15 min avant, afficher une alerte ». Aucun apprentissage." />
       <M1Flip icon="play" q="Netflix vous propose une série qui vous plaît" ai why="Le système a appris vos goûts et ceux de millions d’abonnés semblables." />
       <M1Flip icon="video" q="Teams résume une réunion d’une heure en 10 lignes" ai why="IA qui perçoit (transcription), puis IA qui génère (résumé)." />
-      <M1Flip icon="chart" q="Excel colore en rouge les tâches en retard" ai={false} why="Une mise en forme conditionnelle : si date > échéance, alors rouge." />
-      <M1Flip icon="mail" q="Gmail suggère « Merci, c’est noté ! » en réponse" ai why="Le modèle prédit une réponse probable à partir du courriel reçu." />
+      <M1Flip icon="chart" q="Smartsheet colore en rouge les tâches en retard" ai={false} why="Une mise en forme conditionnelle : si date > échéance, alors rouge." />
+      <M1Flip icon="mail" q="Outlook suggère « Merci, c’est noté ! » en réponse" ai why="Le modèle prédit une réponse probable à partir du courriel reçu." />
       <M1Flip icon="clock" q="Le thermostat baisse le chauffage à 22 h chaque soir" ai={false} why="Une programmation horaire. S’il apprenait vos habitudes, ce serait de l’IA." />
     </div>
   </Frame>
@@ -4108,7 +4137,7 @@ const M1_ThreeWords: Page = () => (
             Exécute des règles fixes : <b>« si… alors… »</b>. Toujours le même résultat.
           </>
         }
-        ex="Quand une tâche passe en retard, un courriel part au responsable."
+        ex="Chaque courriel de Construction Boréa est classé dans le dossier du projet."
       />
       <M1Word
         d={250}
@@ -4121,7 +4150,7 @@ const M1_ThreeWords: Page = () => (
             Un robot <b>physique</b> (bras d’usine) ou <b>logiciel</b> (RPA) qui refait les clics d’un humain.
           </>
         }
-        ex="Un robot logiciel recopie chaque facture dans le vieux logiciel comptable."
+        ex="Un robot logiciel recopie chaque bon de livraison PDF dans le registre."
       />
       <M1Word
         d={400}
@@ -4134,7 +4163,7 @@ const M1_ThreeWords: Page = () => (
             Interprète, prédit ou génère à partir d’exemples. Gère l’<b>imprévu</b>… avec des erreurs possibles.
           </>
         }
-        ex="Lire un courriel libre du fournisseur et en déduire le retard annoncé."
+        ex="Lire un courriel libre du verrier et en déduire le retard annoncé."
       />
     </div>
   </Frame>
@@ -4157,7 +4186,7 @@ const M1Station = ({ n, icon, tone, who, title, children }: { n: number; icon: I
 const M1_Pipeline: Page = () => (
   <Frame mod={1} beats={4}>
     <Title>Dans la vraie vie, les trois se combinent</Title>
-    <Lede>Le fournisseur de comptoirs écrit à Karim : « On aura deux semaines de retard, désolés. »</Lede>
+    <Lede>Le verrier écrit à Mathieu : « Les unités scellées auront deux semaines de retard, désolés. »</Lede>
     <div style={{ position: 'absolute', left: 120, top: 300, width: 1680, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 14 }}>
       <div className={A.left} style={{ width: 200, flex: 'none', textAlign: 'center' }}>
         <IconTile name="mail" tone="grey" size={110} style={{ margin: '0 auto' }} />
@@ -4166,23 +4195,23 @@ const M1_Pipeline: Page = () => (
       </div>
       <FlowArrow w={60} color={C.blue} dashed />
       <M1Station n={1} icon="brain" tone="blue" who="IA" title="Comprendre">
-        Repère le lot touché, le retard annoncé (2 semaines) et l’impact sur l’ouverture.
+        Repère le projet touché, le retard annoncé (2 semaines) et l’impact sur la pose.
       </M1Station>
       <div className={b.fade(2)}>
         <FlowArrow w={60} color={C.blue} dashed />
       </div>
       <M1Station n={2} icon="gear" tone="grey" who="Automatisation" title="Appliquer la règle">
-        Si un jalon bouge de plus d’une semaine, alors alerte à Karim et à Luc.
+        Si une livraison bouge de plus d’une semaine, alors alerte à Mathieu et à Patrice.
       </M1Station>
       <div className={b.fade(3)}>
         <FlowArrow w={60} color={C.blue} dashed />
       </div>
       <M1Station n={3} icon="arm" tone="teal" who="Robot logiciel" title="Saisir">
-        Inscrit le changement dans le registre, un vieil outil sans connecteur.
+        Recopie la nouvelle date dans le registre des livraisons, écran par écran.
       </M1Station>
     </div>
     <Callout cls={b.on(4)} title="Qui décide ?" tone="yellow" icon="humanCheck" style={{ position: 'absolute', left: 120, top: 760, width: 1680 }}>
-      Aucun des trois. Karim valide le nouvel échéancier et Luc arbitre si la date d’ouverture est menacée.
+      Aucun des trois. Mathieu valide le nouvel échéancier avec l’EG ; Hélène arbitre si le 14 mai est menacé.
     </Callout>
   </Frame>
 );
@@ -4272,34 +4301,34 @@ const M1Key = ({ tone, children }: { tone: Tone; children: ReactNode }) => (
 
 const M1_Sort: Page = () => (
   <Frame mod={1} kind="exercice" beats={1}>
-    <Title>À vous : classez ces tâches du projet Limoilou</Title>
+    <Title>À vous : classez ces tâches du projet des Méandres</Title>
     <Lede>Dites-moi où va chaque étiquette. Le corrigé apparaît au clic.</Lede>
     <M1Zone x={120} icon="gear" tone="grey" label="Automatisation" />
     <M1Zone x={690} icon="arm" tone="teal" label="Robotisation" />
     <M1Zone x={1260} icon="brain" tone="blue" label="IA" />
     <Drag x={120} y={262} w={405} tone="blue">
-      Rappel automatique la veille d’une échéance <M1Key tone="grey">AUTO</M1Key>
+      Rappel la veille de la réunion de chantier <M1Key tone="grey">AUTO</M1Key>
     </Drag>
     <Drag x={545} y={262} w={405} tone="blue">
-      Résumer un fil de 40 courriels <M1Key tone="blue">IA</M1Key>
+      Résumer un fil de 40 courriels avec l’EG <M1Key tone="blue">IA</M1Key>
     </Drag>
     <Drag x={970} y={262} w={405} tone="blue">
-      Recopier les factures PDF dans le logiciel comptable <M1Key tone="teal">ROBOT</M1Key>
+      Recopier les bons de livraison PDF dans le registre <M1Key tone="teal">ROBOT</M1Key>
     </Drag>
     <Drag x={1395} y={262} w={405} tone="blue">
-      Créer une tâche quand un formulaire est rempli <M1Key tone="grey">AUTO</M1Key>
+      Remplacer les pages révisées dans la voûte <M1Key tone="grey">AUTO</M1Key>
     </Drag>
     <Drag x={120} y={384} w={405} tone="blue">
-      Repérer les tâches qui risquent de glisser <M1Key tone="blue">IA</M1Key>
+      Repérer les commandes qui risquent d’être en retard <M1Key tone="blue">IA</M1Key>
     </Drag>
     <Drag x={545} y={384} w={405} tone="blue">
-      Rédiger l’annonce de l’ouverture <M1Key tone="blue">IA</M1Key>
+      Rédiger la relance à l’architecte <M1Key tone="blue">IA</M1Key>
     </Drag>
     <Drag x={970} y={384} w={405} tone="blue">
-      Bras qui assemble les cadres de vélo <M1Key tone="teal">ROBOT</M1Key>
+      Bras robotisé qui scelle les unités de verre <M1Key tone="teal">ROBOT</M1Key>
     </Drag>
     <Drag x={1395} y={384} w={405} tone="blue">
-      Archiver les fichiers du projet chaque vendredi <M1Key tone="grey">AUTO</M1Key>
+      Classer les courriels de Boréa dans le bon dossier <M1Key tone="grey">AUTO</M1Key>
     </Drag>
   </Frame>
 );
@@ -4313,26 +4342,26 @@ const M1Dept = ({ d, icon, tone, title, children }: { d: number; icon: IconName;
 
 const M1_Business: Page = () => (
   <Frame mod={1}>
-    <Title>En entreprise : l’IA est déjà dans chaque service</Title>
-    <Lede>Les mêmes services que dans vos projets. Repérez le vôtre.</Lede>
+    <Title>De la vente au service après-vente : l’IA à chaque étape</Title>
+    <Lede>Les services d’une entreprise d’enveloppe du bâtiment. Repérez le vôtre, et ceux avec qui vous travaillez.</Lede>
     <div style={{ position: 'absolute', left: 120, top: 280, width: 1680, display: 'grid', gridTemplateColumns: 'repeat(3, 540px)', rowGap: 30, columnGap: 30 }}>
-      <M1Dept d={100} icon="users" tone="green" title="Ressources humaines">
-        Rédiger des offres d’emploi, répondre aux questions des employés, préparer l’accueil.
+      <M1Dept d={100} icon="money" tone="yellow" title="Ventes et estimation">
+        Lire un devis de 300 pages, repérer les sections qui vous concernent, préparer une soumission.
       </M1Dept>
-      <M1Dept d={200} icon="megaphone" tone="yellow" title="Marketing">
-        Textes et visuels de campagne, idées de contenus, analyse des résultats.
+      <M1Dept d={200} icon="facade" tone="blue" title="Dessin et ingénierie">
+        Comparer deux révisions de plans, relever les écarts, préparer les dessins d’atelier.
       </M1Dept>
-      <M1Dept d={300} icon="server" tone="violet" title="Technologies de l’information">
-        Soutien aux utilisateurs, documentation, aide à la programmation.
+      <M1Dept d={300} icon="truck" tone="teal" title="Approvisionnement">
+        Suivre les délais des fournisseurs, comparer des soumissions de verre et de profilés.
       </M1Dept>
-      <M1Dept d={400} icon="money" tone="teal" title="Finance">
-        Lecture de factures, prévision de trésorerie, détection d’anomalies.
+      <M1Dept d={400} icon="gear" tone="violet" title="Usine et fabrication">
+        Planifier la production, contrôler la qualité par caméra, prévoir l’entretien des machines.
       </M1Dept>
-      <M1Dept d={500} icon="chat" tone="blue" title="Service à la clientèle">
-        Agents conversationnels, tri des courriels, réponses suggérées.
+      <M1Dept d={500} icon="helmet" tone="coral" title="Installation et chantier">
+        Rapports de visite à partir de notes et de photos, listes de déficiences, prévention.
       </M1Dept>
-      <M1Dept d={600} icon="truck" tone="coral" title="Opérations">
-        Prévision de la demande, planification, maintenance prédictive.
+      <M1Dept d={600} icon="chat" tone="green" title="Service après-vente">
+        Trier les demandes, retrouver l’historique d’un projet, proposer une réponse au client.
       </M1Dept>
     </div>
   </Frame>
@@ -4415,14 +4444,14 @@ const M1_Qcm1: Page = () => (
     mod={1}
     n={1}
     title="Automatisation ou IA ?"
-    q="Chaque lundi, un courriel liste automatiquement les tâches en retard. De quoi s’agit-il ?"
+    q="Chaque lundi, Smartsheet envoie automatiquement la liste des tâches en retard. De quoi s’agit-il ?"
     explain="Une règle fixe (« si échéance dépassée, alors lister ») = automatisation. Ce serait de l’IA si l’outil prédisait les tâches qui VONT prendre du retard."
   >
     <Opt why="Piège ! Rien n’est appris ni interprété : la règle est écrite à l’avance et donne toujours le même résultat.">De l’intelligence artificielle, puisque c’est automatique</Opt>
     <Opt ok why="Exact : un déclencheur (lundi), une condition (échéance dépassée), une action (courriel). C’est une automatisation classique.">
       Une automatisation à base de règles
     </Opt>
-    <Opt why="Piège ! Aucun robot ne refait des clics à l’écran ici : l’outil de gestion de tâches envoie lui-même le courriel.">Une robotisation (RPA)</Opt>
+    <Opt why="Piège ! Aucun robot ne refait des clics à l’écran ici : Smartsheet envoie lui-même le courriel.">Une robotisation (RPA)</Opt>
     <Opt why="Piège ! Les trois notions sont bien distinctes, même si les outils les combinent souvent.">Les trois, c’est la même chose</Opt>
   </QcmPage>
 );
@@ -4432,7 +4461,7 @@ const M1_Qcm2: Page = () => (
     mod={1}
     n={2}
     title="Pourquoi l’IA invente-t-elle ?"
-    q="ChatGPT cite une étude qui n’existe pas. Quelle est la meilleure explication ?"
+    q="Copilot cite une étude qui n’existe pas. Quelle est la meilleure explication ?"
     explain="Un LLM produit la suite la plus probable, pas la plus vraie. Une source au nom plausible « sonne bien ». D’où la règle : toute source, tout chiffre se vérifie."
   >
     <Opt why="Piège ! Il n’y a pas d’intention : le modèle ne « sait » pas qu’il ment.">Il cherche volontairement à tromper l’utilisateur</Opt>
@@ -4454,7 +4483,7 @@ const M1_Synth: Page = () => (
         Notez trois moments de votre semaine où vous utilisez déjà l’IA sans y penser.
         <br />
         <br />
-        Puis posez une question de votre métier à un assistant… et vérifiez la réponse.
+        Puis posez une question de votre métier à Copilot… et vérifiez la réponse.
       </>
     }
   >
@@ -4480,10 +4509,10 @@ const M1_Synth: Page = () => (
 
 // ─── M2 · Divider ───────────────────────────────────────────────────────────
 const M2_Divider: Page = () => (
-  <Section n={2} title="L’IA dans la gestion de projet" sub="Planifier, suivre, rendre compte, communiquer : quatre usages, vos outils du quotidien." dur="≈ 1 h 30">
+  <Section n={2} title="L’IA dans la gestion de projet" sub="Planifier, trier et suivre, rendre compte, relancer : quatre usages, vos outils du quotidien." dur="≈ 1 h 30">
     <SecItem n={1}>L’IA à chaque phase du cycle de vie</SecItem>
-    <SecItem n={2}>Quatre cas d’usage : planification, suivi, reporting, communication</SecItem>
-    <SecItem n={3}>L’IA dans Outlook, Teams, Google, Notion, Trello…</SecItem>
+    <SecItem n={2}>Quatre cas d’usage : planification, courriels, comptes rendus, relances</SecItem>
+    <SecItem n={3}>Copilot dans Outlook, Teams, Word, Excel… et vos outils métier</SecItem>
     <SecItem n={4}>Bien formuler sa demande à l’IA</SecItem>
   </Section>
 );
@@ -4531,23 +4560,23 @@ const M2_Lifecycle: Page = () => (
     <Title>L’IA peut aider à chaque phase du projet</Title>
     <Lede>Le cycle de vie que vous connaissez, phase par phase.</Lede>
     <div style={{ position: 'absolute', left: 120, top: 280, width: 1680, display: 'flex', gap: 20 }}>
-      <M2Phase i={1} n={1} tone="blue" name="Démarrer">
+      <M2Phase i={1} n={1} tone="blue" name="Transférer">
         <M2Use icon="doc" tone="blue">
-          Premier jet de la charte de projet
+          Résumer la soumission et les exclusions
         </M2Use>
         <M2Use icon="users" tone="blue">
-          Liste des parties prenantes
+          Liste des intervenants : EG, architecte, ingénieur
         </M2Use>
         <M2Use icon="search" tone="blue">
-          Questions à poser au commanditaire
+          Questions pour la réunion de démarrage
         </M2Use>
       </M2Phase>
       <M2Phase i={2} n={2} tone="teal" name="Planifier">
-        <M2Use icon="layers" tone="teal">
-          Découpage en lots et en tâches
+        <M2Use icon="route" tone="teal">
+          Étapes et dépendances jusqu’à la pose
         </M2Use>
         <M2Use icon="gantt" tone="teal">
-          Échéancier et jalons de départ
+          Échéancier des dessins et des commandes
         </M2Use>
         <M2Use icon="alert" tone="teal">
           Registre des risques
@@ -4555,35 +4584,35 @@ const M2_Lifecycle: Page = () => (
       </M2Phase>
       <M2Phase i={3} n={3} tone="green" name="Exécuter">
         <M2Use icon="note" tone="green">
-          Comptes rendus de réunion
+          Comptes rendus de réunion de chantier
         </M2Use>
         <M2Use icon="mail" tone="green">
-          Courriels et relances
+          Tri des courriels et relances
         </M2Use>
-        <M2Use icon="book" tone="green">
-          Procédures et documents
+        <M2Use icon="doc" tone="green">
+          Demandes d’information (DI) à rédiger
         </M2Use>
       </M2Phase>
       <M2Phase i={4} n={4} tone="violet" name="Suivre">
         <M2Use icon="bell" tone="violet">
-          Alertes sur les retards
+          Alertes sur les livraisons
         </M2Use>
         <M2Use icon="chart" tone="violet">
-          Rapport d’avancement
+          Rapport du vendredi
         </M2Use>
-        <M2Use icon="trend" tone="violet">
-          Écarts de budget expliqués
+        <M2Use icon="money" tone="violet">
+          Avis de modification comparés au contrat
         </M2Use>
       </M2Phase>
-      <M2Phase i={5} n={5} tone="yellow" name="Clôturer">
-        <M2Use icon="star" tone="yellow">
-          Bilan de projet
-        </M2Use>
-        <M2Use icon="bulb" tone="yellow">
-          Leçons apprises
+      <M2Phase i={5} n={5} tone="yellow" name="Fermer">
+        <M2Use icon="camera" tone="yellow">
+          Liste de déficiences
         </M2Use>
         <M2Use icon="archive" tone="yellow">
-          Documentation de transfert
+          Documents de fin de projet
+        </M2Use>
+        <M2Use icon="bulb" tone="yellow">
+          Leçons apprises, service après-vente
         </M2Use>
       </M2Phase>
     </div>
@@ -4610,18 +4639,18 @@ const M2Bar = ({ i, label, h, ai, tone }: { i: number; label: string; h: number;
 
 const M2_Time: Page = () => (
   <Frame mod={2} beats={1}>
-    <Title>Où passe la semaine de Karim ?</Title>
-    <Lede>Une semaine type de 40 heures, telle qu’il l’a notée. L’IA aide surtout… là où ça déborde.</Lede>
+    <Title>Où passe la semaine de Mathieu ?</Title>
+    <Lede>Une semaine type de 40 heures sur 13 projets, telle qu’il l’a notée. L’IA aide surtout là où ça déborde.</Lede>
     <div className={A.in} style={{ position: 'absolute', left: 120, top: 280, width: 1680, boxSizing: 'border-box', background: C.card, borderRadius: 18, boxShadow: SHADOW, padding: '20px 40px' }}>
-      <M2Bar i={0} label="Réunions" h={11} tone="blue" ai="comptes rendus" />
-      <M2Bar i={1} label="Courriels et relances" h={9} tone="blue" ai="rédaction, résumés" />
-      <M2Bar i={2} label="Planification" h={6} tone="teal" ai="premiers jets" />
-      <M2Bar i={3} label="Rapports et tableaux" h={5} tone="teal" ai="rapport hebdo" />
-      <M2Bar i={4} label="Imprévus à régler" h={5} tone="grey" />
-      <M2Bar i={5} label="Sur le terrain, avec l’équipe" h={4} tone="grey" />
+      <M2Bar i={0} label="Courriels et relances" h={11} tone="blue" ai="tri, résumés, relances" />
+      <M2Bar i={1} label="Réunions et visites" h={9} tone="blue" ai="comptes rendus" />
+      <M2Bar i={2} label="Dessins et commandes" h={6} tone="teal" ai="suivi, alertes" />
+      <M2Bar i={3} label="Rapports et tableaux" h={4} tone="teal" ai="rapport du vendredi" />
+      <M2Bar i={4} label="Imprévus à régler" h={6} tone="grey" />
+      <M2Bar i={5} label="Téléphone et chantier" h={4} tone="grey" />
     </div>
     <Callout cls={b.on(1)} title="Le vrai gain" tone="green" icon="clock" style={{ position: 'absolute', left: 120, top: 860, width: 1680, padding: '14px 26px', ...dl(500) }}>
-      Le temps libéré sur la compilation revient à ce que l’IA ne fait pas : les imprévus et l’équipe.
+      Le temps libéré sur les courriels et les comptes rendus revient à ce que l’IA ne fait pas : les imprévus, le chantier, les clients.
     </Callout>
   </Frame>
 );
@@ -4665,7 +4694,7 @@ const M2Case = ({
     <Lede>{lede}</Lede>
     <div style={{ position: 'absolute', left: 120, top: 280, width: 600, display: 'flex', flexDirection: 'column', gap: 16 }}>{items}</div>
     <FilRouge cls={A.fade} style={{ position: 'absolute', left: 780, top: 280, ...dl(300) }}>
-      Karim
+      Mathieu
     </FilRouge>
     <div className={b.on(1)} style={{ position: 'absolute', left: 780, top: 336, width: 1020 }}>
       <PromptBox size={27}>{prompt}</PromptBox>
@@ -4684,40 +4713,41 @@ const M2_UcPlan: Page = () => (
     tone="teal"
     icon="gantt"
     title="Planification"
-    lede="Passer de la page blanche à une première structure en quelques minutes."
+    lede="Du dossier des ventes à un premier échéancier, en quelques minutes."
     items={
       <>
-        <M2Item d={100} icon="layers" tone="teal">
-          Découper en lots et en tâches
+        <M2Item d={100} icon="doc" tone="teal">
+          Résumer le dossier transmis par les ventes
         </M2Item>
         <M2Item d={200} icon="route" tone="teal">
-          Proposer un ordre et des dépendances
+          Proposer les étapes et leurs dépendances
         </M2Item>
         <M2Item d={300} icon="clock" tone="teal">
-          Estimer des durées de départ
+          Repérer les délais critiques (verre, approbations)
         </M2Item>
         <M2Item d={400} icon="alert" tone="teal">
-          Lister risques et parties prenantes
+          Lister les risques et les questions à poser
         </M2Item>
       </>
     }
-    prompt="Tu es chargé de projet. J’ouvre une boutique-atelier de vélos à Québec dans 22 semaines (budget 420 k$, 8 embauches, travaux, TI, campagne). Propose un découpage en 6 lots au maximum, avec les tâches principales de chacun."
+    app="copilot"
+    prompt="Tu es chargé de projet chez un fabricant-installateur d’enveloppe en aluminium et verre. Voici la soumission et les exclusions transmises par les ventes (ci-dessous). Propose les grandes étapes jusqu’au bâtiment fermé du 14 mai, avec leurs dépendances."
     answer={
       <>
         <M2Line>
-          <b>1. Cadrage</b> : charte, budget détaillé, comité de suivi
+          <b>1. Transfert</b> : revue du contrat et des exclusions, réunion de démarrage avec l’EG
         </M2Line>
         <M2Line>
-          <b>2. Local et travaux</b> : plans, soumissions, permis, chantier
+          <b>2. Relevés et dessins d’atelier</b> : relevés au chantier, dessins, approbation de l’architecte
         </M2Line>
         <M2Line>
-          <b>3. Ressources humaines</b> : postes, affichage, entrevues, formation
+          <b>3. Commandes</b> : verre (8 semaines, après approbation), profilés, quincaillerie
         </M2Line>
         <M2Line>
-          <b>4. Systèmes TI</b> : caisse, inventaire, réseau, rendez-vous
+          <b>4. Fabrication</b> : cadres en usine · <b>5. Installation</b> : fenêtres, mur-rideau, entrées, verrière
         </M2Line>
         <M2Line>
-          <b>5. Marketing</b> : campagne locale, portes ouvertes · <b>6. Ouverture</b> : essais, inauguration
+          <b>6. Fermeture</b> : déficiences, documents de fin de projet, garanties
         </M2Line>
       </>
     }
@@ -4728,33 +4758,37 @@ const M2_UcTrack: Page = () => (
   <M2Case
     n={2}
     tone="violet"
-    icon="eye"
-    title="Suivi"
-    lede="Savoir ce qui glisse avant que ça devienne un problème."
+    icon="inbox"
+    title="Courriels et priorités"
+    lede="80 courriels par jour : savoir ce qui compte avant de tout lire."
     items={
       <>
-        <M2Item d={100} icon="inbox" tone="violet">
-          Consolider les mises à jour de l’équipe
+        <M2Item d={100} icon="list" tone="violet">
+          Résumer un long fil en cinq lignes
         </M2Item>
-        <M2Item d={200} icon="bell" tone="violet">
-          Repérer les retards et leurs effets
+        <M2Item d={200} icon="filter" tone="violet">
+          Trier : à traiter, à transférer, à relancer
         </M2Item>
         <M2Item d={300} icon="search" tone="violet">
-          Répondre à « Où en est-on ? »
+          Repérer les demandes restées sans réponse
         </M2Item>
-        <M2Item d={400} icon="calendar" tone="violet">
-          Préparer la réunion de suivi
+        <M2Item d={400} icon="send" tone="violet">
+          Préparer le transfert à l’adjointe, avec la consigne
         </M2Item>
       </>
     }
-    prompt="Voici l’export des tâches de la semaine (statut, responsable, échéance). Quelles tâches sont en retard ou à risque ? Quel effet sur le jalon « Travaux terminés » du 5 mars ?"
+    app="copilot"
+    prompt="Voici les courriels reçus depuis hier sur mes projets. Classe-les en quatre groupes : à traiter aujourd’hui, à transférer à Nadia (avec la consigne), à relancer, à classer. Une ligne par courriel."
     answer={
       <>
         <M2Line>
-          <b>3 tâches en retard</b> : soumission de l’électricien (Karim, 4 jours), choix du logiciel de caisse (Annie, 2 jours), affichage des postes (Julie, 1 jour).
+          <b>À traiter aujourd’hui (3)</b> : Boréa demande la date de pose du hall ; l’architecte refuse un détail de solin ; Patrice signale un écart de 40 mm.
         </M2Line>
         <M2Line>
-          <b>Effet</b> : la soumission de l’électricien est sur le chemin critique. Sans décision d’ici vendredi, le jalon du 5 mars glisse d’environ une semaine.
+          <b>À transférer à Nadia (4)</b> : bordereau de livraison à classer ; certificat d’assurance demandé par Boréa…
+        </M2Line>
+        <M2Line>
+          <b>À relancer (2)</b> : dessins d’atelier soumis le 23 novembre, sans retour ; prix des panneaux d’allège.
         </M2Line>
       </>
     }
@@ -4765,37 +4799,37 @@ const M2_UcReport: Page = () => (
   <M2Case
     n={3}
     tone="blue"
-    icon="chart"
-    title="Reporting"
-    lede="Le rapport du vendredi en 5 minutes au lieu d’une heure."
+    icon="note"
+    title="Comptes rendus"
+    lede="Le compte rendu de la réunion de chantier en 10 minutes au lieu d’une heure."
     items={
       <>
-        <M2Item d={100} icon="doc" tone="blue">
-          Rédiger le rapport d’avancement
+        <M2Item d={100} icon="chat" tone="blue">
+          Réunion : décisions, actions, points ouverts
         </M2Item>
-        <M2Item d={200} icon="target" tone="blue">
-          Résumer pour la direction en 5 lignes
+        <M2Item d={200} icon="camera" tone="blue">
+          Visite de chantier : notes dictées et photos
         </M2Item>
-        <M2Item d={300} icon="gauge" tone="blue">
-          Proposer une météo vert, jaune, rouge
+        <M2Item d={300} icon="chart" tone="blue">
+          Rapport du vendredi pour la direction
         </M2Item>
-        <M2Item d={400} icon="chart" tone="blue">
-          Mettre des données en tableau
+        <M2Item d={400} icon="gauge" tone="blue">
+          Une météo vert, jaune, rouge par projet
         </M2Item>
       </>
     }
     app="copilot"
-    prompt="À partir de mes notes ci-dessous, rédige le rapport hebdomadaire pour Luc : météo globale, avancement, 3 points d’attention, décision attendue. 150 mots au maximum."
+    prompt="Voici mes notes de la réunion de chantier de ce matin. Rédige le compte rendu : décisions, actions (qui, quoi, quand), points ouverts. N’invente rien : si une information manque, écris « à confirmer »."
     answer={
       <>
         <M2Line>
-          <b>Météo : JAUNE</b>. Avancement 38 % (prévu : 40 %).
+          <b>Décision</b> : pose du mur-rideau du hall à partir du 22 mars, si la dalle est libérée (accord de Boréa).
         </M2Line>
         <M2Line>
-          <b>Points d’attention</b> : soumission de l’électricien en retard ; logiciel de caisse à choisir ; 2 postes sans candidat.
+          <b>Actions</b> : Mathieu envoie les dessins corrigés du solin (vendredi) ; Boréa confirme l’accès à la grue (date à confirmer).
         </M2Line>
         <M2Line>
-          <b>Décision attendue</b> : approuver un dépassement de 6 000 $ sur le lot électricité.
+          <b>Point ouvert</b> : couleur des panneaux d’allège, en attente de l’architecte.
         </M2Line>
       </>
     }
@@ -4806,37 +4840,37 @@ const M2_UcComm: Page = () => (
   <M2Case
     n={4}
     tone="yellow"
-    icon="megaphone"
-    title="Communication"
-    lede="Le bon message, au bon public, dans le bon ton."
+    icon="bell"
+    title="Relances et suivis"
+    lede="Relancer poliment et précisément, au bon ton, sans y passer la matinée."
     items={
       <>
-        <M2Item d={100} icon="users" tone="yellow">
-          Adapter un message à chaque public
+        <M2Item d={100} icon="bell" tone="yellow">
+          Relancer l’architecte, le verrier, l’EG
         </M2Item>
-        <M2Item d={200} icon="mail" tone="yellow">
-          Rédiger un courriel délicat
+        <M2Item d={200} icon="users" tone="yellow">
+          Adapter le ton : courtois, ferme, formel
         </M2Item>
-        <M2Item d={300} icon="calendar" tone="yellow">
-          Préparer l’ordre du jour
+        <M2Item d={300} icon="mail" tone="yellow">
+          Annoncer un retard sans braquer le client
         </M2Item>
         <M2Item d={400} icon="globe" tone="yellow">
-          Simplifier ou traduire un document
+          Écrire en anglais à un fournisseur
         </M2Item>
       </>
     }
     app="claude"
-    prompt="Le fournisseur de comptoirs annonce 2 semaines de retard. Rédige trois versions : un courriel à Luc (impact et options), un message Teams à l’équipe (actions), une réponse polie au fournisseur."
+    prompt="Les dessins d’atelier du mur-rideau ont été soumis à l’architecte le 23 novembre, sans retour. Sans approbation d’ici le 7 décembre, la commande du verre glisse. Rédige une relance courtoise, une relance ferme pour dans 5 jours, et un courriel à Boréa sur le risque."
     answer={
       <>
         <M2Line>
-          <b>À Luc</b> : « Retard des comptoirs : impact limité si on inverse deux tâches. Deux options… »
+          <b>Relance courtoise</b> : « Nous avons transmis le 23 novembre les dessins d’atelier du mur-rideau. Pourriez-vous nous indiquer… »
         </M2Line>
         <M2Line>
-          <b>À l’équipe</b> : « Les comptoirs arrivent le 19 au lieu du 5. Annie, on avance le câblage réseau… »
+          <b>Relance ferme</b> : « Sans approbation d’ici le 7 décembre, la commande du verre (8 semaines) ne pourra… »
         </M2Line>
         <M2Line>
-          <b>Au fournisseur</b> : « Merci de nous avoir prévenus. Pourriez-vous nous transmettre d’ici jeudi… »
+          <b>À Boréa</b> : « Pour votre information : l’approbation des dessins conditionne la pose du 22 mars… »
         </M2Line>
       </>
     }
@@ -4868,22 +4902,22 @@ const M2_Matrix: Page = () => (
     </div>
     <div style={{ position: 'absolute', left: 880, top: 930, fontSize: 22, fontWeight: 600, color: C.soft }}>← Risque si l’IA se trompe</div>
     <Drag x={120} y={270} w={360} tone="blue" size={22}>
-      Compte rendu de réunion
+      Compte rendu de chantier
     </Drag>
     <Drag x={120} y={350} w={360} tone="blue" size={22}>
       Annonce d’un retard au client
     </Drag>
     <Drag x={120} y={430} w={360} tone="blue" size={22}>
-      Premier découpage des tâches
+      Résumer un fil de 30 courriels
     </Drag>
     <Drag x={120} y={510} w={360} tone="blue" size={22}>
-      Décision de reporter l’ouverture
+      Accepter un avis de modification
     </Drag>
     <Drag x={120} y={590} w={360} tone="blue" size={22}>
       Ordre du jour de la réunion
     </Drag>
     <Drag x={120} y={670} w={360} tone="blue" size={22}>
-      Budget final à présenter
+      Prix d’un avenant au client
     </Drag>
     <Drag x={120} y={750} w={360} tone="blue" size={22}>
       Reformuler une note interne
@@ -4929,15 +4963,15 @@ const M2_Families: Page = () => (
       sub="Une fenêtre de conversation, pour tout"
       apps={
         <>
-          <AppChip id="chatgpt" />
-          <AppChip id="gemini" />
           <AppChip id="copilot" />
           <AppChip id="claude" />
+          <AppChip id="chatgpt" />
+          <AppChip id="gemini" />
         </>
       }
     >
       <M2Pro ok>Polyvalents : rédiger, planifier, analyser</M2Pro>
-      <M2Pro ok>Versions gratuites pour commencer</M2Pro>
+      <M2Pro ok>Copilot Chat inclus avec Microsoft 365</M2Pro>
       <M2Pro ok={false}>Ne voient que ce que vous collez</M2Pro>
       <M2Pro ok={false}>Copier-coller entre les outils</M2Pro>
     </M2Family>
@@ -4950,22 +4984,22 @@ const M2_Families: Page = () => (
       sub="Dans l’outil où le travail se fait déjà"
       apps={
         <>
-          <AppChip id="teams" />
           <AppChip id="outlook" />
-          <AppChip id="google" />
-          <AppChip id="notion" />
-          <AppChip id="clickup" />
-          <AppChip id="trello" />
+          <AppChip id="teams" />
+          <AppChip id="excel" />
+          <AppChip id="procore" />
+          <AppChip id="smartsheet" />
+          <AppChip id="bluebeam" />
         </>
       }
     >
-      <M2Pro ok>Voit vos courriels, réunions, tâches</M2Pro>
+      <M2Pro ok>Voit vos courriels, réunions, documents</M2Pro>
       <M2Pro ok>Agit sur place : crée, résume, met à jour</M2Pro>
       <M2Pro ok={false}>Souvent une licence payante</M2Pro>
       <M2Pro ok={false}>Limitée à son propre outil</M2Pro>
     </M2Family>
     <Callout cls={b.on(1)} title="Les deux se complètent" tone="blue" icon="puzzle" style={{ position: 'absolute', left: 120, top: 840, width: 1680, ...dl(400) }}>
-      Le générique pour réfléchir et rédiger, l’intégré pour travailler sur les données du projet.
+      Le générique pour réfléchir et rédiger, l’intégré pour travailler sur vos courriels, réunions et dossiers.
     </Callout>
   </Frame>
 );
@@ -4988,17 +5022,17 @@ const M2_Generic: Page = () => (
     <Title>Les assistants génériques : quatre grands noms</Title>
     <Lede>Ils se ressemblent beaucoup. Le meilleur ? Celui que votre organisation autorise.</Lede>
     <div style={{ position: 'absolute', left: 120, top: 290, width: 1680, display: 'flex', gap: 26 }}>
-      <M2Assist d={100} id="chatgpt" by="OpenAI" tip="Le plus répandu : beaucoup de tutoriels et d’exemples.">
+      <M2Assist d={100} id="copilot" by="Microsoft" tip="Votre outil de référence, avec votre compte Lessard.">
+        Copilot Chat pour tous ; avec la licence Microsoft 365 Copilot, dans Outlook, Teams, Word, Excel.
+      </M2Assist>
+      <M2Assist d={220} id="claude" by="Anthropic" tip="Quelques comptes chez vous : précieux pour les longs devis.">
+        Rédaction soignée, analyse de longs documents (devis, contrats), raisonnement.
+      </M2Assist>
+      <M2Assist d={340} id="chatgpt" by="OpenAI" tip="Le plus connu : jamais de données de clients dans un compte personnel.">
         Rédaction, analyse de fichiers, recherche sur le web, images.
       </M2Assist>
-      <M2Assist d={220} id="gemini" by="Google" tip="Naturel si votre organisation est sur Google Workspace.">
+      <M2Assist d={460} id="gemini" by="Google" tip="Surtout utile dans Google Workspace : peu pertinent chez vous.">
         Relié aux services Google : Gmail, Docs, Drive, Meet.
-      </M2Assist>
-      <M2Assist d={340} id="copilot" by="Microsoft" tip="Naturel si votre organisation est sur Microsoft 365.">
-        Copilot Chat pour tous ; Microsoft 365 Copilot dans Word, Outlook, Teams.
-      </M2Assist>
-      <M2Assist d={460} id="claude" by="Anthropic" tip="Apprécié pour les longs documents et la rédaction.">
-        Rédaction soignée, analyse de documents, raisonnement.
       </M2Assist>
     </div>
     <div className={A.fade} style={{ position: 'absolute', left: 120, top: 920, fontSize: 22, color: C.muted, ...dl(700) }}>
@@ -5023,31 +5057,31 @@ const M2_Microsoft: Page = () => (
   <Frame mod={2} kind="demo" beats={2}>
     <Title>L’IA dans Outlook et Teams</Title>
     <Lede>Microsoft 365 Copilot travaille directement sur vos courriels et vos réunions.</Lede>
-    <AppWin id="outlook" title="Retard comptoirs (14 messages)" cls={A.left} style={{ position: 'absolute', left: 120, top: 280, width: 820, ...dl(100) }}>
-      <M2Mail from="Fournisseur" subj="RE: RE: Livraison des comptoirs, nouvelle date" />
-      <M2Mail from="Maxime" subj="RE: Est-ce que ça touche les portes ouvertes ?" faded />
-      <M2Mail from="Luc" subj="RE: On a une option B ?" faded />
+    <AppWin id="outlook" title="Dessins d’atelier · mur-rideau (14)" cls={A.left} style={{ position: 'absolute', left: 120, top: 280, width: 820, ...dl(100) }}>
+      <M2Mail from="Architecte" subj="RE: RE: Dessins MR-01, commentaires" />
+      <M2Mail from="Boréa" subj="RE: Date de pose du hall ?" faded />
+      <M2Mail from="Hélène" subj="RE: Risque sur le 14 mai ?" faded />
       <div className={b.on(1)}>
         <M2Mini>
-          <b>Résumé par Copilot</b> : livraison reportée du 5 au 19 février. Le fournisseur propose une pose le samedi. Luc demande une option B. Aucune décision prise.
+          <b>Résumé par Copilot</b> : l’architecte demande deux corrections (solin, ancrages). Boréa veut une date de pose. Hélène demande si le 14 mai est menacé. Aucune réponse envoyée.
         </M2Mini>
       </div>
     </AppWin>
-    <AppWin id="teams" title="Suivi hebdo · projet Limoilou" cls={A.right} style={{ position: 'absolute', left: 980, top: 280, width: 820, ...dl(250) }}>
+    <AppWin id="teams" title="Réunion de chantier · Méandres" cls={A.right} style={{ position: 'absolute', left: 980, top: 280, width: 820, ...dl(250) }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 12, fontSize: 22, color: C.soft }}>
         <Icon name="video" size={26} color={C.violet} /> Réunion terminée · 52 min · transcription activée
       </div>
       <div className={b.on(2)}>
         <M2Mini>
           <b>Récapitulatif</b>
-          <br />• Décision : pose des comptoirs le samedi 20 février.
-          <br />• Tâche : Annie avance le câblage réseau (échéance 12 février).
-          <br />• Point ouvert : impact sur la date des portes ouvertes.
+          <br />• Décision : pose du hall à partir du 22 mars.
+          <br />• Tâche : Mathieu renvoie les dessins corrigés (échéance 11 décembre).
+          <br />• Point ouvert : accès à la grue, à confirmer par Boréa.
         </M2Mini>
       </div>
     </AppWin>
     <Callout cls={A.in} title="Avant de promettre ces fonctions à votre équipe" tone="blue" icon="key" size={25} style={{ position: 'absolute', left: 120, top: 840, width: 1680, padding: '14px 26px', ...dl(500) }}>
-      Elles dépendent de votre licence et des réglages de vos TI. Le récapitulatif exige que la réunion soit transcrite.
+      Elles exigent la licence Microsoft 365 Copilot (pas seulement Copilot Chat) et l’accord de vos TI. Le récapitulatif exige une réunion transcrite.
     </Callout>
   </Frame>
 );
@@ -5067,26 +5101,26 @@ const M2GTile = ({ d, icon, app, children }: { d: number; icon: IconName; app: s
 
 const M2_Google: Page = () => (
   <Frame mod={2}>
-    <Title>L’IA dans Google Workspace</Title>
-    <Lede>Gemini est intégré aux applications Google, selon l’édition de votre organisation.</Lede>
+    <Title>Copilot dans Word, Excel, Planner et Power Automate</Title>
+    <Lede>La même IA, dans les autres outils Microsoft 365 que vous ouvrez chaque jour.</Lede>
     <div style={{ position: 'absolute', left: 120, top: 290, width: 1680, display: 'flex', gap: 26 }}>
-      <M2GTile d={100} icon="mail" app="Gmail">
-        Résumer un long fil, proposer une réponse, retrouver une information dans vos courriels.
+      <M2GTile d={100} icon="doc" app="Word">
+        Résumer un devis ou un contrat, comparer deux versions, rédiger une lettre ou un rapport de visite.
       </M2GTile>
-      <M2GTile d={220} icon="doc" app="Docs">
-        « Aide-moi à écrire » : premier jet d’une charte, d’une procédure, d’un bilan.
+      <M2GTile d={220} icon="chart" app="Excel">
+        Analyser le registre des livraisons, expliquer ou écrire une formule, repérer les écarts.
       </M2GTile>
-      <M2GTile d={340} icon="chart" app="Sheets">
-        Créer un tableau de suivi, expliquer une formule, analyser des données.
+      <M2GTile d={340} icon="kanban" app="Planner">
+        Créer un plan et des tâches à partir d’un objectif, résumer l’avancement d’un plan.
       </M2GTile>
-      <M2GTile d={460} icon="video" app="Meet">
-        « Prendre des notes pour moi » : un document de notes partagé après la réunion.
+      <M2GTile d={460} icon="loop" app="Automate">
+        Décrire un flux en français : « quand un courriel de Boréa arrive, l’enregistrer dans le dossier ».
       </M2GTile>
     </div>
     <div className={A.in} style={{ position: 'absolute', left: 120, top: 760, width: 1680, display: 'flex', gap: 22, alignItems: 'center', ...dl(600) }}>
-      <AppTile id="gemini" size={60} />
+      <AppTile id="copilot" size={60} />
       <span style={{ fontSize: 27, lineHeight: 1.4, color: C.ink }}>
-        Même logique que Microsoft : l’IA travaille <b>là où sont vos documents</b>, avec les droits d’accès que vous avez déjà.
+        L’IA travaille <b>là où sont vos documents</b>, avec les droits d’accès que vous avez déjà. Tout dépend de la licence.
       </span>
     </div>
   </Frame>
@@ -5104,28 +5138,22 @@ const M2Tool = ({ d, id, children }: { d: number; id: AppId; children: ReactNode
 
 const M2_PmTools: Page = () => (
   <Frame mod={2}>
-    <Title>L’IA dans les outils de gestion de projet</Title>
-    <Lede>Tous ajoutent de l’IA. Ce qu’elle fait concrètement, outil par outil.</Lede>
-    <div style={{ position: 'absolute', left: 120, top: 280, width: 1680, display: 'grid', gridTemplateColumns: 'repeat(3, 540px)', rowGap: 30, columnGap: 30 }}>
-      <M2Tool d={100} id="notion">
-        Notion AI : rédiger et résumer des pages, répondre à des questions sur l’espace, notes de réunion.
+    <Title>Vos outils métier ajoutent aussi de l’IA</Title>
+    <Lede>Procore, Smartsheet, Bluebeam : ce qui existe en novembre 2026, à vérifier dans votre forfait.</Lede>
+    <div style={{ position: 'absolute', left: 120, top: 280, width: 1680, display: 'grid', gridTemplateColumns: 'repeat(3, 540px)', columnGap: 30 }}>
+      <M2Tool d={100} id="procore">
+        Procore AI (Helix) : agents pour rédiger les demandes d’information (DI), recouper les documents soumis, suivre les journaux de chantier.
       </M2Tool>
-      <M2Tool d={200} id="clickup">
-        ClickUp Brain : générer des tâches et sous-tâches, résumer un fil, rédiger une mise à jour de statut.
+      <M2Tool d={250} id="smartsheet">
+        Smartsheet AI : écrire une formule en français, résumer une feuille, colonnes qui classent ou résument chaque ligne.
       </M2Tool>
-      <M2Tool d={300} id="trello">
-        Trello : IA d’Atlassian pour rédiger une carte, la résumer ou en tirer une liste de contrôle.
-      </M2Tool>
-      <M2Tool d={400} id="planner">
-        Microsoft Planner : créer un plan et des tâches à partir d’un objectif, avec Copilot.
-      </M2Tool>
-      <M2Tool d={500} id="asana">
-        Asana : résumés de projet, statuts rédigés à partir des tâches, règles intelligentes.
-      </M2Tool>
-      <M2Tool d={600} id="monday">
-        monday.com : générer des tâches, résumer des mises à jour, remplir des colonnes.
+      <M2Tool d={400} id="bluebeam">
+        Bluebeam Max : recherche en langage naturel, et Claude qui pilote Revu : étiquettes, signets, annotations.
       </M2Tool>
     </div>
+    <Callout cls={A.in} title="Avant d’en parler à votre équipe" tone="blue" icon="key" size={26} style={{ position: 'absolute', left: 120, top: 640, width: 1680, ...dl(600) }}>
+      Ces fonctions changent chaque trimestre et dépendent du forfait (Procore : déploiement progressif ; Smartsheet : forfait Enterprise ; Bluebeam Max : offre premium). Demandez à vos TI ce que Lessard a activé.
+    </Callout>
   </Frame>
 );
 
@@ -5168,11 +5196,11 @@ const M2_Choose: Page = () => (
     </M2Q>
     <M2YesNo x={712} y={284} yes />
     <M2A x={820} y={276} n={1} tone="coral" icon="lock">
-      Uniquement un outil <b>approuvé</b> par votre organisation (version entreprise).
+      Uniquement un outil <b>approuvé</b> par Lessard : Copilot avec votre compte.
     </M2A>
     <M2YesNo x={250} y={410} yes={false} />
     <M2Q x={120} y={510} n={1}>
-      L’information est-elle déjà dans Teams, Notion, ClickUp… ?
+      L’information est-elle déjà dans Outlook, Teams, Procore… ?
     </M2Q>
     <M2YesNo x={712} y={524} yes />
     <M2A x={820} y={516} n={2} tone="green" icon="puzzle">
@@ -5226,23 +5254,23 @@ const M2_Anatomy: Page = () => (
     </div>
     <div className={A.in} style={{ position: 'absolute', left: 740, top: 280, width: 1060, boxSizing: 'border-box', background: C.card, borderRadius: 18, boxShadow: `${SHADOW}, inset 6px 0 0 ${C.blue}`, padding: '28px 36px 36px', ...dl(200) }}>
       <Eyebrow c={C.blue} size={22}>
-        La demande de Karim
+        La demande de Mathieu
       </Eyebrow>
       <div style={{ marginTop: 16, fontSize: 35, lineHeight: 1.55 }}>
         <M2Seg n={1} tone="blue">
-          Tu es un chargé de projet expérimenté dans le commerce de détail.
+          Tu es chargé de projet chez un fabricant-installateur d’enveloppe en aluminium et verre.
         </M2Seg>{' '}
         <M2Seg n={2} tone="teal">
-          J’ouvre une boutique-atelier de vélos à Québec le 10 avril. Budget : 420 k$. Équipe : RH, marketing, TI, opérations.
+          Les dessins d’atelier du mur-rideau ont été soumis à l’architecte le 23 novembre, sans retour. Sans approbation d’ici le 7 décembre, la commande du verre glisse.
         </M2Seg>{' '}
         <M2Seg n={3} tone="green">
-          Propose les jalons principaux du projet
+          Rédige une relance à l’architecte
         </M2Seg>{' '}
         <M2Seg n={4} tone="yellow">
-          sous forme de tableau : jalon, date cible, responsable, condition de réussite.
+          de six lignes au maximum, avec un objet clair.
         </M2Seg>{' '}
         <M2Seg n={5} tone="violet">
-          Huit jalons au maximum. Signale les dates que tu as dû deviner.
+          Ton courtois mais précis. N’invente aucune date.
         </M2Seg>
       </div>
     </div>
@@ -5261,8 +5289,8 @@ const M2_BeforeAfter: Page = () => {
       <div style={{ position: 'absolute', left: 120, top: 290, width: 760 }}>
         <PromptBox size={30} style={{ boxShadow: `${SHADOW_SM}, inset 6px 0 0 ${good ? C.green : C.coral}` }}>
           {good
-            ? 'Tu es chargé de projet. Boutique de vélos à Québec, ouverture le 10 avril, 8 embauches. Propose le plan de recrutement en tableau : poste, date d’affichage, date d’entrée, formation. Signale ce qui est serré.'
-            : 'Fais-moi un plan pour recruter du monde.'}
+            ? 'Tu es chargé de projet. Le verrier devait confirmer hier la date de livraison des unités scellées (projet des Méandres, commande du 8 décembre). Rédige une relance de cinq lignes : rappel de la commande, date attendue, impact sur la pose du 22 mars. Ton courtois et ferme.'
+            : 'Fais-moi un courriel pour relancer le fournisseur.'}
         </PromptBox>
         <div style={{ marginTop: 26, display: 'flex', gap: 14, flexWrap: 'wrap' }}>
           <Tag tone={good ? 'green' : 'grey'}>Rôle</Tag>
@@ -5273,33 +5301,27 @@ const M2_BeforeAfter: Page = () => {
         </div>
       </div>
       <div key={good ? 'g' : 'b'} className={A.in} style={{ position: 'absolute', left: 940, top: 290, width: 860 }}>
-        <AnswerBox size={27}>
+        <AnswerBox id="copilot" size={27}>
           {good ? (
             <>
               <M2Line>
-                <b>Mécaniciens (3)</b> : affichage 4 janvier · entrée 8 mars · formation atelier 2 semaines
+                <b>Objet</b> : Méandres · confirmation de livraison des unités scellées
               </M2Line>
-              <M2Line>
-                <b>Conseillers vente (4)</b> : affichage 18 janvier · entrée 22 mars · formation produits 1 semaine
-              </M2Line>
-              <M2Line>
-                <b>Gérant(e) (1)</b> : affichage 7 décembre · entrée 1ᵉʳ février
-              </M2Line>
-              <M2Line>
-                <b>Point serré</b> : les mécaniciens. Pénurie dans la région : commencer dès décembre.
-              </M2Line>
+              <M2Line>Bonjour, nous attendions hier la confirmation de la date de livraison des unités scellées (commande du 8 décembre).</M2Line>
+              <M2Line>Notre pose du mur-rideau débute le 22 mars : il nous faut une livraison au plus tard le 15 février.</M2Line>
+              <M2Line>Pourriez-vous nous confirmer la date d’ici jeudi ? Merci de votre suivi.</M2Line>
             </>
           ) : (
             <>
-              <M2Line>Voici un plan de recrutement en 7 étapes :</M2Line>
-              <M2Line>1. Définir vos besoins · 2. Rédiger une offre attrayante · 3. Publier sur les plateformes d’emploi · 4. Trier les candidatures · 5. Mener les entrevues · 6. Faire une offre · 7. Accueillir la recrue.</M2Line>
-              <M2Line>Bonne chance dans votre recrutement !</M2Line>
+              <M2Line>Bonjour,</M2Line>
+              <M2Line>Je me permets de revenir vers vous concernant notre dernière commande. Pourriez-vous me donner des nouvelles dès que possible ?</M2Line>
+              <M2Line>Merci et bonne journée !</M2Line>
             </>
           )}
         </AnswerBox>
         <div style={{ marginTop: 22, display: 'flex', alignItems: 'center', gap: 14, fontSize: 26, fontWeight: 600, color: good ? T.green.fg : T.coral.fg }}>
           <Icon name={good ? 'check' : 'alert'} size={30} />
-          {good ? 'Utilisable tel quel, à vérifier avec Julie.' : 'Juste… et inutilisable : rien sur votre projet.'}
+          {good ? 'Utilisable tel quel, après vérification des dates.' : 'Poli… et inutile : quelle commande ? quelle date ?'}
         </div>
       </div>
       <Hint cls={A.fade} style={{ position: 'absolute', left: 120, top: 920, ...dl(500) }}>
@@ -5316,27 +5338,27 @@ const M2_Iterate: Page = () => (
     <Lede>On affine en conversation, comme avec un collègue. Trois relances utiles.</Lede>
     <div style={{ position: 'absolute', left: 120, top: 280, width: 1120, display: 'flex', flexDirection: 'column', gap: 20 }}>
       <Bubble who="agent" name="Assistant" w={900} cls={A.in} style={dl(100)}>
-        Voici 8 jalons pour l’ouverture de la boutique, du cadrage à l’inauguration…
+        Voici les grandes étapes du lot enveloppe, du transfert des ventes au bâtiment fermé…
       </Bubble>
       <div className={b.on(1)}>
-        <Bubble who="user" name="Karim" w={900}>
-          Ajoute les dépendances entre les jalons et indique le chemin critique.
+        <Bubble who="user" name="Mathieu" w={900}>
+          Ajoute les dépendances entre les étapes et indique le chemin critique.
         </Bubble>
       </div>
       <div className={b.on(2)}>
-        <Bubble who="user" name="Karim" w={900}>
-          Le permis prend 6 semaines à Québec, pas 2. Recalcule.
+        <Bubble who="user" name="Mathieu" w={900}>
+          Le verre prend 8 semaines après l’approbation, pas 4. Recalcule.
         </Bubble>
       </div>
       <div className={b.on(3)}>
-        <Bubble who="user" name="Karim" w={900}>
+        <Bubble who="user" name="Mathieu" w={900}>
           Qu’est-ce que j’oublie ? Pose-moi 5 questions avant de finaliser.
         </Bubble>
       </div>
     </div>
     <div style={{ position: 'absolute', left: 1300, top: 280, width: 500, display: 'flex', flexDirection: 'column', gap: 20 }}>
       <Card tone="blue" icon="route" title="Approfondir" cls={b.on(1)} size={24}>
-        Demander ce qui manque : dépendances, responsables, coûts.
+        Demander ce qui manque : dépendances, responsables, livraisons.
       </Card>
       <Card tone="coral" icon="tool" title="Corriger" cls={b.on(2)} size={24}>
         Donner le fait que vous connaissez, l’IA ajuste le reste.
@@ -5357,15 +5379,15 @@ const M2_Qcm: Page = () => (
     mod={2}
     n={3}
     title="Le bon outil"
-    q="Annie veut un résumé de la réunion Teams d’hier, transcrite, à laquelle elle n’a pas assisté. Que lui conseiller ?"
+    q="Nadia veut un résumé de la réunion de chantier d’hier, tenue dans Teams et transcrite, à laquelle elle n’a pas assisté. Que lui conseiller ?"
     explain="L’IA intégrée travaille là où sont les données : la transcription est déjà dans Teams. Pas de copier-coller, et les droits d’accès sont respectés."
   >
     <Opt why="Piège ! Possible, mais long et risqué : copier une transcription interne dans un outil public peut exposer des données.">Copier la transcription dans un ChatGPT gratuit</Opt>
-    <Opt ok why="Oui : si la licence le permet, le récapitulatif de Copilot dans Teams résume la réunion et liste les tâches, sans sortir les données.">
-      Le récapitulatif de Copilot dans Teams
-    </Opt>
     <Opt why="Piège ! Gemini fonctionne dans Google Workspace : il ne voit pas une réunion Teams.">Gemini dans Google Docs</Opt>
     <Opt why="Piège ! Possible pour un détail, mais c’est exactement le travail que l’IA fait bien.">Réécouter les 52 minutes d’enregistrement</Opt>
+    <Opt ok why="Oui : avec la licence Microsoft 365 Copilot, le récapitulatif dans Teams résume la réunion et liste les tâches, sans sortir les données.">
+      Le récapitulatif de Copilot dans Teams
+    </Opt>
   </QcmPage>
 );
 
@@ -5375,7 +5397,7 @@ const M2_Synth: Page = () => (
     title="Module 2 · Ce qu’il faut retenir"
     poste={
       <>
-        Vérifiez quelle IA votre organisation autorise et ce que votre licence inclut.
+        Vérifiez si votre compte inclut Microsoft 365 Copilot, ou seulement Copilot Chat.
         <br />
         <br />
         Puis reprenez une demande que vous faites souvent et réécrivez-la en cinq ingrédients.
@@ -5383,7 +5405,7 @@ const M2_Synth: Page = () => (
     }
   >
     <SynthRow n={1} tone="blue" d={100}>
-      Quatre usages : <b>planifier, suivre, rendre compte, communiquer</b>.
+      Quatre usages : <b>planifier, trier, rendre compte, relancer</b>.
     </SynthRow>
     <SynthRow n={2} tone="teal" d={220}>
       Assistants <b>génériques</b> pour tout, IA <b>intégrée</b> là où sont vos données.
@@ -5404,10 +5426,10 @@ const M2_Synth: Page = () => (
 
 // ─── M3 · Divider ───────────────────────────────────────────────────────────
 const M3_Divider: Page = () => (
-  <Section n={3} title="Atelier 1 · Un plan de projet avec l’IA" sub="Explorer Notion AI ou ClickUp, puis générer et vérifier le plan du projet Limoilou." dur="≈ 1 h 45" kind="atelier">
-    <SecItem n={1}>Découverte guidée de Notion AI et de ClickUp Brain</SecItem>
-    <SecItem n={2}>Charte, découpage, échéancier, risques, RACI</SecItem>
-    <SecItem n={3}>Des tâches dans l’outil, prêtes à suivre</SecItem>
+  <Section n={3} title="Atelier 1 · Lancer un projet avec l’IA" sub="Du dossier des ventes au plan du projet des Méandres, puis une boîte de réception à reprendre en main." dur="≈ 1 h 45" kind="atelier">
+    <SecItem n={1}>Découverte guidée de Copilot dans Outlook et de Copilot Chat</SecItem>
+    <SecItem n={2}>Fiche de démarrage, découpage, échéancier, risques, RACI</SecItem>
+    <SecItem n={3}>Trier une boîte de réception et préparer une relance</SecItem>
     <SecItem n={4}>Vérifier le plan : ce que l’IA rate</SecItem>
   </Section>
 );
@@ -5430,36 +5452,39 @@ const M3Stage = ({ n, t, title, children }: { n: number; t: string; title: strin
 const M3_Brief: Page = () => (
   <Frame mod={3} kind="atelier">
     <Title>L’atelier en un coup d’œil</Title>
-    <Lede>En autonomie, chacun sur son poste. Une seule mission : le plan du projet Limoilou, dans un outil.</Lede>
+    <Lede>En autonomie, chacun sur son poste. Une mission : lancer le projet des Méandres, comme Mathieu cette semaine.</Lede>
     <div style={{ position: 'absolute', left: 120, top: 280, width: 1000, display: 'flex', flexDirection: 'column', gap: 14 }}>
       <M3Stage n={1} t="15 min" title="Découvrir l’outil">
-        Notion AI ou ClickUp, démonstration guidée
+        Copilot dans Outlook et Copilot Chat, démonstration guidée
       </M3Stage>
       <M3Stage n={2} t="10 min" title="Cadrer">
-        Charte du projet en une page
+        Le dossier des ventes en une fiche de démarrage
       </M3Stage>
       <M3Stage n={3} t="25 min" title="Planifier">
-        Découpage, échéancier, risques, RACI
+        Découpage, échéancier, risques, RACI, puis Excel ou Planner
       </M3Stage>
-      <M3Stage n={4} t="10 min" title="Transférer">
-        Les tâches dans l’outil, avec responsables et dates
+      <M3Stage n={4} t="10 min" title="Trier et relancer">
+        La boîte de réception de Mathieu, et une relance prête
       </M3Stage>
       <M3Stage n={5} t="15 min" title="Vérifier et présenter">
-        Grille de contrôle, puis partage d’écran de quelques volontaires
+        Grille de contrôle, puis partage d’écran de 2 ou 3 volontaires
       </M3Stage>
     </div>
     <div className={A.right} style={{ position: 'absolute', left: 1180, top: 280, width: 620, ...dl(300) }}>
-      <Card tone="yellow" icon="flag" title="Le livrable" size={26}>
-        Un plan dans l’outil : 6 à 8 lots, des tâches datées avec un responsable, 3 jalons, 5 risques.
+      <Card tone="yellow" icon="flag" title="Le livrable" size={23}>
+        Un plan de 6 étapes, des tâches datées avec un responsable, 3 jalons, 5 risques. Et une relance prête à envoyer.
       </Card>
-      <Card tone="blue" icon="tool" title="Les outils" size={26} style={{ marginTop: 22 }}>
-        Notion AI ou ClickUp. À défaut : ChatGPT, Gemini, Copilot ou Claude, puis Excel ou Planner.
+      <Card tone="blue" icon="tool" title="Les outils" size={23} style={{ marginTop: 16 }}>
+        Copilot avec votre compte Lessard. Claude pour comparer, si vous l’avez. Puis Excel, Planner ou Smartsheet.
+      </Card>
+      <Card tone="green" icon="inbox" title="Parcours adjointe" size={23} style={{ marginTop: 16 }}>
+        Même dossier, autre point de vue : commencez par l’étape 4, puis la liste des suivis à faire.
       </Card>
     </div>
   </Frame>
 );
 
-// ─── M3 · Karim's file (the data teams paste) ───────────────────────────────
+// ─── M3 · The sales file (the data participants paste) ────────────────────────────────────────────────────
 const M3Field = ({ label, children }: { label: string; children: ReactNode }) => (
   <div style={{ display: 'flex', gap: 18, padding: '11px 0', borderBottom: `1.5px solid ${C.rule}` }}>
     <span style={{ width: 230, flex: 'none', fontFamily: display, fontWeight: 700, fontSize: 25, letterSpacing: '0.04em', color: C.blue }}>{label}</span>
@@ -5469,21 +5494,21 @@ const M3Field = ({ label, children }: { label: string; children: ReactNode }) =>
 
 const M3_File: Page = () => (
   <Frame mod={3} kind="atelier">
-    <Title>Le dossier de Karim : vos données de départ</Title>
+    <Title>Le dossier transmis par Éric : vos données de départ</Title>
     <Lede>Tout ce que l’IA doit savoir. Le reste, elle le devinera… et il faudra le vérifier.</Lede>
     <div className={A.in} style={{ position: 'absolute', left: 120, top: 270, width: 1680, boxSizing: 'border-box', background: C.card, borderRadius: 18, boxShadow: `${SHADOW}, inset 6px 0 0 ${C.teal}`, padding: '14px 36px 18px', ...dl(100) }}>
-      <M3Field label="Objectif">Ouvrir la 4ᵉ boutique-atelier Vélo Fleuve, 3ᵉ Avenue, Limoilou (Québec), le samedi 10 avril.</M3Field>
-      <M3Field label="Départ">Lundi 2 novembre. Bail signé. Local vide de 250 m².</M3Field>
-      <M3Field label="Budget">420 000 $ : travaux 230 k$, équipements et TI 75 k$, inventaire initial 70 k$, marketing 25 k$, réserve 20 k$.</M3Field>
-      <M3Field label="Équipe">Karim (chargé de projet), Luc (commanditaire), Julie (RH), Maxime (marketing), Annie (TI).</M3Field>
-      <M3Field label="Embauches">1 gérant(e), 3 mécaniciens, 4 conseillers à la vente. Mécaniciens rares dans la région.</M3Field>
-      <M3Field label="Contraintes">Permis de la Ville : environ 6 semaines. Chantiers fermés pendant les Fêtes. Travaux : 10 semaines.</M3Field>
-      <M3Field label="Déjà connu">Le fournisseur de comptoirs a souvent du retard. Logiciel de caisse à choisir parmi deux offres.</M3Field>
+      <M3Field label="Objet">Lot enveloppe du Centre sportif des Méandres : mur-rideau du hall (420 m²), 46 fenêtres, 6 portes d’entrée, 1 verrière.</M3Field>
+      <M3Field label="Départ">Lundi 2 novembre. Contrat de 1,2 M$ avec Construction Boréa (EG). Architecte : Atelier Mercier.</M3Field>
+      <M3Field label="Échéance">Bâtiment fermé le vendredi 14 mai. Structure d’acier terminée vers le 1ᵉʳ mars.</M3Field>
+      <M3Field label="Équipe">Mathieu (chargé de projet), Hélène (direction), Nadia (adjointe), Éric (ventes), Patrice (installation).</M3Field>
+      <M3Field label="Délais">Dessins d’atelier : 3 semaines, puis 10 jours ouvrables d’approbation. Verre : 8 semaines après commande.</M3Field>
+      <M3Field label="Contraintes">Usine et chantier fermés 2 semaines aux Fêtes. Relevés au chantier une fois la structure terminée.</M3Field>
+      <M3Field label="Déjà connu">Exclus : calfeutrage intérieur, stores. Éric a promis à Boréa une pose du hall « dès mars ».</M3Field>
     </div>
   </Frame>
 );
 
-// ─── M3 · Guided tour: Notion AI ────────────────────────────────────────────
+// ─── M3 · Guided tour: Copilot in Outlook ──────────────────────────────────────────────────────────────────────────────
 // Numbered pin on a mock screen + its explanation in the side column.
 const M3Pin = ({ n, x, y }: { n: number; x: number; y: number }) => (
   <div className={b.pop(n)} style={{ position: 'absolute', left: x - 24, top: y - 24, width: 48, height: 48, zIndex: 5 }}>
@@ -5512,53 +5537,66 @@ const M3Row = ({ cells, head }: { cells: [string, string, string, string]; head?
   </div>
 );
 
-const M3_Notion: Page = () => (
+const M3OBtn = ({ hi, children }: { hi?: number; children: ReactNode }) => (
+  <span className={hi ? b.hi(hi) : undefined} style={{ borderRadius: 999, display: 'inline-flex' }}>
+    <Tag tone="violet" size={20}>
+      <Icon name="sparkles" size={19} /> {children}
+    </Tag>
+  </span>
+);
+
+const M3_Outlook: Page = () => (
   <Frame mod={3} kind="demo" beats={4}>
-    <Title>Découverte guidée : Notion AI</Title>
-    <Lede>Un espace de pages et de bases de données, avec l’IA partout. Quatre endroits à connaître.</Lede>
-    <AppWin id="notion" title="Projet Limoilou · Plan" cls={A.in} style={{ position: 'absolute', left: 120, top: 280, width: 1110, height: 650, ...dl(100) }} pad={30}>
-      <div style={{ fontFamily: display, fontWeight: 700, fontSize: 44, color: C.ink }}>Ouverture boutique Limoilou</div>
-      <div style={{ marginTop: 14, fontSize: 24, color: C.faint, fontStyle: 'italic' }}>Appuyez sur Espace pour demander à l’IA, ou « / » pour les commandes…</div>
-      <div style={{ marginTop: 20, display: 'flex', gap: 14 }}>
-        <Tag tone="violet" size={21}>
-          <Icon name="sparkles" size={20} /> Rédiger avec l’IA
-        </Tag>
-        <Tag tone="grey" size={21}>
-          Modèle : plan de projet
-        </Tag>
+    <Title>Découverte guidée : Copilot dans Outlook</Title>
+    <Lede>Quatre endroits à connaître, directement dans vos courriels. Avec la licence Microsoft 365 Copilot.</Lede>
+    <AppWin id="outlook" title="Boîte de réception · Mathieu" cls={A.in} style={{ position: 'absolute', left: 120, top: 280, width: 1110, height: 650, ...dl(100) }} pad={30}>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <div style={{ fontFamily: display, fontWeight: 700, fontSize: 34, color: C.ink }}>RE: Méandres · dessins d’atelier MR-01</div>
+        <AppTile id="copilot" size={46} />
       </div>
-      <div style={{ marginTop: 26, background: C.card, borderRadius: 12, boxShadow: `inset 0 0 0 1.5px ${C.rule}` }}>
-        <M3Row head cells={['Tâche', 'Responsable', 'Échéance', 'Résumé IA']} />
-        <M3Row cells={['Obtenir le permis de la Ville', 'Karim', '18 déc.', 'En attente du plan signé']} />
-        <M3Row cells={['Afficher les postes de mécanicien', 'Julie', '7 déc.', 'Offre rédigée, à valider']} />
-        <M3Row cells={['Choisir le logiciel de caisse', 'Annie', '22 janv.', '2 offres, démo jeudi']} />
+      <div style={{ marginTop: 8, display: 'flex', alignItems: 'center', gap: 16 }}>
+        <span style={{ fontSize: 22, color: C.muted }}>Atelier Mercier architectes · 14 messages</span>
+        <M3OBtn hi={1}>Résumer</M3OBtn>
+      </div>
+      <div className={b.on(1)} style={{ marginTop: 14, background: T.violet.bg, borderRadius: 12, padding: '12px 18px', fontSize: 22, lineHeight: 1.45, color: C.ink }}>
+        <b>Résumé</b> : deux corrections demandées (solin, ancrages). Boréa attend une date de pose. Aucune réponse envoyée.
+      </div>
+      <div style={{ marginTop: 18, background: C.card, borderRadius: 12, boxShadow: `inset 0 0 0 1.5px ${C.rule}`, padding: '16px 18px' }}>
+        <M3OBtn hi={2}>Brouillon avec Copilot</M3OBtn>
+        <div style={{ marginTop: 10, fontSize: 22, color: C.faint, fontStyle: 'italic' }}>« Confirme les deux corrections pour vendredi et demande la date d’approbation »</div>
+        <div className={b.on(2)} style={{ marginTop: 10, fontSize: 22, lineHeight: 1.45, color: C.ink }}>
+          Bonjour, merci pour vos commentaires. Nous vous transmettrons vendredi les dessins corrigés (solin et ancrages)…
+        </div>
+      </div>
+      <div style={{ marginTop: 14 }}>
+        <M3OBtn hi={3}>Accompagnement : ton, clarté</M3OBtn>
       </div>
     </AppWin>
-    <M3Pin n={1} x={940} y={441} />
-    <M3Pin n={2} x={700} y={493} />
-    <M3Pin n={3} x={1170} y={557} />
-    <M3Pin n={4} x={1170} y={305} />
+    <M3Pin n={1} x={705} y={428} />
+    <M3Pin n={2} x={445} y={606} />
+    <M3Pin n={3} x={492} y={800} />
+    <M3Pin n={4} x={1208} y={360} />
     <div style={{ position: 'absolute', left: 1280, top: 280, width: 520, display: 'flex', flexDirection: 'column', gap: 16 }}>
-      <M3Exp n={1} title="Demander à l’IA">
-        Espace sur une ligne vide : rédiger, résumer, traduire, continuer.
+      <M3Exp n={1} title="Résumer un fil">
+        En haut du courriel : l’essentiel de 14 messages, et ce qui reste ouvert.
       </M3Exp>
-      <M3Exp n={2} title="Modèles et rédaction">
-        Partir d’un modèle de plan, ou générer une page entière.
+      <M3Exp n={2} title="Brouillon avec Copilot">
+        Vous décrivez la réponse en une phrase, il rédige. Vous relisez.
       </M3Exp>
-      <M3Exp n={3} title="Colonnes remplies par l’IA">
-        Une propriété IA résume ou classe chaque ligne.
+      <M3Exp n={3} title="Accompagnement">
+        Il relit votre courriel : ton, clarté, ce qui pourrait irriter.
       </M3Exp>
-      <M3Exp n={4} title="Questions sur l’espace">
-        « Quelles tâches de Julie sont en retard ? »
+      <M3Exp n={4} title="Copilot à droite">
+        « Quels courriels de Boréa attendent encore ma réponse ? »
       </M3Exp>
       <div className={A.fade} style={{ fontSize: 21, lineHeight: 1.4, color: C.muted, ...dl(600) }}>
-        Fonctions selon le forfait Notion de votre organisation.
+        Sans licence : Copilot Chat, en collant le texte du courriel.
       </div>
     </div>
   </Frame>
 );
 
-// ─── M3 · Guided tour: ClickUp Brain ────────────────────────────────────────
+// ─── M3 · Guided tour: Copilot Chat + an attached file ─────────────────────────────────────────────────────────────
 const M3Sub = ({ n, children }: { n: number; children: ReactNode }) => (
   <div className={b.left(1)} style={{ display: 'flex', alignItems: 'center', gap: 12, fontSize: 22, color: C.ink, padding: '6px 0', ...dl(n * 120) }}>
     <span style={{ width: 22, height: 22, borderRadius: 6, boxShadow: `inset 0 0 0 2px ${C.faint}` }} />
@@ -5566,60 +5604,55 @@ const M3Sub = ({ n, children }: { n: number; children: ReactNode }) => (
   </div>
 );
 
-const M3_ClickUp: Page = () => (
+const M3_Chat: Page = () => (
   <Frame mod={3} kind="demo" beats={4}>
-    <Title>Découverte guidée : ClickUp Brain</Title>
-    <Lede>Un outil de gestion de tâches où l’IA travaille directement sur les tâches et leurs fils.</Lede>
-    <AppWin id="clickup" title="Limoilou › Systèmes TI › Tâche" cls={A.in} style={{ position: 'absolute', left: 120, top: 280, width: 1320, height: 650, ...dl(100) }} pad={30}>
+    <Title>Découverte guidée : Copilot Chat et le dossier</Title>
+    <Lede>Pour tous les comptes Lessard : joindre un document, puis lui poser des questions.</Lede>
+    <AppWin id="copilot" title="Copilot Chat · compte Lessard" cls={A.in} style={{ position: 'absolute', left: 120, top: 280, width: 1320, height: 650, ...dl(100) }} pad={30}>
       <div style={{ display: 'flex', gap: 30 }}>
         <div style={{ flex: 1 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
-            <Tag tone="violet" size={20}>
-              EN COURS
-            </Tag>
-            <span style={{ fontSize: 21, color: C.muted }}>Annie · échéance 22 janvier</span>
-          </div>
-          <div style={{ marginTop: 12, fontFamily: display, fontWeight: 700, fontSize: 42, color: C.ink }}>Choisir le logiciel de caisse</div>
-          <div style={{ marginTop: 20, display: 'flex', alignItems: 'center', gap: 12 }}>
-            <span style={{ fontSize: 22, fontWeight: 600, color: C.soft }}>Sous-tâches</span>
             <span className={b.hi(1)} style={{ borderRadius: 999, display: 'inline-flex' }}>
-              <Tag tone="violet" size={19}>
-                <Icon name="sparkles" size={18} /> Générer des sous-tâches
+              <Tag tone="blue" size={20}>
+                <Icon name="doc" size={19} /> Soumission_Meandres.pdf
               </Tag>
             </span>
+            <span style={{ fontSize: 21, color: C.muted }}>joint à la conversation</span>
           </div>
-          <div style={{ marginTop: 8 }}>
-            <M3Sub n={0}>Lister les besoins (caisse, inventaire, rendez-vous)</M3Sub>
-            <M3Sub n={1}>Démo des deux fournisseurs</M3Sub>
-            <M3Sub n={2}>Comparer coûts sur 3 ans</M3Sub>
-            <M3Sub n={3}>Recommandation à Luc</M3Sub>
+          <div style={{ marginTop: 16, background: C.panel, borderRadius: 12, padding: '14px 18px', fontSize: 23, lineHeight: 1.45, color: C.ink }}>
+            Résume ce dossier pour le chargé de projet : périmètre, exclusions, dates, promesses faites au client.
+          </div>
+          <div style={{ marginTop: 14 }}>
+            <M3Sub n={0}>Périmètre : mur-rideau, 46 fenêtres, 6 entrées, verrière</M3Sub>
+            <M3Sub n={1}>Exclus : calfeutrage intérieur, stores</M3Sub>
+            <M3Sub n={2}>Échéance : bâtiment fermé le 14 mai</M3Sub>
+            <M3Sub n={3}>Promesse : pose du hall « dès mars »</M3Sub>
           </div>
         </div>
         <div style={{ width: 470, flex: 'none', background: C.panel, borderRadius: 14, padding: '18px 20px' }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-            <span style={{ fontSize: 21, fontWeight: 600, color: C.soft }}>Commentaires (23)</span>
+            <span style={{ fontSize: 21, fontWeight: 600, color: C.soft }}>Question suivante</span>
             <span className={b.hi(2)} style={{ borderRadius: 999, display: 'inline-flex' }}>
               <Tag tone="violet" size={18}>
-                <Icon name="sparkles" size={17} /> Résumer
+                <Icon name="sparkles" size={17} /> Relancer
               </Tag>
             </span>
           </div>
-          <div style={{ marginTop: 12, fontSize: 20, lineHeight: 1.45, color: C.muted }}>Annie : l’offre B inclut le module de rendez-vous…</div>
-          <div style={{ marginTop: 6, fontSize: 20, lineHeight: 1.45, color: C.muted }}>Karim : et la formation du personnel ?</div>
+          <div style={{ marginTop: 12, fontSize: 20, lineHeight: 1.45, color: C.muted }}>« Qu’est-ce qui manque pour lancer le projet ? Pose-moi tes questions. »</div>
           <div className={b.on(2)} style={{ marginTop: 14, background: T.violet.bg, borderRadius: 10, padding: '12px 14px', fontSize: 21, lineHeight: 1.45, color: C.ink }}>
-            <b>Résumé</b> : l’offre B coûte 12 % de plus mais inclut les rendez-vous et la formation. Décision attendue de Luc.
+            <b>À clarifier</b> : « dès mars » est-il écrit au contrat ? Qui fait les relevés ? Le délai d’approbation de l’architecte ?
           </div>
         </div>
       </div>
     </AppWin>
     <div className={b.on(3)} style={{ position: 'absolute', left: 1480, top: 280, width: 320 }}>
-      <Card tone="violet" icon="doc" title="Mises à jour de statut" size={23}>
-        Un résumé d’avancement rédigé à partir des tâches de la semaine.
+      <Card tone="green" icon="shieldCheck" title="Données protégées" size={23}>
+        Le bouclier vert : vous êtes connecté au compte Lessard, pas à un compte personnel.
       </Card>
     </div>
-    <div className={b.on(4)} style={{ position: 'absolute', left: 1480, top: 600, width: 320 }}>
-      <Card tone="violet" icon="search" title="Questions" size={23}>
-        « Qu’est-ce qui bloque le lot TI ? » L’IA répond à partir des tâches.
+    <div className={b.on(4)} style={{ position: 'absolute', left: 1480, top: 620, width: 320 }}>
+      <Card tone="violet" icon="layers" title="Et avec Claude ?" size={23}>
+        Un « projet » garde le dossier et vos consignes d’une conversation à l’autre.
       </Card>
     </div>
   </Frame>
@@ -5637,30 +5670,30 @@ const M3Ch = ({ n, label, children }: { n: number; label: string; children: Reac
 
 const M3_Charter: Page = () => (
   <Frame mod={3} kind="atelier" beats={5} label="Atelier 1 · Étape 1 · Cadrer">
-    <Title>Étape 1 · La charte du projet en une page</Title>
+    <Title>Étape 1 · Le dossier des ventes en une fiche</Title>
     <PromptBox cls={A.left} size={25} style={{ position: 'absolute', left: 120, top: 210, width: 760, ...dl(100) }}>
-      Tu es chargé de projet. À partir du dossier ci-dessous, rédige la charte du projet en une page : objectif mesurable, périmètre (inclus / exclu), livrables, parties prenantes, critères de réussite. Signale ce qui manque pour la compléter.
-      <div style={{ marginTop: 10, fontFamily: mono, fontSize: 20, color: C.muted }}>[collez ici le dossier de Karim]</div>
+      Tu es chargé de projet. À partir du dossier transmis par les ventes ci-dessous, rédige la fiche de démarrage en une page : périmètre (inclus / exclu), dates clés, intervenants, engagements pris envers le client. Signale ce qui manque ou se contredit.
+      <div style={{ marginTop: 10, fontFamily: mono, fontSize: 20, color: C.muted }}>[collez ici le dossier transmis par Éric]</div>
     </PromptBox>
     <Callout cls={A.left} title="Le réflexe" tone="yellow" icon="bulb" size={25} style={{ position: 'absolute', left: 120, top: 620, width: 760, ...dl(300) }}>
-      « Signale ce qui manque » : l’IA liste les questions à poser à Luc au lieu d’inventer les réponses.
+      « Signale ce qui manque » : l’IA liste les questions à poser à Éric au lieu d’inventer les réponses.
     </Callout>
     <div className={A.right} style={{ position: 'absolute', left: 940, top: 210, width: 860, boxSizing: 'border-box', background: C.card, borderRadius: 18, boxShadow: `${SHADOW}, inset 0 7px 0 ${C.teal}`, padding: '24px 32px 18px', ...dl(200) }}>
-      <div style={{ fontFamily: display, fontWeight: 700, fontSize: 34, color: C.ink }}>Charte · Boutique Limoilou</div>
-      <M3Ch n={1} label="Objectif">
-        Ouvrir le 10 avril, dans le budget de 420 k$, avec 8 employés formés.
+      <div style={{ fontFamily: display, fontWeight: 700, fontSize: 34, color: C.ink }}>Fiche de démarrage · Méandres</div>
+      <M3Ch n={1} label="Périmètre">
+        Inclus : mur-rideau, 46 fenêtres, 6 entrées, verrière. Exclu : calfeutrage intérieur, stores.
       </M3Ch>
-      <M3Ch n={2} label="Périmètre">
-        Inclus : local, équipe, systèmes, lancement. Exclu : vente en ligne, location de vélos.
+      <M3Ch n={2} label="Dates clés">
+        Structure terminée vers le 1ᵉʳ mars. Bâtiment fermé le vendredi 14 mai.
       </M3Ch>
-      <M3Ch n={3} label="Livrables">
-        Boutique aménagée, équipe formée, caisse et rendez-vous en ligne, campagne d’ouverture.
+      <M3Ch n={3} label="Intervenants">
+        Boréa (EG), Atelier Mercier (architecte), le verrier, l’équipe de pose de Patrice.
       </M3Ch>
-      <M3Ch n={4} label="Réussite">
-        Ouverture à la date, budget ± 5 %, 300 visiteurs aux portes ouvertes.
+      <M3Ch n={4} label="Engagements">
+        Pose du hall « dès mars », promise par Éric à Boréa.
       </M3Ch>
       <div className={b.on(5)} style={{ marginTop: 12, background: T.coral.bg, borderRadius: 10, padding: '10px 14px', fontSize: 22, lineHeight: 1.4, color: T.coral.fg }}>
-        <b>À confirmer avec Luc</b> : « 300 visiteurs » a été proposé par l’IA. Est-ce le bon objectif ?
+        <b>À clarifier avec Éric</b> : « dès mars » est-il au contrat ? La structure ne sera prête que vers le 1ᵉʳ mars.
       </div>
     </div>
   </Frame>
@@ -5701,30 +5734,30 @@ const M3Lot = ({ i, n, tone, name, t1, t2, t3, added }: { i: number; n: number; 
 const M3_Wbs: Page = () => (
   <Frame mod={3} kind="atelier" beats={3} label="Atelier 1 · Étape 2 · Découper">
     <Title>Étape 2 · Le découpage du projet</Title>
-    <Lede>Demande : « Découpe en lots, puis en tâches de 1 à 2 semaines. » Puis on complète.</Lede>
+    <Lede>Demande : « Découpe le lot en étapes, puis en tâches de 1 à 2 semaines. » Puis on complète.</Lede>
     <div className={A.pop} style={{ position: 'absolute', left: 760, top: 280, width: 400, height: 80, borderRadius: 14, background: C.ink, color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: display, fontWeight: 700, fontSize: 30, ...dl(100) }}>
-      Ouverture boutique Limoilou
+      Lot enveloppe · Méandres
     </div>
     <svg width={1680} height={100} style={{ position: 'absolute', left: 120, top: 360, overflow: 'visible' }}>
       <path d="M840 0 V40 M111 40 H1551 M111 40 V90 M351 40 V90 M591 40 V90 M831 40 V90 M1071 40 V90 M1311 40 V90" stroke={C.faint} strokeWidth={3} fill="none" pathLength={1} className={b.draw(1)} />
       <path d="M1551 40 V90" stroke={C.coral} strokeWidth={3} strokeDasharray="8 8" fill="none" className={b.fade(3)} />
     </svg>
-    <M3Lot i={0} n={1} tone="blue" name="Cadrage" t1="Charte validée" t2="Budget détaillé" t3="Comité de suivi" />
-    <M3Lot i={1} n={1} tone="teal" name="Local et travaux" t1="Permis de la Ville" t2="Soumissions" t3="Chantier" />
-    <M3Lot i={2} n={1} tone="green" name="Ressources humaines" t1="Affichage des postes" t2="Entrevues" t3="Formation" />
-    <M3Lot i={3} n={1} tone="violet" name="Systèmes TI" t1="Logiciel de caisse" t2="Réseau et Wi-Fi" t3="Rendez-vous en ligne" />
-    <M3Lot i={4} n={1} tone="yellow" name="Marketing" t1="Campagne locale" t2="Réseaux sociaux" t3="Portes ouvertes" />
-    <M3Lot i={5} n={1} tone="grey" name="Ouverture" t1="Inventaire initial" t2="Essais à blanc" t3="Inauguration" />
-    <M3Lot i={6} n={3} tone="coral" name="Gestion de projet" t1="Suivi hebdomadaire" t2="Rapports à Luc" t3="Bilan du projet" added />
+    <M3Lot i={0} n={1} tone="blue" name="Transfert et démarrage" t1="Revue du contrat" t2="Réunion de démarrage" t3="Liste des intervenants" />
+    <M3Lot i={1} n={1} tone="teal" name="Dessins d’atelier" t1="Dessins MR et fenêtres" t2="Soumission à l’architecte" t3="Corrections" />
+    <M3Lot i={2} n={1} tone="green" name="Achats et livraisons" t1="Commande du verre" t2="Profilés, quincaillerie" t3="Suivi des livraisons" />
+    <M3Lot i={3} n={1} tone="violet" name="Fabrication" t1="Cadres en usine" t2="Contrôle qualité" t3="Expédition" />
+    <M3Lot i={4} n={1} tone="yellow" name="Installation" t1="Relevés au chantier" t2="Fenêtres et entrées" t3="Mur-rideau, verrière" />
+    <M3Lot i={5} n={1} tone="grey" name="Fermeture" t1="Liste de déficiences" t2="Documents de fin" t3="Garanties" />
+    <M3Lot i={6} n={3} tone="coral" name="Gestion de projet" t1="Réunions de chantier" t2="Rapports à Hélène" t3="Avis de modification" added />
     <div className={b.on(3)} style={{ position: 'absolute', left: 1100, top: 770, width: 700, display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: 12, fontSize: 24, fontWeight: 600, color: T.coral.fg, ...dl(300) }}>
-      <Icon name="plus" size={28} sw={3} /> Ajouté par Karim : l’IA avait oublié son propre travail.
+      <Icon name="plus" size={28} sw={3} /> Ajouté par Mathieu : l’IA avait oublié son propre travail.
     </div>
   </Frame>
 );
 
 // ─── M3 · Step 3: schedule (animated Gantt) ─────────────────────────────────
 const GX = 300; // grid start (inside the chart card)
-const GW = 56; // one week
+const GW = 46; // one week
 const M3Month = ({ w0, w1, label }: { w0: number; w1: number; label: string }) => (
   <div style={{ position: 'absolute', left: GX + (w0 - 1) * GW, top: 0, width: (w1 - w0 + 1) * GW, height: 40, boxSizing: 'border-box', borderLeft: `2px solid ${C.rule}`, paddingLeft: 10, fontFamily: display, fontWeight: 600, fontSize: 22, letterSpacing: '0.08em', color: C.muted }}>
     {label}
@@ -5755,7 +5788,7 @@ const M3Mile = ({ w, row, label, d, flip }: { w: number; row: number; label: str
 const M3_Gantt: Page = () => (
   <Frame mod={3} kind="atelier" beats={3} label="Atelier 1 · Étape 3 · Planifier">
     <Title>Étape 3 · L’échéancier et ses jalons</Title>
-    <Lede>Demande : « Place les lots sur 23 semaines, avec dépendances, jalons et chemin critique. »</Lede>
+    <Lede>Demande : « Place les étapes sur 28 semaines, avec dépendances, jalons et chemin critique. »</Lede>
     <div className={A.in} style={{ position: 'absolute', left: 120, top: 270, width: 1680, height: 640, boxSizing: 'border-box', background: C.card, borderRadius: 18, boxShadow: SHADOW, ...dl(100) }}>
       <div style={{ position: 'absolute', left: 30, top: 24, right: 30, bottom: 20 }}>
         <M3Month w0={1} w1={4} label="NOV." />
@@ -5763,23 +5796,24 @@ const M3_Gantt: Page = () => (
         <M3Month w0={10} w1={13} label="JANV." />
         <M3Month w0={14} w1={17} label="FÉVR." />
         <M3Month w0={18} w1={22} label="MARS" />
-        <M3Month w0={23} w1={23} label="AV." />
+        <M3Month w0={23} w1={26} label="AVRIL" />
+        <M3Month w0={27} w1={28} label="MAI" />
         <div style={{ position: 'absolute', left: GX + 7 * GW, top: 40, width: 2 * GW, height: 540, background: 'repeating-linear-gradient(135deg, #EEF2F5 0 10px, #F7FAFC 10px 20px)' }} />
         <div style={{ position: 'absolute', left: GX + 7 * GW + 8, top: 518, fontSize: 19, color: C.muted }}>Fêtes</div>
-        <M3Gbar row={0} w0={1} w1={2} tone="blue" label="Cadrage" crit />
-        <M3Gbar row={1} w0={2} w1={7} tone="teal" label="Permis de la Ville" crit />
-        <M3Gbar row={2} w0={10} w1={18} tone="teal" label="Travaux" crit />
-        <M3Gbar row={3} w0={5} w1={19} tone="green" label="Recrutement" />
-        <M3Gbar row={4} w0={12} w1={21} tone="violet" label="Systèmes TI" crit />
-        <M3Gbar row={5} w0={14} w1={23} tone="yellow" label="Marketing" />
-        <M3Gbar row={6} w0={20} w1={23} tone="grey" label="Inventaire et essais" crit />
-        <M3Mile w={7} row={1} label="Permis" d={0} />
-        <M3Mile w={18} row={2} label="Travaux finis · 5 mars" d={200} />
-        <M3Mile w={23} row={7} label="Ouverture · 10 avril" d={400} flip />
+        <M3Gbar row={0} w0={1} w1={1} tone="blue" label="Transfert" crit />
+        <M3Gbar row={1} w0={1} w1={3} tone="teal" label="Dessins d’atelier" crit />
+        <M3Gbar row={2} w0={4} w1={5} tone="teal" label="Approbation" crit />
+        <M3Gbar row={3} w0={6} w1={15} tone="green" label="Verre (8 semaines)" crit />
+        <M3Gbar row={4} w0={11} w1={19} tone="violet" label="Fabrication" />
+        <M3Gbar row={5} w0={18} w1={19} tone="grey" label="Relevés au chantier" crit />
+        <M3Gbar row={6} w0={21} w1={28} tone="yellow" label="Installation" crit />
+        <M3Mile w={5} row={2} label="Dessins approuvés" d={0} />
+        <M3Mile w={15} row={3} label="Verre livré · mi-février" d={200} />
+        <M3Mile w={28} row={7} label="Bâtiment fermé · 14 mai" d={400} flip />
       </div>
     </div>
     <div className={b.on(3)} style={{ position: 'absolute', left: 120, top: 930, display: 'flex', alignItems: 'center', gap: 12, fontSize: 24, fontWeight: 600, color: C.blue, ...dl(300) }}>
-      <Icon name="route" size={28} /> Chemin critique : cadrage → permis → travaux → systèmes → essais. Un jour de retard ici = un jour de retard à l’ouverture.
+      <Icon name="route" size={28} /> Chemin critique : dessins → approbation → verre → relevés → pose. Un jour de retard ici = un jour de retard au bâtiment fermé.
     </div>
   </Frame>
 );
@@ -5831,23 +5865,23 @@ const M3_Risks: Page = () => (
       <M3Risk n={6} x={80 + 190 * 0.5} y={285} id="R6" />
     </div>
     <div style={{ position: 'absolute', left: 860, top: 270, width: 940, display: 'flex', flexDirection: 'column', gap: 20 }}>
-      <M3RiskRow n={1} id="R1" name="Permis en retard">
-        Déposer les plans dès la semaine 2 ; relance hebdomadaire à la Ville.
+      <M3RiskRow n={1} id="R1" name="Approbation des dessins en retard">
+        Soumettre en deux envois ; relance à J+5 ; point fixe à chaque réunion de chantier.
       </M3RiskRow>
-      <M3RiskRow n={2} id="R2" name="Pénurie de mécaniciens">
-        Afficher dès décembre ; former un mécanicien de Lévis en renfort.
+      <M3RiskRow n={2} id="R2" name="Structure d’acier terminée en retard">
+        Suivi hebdomadaire avec Boréa ; relevés par zones dès qu’une zone est prête.
       </M3RiskRow>
-      <M3RiskRow n={3} id="R3" name="Retard du fournisseur de comptoirs">
-        Commande ferme en janvier, pénalités au contrat, plan B.
+      <M3RiskRow n={3} id="R3" name="Délai du verre plus long que prévu">
+        Commande ferme dès l’approbation ; date de livraison confirmée par écrit.
       </M3RiskRow>
-      <M3RiskRow n={4} id="R4" name="Dépassement du budget des travaux">
-        Réserve de 20 k$ ; trois soumissions par lot.
+      <M3RiskRow n={4} id="R4" name="Écarts de mesures au chantier">
+        Relevés par Patrice avant la fabrication finale ; tolérances indiquées aux dessins.
       </M3RiskRow>
-      <M3RiskRow n={5} id="R5" name="Caisse non prête à l’ouverture">
-        Essais à blanc deux semaines avant ; caisse mobile de secours.
+      <M3RiskRow n={5} id="R5" name="Promesse des ventes intenable">
+        Clarifier « dès mars » avec Éric, puis avec Boréa, à la réunion de démarrage.
       </M3RiskRow>
-      <M3RiskRow n={6} id="R6" name="Peu de clients à l’ouverture">
-        Préinscriptions aux portes ouvertes ; partenariat avec un club local.
+      <M3RiskRow n={6} id="R6" name="Météo pendant la pose">
+        Jours tampons à l’échéancier ; protections temporaires prêtes.
       </M3RiskRow>
     </div>
   </Frame>
@@ -5894,18 +5928,18 @@ const M3_Raci: Page = () => (
     <div className={A.in} style={{ position: 'absolute', left: 120, top: 280, width: 1140, ...dl(100) }}>
       <div style={{ display: 'flex', alignItems: 'center', height: 56 }}>
         <span style={{ width: 380 }} />
-        <M3Who name="Karim" />
-        <M3Who name="Luc" />
-        <M3Who name="Julie" />
-        <M3Who name="Maxime" />
-        <M3Who name="Annie" />
+        <M3Who name="Mathieu" />
+        <M3Who name="Hélène" />
+        <M3Who name="Nadia" />
+        <M3Who name="Éric" />
+        <M3Who name="Patrice" />
       </div>
-      <M3RaciRow d={0} task="Charte et budget" v={['R', 'A', 'C', 'C', 'C']} />
-      <M3RaciRow d={100} task="Permis et travaux" v={['R', 'A', '', '', 'I']} />
-      <M3RaciRow d={200} task="Recrutement" v={['A', 'A', 'R', '', '']} flag="Deux A" />
-      <M3RaciRow d={300} task="Caisse et réseau" v={['A', 'I', 'I', '', 'R']} />
-      <M3RaciRow d={400} task="Campagne d’ouverture" v={['A', 'C', 'I', 'R', 'I']} />
-      <M3RaciRow d={500} task="Inauguration" v={['R', 'C', 'C', 'C', 'C']} flag="Aucun A" />
+      <M3RaciRow d={0} task="Revue du contrat" v={['R', 'A', 'I', 'C', 'I']} />
+      <M3RaciRow d={100} task="Dessins d’atelier" v={['R', 'A', '', '', 'C']} />
+      <M3RaciRow d={200} task="Commandes et livraisons" v={['A', 'A', 'R', '', 'I']} flag="Deux A" />
+      <M3RaciRow d={300} task="Classement et suivis" v={['A', '', 'R', '', '']} />
+      <M3RaciRow d={400} task="Pose au chantier" v={['A', 'I', 'I', '', 'R']} />
+      <M3RaciRow d={500} task="Liste de déficiences" v={['R', 'C', 'C', '', 'C']} flag="Aucun A" />
     </div>
     <Callout cls={b.on(2)} title="Pourquoi l’IA se trompe ici" tone="coral" icon="alert" size={25} style={{ position: 'absolute', left: 120, top: 860, width: 1680, padding: '14px 26px', ...dl(400) }}>
       Elle ne connaît pas votre organisation : qui a vraiment l’autorité. La RACI se valide avec les personnes concernées.
@@ -5945,20 +5979,20 @@ const M3_Board: Page = () => (
     <Title>Du plan aux tâches : dans l’outil, pas dans un document</Title>
     <Lede>Un plan qui reste dans une conversation ne se suit pas. On le transforme en tâches.</Lede>
     <Code title="Réponse de l’IA (extrait)" size={21} cls={A.left} style={{ position: 'absolute', left: 120, top: 280, width: 560, ...dl(100) }}>
-      {'| Tâche               | Resp. | Fin    |\n'}
-      {'|---------------------|-------|--------|\n'}
-      {'| Déposer les plans   | Karim | 13 nov |\n'}
-      {'| Afficher mécaniciens| Julie | 7 déc  |\n'}
-      {'| Choisir la caisse   | Annie | 22 jan |\n'}
-      {'| Signer comptoirs    | Karim | 15 jan |\n'}
-      {'| Lancer la campagne  | Maxime| 1 mars |'}
+      {'| Tâche               | Resp.   | Fin    |\n'}
+      {'|---------------------|---------|--------|\n'}
+      {'| Revue du contrat    | Mathieu | 6 nov  |\n'}
+      {'| Classer le dossier  | Nadia   | 6 nov  |\n'}
+      {'| Dessins MR-01       | Mathieu | 20 nov |\n'}
+      {'| Commander le verre  | Mathieu | 8 déc  |\n'}
+      {'| Relevés au chantier | Patrice | 5 mars |'}
     </Code>
     <div className={A.left} style={{ position: 'absolute', left: 120, top: 640, width: 560, display: 'flex', flexDirection: 'column', gap: 12, ...dl(300) }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 12, fontSize: 24, color: C.ink }}>
-        <AppTile id="notion" size={38} /> Coller le tableau : Notion crée la base
+        <AppTile id="excel" size={38} /> Coller le tableau dans Excel
       </div>
       <div style={{ display: 'flex', alignItems: 'center', gap: 12, fontSize: 24, color: C.ink }}>
-        <AppTile id="clickup" size={38} /> Importer un CSV, ou générer les tâches
+        <AppTile id="smartsheet" size={38} /> Smartsheet : importer le fichier Excel
       </div>
       <div style={{ display: 'flex', alignItems: 'center', gap: 12, fontSize: 24, color: C.ink }}>
         <AppTile id="planner" size={38} /> Planner : créer le plan avec Copilot
@@ -5966,15 +6000,15 @@ const M3_Board: Page = () => (
     </div>
     <div style={{ position: 'absolute', left: 740, top: 280, width: 1060, height: 600 }}>
       <M3Col x={0} title="À FAIRE" tone="grey">
-        <M3Task i={0} title="Afficher les postes de mécanicien" who="Julie" due="7 déc." />
-        <M3Task i={1} title="Choisir le logiciel de caisse" who="Annie" due="22 janv." />
-        <M3Task i={2} title="Signer le contrat des comptoirs" who="Karim" due="15 janv." />
+        <M3Task i={0} title="Classer le dossier du projet" who="Nadia" due="6 nov." />
+        <M3Task i={1} title="Commander le verre" who="Mathieu" due="8 déc." />
+        <M3Task i={2} title="Relevés au chantier" who="Patrice" due="5 mars" />
       </M3Col>
       <M3Col x={330} title="EN COURS" tone="blue">
-        <M3Task i={3} title="Déposer les plans à la Ville" who="Karim" due="13 nov." />
+        <M3Task i={3} title="Dessins d’atelier MR-01" who="Mathieu" due="20 nov." />
       </M3Col>
       <M3Col x={660} title="À VALIDER" tone="yellow">
-        <M3Task i={4} title="Charte du projet" who="Luc" due="9 nov." />
+        <M3Task i={4} title="Fiche de démarrage" who="Hélène" due="6 nov." />
       </M3Col>
     </div>
     <Callout cls={b.on(3)} title="La valeur" tone="green" icon="check" size={25} style={{ position: 'absolute', left: 740, top: 900, width: 1060, padding: '10px 22px' }}>
@@ -5992,18 +6026,18 @@ const M3_Check: Page = () => (
       <div style={{ display: 'flex', gap: 40 }}>
         <div style={{ width: 1100, display: 'flex', flexDirection: 'column', gap: 12 }}>
           <CheckItem id="m3-dates" w={2}>
-            Les durées clés ont été validées par une personne qui sait
+            Les délais clés ont été validés par une personne qui sait (verrier, bureau technique)
           </CheckItem>
-          <CheckItem id="m3-dep">Les dépendances entre tâches sont indiquées</CheckItem>
+          <CheckItem id="m3-dep">Les dépendances sont indiquées : approbation → verre → pose</CheckItem>
           <CheckItem id="m3-crit">Le chemin critique est identifié</CheckItem>
           <CheckItem id="m3-owner" w={2}>
             Chaque tâche a un responsable (un seul) et une date
           </CheckItem>
-          <CheckItem id="m3-cal">Le calendrier réel est respecté : Fêtes, congés, semaine de relâche</CheckItem>
+          <CheckItem id="m3-cal">Le calendrier réel est respecté : fermeture des Fêtes, congés de l’équipe</CheckItem>
           <CheckItem id="m3-risk">Chaque risque majeur a une mesure et un responsable</CheckItem>
-          <CheckItem id="m3-budget">Les montants concordent avec le budget de 420 k$</CheckItem>
+          <CheckItem id="m3-budget">Les exclusions et les promesses des ventes sont reprises</CheckItem>
           <CheckItem id="m3-invent" w={2}>
-            Aucun fait inventé : délais de permis, règles, chiffres vérifiés
+            Aucun fait inventé : délais, normes, quantités vérifiés
           </CheckItem>
         </div>
         <CheckScore
@@ -6013,7 +6047,7 @@ const M3_Check: Page = () => (
           levels={[
             { min: 0, text: 'Premier jet : à retravailler', tone: 'coral' },
             { min: 6, text: 'Presque : complétez les trous', tone: 'yellow' },
-            { min: 10, text: 'Prêt à présenter à Luc', tone: 'green' },
+            { min: 10, text: 'Prêt à présenter à Hélène', tone: 'green' },
           ]}
         />
       </div>
@@ -6032,24 +6066,24 @@ const M3_Traps: Page = () => (
   <Frame mod={3} kind="exercice" beats={4} label="Atelier 1 · Vérifier">
     <Title>Repérez les quatre pièges de ce plan généré</Title>
     <Lede>Il a l’air complet. Cherchez avant de cliquer sur les pastilles.</Lede>
-    <AppWin id="chatgpt" title="Plan proposé (extrait)" cls={A.in} style={{ position: 'absolute', left: 120, top: 270, width: 1020, ...dl(100) }} pad={26}>
+    <AppWin id="copilot" title="Plan proposé (extrait)" cls={A.in} style={{ position: 'absolute', left: 120, top: 270, width: 1020, ...dl(100) }} pad={26}>
       <M3Line>
-        <b style={{ width: 170, flex: 'none' }}>Sem. 2</b> Dépôt du permis · obtention prévue en 2 semaines
+        <b style={{ width: 170, flex: 'none' }}>Sem. 1 à 3</b> Dessins d’atelier · approbation prévue en 2 jours
       </M3Line>
       <M3Line>
-        <b style={{ width: 170, flex: 'none' }}>Sem. 4 à 13</b> Travaux d’aménagement, 10 semaines continues
+        <b style={{ width: 170, flex: 'none' }}>Sem. 4 à 11</b> Fabrication du verre, 8 semaines continues
       </M3Line>
       <M3Line>
-        <b style={{ width: 170, flex: 'none' }}>Sem. 12</b> Formation de l’équipe à la caisse
+        <b style={{ width: 170, flex: 'none' }}>Sem. 13</b> Pose des fenêtres du hall
       </M3Line>
       <M3Line>
-        <b style={{ width: 170, flex: 'none' }}>Sem. 15</b> Installation du logiciel de caisse
+        <b style={{ width: 170, flex: 'none' }}>Sem. 15</b> Relevés au chantier
       </M3Line>
       <M3Line>
-        <b style={{ width: 170, flex: 'none' }}>Sem. 16</b> Affichage des postes de mécanicien
+        <b style={{ width: 170, flex: 'none' }}>Sem. 23</b> Début de la pose du mur-rideau, mi-avril
       </M3Line>
       <M3Line>
-        <b style={{ width: 170, flex: 'none' }}>Sem. 23</b> Ouverture, samedi 10 avril
+        <b style={{ width: 170, flex: 'none' }}>Sem. 28</b> Bâtiment fermé, vendredi 14 mai
       </M3Line>
     </AppWin>
     <M3Pin n={1} x={1110} y={377} />
@@ -6058,16 +6092,16 @@ const M3_Traps: Page = () => (
     <M3Pin n={4} x={1110} y={616} />
     <div style={{ position: 'absolute', left: 1190, top: 270, width: 610, display: 'flex', flexDirection: 'column', gap: 16 }}>
       <M3Exp n={1} title="Une durée inventée">
-        Le dossier dit 6 semaines. L’IA a pris une valeur « typique ».
+        Le dossier dit 10 jours ouvrables. L’IA a pris une valeur « typique ».
       </M3Exp>
       <M3Exp n={2} title="Les Fêtes oubliées">
-        Les semaines 4 à 13 traversent Noël : chantiers fermés 2 semaines.
+        Les semaines 4 à 11 traversent Noël : usine fermée 2 semaines.
       </M3Exp>
       <M3Exp n={3} title="Un ordre impossible">
-        Former à la caisse avant de l’installer : dépendance inversée.
+        Poser avant les relevés, et avant la fin de la structure : dépendance inversée.
       </M3Exp>
-      <M3Exp n={4} title="Trop tard">
-        Mécaniciens rares : en semaine 16, on n’a plus le temps de recruter.
+      <M3Exp n={4} title="Une promesse oubliée">
+        Éric a promis « dès mars » à Boréa. Mi-avril, sans prévenir le client ?
       </M3Exp>
     </div>
     <Callout cls={A.in} title="Votre méthode" tone="yellow" icon="search" size={25} style={{ position: 'absolute', left: 120, top: 780, width: 1020, ...dl(400) }}>
@@ -6076,25 +6110,75 @@ const M3_Traps: Page = () => (
   </Frame>
 );
 
-// ─── M3 · Work time ─────────────────────────────────────────────────────────
+// ─── M3 · Exercise: Mathieu's inbox ─────────────────────────────────────────
+const M3Zone = ({ x, icon, tone, label, sub }: { x: number; icon: IconName; tone: Tone; label: string; sub: string }) => (
+  <div
+    className={A.fade}
+    style={{ position: 'absolute', left: x, top: 520, width: 405, height: 420, boxSizing: 'border-box', borderRadius: 18, background: T[tone].bg, border: `3px dashed ${T[tone].bd}`, padding: '16px 20px' }}
+  >
+    <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+      <IconTile name={icon} tone={tone} size={46} solid />
+      <div>
+        <div style={{ fontFamily: display, fontWeight: 700, fontSize: 30, lineHeight: 1.05, color: T[tone].fg }}>{label}</div>
+        <div style={{ fontSize: 20, color: C.soft }}>{sub}</div>
+      </div>
+    </div>
+  </div>
+);
+
+const M3_Inbox: Page = () => (
+  <Frame mod={3} kind="exercice" beats={1} label="Atelier 1 · Étape 4 · Trier">
+    <Title>Étape 4 · La boîte de réception de Mathieu</Title>
+    <Lede>Dites-moi où va chaque courriel. Puis demandez la même chose à Copilot, et comparez.</Lede>
+    <M3Zone x={120} icon="bolt" tone="coral" label="À traiter" sub="aujourd’hui, par Mathieu" />
+    <M3Zone x={545} icon="send" tone="green" label="À Nadia" sub="transférer, avec la consigne" />
+    <M3Zone x={970} icon="bell" tone="yellow" label="À relancer" sub="on attend une réponse" />
+    <M3Zone x={1395} icon="archive" tone="grey" label="À classer" sub="dans le dossier du projet" />
+    <Drag x={120} y={262} w={405} tone="blue" size={22}>
+      Boréa · Date de pose du hall ? <M1Key tone="coral">TRAITER</M1Key>
+    </Drag>
+    <Drag x={545} y={262} w={405} tone="blue" size={22}>
+      Boréa · Certificat d’assurance à fournir <M1Key tone="green">NADIA</M1Key>
+    </Drag>
+    <Drag x={970} y={262} w={405} tone="blue" size={22}>
+      Vous · Dessins MR-01 envoyés le 23 nov. <M1Key tone="yellow">RELANCER</M1Key>
+    </Drag>
+    <Drag x={1395} y={262} w={405} tone="blue" size={22}>
+      Verrier · Bordereau de livraison 4471 <M1Key tone="grey">CLASSER</M1Key>
+    </Drag>
+    <Drag x={120} y={384} w={405} tone="blue" size={22}>
+      Ville · Formulaire d’accès au chantier <M1Key tone="green">NADIA</M1Key>
+    </Drag>
+    <Drag x={545} y={384} w={405} tone="blue" size={22}>
+      Patrice · Écart de 40 mm à l’axe C <M1Key tone="coral">TRAITER</M1Key>
+    </Drag>
+    <Drag x={970} y={384} w={405} tone="blue" size={22}>
+      Boréa · Nouvelle liste des contacts <M1Key tone="grey">CLASSER</M1Key>
+    </Drag>
+    <Drag x={1395} y={384} w={405} tone="blue" size={22}>
+      Vous · Prix des panneaux d’allège ? <M1Key tone="yellow">RELANCER</M1Key>
+    </Drag>
+  </Frame>
+);
+
 const M3_Work: Page = () => (
   <Frame mod={3} kind="atelier" label="Atelier 1 · À vous">
     <Title>À vous de jouer !</Title>
-    <Lede>Votre plan du projet Limoilou, dans Notion AI, ClickUp ou votre outil de secours.</Lede>
+    <Lede>Le lancement du projet des Méandres, avec Copilot, puis dans Excel, Planner ou Smartsheet.</Lede>
     <Timer id="m3-work" minutes={45} label="Atelier 1" cls={A.in} style={{ position: 'absolute', left: 120, top: 290, ...dl(100) }} />
     <Checklist cls={A.in} style={{ position: 'absolute', left: 640, top: 290, width: 1160, ...dl(250) }}>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-        <CheckItem id="m3w-1">Charte en une page, avec ce qui manque</CheckItem>
-        <CheckItem id="m3w-2">Découpage : 6 à 8 lots, tâches de 1 à 2 semaines</CheckItem>
+        <CheckItem id="m3w-1">Fiche de démarrage en une page, avec les points à clarifier</CheckItem>
+        <CheckItem id="m3w-2">Découpage : 6 à 8 étapes, tâches de 1 à 2 semaines</CheckItem>
         <CheckItem id="m3w-3">Échéancier : 3 jalons datés et le chemin critique</CheckItem>
         <CheckItem id="m3w-4">5 risques avec une mesure chacun</CheckItem>
         <CheckItem id="m3w-5">RACI vérifiée : un seul A par ligne</CheckItem>
-        <CheckItem id="m3w-6">Les tâches dans l’outil, avec responsable et date</CheckItem>
-        <CheckItem id="m3w-7">Grille de contrôle passée</CheckItem>
+        <CheckItem id="m3w-6">Les tâches dans l’outil, grille de contrôle passée</CheckItem>
+        <CheckItem id="m3w-7">La boîte de réception triée, et une relance prête à envoyer</CheckItem>
       </div>
     </Checklist>
     <Callout cls={A.in} title="Coincés ?" tone="blue" icon="chat" size={25} style={{ position: 'absolute', left: 120, top: 760, width: 460, ...dl(400) }}>
-      Signalez-le, ou demandez à l’IA de vous poser ses questions.
+      Signalez-le au micro, ou demandez à Copilot de vous poser ses questions.
     </Callout>
   </Frame>
 );
@@ -6103,10 +6187,10 @@ const M3_Work: Page = () => (
 const M3_Debrief: Page = () => (
   <Frame mod={3} kind="atelier" label="Atelier 1 · Débriefing">
     <Title>Débriefing : ce que l’IA a fait… et ce que vous avez fait</Title>
-    <Lede>Quelques volontaires partagent leur écran 2 minutes, puis on en discute ensemble.</Lede>
+    <Lede>Deux ou trois volontaires partagent leur écran 2 minutes, puis on en discute ensemble.</Lede>
     <div style={{ position: 'absolute', left: 120, top: 280, width: 820, display: 'flex', flexDirection: 'column', gap: 20 }}>
-      <AskCard n={1} title="Qu’est-ce que l’IA a bien fait ?" sub="Structure, rapidité, idées de risques…" d={100} />
-      <AskCard n={2} title="Qu’avez-vous dû corriger ?" sub="Dates, dépendances, responsables, oublis" d={220} />
+      <AskCard n={1} title="Qu’est-ce que l’IA a bien fait ?" sub="Résumé du dossier, structure, idées de risques…" d={100} />
+      <AskCard n={2} title="Qu’avez-vous dû corriger ?" sub="Délais, dépendances, promesses des ventes, oublis" d={220} />
       <AskCard n={3} title="Le referiez-vous avec l’IA ?" sub="Sur votre prochain vrai projet" d={340} />
     </div>
     <div style={{ position: 'absolute', left: 1000, top: 280, width: 800 }}>
@@ -6146,14 +6230,14 @@ const J1_Wrap: Page = () => (
         Elle apprend d’exemples, prédit le mot probable, et peut inventer avec aplomb.
       </J1Mod>
       <J1Mod n={2} tone="teal" title="L’IA en gestion de projet" d={220}>
-        Planifier, suivre, rendre compte, communiquer. Une demande en cinq ingrédients.
+        Planifier, trier, rendre compte, relancer. Une demande en cinq ingrédients.
       </J1Mod>
       <J1Mod n={3} tone="yellow" title="Atelier 1" d={340}>
-        Un plan généré en minutes, mais vérifié ligne par ligne : dates, dépendances, RACI.
+        Un plan généré en minutes, vérifié ligne par ligne. Une boîte de réception triée.
       </J1Mod>
     </div>
     <Callout cls={A.in} title="Demain" tone="green" icon="calendar" size={27} style={{ position: 'absolute', left: 120, top: 740, width: 1680, ...dl(500) }}>
-      Comptes rendus et résumés de réunions, suivi et alertes, limites et éthique, puis le mini-projet de l’atelier 2.
+      Réunions et visites de chantier, tri et relances préparés à l’avance, limites et confidentialité, puis le mini-projet de l’atelier 2.
     </Callout>
   </Frame>
 );
@@ -6180,7 +6264,7 @@ const J1_Exit: Page = () => (
         Ce qui reste flou, on y répond demain matin.
       </J1Ticket>
       <J1Ticket n={3} icon="rocket" tone="green" title="Un essai ce soir">
-        Une demande en cinq ingrédients sur votre vrai projet.
+        Une demande en cinq ingrédients sur un de vos vrais courriels.
       </J1Ticket>
     </div>
     <div className={A.in} style={{ position: 'absolute', left: 120, top: 700, display: 'flex', alignItems: 'center', gap: 26, ...dl(600) }}>
@@ -6220,6 +6304,10 @@ const J2_Cover: Page = () => (
         <span style={{ display: 'flex', alignItems: 'center', padding: '0 24px', background: G.green, color: '#fff', fontFamily: display, fontWeight: 700, fontSize: 34, letterSpacing: '0.08em' }}>JOUR 2</span>
         <span style={{ padding: '16px 28px', fontSize: 30, fontWeight: 500, color: C.ink }}>Automatiser, collaborer et adopter l’IA</span>
       </div>
+      <div className={A.in} style={{ marginTop: 26, display: 'flex', alignItems: 'center', gap: 14, fontSize: 27, fontWeight: 600, color: C.soft, ...dl(400) }}>
+        <Icon name="facade" size={30} color={C.blue} />
+        Préparé pour le Groupe Lessard
+      </div>
     </div>
     <div className={A.in} style={{ position: 'absolute', left: 120, top: 870, display: 'flex', alignItems: 'center', gap: 22, ...dl(520) }}>
       <img src={formateur} alt={AUTHOR} style={{ width: 96, height: 96, borderRadius: 999, objectFit: 'cover', objectPosition: '50% 20%', display: 'block', boxShadow: `0 0 0 4px #fff, 0 0 0 7px ${C.yellow}` }} />
@@ -6233,9 +6321,9 @@ const J2_Cover: Page = () => (
       <path d="M1278 60 H1326" stroke={C.blue} strokeWidth={4} strokeDasharray="10 14" className={A.march} />
       <path d="M1528 60 H1576" stroke={C.blue} strokeWidth={4} strokeDasharray="10 14" className={A.march} />
     </svg>
-    <J2Tile x={1080} y={345} icon="video" tone="violet" label="RÉUNION" d={500} />
+    <J2Tile x={1080} y={345} icon="helmet" tone="violet" label="CHANTIER" d={500} />
     <J2Tile x={1330} y={345} icon="note" tone="blue" label="COMPTE RENDU" d={800} />
-    <J2Tile x={1580} y={345} icon="kanban" tone="green" label="TÂCHES" d={1100} />
+    <J2Tile x={1580} y={345} icon="bell" tone="green" label="SUIVIS" d={1100} />
   </Frame>
 );
 
@@ -6286,11 +6374,11 @@ const J2_Program: Page = () => (
 
 // ─── M4 · Divider ───────────────────────────────────────────────────────────
 const M4_Divider: Page = () => (
-  <Section n={4} title="Automatiser et collaborer avec l’IA" sub="Réunions, comptes rendus, suivi des tâches : ce qui se répète chaque semaine." dur="≈ 1 h 15">
-    <SecItem n={1}>Comptes rendus et résumés de réunions</SecItem>
+  <Section n={4} title="Automatiser et collaborer avec l’IA" sub="Réunions et visites de chantier, courriels, relances : ce qui se répète chaque semaine." dur="≈ 1 h 15">
+    <SecItem n={1}>Comptes rendus de réunion et rapports de visite de chantier</SecItem>
     <SecItem n={2}>Des actions aux tâches, sans ressaisie</SecItem>
-    <SecItem n={3}>Suivi des tâches et alertes intelligentes</SecItem>
-    <SecItem n={4}>Travailler en équipe avec l’IA</SecItem>
+    <SecItem n={3}>Tri, relances et alertes</SecItem>
+    <SecItem n={4}>Chargés de projet et adjointes : travailler ensemble avec l’IA</SecItem>
   </Section>
 );
 M4_Divider.transition = BLOOM;
@@ -6318,22 +6406,22 @@ const M4Do = ({ icon, children }: { icon: IconName; children: ReactNode }) => (
 const M4_Meeting: Page = () => (
   <Frame mod={4} beats={3}>
     <Title>Une réunion, trois moments où l’IA aide</Title>
-    <Lede>11 heures de réunions par semaine pour Karim. Voici où l’IA lui rend du temps.</Lede>
+    <Lede>9 heures de réunions et de visites par semaine pour Mathieu. Voici où l’IA lui rend du temps.</Lede>
     <div style={{ position: 'absolute', left: 120, top: 290, width: 1680, display: 'flex', gap: 30 }}>
       <M4Moment n={1} tone="blue" icon="calendar" when="Avant">
-        <M4Do icon="list">Proposer l’ordre du jour à partir des tâches en retard</M4Do>
-        <M4Do icon="doc">Résumer les documents à lire</M4Do>
-        <M4Do icon="mail">Rédiger l’invitation et l’objectif</M4Do>
+        <M4Do icon="list">Proposer l’ordre du jour à partir des points ouverts</M4Do>
+        <M4Do icon="mail">Résumer le fil de courriels avec l’EG</M4Do>
+        <M4Do icon="search">Préparer les questions pour l’architecte</M4Do>
       </M4Moment>
       <M4Moment n={2} tone="violet" icon="mic" when="Pendant">
-        <M4Do icon="mic">Transcrire, avec l’accord des participants</M4Do>
-        <M4Do icon="search">« Qu’a-t-on décidé jusqu’ici ? »</M4Do>
-        <M4Do icon="clock">Rattraper quelqu’un qui arrive en retard</M4Do>
+        <M4Do icon="mic">Transcrire dans Teams, avec l’accord de tous</M4Do>
+        <M4Do icon="helmet">Au chantier : dicter ses notes au téléphone</M4Do>
+        <M4Do icon="camera">Prendre les photos des déficiences</M4Do>
       </M4Moment>
       <M4Moment n={3} tone="green" icon="check" when="Après">
-        <M4Do icon="note">Compte rendu : décisions, actions, points ouverts</M4Do>
+        <M4Do icon="note">Compte rendu ou rapport de visite</M4Do>
         <M4Do icon="kanban">Créer les tâches dans l’outil</M4Do>
-        <M4Do icon="send">Courriel de suivi aux absents</M4Do>
+        <M4Do icon="send">Courriel de suivi à l’EG et à l’adjointe</M4Do>
       </M4Moment>
     </div>
   </Frame>
@@ -6366,42 +6454,42 @@ const M4Sec = ({ n, tone, title, children }: { n: number; tone: Tone; title: str
 const M4_Transcript: Page = () => (
   <Frame mod={4} kind="demo" beats={3}>
     <Title>De la transcription au compte rendu</Title>
-    <Lede>Réunion de suivi du mardi 2 février, 6 personnes, 40 minutes. Extrait de la transcription :</Lede>
+    <Lede>Réunion de chantier du mardi 2 mars, sur Teams, 6 personnes, 40 minutes. Extrait de la transcription :</Lede>
     <div className={A.left} style={{ position: 'absolute', left: 120, top: 270, width: 880, boxSizing: 'border-box', background: C.card, borderRadius: 18, boxShadow: SHADOW, padding: '18px 18px', ...dl(100) }}>
-      <M4Say who="Karim">Les comptoirs arrivent le 19 au lieu du 5.</M4Say>
-      <M4Say who="Luc">On peut faire la pose un samedi ?</M4Say>
-      <M4Say who="Karim" kind="dec">
-        Le fournisseur dit oui. On part là-dessus : pose le samedi 20.
+      <M4Say who="Mathieu">Le verre est arrivé, mais il manque 6 unités pour le hall.</M4Say>
+      <M4Say who="Boréa">On peut quand même commencer la pose le 22 ?</M4Say>
+      <M4Say who="Mathieu" kind="dec">
+        Oui. On commence par la façade nord, le hall suivra.
       </M4Say>
-      <M4Say who="Annie" kind="act">
-        Moi, j’avance le câblage réseau pendant ce temps, d’ici le 12.
+      <M4Say who="Patrice" kind="act">
+        Je refais les relevés de la façade nord d’ici le 9.
       </M4Say>
-      <M4Say who="Maxime" kind="open">
-        Et les portes ouvertes ? On garde le 3 avril ?
+      <M4Say who="Mercier" kind="open">
+        Et la couleur des panneaux d’allège ? Le client hésite.
       </M4Say>
-      <M4Say who="Luc" kind="open">
-        On en reparle jeudi, je veux voir l’impact.
+      <M4Say who="Boréa" kind="open">
+        On en reparle jeudi avec la Ville.
       </M4Say>
-      <M4Say who="Julie" kind="act">
-        Je relance les deux candidats mécaniciens demain.
+      <M4Say who="Nadia" kind="act">
+        Je relance le verrier pour les 6 unités demain.
       </M4Say>
-      <M4Say who="Karim">Parfait, merci tout le monde.</M4Say>
+      <M4Say who="Mathieu">Parfait, merci à tous.</M4Say>
     </div>
     <div className={A.right} style={{ position: 'absolute', left: 1060, top: 270, width: 740, boxSizing: 'border-box', background: C.card, borderRadius: 18, boxShadow: `${SHADOW}, inset 6px 0 0 ${C.violet}`, padding: '22px 28px 26px', ...dl(250) }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
         <Icon name="note" size={32} color={C.violet} />
-        <span style={{ fontFamily: display, fontWeight: 700, fontSize: 32, color: C.ink }}>Compte rendu · 2 février</span>
+        <span style={{ fontFamily: display, fontWeight: 700, fontSize: 32, color: C.ink }}>Compte rendu · 2 mars</span>
       </div>
       <M4Sec n={1} tone="green" title="Décision">
-        Pose des comptoirs le samedi 20 février.
+        Pose à partir du 22 mars, façade nord d’abord.
       </M4Sec>
       <M4Sec n={2} tone="blue" title="Actions">
-        <b>Annie</b> · avancer le câblage réseau · 12 févr.
+        <b>Patrice</b> · relevés de la façade nord · 9 mars
         <br />
-        <b>Julie</b> · relancer 2 candidats · 3 févr.
+        <b>Nadia</b> · relancer le verrier (6 unités) · 3 mars
       </M4Sec>
       <M4Sec n={3} tone="yellow" title="Point ouvert">
-        Date des portes ouvertes (3 avril ?) : Luc tranche jeudi.
+        Couleur des panneaux d’allège : décision jeudi, avec la Ville.
       </M4Sec>
     </div>
   </Frame>
@@ -6424,7 +6512,7 @@ const M4_CrPrompt: Page = () => (
     <Title>La demande de compte rendu, prête à copier</Title>
     <Lede>À enregistrer dans votre bibliothèque. Les zones jaunes changent à chaque réunion.</Lede>
     <PromptBox cls={A.left} size={27} style={{ position: 'absolute', left: 120, top: 280, width: 1000, ...dl(100) }}>
-      Tu es l’assistant du projet <M4Slot>Limoilou</M4Slot>. À partir de la transcription ci-dessous de la réunion du <M4Slot>2 février</M4Slot>, rédige le compte rendu en trois parties :
+      Tu es l’assistant du projet <M4Slot>Méandres</M4Slot>. À partir de la transcription ci-dessous de la réunion de chantier du <M4Slot>2 mars</M4Slot>, rédige le compte rendu en trois parties :
       <br />
       1. <b>Décisions</b> prises (seulement celles qui ont été clairement prises) ;
       <br />
@@ -6463,13 +6551,13 @@ const M4_CrErrors: Page = () => (
       <Eyebrow c={T.green.fg} size={21}>
         Décisions
       </Eyebrow>
-      <M4CrLine>• Pose des comptoirs le samedi 20 février.</M4CrLine>
-      <M4CrLine>• Portes ouvertes reportées au 10 avril.</M4CrLine>
+      <M4CrLine>• Pose à partir du 22 mars, façade nord d’abord.</M4CrLine>
+      <M4CrLine>• Panneaux d’allège : gris anthracite retenu.</M4CrLine>
       <Eyebrow c={T.blue.fg} size={21} style={{ marginTop: 14 }}>
         Actions
       </Eyebrow>
-      <M4CrLine>• Maxime : avancer le câblage réseau, d’ici le 12 février.</M4CrLine>
-      <M4CrLine>• Julie : relancer les candidats d’ici le 15 février.</M4CrLine>
+      <M4CrLine>• Mathieu : refaire les relevés de la façade nord, d’ici le 9 mars.</M4CrLine>
+      <M4CrLine>• Nadia : relancer le verrier d’ici le 15 mars.</M4CrLine>
       <Eyebrow c={T.yellow.fg} size={21} style={{ marginTop: 14 }}>
         Points ouverts
       </Eyebrow>
@@ -6481,18 +6569,82 @@ const M4_CrErrors: Page = () => (
     <M3Pin n={4} x={1110} y={659} />
     <div style={{ position: 'absolute', left: 1190, top: 280, width: 610, display: 'flex', flexDirection: 'column', gap: 16 }}>
       <M3Exp n={1} title="Une fausse décision">
-        On a seulement discuté des portes ouvertes. Luc tranche jeudi.
+        On a seulement discuté de la couleur. Décision jeudi, avec la Ville.
       </M3Exp>
       <M3Exp n={2} title="La mauvaise personne">
-        C’est Annie qui avance le câblage, pas Maxime.
+        C’est Patrice qui refait les relevés, pas Mathieu.
       </M3Exp>
       <M3Exp n={3} title="Une date inventée">
-        Julie a dit « demain », soit le 3 février.
+        Nadia a dit « demain », soit le 3 mars.
       </M3Exp>
       <M3Exp n={4} title="Un point ouvert effacé">
-        La date des portes ouvertes reste à trancher.
+        La couleur des panneaux reste à trancher.
       </M3Exp>
     </div>
+  </Frame>
+);
+
+// ─── M4 · Site visit: dictated notes + photos → report ─────────────────────
+const M4Photo = ({ n, label }: { n: number; label: string }) => (
+  <div style={{ flex: 1, background: C.panel, borderRadius: 12, padding: '12px 12px 10px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6 }}>
+    <Icon name="camera" size={40} color={C.soft} />
+    <span style={{ fontSize: 19, fontWeight: 600, color: C.soft, textAlign: 'center', lineHeight: 1.25 }}>
+      Photo {n} · {label}
+    </span>
+  </div>
+);
+
+const M4Def = ({ id, where, what, who }: { id: string; where: string; what: string; who: string }) => (
+  <div style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '7px 0', borderBottom: `1.5px solid ${C.rule}`, fontSize: 21, lineHeight: 1.3, color: C.ink }}>
+    <b style={{ width: 44, flex: 'none', color: T.coral.fg }}>{id}</b>
+    <span style={{ width: 150, flex: 'none', color: C.soft }}>{where}</span>
+    <span style={{ flex: 1 }}>{what}</span>
+    <Tag tone="grey" size={18}>
+      {who}
+    </Tag>
+  </div>
+);
+
+const M4_Visit: Page = () => (
+  <Frame mod={4} kind="demo" beats={4}>
+    <Title>La visite de chantier : des notes dictées au rapport</Title>
+    <Lede>Mathieu dicte au téléphone en marchant, prend trois photos, puis donne le tout à Copilot.</Lede>
+    <div className={A.left} style={{ position: 'absolute', left: 120, top: 270, width: 760, boxSizing: 'border-box', background: C.card, borderRadius: 18, boxShadow: SHADOW, padding: '20px 26px', ...dl(100) }}>
+      <Eyebrow c={C.soft} size={21}>
+        Notes dictées · visite du 30 mars
+      </Eyebrow>
+      <div style={{ marginTop: 10, fontSize: 22, lineHeight: 1.5, color: C.ink, fontStyle: 'italic' }}>
+        « Façade nord, fenêtres posées à 80 %, euh… axe C le solin est pas fini, faut que Patrice repasse. Fenêtre N-12 vitre égratignée, à changer. Porte d’entrée 2, le ferme-porte frotte. Le hall attend toujours les 6 unités. Boréa veut la liste avant vendredi. »
+      </div>
+      <div style={{ marginTop: 16, display: 'flex', gap: 12 }}>
+        <M4Photo n={1} label="solin, axe C" />
+        <M4Photo n={2} label="fenêtre N-12" />
+        <M4Photo n={3} label="entrée 2" />
+      </div>
+    </div>
+    <div className={A.right} style={{ position: 'absolute', left: 940, top: 270, width: 860, boxSizing: 'border-box', background: C.card, borderRadius: 18, boxShadow: `${SHADOW}, inset 6px 0 0 ${C.violet}`, padding: '20px 28px 22px', ...dl(250) }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+        <Icon name="doc" size={30} color={C.violet} />
+        <span style={{ fontFamily: display, fontWeight: 700, fontSize: 30, color: C.ink }}>Rapport de visite · 30 mars</span>
+      </div>
+      <M4Sec n={1} tone="green" title="Avancement">
+        Façade nord : fenêtres posées à 80 %. Hall : en attente de 6 unités scellées.
+      </M4Sec>
+      <div className={b.on(2)} style={{ marginTop: 14 }}>
+        <Eyebrow c={T.coral.fg} size={21}>
+          Déficiences
+        </Eyebrow>
+        <M4Def id="D1" where="Axe C" what="Solin non terminé" who="Patrice" />
+        <M4Def id="D2" where="Fenêtre N-12" what="Vitre égratignée, à remplacer" who="Mathieu" />
+        <M4Def id="D3" where="Entrée 2" what="Le ferme-porte frotte" who="Patrice" />
+      </div>
+      <M4Sec n={3} tone="blue" title="Pour Nadia">
+        Commander la vitre de N-12 · envoyer la liste à Boréa avant vendredi
+      </M4Sec>
+    </div>
+    <Callout cls={b.on(4)} title="Le réflexe" tone="yellow" icon="eye" size={24} style={{ position: 'absolute', left: 120, top: 800, width: 760, padding: '12px 22px' }}>
+      L’IA ne sait que ce que vous dictez. Vérifiez chaque ligne avec les photos avant d’envoyer.
+    </Callout>
   </Frame>
 );
 
@@ -6523,11 +6675,11 @@ const M4_Tools: Page = () => (
         <M4Th w={520}>Ce qu’il produit</M4Th>
         <M4Th>À savoir</M4Th>
       </div>
-      <M4ToolRow d={150} id="teams" where="Réunions Teams" what="Récapitulatif, tâches de suivi, questions sur la réunion" note="Licence Copilot ; transcription requise" />
-      <M4ToolRow d={250} id="google" where="Google Meet" what="« Prendre des notes pour moi » : notes dans un Doc" note="Selon l’édition Workspace" />
-      <M4ToolRow d={350} id="zoom" where="Réunions Zoom" what="Résumé et prochaines étapes (AI Companion)" note="Comptes Zoom payants" />
-      <M4ToolRow d={450} id="otter" where="Toute réunion" what="Un assistant rejoint l’appel, transcrit et résume" note="Service externe : à faire approuver" />
-      <M4ToolRow d={550} id="notion" where="Dans Notion" what="Notes de réunion transcrites et résumées dans la page" note="Selon le forfait Notion" />
+      <M4ToolRow d={150} id="teams" where="Réunions Teams" what="Récapitulatif, tâches de suivi, questions sur la réunion" note="Licence Microsoft 365 Copilot ; transcription requise" />
+      <M4ToolRow d={250} id="copilot" where="Notes, dictée, photos" what="Compte rendu ou rapport de visite à partir de ce que vous collez ou joignez" note="Copilot Chat : inclus avec le compte Lessard" />
+      <M4ToolRow d={350} id="word" where="Dictée dans Word" what="Dicter ses notes au chantier, puis les mettre en forme" note="Dictée : tous ; Copilot dans Word : licence" />
+      <M4ToolRow d={450} id="procore" where="Journaux de chantier" what="Agents qui suivent les journaux quotidiens et les observations" note="Déploiement progressif : à vérifier" />
+      <M4ToolRow d={550} id="otter" where="Toute réunion" what="Un assistant rejoint l’appel, transcrit et résume" note="Service externe : à faire approuver" />
     </div>
     <div className={A.fade} style={{ position: 'absolute', left: 120, top: 920, fontSize: 22, color: C.muted, ...dl(800) }}>
       Les offres évoluent vite : vérifiez langue française, licence et lieu d’hébergement des données avant d’adopter un outil.
@@ -6552,13 +6704,13 @@ const M4_Consent: Page = () => (
     <Lede>Une transcription contient des renseignements personnels et des propos spontanés.</Lede>
     <div style={{ position: 'absolute', left: 120, top: 280, width: 1040, display: 'flex', flexDirection: 'column', gap: 16 }}>
       <M4Rule d={100} icon="megaphone" tone="blue" title="Annoncer et obtenir l’accord">
-        Au début, à l’oral et dans l’invitation.
+        Au début, à l’oral et dans l’invitation, y compris pour l’EG et l’architecte.
       </M4Rule>
       <M4Rule d={220} icon="lock" tone="coral" title="Pas pour les sujets sensibles">
-        Ressources humaines, santé, conflits, négociations.
+        Négociations de prix, réclamations, litiges, ressources humaines.
       </M4Rule>
       <M4Rule d={340} icon="shieldCheck" tone="green" title="Un outil approuvé">
-        Celui que votre organisation a validé, pas un service découvert la veille.
+        Celui que Lessard a validé, pas un service découvert la veille.
       </M4Rule>
       <M4Rule d={460} icon="archive" tone="violet" title="Une durée de conservation">
         On garde le compte rendu, pas forcément l’enregistrement.
@@ -6576,7 +6728,7 @@ const M4_Consent: Page = () => (
 // ─── M4 · From actions to tasks ─────────────────────────────────────────────
 const M4Act = ({ who, what, when }: { who: string; what: string; when: string }) => (
   <div style={{ display: 'flex', gap: 14, alignItems: 'center', padding: '12px 0', borderBottom: `1.5px solid ${C.rule}`, fontSize: 24, color: C.ink }}>
-    <b style={{ width: 90, flex: 'none' }}>{who}</b>
+    <b style={{ width: 110, flex: 'none' }}>{who}</b>
     <span style={{ flex: 1 }}>{what}</span>
     <Tag tone="grey" size={20}>
       {when}
@@ -6596,7 +6748,7 @@ const M4Card = ({ n, who, what, when, tone }: { n: number; who: string; what: st
           <Icon name="calendar" size={18} /> {when}
         </Tag>
         <Tag tone="violet" size={20}>
-          <Icon name="link" size={18} /> CR 2 févr.
+          <Icon name="link" size={18} /> CR 2 mars
         </Tag>
       </div>
     </div>
@@ -6611,19 +6763,19 @@ const M4_ToTasks: Page = () => (
       <Eyebrow c={T.blue.fg} size={21}>
         Actions du compte rendu
       </Eyebrow>
-      <M4Act who="Annie" what="Avancer le câblage réseau" when="12 févr." />
-      <M4Act who="Julie" what="Relancer 2 candidats" when="3 févr." />
-      <M4Act who="Karim" what="Confirmer la pose du 20" when="4 févr." />
+      <M4Act who="Patrice" what="Relevés de la façade nord" when="9 mars" />
+      <M4Act who="Nadia" what="Relancer le verrier" when="3 mars" />
+      <M4Act who="Mathieu" what="Confirmer la séquence à Boréa" when="4 mars" />
     </div>
     <svg width={120} height={60} style={{ position: 'absolute', left: 770, top: 400, overflow: 'visible' }}>
       <path d="M0 30 H100" stroke={C.blue} strokeWidth={5} strokeDasharray="10 14" className={cx(A.march, b.fade(1))} />
       <path d="M92 16 L110 30 L92 44" fill="none" stroke={C.blue} strokeWidth={5} strokeLinecap="round" className={b.fade(1)} />
     </svg>
-    <AppWin id="planner" title="Projet Limoilou · cette semaine" cls={A.right} style={{ position: 'absolute', left: 920, top: 280, width: 880, ...dl(200) }} pad={24}>
+    <AppWin id="planner" title="Méandres · cette semaine" cls={A.right} style={{ position: 'absolute', left: 920, top: 280, width: 880, ...dl(200) }} pad={24}>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-        <M4Card n={1} who="Annie" what="Avancer le câblage réseau" when="12 févr." tone="violet" />
-        <M4Card n={2} who="Julie" what="Relancer 2 candidats mécaniciens" when="3 févr." tone="green" />
-        <M4Card n={3} who="Karim" what="Confirmer la pose du samedi 20" when="4 févr." tone="blue" />
+        <M4Card n={1} who="Patrice" what="Relevés de la façade nord" when="9 mars" tone="violet" />
+        <M4Card n={2} who="Nadia" what="Relancer le verrier pour les 6 unités" when="3 mars" tone="green" />
+        <M4Card n={3} who="Mathieu" what="Confirmer la séquence de pose à Boréa" when="4 mars" tone="blue" />
       </div>
     </AppWin>
     <Callout cls={A.in} title="Comment ?" tone="blue" icon="plug" size={25} style={{ position: 'absolute', left: 120, top: 640, width: 620, ...dl(500) }}>
@@ -6661,22 +6813,21 @@ const M4RuleRow = ({ n, a, c, x, ai }: { n: number; a: ReactNode; c: ReactNode; 
 const M4_Rules: Page = () => (
   <Frame mod={4} beats={3}>
     <Title>Le suivi automatique : des règles « si… alors »</Title>
-    <Lede>Ce n’est pas encore de l’IA : c’est de l’automatisation. Et c’est déjà beaucoup de temps gagné.</Lede>
+    <Lede>Les deux premières sont de l’automatisation, sans IA. Et c’est déjà beaucoup de temps gagné.</Lede>
     <div style={{ position: 'absolute', left: 120, top: 290, width: 1680, display: 'flex', flexDirection: 'column', gap: 26 }}>
-      <M4RuleRow n={1} a="Une tâche change de statut" c="le nouveau statut est « Bloquée »" x="Message à Karim dans Teams" />
-      <M4RuleRow n={2} a="Chaque matin, 8 h" c="échéance dans 2 jours et tâche non commencée" x="Rappel au responsable" />
-      <M4RuleRow n={3} a="Chaque vendredi, 14 h" c="tâches terminées cette semaine" x="L’IA rédige le brouillon du rapport" ai />
+      <M4RuleRow n={1} a="Un courriel arrive" c="il vient de Boréa ou parle des Méandres" x="Classé dans le dossier du projet" />
+      <M4RuleRow n={2} a="Chaque matin, 8 h" c="un courriel envoyé il y a 5 jours, sans réponse" x="Rappel à Mathieu : relancer ?" />
+      <M4RuleRow n={3} a="Un courriel arrive" c="c’est une demande administrative (certificat, formulaire)" x="L’IA prépare le transfert à Nadia, avec la consigne" ai />
     </div>
     <div className={A.fade} style={{ position: 'absolute', left: 120, top: 760, width: 1680, display: 'flex', alignItems: 'center', gap: 26, ...dl(400) }}>
       <span style={{ fontSize: 24, fontWeight: 600, color: C.soft }}>Où les créer :</span>
-      <AppChip id="clickup" size={24} />
+      <AppChip id="outlook" size={24} />
+      <AppChip id="automate" size={24} />
       <AppChip id="planner" size={24} />
-      <AppChip id="notion" size={24} />
-      <AppChip id="trello" size={24} />
-      <AppChip id="monday" size={24} />
+      <AppChip id="smartsheet" size={24} />
     </div>
     <div className={A.fade} style={{ position: 'absolute', left: 120, top: 840, fontSize: 22, color: C.muted, ...dl(500) }}>
-      Planner passe par Power Automate ; Trello par ses règles d’automatisation ; les autres ont un menu « Automatisations ».
+      Règles Outlook : pour tous. Power Automate : selon votre compte. Smartsheet : menu « Automatisations ». Jamais d’envoi automatique à un client.
     </div>
   </Frame>
 );
@@ -6697,7 +6848,7 @@ const M4_Alerts: Page = () => (
       <div style={{ marginTop: 8, fontFamily: display, fontWeight: 700, fontSize: 40, color: C.ink }}>Le constat</div>
       <div style={{ marginTop: 26, background: T.coral.bg, borderRadius: 12, padding: '18px 20px', fontSize: 26, lineHeight: 1.4, color: C.ink }}>
         <Icon name="bell" size={30} color={C.coral} style={{ display: 'inline-block', verticalAlign: '-6px', marginRight: 10 }} />
-        « Soumission de l’électricien » est en retard de 4 jours.
+        « Approbation des dessins MR-01 » est en retard de 4 jours.
       </div>
       <div style={{ marginTop: 26, fontSize: 25, lineHeight: 1.45, color: C.soft }}>Utile… mais le retard est déjà là.</div>
     </div>
@@ -6706,20 +6857,20 @@ const M4_Alerts: Page = () => (
       <div style={{ marginTop: 8, fontFamily: display, fontWeight: 700, fontSize: 40, color: C.ink }}>L’anticipation, en croisant des signaux faibles</div>
       <div style={{ marginTop: 24, display: 'flex', flexDirection: 'column', gap: 16 }}>
         <M4Signal n={1} icon="clock">
-          Aucune mise à jour de la tâche depuis 9 jours
+          Aucune réponse de l’architecte depuis 9 jours
         </M4Signal>
-        <M4Signal n={2} icon="users">
-          Son responsable a 3 autres tâches cette semaine
+        <M4Signal n={2} icon="truck">
+          Le verrier ne garantit son créneau que jusqu’au 11 décembre
         </M4Signal>
         <M4Signal n={3} icon="route">
-          Elle est sur le chemin critique du 5 mars
+          L’approbation est sur le chemin critique du 14 mai
         </M4Signal>
         <M4Signal n={4} icon="chat">
-          Dernier commentaire : « petit souci avec le maître électricien »
+          Dernier courriel de l’architecte : « on manque de monde avant les Fêtes »
         </M4Signal>
       </div>
       <div className={b.on(5)} style={{ marginTop: 24, background: T.violet.bg, borderRadius: 12, padding: '16px 20px', fontSize: 25, lineHeight: 1.4, color: C.ink }}>
-        <b>Risque de glissement du jalon du 5 mars.</b> Suggestion : appeler l’électricien aujourd’hui.
+        <b>Risque : commande du verre après les Fêtes.</b> Suggestion : appeler l’architecte aujourd’hui.
       </div>
     </div>
   </Frame>
@@ -6745,13 +6896,13 @@ const M4Kpi = ({ label, value, tone }: { label: string; value: string; tone: Ton
 
 const M4_Sim: Page = () => {
   const [wk, setWk] = useState(10);
-  const plan = Math.round((wk / 23) * 100);
+  const plan = Math.round((wk / 28) * 100);
   const delta = M4_DELTA[wk] ?? 0;
   const real = plan - delta;
   const meteo: Tone = delta < 3 ? 'green' : delta < 6 ? 'yellow' : 'coral';
   return (
     <Frame mod={4} kind="exercice">
-      <Title>Simulateur : le tableau de bord de Karim, semaine après semaine</Title>
+      <Title>Simulateur : le tableau de bord de Mathieu, semaine après semaine</Title>
       <div className={A.in} style={{ position: 'absolute', left: 120, top: 200, width: 1680, display: 'flex', alignItems: 'center', gap: 28, ...dl(100) }}>
         <span style={{ fontFamily: display, fontWeight: 700, fontSize: 40, color: C.ink, width: 260 }}>Semaine {wk}</span>
         <Range value={wk} onChange={setWk} min={8} max={16} w={900} />
@@ -6774,7 +6925,7 @@ const M4_Sim: Page = () => {
           </div>
         </div>
         <div style={{ background: C.panel, borderRadius: 14, padding: '16px 20px', fontSize: 23, lineHeight: 1.4, color: C.soft }}>
-          L’IA propose, Karim décide. La météo envoyée à Luc reste <b>son</b> jugement.
+          L’IA propose, Mathieu décide. La météo envoyée à Hélène reste <b>son</b> jugement.
         </div>
       </div>
       <div className={A.in} style={{ position: 'absolute', left: 730, top: 290, width: 1070, height: 640, boxSizing: 'border-box', background: C.card, borderRadius: 18, boxShadow: SHADOW, padding: '22px 26px', ...dl(200) }}>
@@ -6785,22 +6936,22 @@ const M4_Sim: Page = () => {
         </div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
           <M4Alert show={wk >= 10} tone="yellow" icon="clock">
-            Soumission de l’électricien : aucune mise à jour depuis 9 jours.
+            Dessins des entrées : aucune nouvelle de l’architecte depuis 9 jours.
           </M4Alert>
           <M4Alert show={wk >= 11} tone="yellow" icon="users">
-            Annie : 3 tâches la même semaine, charge estimée à 140 %.
+            Équipe de Patrice : 3 chantiers la même semaine de mars, charge à 140 %.
           </M4Alert>
           <M4Alert show={wk >= 12} tone="coral" icon="alert">
-            Logiciel de caisse non choisi : bloque la formation de l’équipe.
+            Quincaillerie des portes non commandée : bloque la fabrication des entrées.
           </M4Alert>
           <M4Alert show={wk >= 13} tone="yellow" icon="chat">
-            Fournisseur : « petite difficulté d’approvisionnement » (ton inquiet).
+            Verrier : « petite difficulté d’approvisionnement » (ton inquiet).
           </M4Alert>
           <M4Alert show={wk >= 14} tone="coral" icon="route">
-            Jalon « Travaux finis » : glissement probable de 5 jours.
+            Jalon « Verre livré » : glissement probable de 5 jours.
           </M4Alert>
           <M4Alert show={wk >= 15} tone="blue" icon="bulb">
-            Suggestion : avancer le câblage réseau pendant l’attente.
+            Suggestion : commencer la pose par la façade nord, déjà livrée.
           </M4Alert>
         </div>
       </div>
@@ -6822,7 +6973,7 @@ const M4Flow = ({ n, icon, tone, title, children }: { n: number; icon: IconName;
 const M4_Report: Page = () => (
   <Frame mod={4} beats={4}>
     <Title>Le rapport du vendredi en trois minutes</Title>
-    <Lede>L’automatisation rassemble, l’IA rédige, Karim juge. Chacun son rôle.</Lede>
+    <Lede>L’automatisation rassemble, l’IA rédige, Mathieu juge. Chacun son rôle.</Lede>
     <div style={{ position: 'absolute', left: 120, top: 290, width: 700, display: 'flex', flexDirection: 'column', gap: 30 }}>
       <M4Flow n={1} icon="kanban" tone="grey" title="1. L’outil rassemble">
         Tâches terminées, en retard, à venir
@@ -6830,34 +6981,34 @@ const M4_Report: Page = () => (
       <M4Flow n={2} icon="sparkles" tone="violet" title="2. L’IA rédige">
         Avancement, points d’attention, décisions
       </M4Flow>
-      <M4Flow n={3} icon="humanCheck" tone="blue" title="3. Karim relit et juge">
+      <M4Flow n={3} icon="humanCheck" tone="blue" title="3. Mathieu relit et juge">
         Corrige, ajuste la météo, ajoute le contexte
       </M4Flow>
-      <M4Flow n={4} icon="send" tone="green" title="4. Luc reçoit">
-        Le même format chaque semaine : il sait où regarder
+      <M4Flow n={4} icon="send" tone="green" title="4. Hélène reçoit">
+        Le même format pour les 13 projets : elle sait où regarder
       </M4Flow>
     </div>
     <div className={A.right} style={{ position: 'absolute', left: 900, top: 270, width: 900, boxSizing: 'border-box', background: C.card, borderRadius: 18, boxShadow: `${SHADOW}, inset 0 7px 0 ${C.yellow}`, padding: '26px 34px', ...dl(200) }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <span style={{ fontFamily: display, fontWeight: 700, fontSize: 34, color: C.ink }}>Rapport · semaine 14</span>
+        <span style={{ fontFamily: display, fontWeight: 700, fontSize: 34, color: C.ink }}>Méandres · semaine 14</span>
         <Tag tone="yellow" size={22}>
           MÉTÉO JAUNE
         </Tag>
       </div>
       <div style={{ marginTop: 16, fontSize: 24, lineHeight: 1.5, color: C.ink }}>
-        <b>Avancement</b> : 55 % (prévu : 61 %).
+        <b>Avancement</b> : 46 % (prévu : 50 %).
         <br />
-        <b>Fait</b> : permis obtenu, 6 embauches sur 8, logiciel de caisse choisi.
+        <b>Fait</b> : dessins approuvés, verre commandé, cadres en fabrication.
         <br />
-        <b>Points d’attention</b> : électricité (5 jours de retard), comptoirs livrés le 19.
+        <b>Points d’attention</b> : quincaillerie des portes non commandée, structure de Boréa en retard de 4 jours.
         <br />
-        <b>Décision attendue de Luc</b> : 6 000 $ sur la réserve pour l’électricité.
+        <b>Décision attendue d’Hélène</b> : heures supplémentaires à l’usine (6 000 $).
         <br />
-        <b>Semaine prochaine</b> : câblage réseau, essais de la caisse.
+        <b>Semaine prochaine</b> : livraison du verre, planification des relevés.
       </div>
       <div className={b.on(3)} style={{ marginTop: 16, background: T.blue.bg, borderRadius: 10, padding: '10px 16px', fontSize: 22, color: T.blue.fg }}>
         <Icon name="humanCheck" size={22} style={{ display: 'inline-block', verticalAlign: '-4px', marginRight: 8 }} />
-        Relu par Karim : météo passée de vert à jaune, contexte électricité ajouté.
+        Relu par Mathieu : météo passée de vert à jaune, retard de la structure ajouté.
       </div>
     </div>
   </Frame>
@@ -6872,20 +7023,20 @@ const M4Prac = ({ d, icon, tone, title, children }: { d: number; icon: IconName;
 
 const M4_Team: Page = () => (
   <Frame mod={4}>
-    <Title>Collaborer avec l’IA : les pratiques d’équipe</Title>
+    <Title>Chargés de projet et adjointes : les pratiques d’équipe</Title>
     <Lede>L’IA individuelle fait gagner des minutes. L’IA d’équipe fait gagner des heures.</Lede>
     <div style={{ position: 'absolute', left: 120, top: 280, width: 1680, display: 'grid', gridTemplateColumns: 'repeat(3, 540px)', rowGap: 30, columnGap: 30 }}>
-      <M4Prac d={100} icon="database" tone="blue" title="Une seule source">
-        Tâches, comptes rendus et décisions au même endroit : l’IA y trouve le contexte.
+      <M4Prac d={100} icon="database" tone="blue" title="Un dossier par projet">
+        Courriels, comptes rendus et décisions au même endroit : l’IA y trouve le contexte.
       </M4Prac>
-      <M4Prac d={200} icon="book" tone="teal" title="Une bibliothèque">
-        Les demandes qui marchent, partagées et améliorées par tous.
+      <M4Prac d={200} icon="send" tone="teal" title="Des règles de transfert">
+        Ce que l’adjointe reçoit, avec quelle consigne : écrit une fois, appliqué par tous.
       </M4Prac>
       <M4Prac d={300} icon="note" tone="green" title="Une mention claire">
-        « Brouillon IA, relu par Karim » : chacun sait ce qui a été vérifié.
+        « Brouillon IA, relu par Mathieu » : chacun sait ce qui a été vérifié.
       </M4Prac>
-      <M4Prac d={400} icon="humanCheck" tone="yellow" title="Un relecteur désigné">
-        Pour chaque livrable généré, une personne qui en répond.
+      <M4Prac d={400} icon="book" tone="yellow" title="Une bibliothèque">
+        Les demandes qui marchent, partagées et améliorées par les sept membres de l’équipe.
       </M4Prac>
       <M4Prac d={500} icon="star" tone="violet" title="Partager les bons coups">
         Cinq minutes en réunion d’équipe : « mon meilleur usage de la semaine ».
@@ -6912,26 +7063,26 @@ const M4Lib = ({ d, icon, tone, title, children }: { d: number; icon: IconName; 
 
 const M4_Library: Page = () => (
   <Frame mod={4}>
-    <Title>La bibliothèque de demandes de l’équipe Limoilou</Title>
+    <Title>La bibliothèque de demandes de l’équipe</Title>
     <Lede>Six modèles à copier. Les zones entre crochets se remplacent à chaque usage.</Lede>
     <div style={{ position: 'absolute', left: 120, top: 270, width: 1680, display: 'grid', gridTemplateColumns: 'repeat(3, 540px)', rowGap: 30, columnGap: 30 }}>
-      <M4Lib d={100} icon="gantt" tone="teal" title="Plan de projet">
-        Tu es chargé de projet. Voici [le contexte]. Découpe en lots et tâches, avec dépendances et jalons, en tableau. Signale les durées supposées.
+      <M4Lib d={100} icon="inbox" tone="teal" title="Tri des courriels">
+        Voici [les courriels]. Classe-les : à traiter aujourd’hui, à transférer à [l’adjointe] avec la consigne, à relancer, à classer.
       </M4Lib>
       <M4Lib d={200} icon="note" tone="violet" title="Compte rendu">
         À partir de [la transcription], liste décisions, actions (qui, quoi, quand) et points ouverts. N’invente rien : [à confirmer].
       </M4Lib>
-      <M4Lib d={300} icon="chart" tone="blue" title="Rapport hebdomadaire">
-        À partir de [mes notes], rédige le rapport pour [Luc] : météo, avancement, 3 points d’attention, décision attendue. 150 mots.
+      <M4Lib d={300} icon="camera" tone="blue" title="Rapport de visite">
+        À partir de [mes notes dictées et photos], rédige le rapport : avancement, déficiences (lieu, description, responsable), actions.
       </M4Lib>
-      <M4Lib d={400} icon="mail" tone="yellow" title="Message délicat">
-        Rédige un courriel à [destinataire] pour annoncer [la nouvelle]. Ton : [clair et rassurant]. Propose deux options.
+      <M4Lib d={400} icon="bell" tone="yellow" title="Relance">
+        Rédige une relance à [destinataire] sur [l’objet, envoyé le…]. Rappelle l’impact sur [la date]. Ton : [courtois / ferme]. 6 lignes.
       </M4Lib>
-      <M4Lib d={500} icon="alert" tone="coral" title="Risques">
-        Pour [le projet], liste 8 risques avec probabilité, impact et une mesure. Classe-les du plus grave au moins grave.
+      <M4Lib d={500} icon="doc" tone="green" title="Fiche de démarrage">
+        À partir de [la soumission et des exclusions], rédige la fiche : périmètre, dates, intervenants, engagements. Signale ce qui manque.
       </M4Lib>
-      <M4Lib d={600} icon="calendar" tone="green" title="Préparer une réunion">
-        À partir de [l’état des tâches], propose l’ordre du jour de [45 min] : objectifs, points à décider, temps par point.
+      <M4Lib d={600} icon="chart" tone="coral" title="Rapport du vendredi">
+        À partir de [mes notes], rédige le rapport pour [Hélène] : météo, avancement, 3 points d’attention, décision attendue. 150 mots.
       </M4Lib>
     </div>
   </Frame>
@@ -6943,13 +7094,13 @@ const M4_Qcm1: Page = () => (
     mod={4}
     n={4}
     title="Avant de diffuser"
-    q="Teams vient de produire le compte rendu de la réunion de suivi. Que fait Karim avant de l’envoyer ?"
+    q="Teams vient de produire le compte rendu de la réunion de chantier. Que fait Mathieu avant de l’envoyer à Boréa ?"
     explain="Le compte rendu engage celui qui l’envoie. Les erreurs typiques : fausse décision, mauvaise personne, date inventée, point ouvert disparu. Deux minutes de relecture suffisent."
   >
-    <Opt why="Piège ! C’est justement là que se glissent les fausses décisions et les mauvaises attributions.">Il l’envoie tel quel : c’est la transcription exacte</Opt>
     <Opt ok why="Oui : décisions, responsables, dates et points ouverts. Le reste peut rester imparfait.">
       Il vérifie décisions, responsables, dates et points ouverts
     </Opt>
+    <Opt why="Piège ! C’est justement là que se glissent les fausses décisions et les mauvaises attributions.">Il l’envoie tel quel : c’est la transcription exacte</Opt>
     <Opt why="Piège ! On perd tout le temps gagné. On vérifie les éléments à risque, pas chaque virgule.">Il réécoute toute la réunion pour tout vérifier</Opt>
     <Opt why="Piège ! Une IA ne vérifie pas mieux l’autre : seule la personne présente sait ce qui a été dit.">Il demande à une autre IA de le corriger</Opt>
   </QcmPage>
@@ -6978,15 +7129,15 @@ const M4_Synth: Page = () => (
     title="Module 4 · Ce qu’il faut retenir"
     poste={
       <>
-        À votre prochaine réunion : annoncez la transcription, puis testez la demande de compte rendu.
+        À votre prochaine visite de chantier : dictez vos notes, puis testez la demande de rapport de visite.
         <br />
         <br />
-        Créez une première règle « si… alors » dans votre outil de tâches.
+        Créez une première règle Outlook qui classe les courriels d’un projet.
       </>
     }
   >
     <SynthRow n={1} tone="violet" d={100}>
-      Compte rendu : <b>décisions, actions, points ouverts</b>, et rien d’inventé.
+      Compte rendu et visite : <b>décisions, actions, déficiences</b>, rien d’inventé.
     </SynthRow>
     <SynthRow n={2} tone="coral" d={220}>
       Transcrire : <b>annoncer</b>, outil approuvé, pas de sujets sensibles.
@@ -6998,7 +7149,7 @@ const M4_Synth: Page = () => (
       Règles « si… alors » pour constater, <b>IA pour anticiper</b>.
     </SynthRow>
     <SynthRow n={5} tone="yellow" d={580}>
-      En équipe : une source, une <b>bibliothèque</b>, un relecteur.
+      En équipe : un dossier par projet, des <b>règles de transfert</b>, une bibliothèque.
     </SynthRow>
   </SynthPage>
 );
@@ -7033,9 +7184,9 @@ const M5_Three: Page = () => (
     <Title>Trois familles de risques</Title>
     <Lede>Aucune n’est une raison de renoncer. Toutes sont une raison d’encadrer.</Lede>
     <div style={{ position: 'absolute', left: 120, top: 290, width: 1680, display: 'flex', gap: 30 }}>
-      <M5Risk n={1} icon="scale" tone="violet" name="Les biais" q="L’IA reproduit les déséquilibres de ses exemples." ex={<><b>Projet :</b> trier des CV, estimer des durées.</>} />
-      <M5Risk n={2} icon="alert" tone="coral" name="Les erreurs" q="Elle se trompe avec aplomb, sans prévenir." ex={<><b>Projet :</b> un chiffre faux dans le rapport à la direction.</>} />
-      <M5Risk n={3} icon="lock" tone="blue" name="La confidentialité" q="Ce que vous collez sort de votre organisation." ex={<><b>Projet :</b> un contrat fournisseur dans un outil gratuit.</>} />
+      <M5Risk n={1} icon="scale" tone="violet" name="Les biais" q="L’IA reproduit les déséquilibres de ses exemples." ex={<><b>Projet :</b> estimer des durées à partir de vos anciens projets.</>} />
+      <M5Risk n={2} icon="alert" tone="coral" name="Les erreurs" q="Elle se trompe avec aplomb, sans prévenir." ex={<><b>Projet :</b> un montant faux dans un avis de modification.</>} />
+      <M5Risk n={3} icon="lock" tone="blue" name="La confidentialité" q="Ce que vous collez sort de votre organisation." ex={<><b>Projet :</b> une soumission dans un compte personnel.</>} />
     </div>
   </Frame>
 );
@@ -7094,8 +7245,8 @@ const M5_Bias: Page = () => (
         En 2018, Amazon a abandonné un outil expérimental de tri de CV : il pénalisait les candidatures contenant le mot « women’s » (Reuters).
       </Card>
     </div>
-    <Callout cls={b.on(4)} title="Pour le recrutement de Julie" tone="violet" icon="humanCheck" size={26} style={{ position: 'absolute', left: 1040, top: 640, width: 760 }}>
-      L’IA aide à rédiger l’offre et à préparer les entrevues. Le tri et le choix des candidats restent humains, sur des critères écrits.
+    <Callout cls={b.on(4)} title="Et dans vos projets ?" tone="violet" icon="humanCheck" size={26} style={{ position: 'absolute', left: 1040, top: 640, width: 760 }}>
+      Estimer une durée à partir de vos anciens projets, c’est hériter de leurs retards et de leurs oublis. Une durée « moyenne » se vérifie.
     </Callout>
   </Frame>
 );
@@ -7131,7 +7282,7 @@ const M5_BiasPm: Page = () => (
         Exemples surtout américains : elle oublie les Fêtes, la Saint-Jean, les vacances de la construction.
       </M5BiasCard>
       <M5BiasCard n={4} icon="clock" tone="coral" name="L’optimisme moyen" fix="Comparez avec vos projets passés et ajoutez une marge.">
-        Ses durées reflètent un projet « typique », pas votre fournisseur qui a toujours du retard.
+        Ses durées reflètent un projet « typique », pas votre verrier qui a toujours du retard en décembre.
       </M5BiasCard>
     </div>
   </Frame>
@@ -7164,8 +7315,8 @@ const M5_Errors: Page = () => (
       <M5Case n={2} tone="violet" icon="scale" year="New York · 2023" title="Les jurisprudences inventées" lesson="Toute source se vérifie à la source.">
         Des avocats déposent un mémoire avec six décisions inventées par ChatGPT. Le juge les sanctionne d’une amende.
       </M5Case>
-      <M5Case n={3} tone="blue" icon="chart" year="Limoilou · semaine 14" title="Le rapport de Karim" lesson="Un chiffre faux peut fausser une décision.">
-        L’IA additionne mal deux lots du budget : 6 000 $ « disponibles » qui n’existent pas. Luc approuve une dépense.
+      <M5Case n={3} tone="blue" icon="chart" year="Méandres · semaine 14" title="Le rapport de Mathieu" lesson="Un chiffre faux peut fausser une décision.">
+        L’IA additionne mal deux avis de modification : 6 000 $ « disponibles » qui n’existent pas. Hélène approuve une dépense.
       </M5Case>
     </div>
     <Callout cls={b.on(3)} title="Le point commun" tone="yellow" icon="humanCheck" size={26} style={{ position: 'absolute', left: 120, top: 740, width: 1680, ...dl(400) }}>
@@ -7243,28 +7394,28 @@ const M5_Traffic: Page = () => (
     <M1Zone x={690} icon="shieldCheck" tone="yellow" label="Jaune · outil approuvé" />
     <M1Zone x={1260} icon="lock" tone="coral" label="Rouge · jamais tel quel" />
     <Drag x={120} y={262} w={405} tone="blue" size={22}>
-      Le texte de l’affiche des portes ouvertes <M1Key tone="green">VERT</M1Key>
+      Le texte d’une fiche technique publique <M1Key tone="green">VERT</M1Key>
     </Drag>
     <Drag x={545} y={262} w={405} tone="blue" size={22}>
-      Les CV des candidats mécaniciens <M1Key tone="coral">ROUGE</M1Key>
+      Le cellulaire personnel d’un propriétaire <M1Key tone="coral">ROUGE</M1Key>
     </Drag>
     <Drag x={970} y={262} w={405} tone="blue" size={22}>
-      Le budget détaillé du projet <M1Key tone="yellow">JAUNE</M1Key>
+      Le prix de la soumission des Méandres <M1Key tone="yellow">JAUNE</M1Key>
     </Drag>
     <Drag x={1395} y={262} w={405} tone="blue" size={22}>
-      Une procédure générique d’ouverture de caisse <M1Key tone="green">VERT</M1Key>
+      Une procédure générique de pose de fenêtres <M1Key tone="green">VERT</M1Key>
     </Drag>
     <Drag x={120} y={384} w={405} tone="blue" size={22}>
-      Le salaire offert à la future gérante <M1Key tone="coral">ROUGE</M1Key>
+      Le salaire d’un installateur <M1Key tone="coral">ROUGE</M1Key>
     </Drag>
     <Drag x={545} y={384} w={405} tone="blue" size={22}>
-      Le contrat du fournisseur de comptoirs <M1Key tone="yellow">JAUNE</M1Key>
+      Le contrat avec Construction Boréa <M1Key tone="yellow">JAUNE</M1Key>
     </Drag>
     <Drag x={970} y={384} w={405} tone="blue" size={22}>
       L’arrêt maladie d’un employé <M1Key tone="coral">ROUGE</M1Key>
     </Drag>
     <Drag x={1395} y={384} w={405} tone="blue" size={22}>
-      Le compte rendu de la réunion de suivi <M1Key tone="yellow">JAUNE</M1Key>
+      Le compte rendu de la réunion de chantier <M1Key tone="yellow">JAUNE</M1Key>
     </Drag>
   </Frame>
 );
@@ -7301,7 +7452,7 @@ const M5_Anon: Page = () => {
         <Toggle on={on} onChange={setOn} label={on ? 'Version anonymisée' : 'Version d’origine'} tone="green" size={28} />
       </div>
       <PromptBox cls={A.in} size={30} style={{ position: 'absolute', left: 120, top: 290, width: 1000, boxShadow: `${SHADOW_SM}, inset 6px 0 0 ${on ? C.green : C.coral}`, ...dl(200) }}>
-        Rédige une réponse ferme mais polie à <M5Mask on={on} real="Sylvie Bouchard" fake="[RESPONSABLE]" />, de <M5Mask on={on} real="Comptoirs Rive-Sud inc." fake="[FOURNISSEUR]" /> (<M5Mask on={on} real="418 555-0142" fake="[TÉL.]" />). Contrat <M5Mask on={on} real="no 2024-117 de 38 450 $" fake="[CONTRAT]" /> : livraison en retard de deux semaines. Nous appliquons la pénalité <M5Mask on={on} real="de 1 500 $ prévue à l’article 9" fake="prévue au contrat" />.
+        Rédige une réponse ferme mais polie à <M5Mask on={on} real="Sylvie Bouchard" fake="[RESPONSABLE]" />, de <M5Mask on={on} real="Verrerie Nordet inc." fake="[FOURNISSEUR]" /> (<M5Mask on={on} real="418 555-0142" fake="[TÉL.]" />). Contrat <M5Mask on={on} real="no 2026-117 de 38 450 $" fake="[COMMANDE]" /> : unités scellées livrées avec deux semaines de retard. Nous appliquons la pénalité <M5Mask on={on} real="de 1 500 $ prévue à l’article 9" fake="prévue au contrat" />.
       </PromptBox>
       <div style={{ position: 'absolute', left: 120, top: 700, width: 1000, display: 'flex', alignItems: 'center', gap: 14, fontSize: 27, fontWeight: 600, color: on ? T.green.fg : T.coral.fg }}>
         <Icon name={on ? 'check' : 'alert'} size={32} />
@@ -7343,8 +7494,8 @@ const M5_Law: Page = () => (
       <Card tone="yellow" icon="key" title="Vos contrats" size={24} cls={A.in} style={{ width: 825, height: 290, ...dl(340) }}>
         Les ententes de confidentialité avec vos clients et fournisseurs s’appliquent aussi à ce que vous collez dans une IA.
       </Card>
-      <Card tone="violet" icon="globe" title="Si vous travaillez avec l’Europe" size={24} cls={A.in} style={{ width: 825, height: 290, ...dl(460) }}>
-        Le règlement européen sur l’IA (AI Act), en vigueur depuis 2024, impose des obligations progressives, plus fortes pour les usages à haut risque comme le recrutement.
+      <Card tone="violet" icon="facade" title="Les exigences du donneur d’ouvrage" size={24} cls={A.in} style={{ width: 825, height: 290, ...dl(460) }}>
+        Un devis public ou un contrat d’EG peut restreindre la diffusion des plans et des documents du projet. Coller un plan dans une IA, c’est le diffuser.
       </Card>
     </div>
     <div className={A.fade} style={{ position: 'absolute', left: 120, top: 930, fontSize: 22, color: C.muted, ...dl(700) }}>
@@ -7401,7 +7552,7 @@ const M5Persona = ({ id, quote, children }: { id: CastId; quote: string; childre
     back={
       <div>
         <Eyebrow c={T.green.fg} size={22}>
-          La réponse de Karim
+          La réponse de Mathieu
         </Eyebrow>
         <div style={{ marginTop: 10, fontSize: 27, lineHeight: 1.45, color: C.ink }}>{children}</div>
       </div>
@@ -7414,17 +7565,17 @@ const M5_Personas: Page = () => (
     <Title>Accompagner l’équipe : quatre réactions, quatre réponses</Title>
     <Lede>Que répondriez-vous ? Vos idées d’abord, puis on retourne la carte.</Lede>
     <div className={A.in} style={{ position: 'absolute', left: 120, top: 270, width: 1680, display: 'grid', gridTemplateColumns: 'repeat(2, 825px)', rowGap: 30, columnGap: 30, ...dl(150) }}>
-      <M5Persona id="julie" quote="« L’IA va trier mes candidats à ma place ? »">
-        Non. Elle t’aide à rédiger les offres et à préparer les entrevues. Le choix reste le tien, sur des critères écrits.
+      <M5Persona id="nadia" quote="« L’IA va faire mon travail à ma place ? »">
+        Non. Elle t’enlève le tri et la mise en forme. Ton jugement sur les dossiers reste irremplaçable : on écrit ensemble les règles.
       </M5Persona>
-      <M5Persona id="annie" quote="« J’ai déjà tout mis dans ChatGPT, c’est génial ! »">
-        Super, deviens notre personne-ressource ! Mais sur l’outil approuvé, et seulement avec des données « vertes ».
+      <M5Persona id="eric" quote="« J’ai déjà mis mes soumissions dans ChatGPT, c’est génial ! »">
+        Super, montre-nous tes trucs ! Mais avec Copilot et le compte Lessard : jamais de prix dans un compte personnel.
       </M5Persona>
-      <M5Persona id="maxime" quote="« C’est du texte générique, ça ne vaut rien. »">
-        Essayons sur tes variantes de publications. Tu gardes le dernier mot sur le ton : c’est ton métier.
+      <M5Persona id="patrice" quote="« Au chantier, ça ne servira à rien. »">
+        Essayons sur une visite : tu dictes, Copilot fait la liste de déficiences. Tu gardes le dernier mot : c’est ton métier.
       </M5Persona>
-      <M5Persona id="luc" quote="« D’accord, mais qu’est-ce que ça rapporte ? »">
-        On mesure pendant 4 semaines le temps gagné sur les comptes rendus et le rapport hebdo, et je te montre les chiffres.
+      <M5Persona id="helene" quote="« D’accord, mais qu’est-ce que ça rapporte ? »">
+        On mesure pendant 4 semaines le temps gagné sur les comptes rendus et les courriels, et je te montre les chiffres.
       </M5Persona>
     </div>
   </Frame>
@@ -7469,10 +7620,10 @@ const M5_Curve: Page = () => (
       <path d={m5Curve(0, 1680, false)} fill="none" stroke={C.ink} strokeWidth={4} pathLength={1} className={A.draw} />
       <line x1={0} y1={470} x2={1680} y2={470} stroke={C.faint} strokeWidth={3} />
     </svg>
-    <M5Seg n={1} x={0} w={320} tone="violet" name="Innovateurs" pct="2,5 %" who="annie" />
-    <M5Seg n={2} x={320} w={260} tone="blue" name="Adopteurs précoces" pct="13,5 %" who="karim" />
-    <M5Seg n={3} x={580} w={260} tone="teal" name="Majorité précoce" pct="34 %" who="julie" />
-    <M5Seg n={4} x={840} w={260} tone="yellow" name="Majorité tardive" pct="34 %" who="maxime" />
+    <M5Seg n={1} x={0} w={320} tone="violet" name="Innovateurs" pct="2,5 %" who="eric" />
+    <M5Seg n={2} x={320} w={260} tone="blue" name="Adopteurs précoces" pct="13,5 %" who="mathieu" />
+    <M5Seg n={3} x={580} w={260} tone="teal" name="Majorité précoce" pct="34 %" who="nadia" />
+    <M5Seg n={4} x={840} w={260} tone="yellow" name="Majorité tardive" pct="34 %" who="patrice" />
     <M5Seg n={5} x={1100} w={580} tone="grey" name="Retardataires" pct="16 %" />
   </Frame>
 );
@@ -7493,12 +7644,12 @@ const M5Phase = ({ n, tone, days, verb, children }: { n: number; tone: Tone; day
 const M5_Plan: Page = () => (
   <Frame mod={5} beats={3}>
     <Title>Un plan d’adoption sur 90 jours</Title>
-    <Lede>Petit, mesuré, partagé. C’est ce que Karim propose à Luc pour l’équipe Limoilou.</Lede>
+    <Lede>Petit, mesuré, partagé. C’est ce que Mathieu propose à Hélène pour l’équipe de gestion de projet.</Lede>
     <div style={{ position: 'absolute', left: 120, top: 280, width: 1680, display: 'flex', gap: 30 }}>
       <M5Phase n={1} tone="blue" days="Jours 1 à 30" verb="Essayer">
-        <Bullet size={26}>Deux cas pilotes : comptes rendus et rapport hebdo</Bullet>
+        <Bullet size={26}>Deux cas pilotes : comptes rendus et tri des courriels</Bullet>
         <Bullet size={26}>Une charte d’usage d’une page</Bullet>
-        <Bullet size={26}>Annie, personne-ressource</Bullet>
+        <Bullet size={26}>Un chargé de projet et une adjointe, personnes-ressources</Bullet>
       </M5Phase>
       <M5Phase n={2} tone="teal" days="Jours 31 à 60" verb="Mesurer">
         <Bullet size={26} tone="teal">Temps gagné par semaine</Bullet>
@@ -7507,11 +7658,11 @@ const M5_Plan: Page = () => (
       </M5Phase>
       <M5Phase n={3} tone="green" days="Jours 61 à 90" verb="Étendre">
         <Bullet size={26} tone="green">Bibliothèque de demandes partagée</Bullet>
-        <Bullet size={26} tone="green">Trois nouveaux cas d’usage</Bullet>
+        <Bullet size={26} tone="green">Visites de chantier, relances, fiche de démarrage</Bullet>
         <Bullet size={26} tone="green">Charte révisée avec l’équipe</Bullet>
       </M5Phase>
     </div>
-    <Callout cls={b.on(3)} title="Pour convaincre Luc" tone="yellow" icon="chart" size={26} style={{ position: 'absolute', left: 120, top: 750, width: 1680, ...dl(400) }}>
+    <Callout cls={b.on(3)} title="Pour convaincre la direction" tone="yellow" icon="chart" size={26} style={{ position: 'absolute', left: 120, top: 750, width: 1680, ...dl(400) }}>
       Des chiffres mesurés sur deux usages valent mieux que dix promesses : temps gagné, erreurs évitées.
     </Callout>
   </Frame>
@@ -7527,23 +7678,23 @@ const M5Rule = ({ n, children }: { n: number; children: ReactNode }) => (
 
 const M5_Charter: Page = () => (
   <Frame mod={5}>
-    <Title>La charte d’usage de l’équipe Limoilou</Title>
+    <Title>La charte d’usage de l’équipe</Title>
     <Lede>Une page, huit règles, décidées ensemble. Un modèle à adapter pour votre équipe.</Lede>
     <div className={A.in} style={{ position: 'absolute', left: 120, top: 280, width: 1680, boxSizing: 'border-box', background: C.card, borderRadius: 18, boxShadow: `${SHADOW}, inset 0 8px 0 ${C.blue}`, padding: '32px 44px', ...dl(100) }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
         <IconTile name="shieldCheck" tone="blue" size={56} solid />
-        <span style={{ fontFamily: display, fontWeight: 700, fontSize: 38, color: C.ink }}>Charte d’usage de l’IA · Projet Limoilou</span>
+        <span style={{ fontFamily: display, fontWeight: 700, fontSize: 38, color: C.ink }}>Charte d’usage de l’IA · Gestion de projet</span>
         <Tag tone="grey" size={20} style={{ marginLeft: 'auto' }}>
           Version 1 · revue toutes les 4 semaines
         </Tag>
       </div>
       <div style={{ marginTop: 28, display: 'grid', gridTemplateColumns: '1fr 1fr', columnGap: 50, rowGap: 22 }}>
-        <M5Rule n={1}>Outils : Copilot (licence de l’entreprise) et ClickUp. Rien d’autre sans l’accord d’Annie.</M5Rule>
-        <M5Rule n={2}>Jamais de CV, salaires, données de santé ni contrats dans un outil non approuvé.</M5Rule>
+        <M5Rule n={1}>Outils : Copilot avec le compte Lessard ; Claude pour les comptes approuvés. Rien d’autre sans les TI.</M5Rule>
+        <M5Rule n={2}>Jamais de prix, contrats, renseignements personnels ni photos de clients dans un outil non approuvé.</M5Rule>
         <M5Rule n={3}>Tout document généré est relu par son auteur avant diffusion.</M5Rule>
-        <M5Rule n={4}>Mention « préparé avec l’IA » sur ce qui sort de l’équipe.</M5Rule>
-        <M5Rule n={5}>Budget, embauches et dates : les décisions restent humaines.</M5Rule>
-        <M5Rule n={6}>Transcription annoncée en début de réunion, jamais pour un sujet RH.</M5Rule>
+        <M5Rule n={4}>Aucun courriel envoyé automatiquement à un client ou à un fournisseur.</M5Rule>
+        <M5Rule n={5}>Avis de modification, prix, dates promises : les décisions restent humaines.</M5Rule>
+        <M5Rule n={6}>Transcription annoncée en début de réunion, jamais pour une négociation.</M5Rule>
         <M5Rule n={7}>Les bonnes demandes vont dans la bibliothèque partagée.</M5Rule>
         <M5Rule n={8}>Un doute ? On demande avant de coller.</M5Rule>
       </div>
@@ -7556,16 +7707,16 @@ const M5_Qcm1: Page = () => (
   <QcmPage
     mod={5}
     n={6}
-    title="Les CV"
-    q="Pour aller vite, Annie colle les 12 CV reçus dans un ChatGPT gratuit et demande un classement. Quel est le problème principal ?"
-    explain="Deux problèmes : des renseignements personnels dans un outil non approuvé (Loi 25), et un tri automatisé exposé aux biais. L’IA peut aider à préparer les critères ou les questions d’entrevue, pas à classer des personnes."
+    title="La soumission"
+    q="Pour aller vite, Éric colle la soumission des Méandres (prix, conditions, nom du client) dans son ChatGPT personnel pour la résumer. Quel est le problème principal ?"
+    explain="Les prix et les conditions d’un contrat sont confidentiels, pour Lessard comme pour le client. Un compte personnel n’offre pas la protection des données d’entreprise. La même demande, sans risque : Copilot avec le compte Lessard."
   >
-    <Opt why="Piège ! La longueur n’est pas le sujet : l’outil les lirait sans difficulté.">Les CV sont trop longs pour l’outil</Opt>
-    <Opt ok why="Oui : des renseignements personnels sortent de l’organisation, et le classement risque de reproduire des biais.">
-      Des données personnelles dans un outil non approuvé, et un tri exposé aux biais
+    <Opt why="Piège ! La longueur n’est pas le sujet : l’outil la lirait sans difficulté.">La soumission est trop longue pour l’outil</Opt>
+    <Opt why="Piège ! La plupart des assistants lisent les PDF. Le problème n’est pas technique.">ChatGPT ne sait pas lire les PDF</Opt>
+    <Opt why="Piège ! Vérifier le résumé ne fait pas revenir les données : elles sont déjà sorties.">Aucun, s’il vérifie le résumé ensuite</Opt>
+    <Opt ok why="Oui : des prix et des conditions confidentiels sortent de l’organisation, dans un compte sans protection des données d’entreprise.">
+      Des données confidentielles sortent dans un outil non approuvé
     </Opt>
-    <Opt why="Piège ! La plupart des assistants lisent les PDF. Le problème n’est pas technique.">ChatGPT ne sait pas lire les CV en PDF</Opt>
-    <Opt why="Piège ! Vérifier le classement ne règle ni la fuite de données ni le biais du tri.">Aucun, si elle vérifie le classement ensuite</Opt>
   </QcmPage>
 );
 
@@ -7574,7 +7725,7 @@ const M5_Qcm2: Page = () => (
     mod={5}
     n={7}
     title="La complaisance"
-    q="Karim demande : « Mon échéancier est réaliste, n’est-ce pas ? » L’IA répond : « Oui, tout à fait ! » Que doit-il en retenir ?"
+    q="Mathieu demande : « Mon échéancier est réaliste, n’est-ce pas ? » L’IA répond : « Oui, tout à fait ! » Que doit-il en retenir ?"
     explain="Une question qui contient la réponse attendue appelle une réponse complaisante. Pour un vrai regard critique, on demande explicitement les faiblesses, les risques ou un avis contradictoire."
   >
     <Opt why="Piège ! La question orientait la réponse : ce « oui » ne vaut pas une validation.">Que son échéancier est validé</Opt>
@@ -7592,10 +7743,10 @@ const M5_Synth: Page = () => (
     title="Module 5 · Ce qu’il faut retenir"
     poste={
       <>
-        Lisez la politique d’usage de l’IA de votre organisation, ou demandez-la.
+        Lisez la politique d’usage de l’IA de Lessard, ou demandez-la aux TI.
         <br />
         <br />
-        Proposez à votre équipe une charte d’une page, en partant du modèle Limoilou.
+        Proposez à votre équipe une charte d’une page, en partant de ce modèle.
       </>
     }
   >
@@ -7621,11 +7772,11 @@ const M5_Synth: Page = () => (
 
 // ─── M6 · Divider ───────────────────────────────────────────────────────────
 const M6_Divider: Page = () => (
-  <Section n={6} title="Atelier 2 · Un mini-projet avec l’IA" sub="Planifier, suivre, communiquer : un projet complet, un imprévu, une présentation." dur="≈ 2 h 30" kind="atelier">
+  <Section n={6} title="Atelier 2 · Un mini-projet avec l’IA" sub="Un de vos projets, anonymisé, un imprévu de chantier, des messages à chaque public." dur="≈ 2 h 30" kind="atelier">
     <SecItem n={1}>Choisir un projet et le planifier avec l’IA</SecItem>
-    <SecItem n={2}>Affronter un imprévu : suivi et compte rendu</SecItem>
-    <SecItem n={3}>Communiquer à chaque public</SecItem>
-    <SecItem n={4}>Présenter, recevoir et donner de la rétroaction</SecItem>
+    <SecItem n={2}>Affronter un imprévu : compte rendu et suivi</SecItem>
+    <SecItem n={3}>Communiquer : client, équipe, fournisseur, adjointe</SecItem>
+    <SecItem n={4}>Présenter (2 ou 3 volontaires) et donner de la rétroaction</SecItem>
   </Section>
 );
 M6_Divider.transition = BLOOM;
@@ -7654,16 +7805,16 @@ const M6_Brief: Page = () => (
     <Lede>En autonomie, chacun sur son poste. L’IA à chaque étape, et votre jugement à chaque sortie.</Lede>
     <div style={{ position: 'absolute', left: 120, top: 280, width: 1680, display: 'flex', gap: 24 }}>
       <M6Step n={1} tone="teal" icon="gantt" t="30 min" title="Planifier">
-        Charte, découpage, échéancier, risques, RACI : dans l’outil.
+        Fiche de démarrage, découpage, échéancier, risques, RACI : dans l’outil.
       </M6Step>
       <M6Step n={2} tone="violet" icon="eye" t="25 min" title="Suivre">
         Un imprévu tombe : compte rendu, plan mis à jour, rapport.
       </M6Step>
       <M6Step n={3} tone="yellow" icon="megaphone" t="20 min" title="Communiquer">
-        Trois messages, trois publics, et une mini-charte d’usage.
+        Trois messages, trois publics, et vos règles de transfert à l’adjointe.
       </M6Step>
-      <M6Step n={4} tone="green" icon="video" t="3 min / pers." title="Présenter">
-        En partage d’écran : le résultat, l’imprévu, ce que l’IA a raté.
+      <M6Step n={4} tone="green" icon="video" t="3 min" title="Présenter">
+        2 ou 3 volontaires, en partage d’écran : le résultat, l’imprévu, ce que l’IA a raté.
       </M6Step>
     </div>
     <Callout cls={A.in} title="La règle du jeu" tone="blue" icon="star" size={26} style={{ position: 'absolute', left: 120, top: 680, width: 1680, ...dl(700) }}>
@@ -7689,22 +7840,22 @@ const M6Proj = ({ d, icon, tone, title, children, facts }: { d: number; icon: Ic
 const M6_Projects: Page = () => (
   <Frame mod={6} kind="atelier" label="Atelier 2 · Choisir un projet">
     <Title>Choisissez votre projet</Title>
-    <Lede>Quatre projets du fil rouge, un par profil… ou l’un des vôtres, anonymisé.</Lede>
+    <Lede>De préférence l’un des vôtres, anonymisé. Sinon, l’un des quatre projets du fil rouge.</Lede>
     <div style={{ position: 'absolute', left: 120, top: 270, width: 1680, display: 'grid', gridTemplateColumns: 'repeat(3, 540px)', rowGap: 30, columnGap: 30 }}>
-      <M6Proj d={100} icon="users" tone="green" title="L’accueil des 8 recrues" facts="RH · 6 semaines · 8 000 $ · Julie">
-        Programme d’intégration : premier jour, formations, parrainage, suivi à 30 jours.
+      <M6Proj d={100} icon="star" tone="blue" title="Votre propre projet" facts="Recommandé · sans client, prix ni adresse">
+        Un de vos projets en cours : c’est celui qui vous servira lundi matin.
       </M6Proj>
-      <M6Proj d={200} icon="megaphone" tone="yellow" title="Les portes ouvertes" facts="Marketing · 8 semaines · 15 000 $ · Maxime">
-        Une journée pour 300 visiteurs : campagne, essais de vélos, partenaires, bénévoles.
+      <M6Proj d={200} icon="facade" tone="teal" title="La pose du hall des Méandres" facts="Installation · 8 semaines · Mathieu">
+        Le mur-rideau et la verrière du hall, de la livraison du verre à la fin de la pose.
       </M6Proj>
-      <M6Proj d={300} icon="calendar" tone="violet" title="Les rendez-vous en ligne" facts="TI · 10 semaines · 12 000 $ · Annie">
-        Prise de rendez-vous pour l’atelier de réparation : outil, essais, formation, lancement.
+      <M6Proj d={300} icon="helmet" tone="coral" title="Les déficiences de fin de projet" facts="Fermeture · 4 semaines · Patrice">
+        De la visite finale avec l’architecte à la levée de la dernière déficience.
       </M6Proj>
-      <M6Proj d={400} icon="archive" tone="teal" title="L’inventaire d’ouverture" facts="Opérations · 7 semaines · 70 000 $ · Karim">
-        Choisir, commander, recevoir et étiqueter 400 produits avant le 10 avril.
+      <M6Proj d={400} icon="chat" tone="green" title="Un appel de service après-vente" facts="Après-vente · 3 semaines · Nadia">
+        Une infiltration d’eau signalée par un client : diagnostic, intervention, suivi.
       </M6Proj>
-      <M6Proj d={500} icon="star" tone="blue" title="Votre propre projet" facts="À annoncer au formateur">
-        Un de vos vrais projets, sans nom, chiffre ni donnée confidentielle.
+      <M6Proj d={500} icon="money" tone="yellow" title="Le transfert d’un nouveau contrat" facts="Ventes → projet · 2 semaines · Éric">
+        Des fenêtres pour une école : de la soumission signée à la réunion de démarrage.
       </M6Proj>
       <div className={A.in} style={{ width: 540, height: 320, boxSizing: 'border-box', borderRadius: 18, border: `3px dashed ${C.rule}`, padding: '24px 26px', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 12, ...dl(600) }}>
         <Icon name="lock" size={44} color={C.coral} />
@@ -7768,10 +7919,10 @@ const M6_Plan: Page = () => (
     lede="Comme à l’atelier 1, en plus rapide : vous connaissez maintenant les pièges."
     timer="m6-plan"
     minutes={30}
-    tip="Modèles « Plan de projet » et « Risques ». N’oubliez pas : « Signale ce que tu as supposé. »"
+    tip="Modèles « Fiche de démarrage » et « Relance ». N’oubliez pas : « Signale ce que tu as supposé. »"
     items={
       <>
-        <M6Do id="m6p-1">Une charte d’une page, avec objectif mesurable</M6Do>
+        <M6Do id="m6p-1">Une fiche de démarrage d’une page, avec les points à clarifier</M6Do>
         <M6Do id="m6p-2">Découpage en lots et tâches, avec dépendances</M6Do>
         <M6Do id="m6p-3">Échéancier avec 3 jalons et le chemin critique</M6Do>
         <M6Do id="m6p-4">5 risques, chacun avec une mesure</M6Do>
@@ -7783,12 +7934,12 @@ const M6_Plan: Page = () => (
 
 // ─── M6 · The twist: draw an unexpected event ───────────────────────────────
 const M6_EVENTS: { icon: IconName; tone: Tone; title: string; text: string }[] = [
-  { icon: 'truck', tone: 'coral', title: 'Retard fournisseur', text: 'Votre principal fournisseur annonce 3 semaines de retard, sans solution de rechange.' },
-  { icon: 'money', tone: 'yellow', title: 'Budget réduit', text: 'Luc annonce une coupe de 10 % du budget, à appliquer dès cette semaine.' },
-  { icon: 'user', tone: 'violet', title: 'Absence', text: 'Une personne clé de l’équipe est absente pour deux semaines, à partir de demain.' },
-  { icon: 'calendar', tone: 'coral', title: 'Date avancée', text: 'La direction avance l’échéance d’une semaine pour coïncider avec une annonce.' },
-  { icon: 'globe', tone: 'blue', title: 'Nouvelle exigence', text: 'Tout doit maintenant être bilingue, français et anglais, pour un partenaire.' },
-  { icon: 'plug', tone: 'teal', title: 'Outil en panne', text: 'L’outil principal du projet est indisponible pendant trois jours.' },
+  { icon: 'truck', tone: 'coral', title: 'Livraison en retard', text: 'Le verrier annonce 3 semaines de retard sur les unités scellées, sans solution de rechange.' },
+  { icon: 'money', tone: 'yellow', title: 'Avis de modification', text: 'L’EG demande d’ajouter 4 fenêtres et veut votre prix d’ici vendredi.' },
+  { icon: 'helmet', tone: 'violet', title: 'Contremaître absent', text: 'Le contremaître de l’équipe de pose est absent deux semaines, à partir de demain.' },
+  { icon: 'calendar', tone: 'coral', title: 'Date avancée', text: 'L’EG avance d’une semaine la date du bâtiment fermé.' },
+  { icon: 'camera', tone: 'blue', title: 'Déficience découverte', text: 'À la visite, l’architecte refuse 6 fenêtres : écart de couleur des profilés.' },
+  { icon: 'chat', tone: 'teal', title: 'Client mécontent', text: 'Le client se plaint par écrit d’une infiltration d’eau et menace de retenir un paiement.' },
 ];
 
 const M6_Twist: Page = () => {
@@ -7829,12 +7980,12 @@ const M6_Twist: Page = () => {
           <Eyebrow c={C.muted} size={22}>
             Les six imprévus possibles
           </Eyebrow>
-          <Tag tone="coral">Retard fournisseur</Tag>
-          <Tag tone="yellow">Budget réduit de 10 %</Tag>
-          <Tag tone="violet">Personne clé absente</Tag>
+          <Tag tone="coral">Livraison en retard</Tag>
+          <Tag tone="yellow">Avis de modification</Tag>
+          <Tag tone="violet">Contremaître absent</Tag>
           <Tag tone="coral">Échéance avancée</Tag>
-          <Tag tone="blue">Tout en bilingue</Tag>
-          <Tag tone="teal">Outil en panne</Tag>
+          <Tag tone="blue">Déficience découverte</Tag>
+          <Tag tone="teal">Client mécontent</Tag>
         </div>
       </div>
     </Frame>
@@ -7846,17 +7997,17 @@ const M6_Track: Page = () => (
     n={2}
     tone="violet"
     title="Étape 2 · Suivre : réagir à l’imprévu"
-    lede="Écrivez les notes brutes d’une réunion de suivi sur l’imprévu, puis laissez l’IA vous aider."
+    lede="Écrivez (ou dictez) les notes brutes d’une réunion de chantier sur l’imprévu, puis laissez l’IA vous aider."
     timer="m6-track"
     minutes={25}
-    tip="Modèles « Compte rendu » et « Rapport hebdomadaire ». Exigez [à confirmer] plutôt que des inventions."
+    tip="Modèles « Compte rendu » et « Rapport de visite ». Exigez [à confirmer] plutôt que des inventions."
     items={
       <>
         <M6Do id="m6t-1">8 à 10 lignes de notes brutes, comme en sortant de réunion</M6Do>
         <M6Do id="m6t-2">Compte rendu généré : décisions, actions, points ouverts</M6Do>
         <M6Do id="m6t-3">Relecture : les quatre erreurs typiques vérifiées</M6Do>
         <M6Do id="m6t-4">Plan mis à jour dans l’outil, chemin critique revu</M6Do>
-        <M6Do id="m6t-5">Rapport au commanditaire avec météo assumée</M6Do>
+        <M6Do id="m6t-5">Rapport à la direction avec une météo assumée</M6Do>
       </>
     }
   />
@@ -7867,17 +8018,17 @@ const M6_Comm: Page = () => (
     n={3}
     tone="yellow"
     title="Étape 3 · Communiquer à chaque public"
-    lede="Un même imprévu, trois messages. Puis cinq règles d’usage pour votre équipe."
+    lede="Un même imprévu, trois messages. Puis vos règles de transfert à l’adjointe."
     timer="m6-comm"
     minutes={20}
-    tip="Modèle « Message délicat ». Demandez aussi : « Relis ce courriel comme si tu étais le destinataire. »"
+    tip="Modèle « Relance ». Demandez aussi : « Relis ce courriel comme si tu étais le destinataire. »"
     items={
       <>
-        <M6Do id="m6c-1">Courriel au commanditaire : impact et deux options</M6Do>
-        <M6Do id="m6c-2">Message d’équipe : ce qui change, qui fait quoi</M6Do>
-        <M6Do id="m6c-3">Message externe : fournisseur, partenaire ou employés</M6Do>
+        <M6Do id="m6c-1">Courriel au client ou à l’EG : impact et deux options</M6Do>
+        <M6Do id="m6c-2">Message à l’équipe : ce qui change, qui fait quoi</M6Do>
+        <M6Do id="m6c-3">Relance au fournisseur ou à l’architecte</M6Do>
         <M6Do id="m6c-4">Données anonymisées avant tout copier-coller</M6Do>
-        <M6Do id="m6c-5">Mini-charte d’usage de l’IA : 5 règles</M6Do>
+        <M6Do id="m6c-5">Vos règles de transfert : 5 cas, chacun avec sa consigne</M6Do>
       </>
     }
   />
@@ -7900,10 +8051,10 @@ const M6Slot = ({ n, t, title, children }: { n: number; t: string; title: string
 const M6_Pitch: Page = () => (
   <Frame mod={6} kind="atelier" label="Atelier 2 · Présenter">
     <Title>Votre présentation : 3 minutes, 5 temps</Title>
-    <Lede>En partage d’écran : montrez l’outil, pas des diapositives. Et dites la vérité sur l’IA.</Lede>
+    <Lede>Deux ou trois volontaires, en partage d’écran : montrez l’outil, pas des diapositives.</Lede>
     <div style={{ position: 'absolute', left: 120, top: 280, width: 1080, display: 'flex', flexDirection: 'column', gap: 14 }}>
       <M6Slot n={1} t="20 s" title="Le projet en une phrase">
-        Objectif, date, budget
+        Le bâtiment, les systèmes, l’échéance
       </M6Slot>
       <M6Slot n={2} t="50 s" title="Le plan, dans l’outil">
         Lots, jalons, chemin critique, un risque
@@ -7912,7 +8063,7 @@ const M6_Pitch: Page = () => (
         Ce qui a changé dans le plan
       </M6Slot>
       <M6Slot n={4} t="30 s" title="Un message, lu à voix haute">
-        Au commanditaire ou à l’équipe
+        Au client, à l’EG ou à l’équipe
       </M6Slot>
       <M6Slot n={5} t="40 s" title="Ce que l’IA a raté">
         Et ce que vous avez corrigé
@@ -7939,14 +8090,14 @@ const M6_Work: Page = () => (
         <b>0:30 – 0:55</b> · Suivre : l’imprévu, compte rendu, plan mis à jour, rapport
       </SynthRow>
       <SynthRow n={3} tone="yellow" d={400}>
-        <b>0:55 – 1:15</b> · Communiquer : trois messages et la mini-charte
+        <b>0:55 – 1:15</b> · Communiquer : trois messages et les règles de transfert
       </SynthRow>
       <SynthRow n={4} tone="green" d={500}>
-        <b>Ensuite</b> · Pause, puis présentations : 3 minutes par participant
+        <b>Ensuite</b> · Pause, puis 2 ou 3 présentations volontaires, 3 minutes chacune
       </SynthRow>
     </div>
     <Callout cls={A.in} title="Coincés ?" tone="blue" icon="chat" size={25} style={{ position: 'absolute', left: 120, top: 760, width: 460, ...dl(600) }}>
-      Signalez-le, ou demandez à l’IA de vous poser ses questions.
+      Signalez-le au micro, ou demandez à Copilot de vous poser ses questions.
     </Callout>
   </Frame>
 );
@@ -7995,7 +8146,7 @@ const M6_Feedback: Page = () => {
   return (
     <Frame mod={6} kind="atelier" label="Atelier 2 · Rétroaction collective">
       <Title>Rétroaction collective</Title>
-      <Lede>Après chaque présentation : un point fort et une piste. Le formateur synthétise la grille.</Lede>
+      <Lede>Après chaque présentation volontaire : un point fort et une piste. Le formateur synthétise la grille.</Lede>
       <div className={A.in} style={{ position: 'absolute', left: 120, top: 270, width: 1140, boxSizing: 'border-box', background: C.card, borderRadius: 18, boxShadow: SHADOW, padding: '14px 32px 10px', ...dl(100) }}>
         <M6StarRow label="Un plan réaliste" sub="Dates, dépendances et responsables vérifiés" v={r[0]} set={set(0)} />
         <M6StarRow label="Une réaction à l’imprévu" sub="Le plan et le chemin critique mis à jour" v={r[1]} set={set(1)} />
@@ -8056,7 +8207,7 @@ const M6_Debrief: Page = () => (
       <Poll cls={A.in} style={{ marginTop: 22, ...dl(360) }}>
         <PollRow id="plan" icon="gantt" tone="teal" label="1 · Le plan de départ" />
         <PollRow id="cr" icon="note" tone="violet" label="2 · Le compte rendu" />
-        <PollRow id="report" icon="chart" tone="blue" label="3 · Le rapport au commanditaire" />
+        <PollRow id="mail" icon="inbox" tone="blue" label="3 · Le tri et les relances" />
         <PollRow id="msg" icon="mail" tone="yellow" label="4 · Les messages aux publics" />
         <PollRow id="none" icon="clock" tone="coral" label="5 · Aucun : la vérification a tout pris" />
       </Poll>
@@ -8085,19 +8236,19 @@ const CL_Journey: Page = () => (
         Elle apprend d’exemples et prédit le mot probable, pas le vrai.
       </CLMod>
       <CLMod n={2} tone="teal" title="L’IA en gestion de projet" d={200}>
-        Planifier, suivre, rendre compte, communiquer, en cinq ingrédients.
+        Planifier, trier, rendre compte, relancer, en cinq ingrédients.
       </CLMod>
       <CLMod n={3} tone="yellow" title="Atelier 1" d={300}>
-        Un plan généré en minutes, vérifié ligne par ligne.
+        Le projet lancé en minutes, vérifié ligne par ligne. Une boîte triée.
       </CLMod>
       <CLMod n={4} tone="violet" title="Automatiser et collaborer" d={400}>
-        Comptes rendus, tâches, alertes, bibliothèque d’équipe.
+        Comptes rendus, visites de chantier, relances, transferts à l’adjointe.
       </CLMod>
       <CLMod n={5} tone="coral" title="Limites et adoption" d={500}>
-        Biais, erreurs, données : encadrer, puis embarquer l’équipe.
+        Erreurs, données des clients : encadrer, puis embarquer l’équipe.
       </CLMod>
       <CLMod n={6} tone="green" title="Atelier 2" d={600}>
-        Un projet complet, un imprévu, et l’IA sous contrôle.
+        Un de vos projets, un imprévu de chantier, et l’IA sous contrôle.
       </CLMod>
     </div>
   </Frame>
@@ -8120,11 +8271,11 @@ const CL_Quiz: Page = () => (
       <Opt why="Piège ! Un compte rendu se relit : fausse décision, mauvaise personne, date inventée, point disparu.">
         Diffuser le compte rendu généré sans relecture
       </Opt>
-      <Opt ok why="Oui : « Quelles durées as-tu supposées ? » révèle souvent les inventions.">
+      <Opt ok why="Oui : « Quels délais as-tu supposés ? » révèle souvent les inventions.">
         Demander à l’IA ce qu’elle a supposé ou deviné
       </Opt>
-      <Opt why="Piège ! Des CV dans un outil non approuvé : renseignements personnels exposés et tri biaisé.">
-        Classer les CV des candidats avec un assistant gratuit
+      <Opt why="Piège ! Une relance générée part sous votre nom : l’IA prépare, vous relisez et vous envoyez.">
+        Programmer l’envoi automatique des relances aux clients
       </Opt>
     </Qcm>
   </Frame>
@@ -8149,18 +8300,18 @@ const CL_Action: Page = () => (
     <Title>Votre plan d’action : trois engagements</Title>
     <Lede>Écrivez-les maintenant, dans un document à vous. Un engagement écrit a bien plus de chances d’être tenu.</Lede>
     <div style={{ position: 'absolute', left: 120, top: 290, width: 1680, display: 'flex', gap: 30 }}>
-      <CLWhen d={100} tone="blue" icon="bolt" when="Cette semaine" ex="la demande de compte rendu à ma prochaine réunion.">
+      <CLWhen d={100} tone="blue" icon="bolt" when="Cette semaine" ex="le tri de ma boîte de réception, lundi matin.">
         Une demande de la bibliothèque, essayée sur un vrai cas.
       </CLWhen>
-      <CLWhen d={250} tone="teal" icon="calendar" when="Ce mois-ci" ex="le rapport hebdo préparé avec l’IA, et le temps mesuré.">
+      <CLWhen d={250} tone="teal" icon="calendar" when="Ce mois-ci" ex="mes comptes rendus de chantier préparés avec l’IA, et le temps mesuré.">
         Un usage installé dans votre routine de projet.
       </CLWhen>
-      <CLWhen d={400} tone="green" icon="users" when="Dans 3 mois" ex="une charte d’usage proposée et adoptée par l’équipe.">
+      <CLWhen d={400} tone="green" icon="users" when="Dans 3 mois" ex="des règles de transfert écrites avec mon adjointe.">
         Une pratique partagée avec votre équipe.
       </CLWhen>
     </div>
     <Callout cls={A.in} title="Petit et précis" tone="yellow" icon="target" size={26} style={{ position: 'absolute', left: 120, top: 800, width: 1680, ...dl(600) }}>
-      « Faire mon compte rendu du mardi avec le modèle » plutôt que « utiliser l’IA plus souvent ».
+      « Faire le compte rendu de la réunion de chantier du mardi avec le modèle » plutôt que « utiliser l’IA plus souvent ».
     </Callout>
   </Frame>
 );
@@ -8181,7 +8332,7 @@ const CL_Toolbox: Page = () => (
         Rôle, contexte, tâche, format, contraintes. Module 2.
       </CLTool>
       <CLTool d={200} icon="book" tone="teal" title="La bibliothèque">
-        Six demandes types : plan, compte rendu, rapport, message, risques, réunion. Module 4.
+        Six demandes types : tri, compte rendu, visite, relance, démarrage, rapport. Module 4.
       </CLTool>
       <CLTool d={300} icon="check" tone="green" title="La grille de contrôle">
         Huit critères pour vérifier un plan généré. Atelier 1.
@@ -8257,7 +8408,7 @@ export default [
   GP_Objectives,
   GP_Program,
   GP_HowWeWork,
-  GP_Velo,
+  GP_Case,
   GP_Brief,
   GP_Quiz0,
   M1_Divider,
@@ -8302,8 +8453,8 @@ export default [
   M3_Divider,
   M3_Brief,
   M3_File,
-  M3_Notion,
-  M3_ClickUp,
+  M3_Outlook,
+  M3_Chat,
   M3_Charter,
   M3_Wbs,
   M3_Gantt,
@@ -8312,6 +8463,7 @@ export default [
   M3_Board,
   M3_Check,
   M3_Traps,
+  M3_Inbox,
   M3_Work,
   M3_Debrief,
   J1_Wrap,
@@ -8324,6 +8476,7 @@ export default [
   M4_Transcript,
   M4_CrPrompt,
   M4_CrErrors,
+  M4_Visit,
   M4_Tools,
   M4_Consent,
   M4_ToTasks,
@@ -8378,11 +8531,11 @@ export const notes: (string | undefined)[] = [
 
 OBJECTIF — Installer un climat chaleureux et poser le cadre : deux jours pour passer de « j'entends parler de l'IA partout » à « je sais où elle m'aide dans mes projets, et où elle ne m'aide pas ».
 
-DIRE — « Bonjour et bienvenue à la formation IA appliquée à la gestion de projet. Pendant deux jours, on va comprendre ce qu'est l'intelligence artificielle, sans jargon, puis l'utiliser pour planifier, suivre et communiquer dans un projet. Aujourd'hui : comprendre et planifier. Demain : automatiser, collaborer, et adopter l'IA de façon responsable. »
+DIRE — « Bonjour et bienvenue. Cette formation a été préparée pour l'équipe de gestion de projet du Groupe Lessard : chargés de projet et adjointes. Pendant deux jours, on va comprendre ce qu'est l'intelligence artificielle, sans jargon, puis l'utiliser sur ce qui vous prend du temps : les courriels, les relances, les comptes rendus de réunion et de visite, l'échéancier. Aujourd'hui : comprendre et planifier. Demain : automatiser, collaborer, et adopter l'IA de façon responsable. »
 
-Montrer l'animation : « À droite, un plan de projet qui se construit tout seul. Ce n'est pas de la magie : c'est ce qu'on fera ensemble cet après-midi, avec une IA, puis en vérifiant tout. »
+Montrer l'animation : « À droite, l'échéancier d'un lot d'enveloppe : transfert des ventes, dessins d'atelier, commande, fabrication, installation, jusqu'au bâtiment fermé. On le construira cet après-midi avec l'IA, puis on vérifiera tout. »
 
-LOGISTIQUE — Classe virtuelle : horaire (9 h – 16 h), pauses (10 h 30 et 14 h 30), dîner (12 h – 13 h). Vérifiez son, caméra et clavardage ; demandez à chacun d'ouvrir dès maintenant un assistant d'IA dans un autre onglet ou sur un second écran (un compte gratuit ChatGPT, Gemini, Copilot ou Claude suffit). Évaluation à la fin du jour 2.
+LOGISTIQUE — Classe virtuelle : horaire (9 h – 16 h), pauses (10 h 30 et 14 h 30), dîner (12 h – 13 h). Vérifiez son, caméra et Chat ; demandez à chacun d'ouvrir dès maintenant Copilot (copilot.microsoft.com avec le compte Lessard, ou le bouton Copilot dans Outlook) dans un autre onglet ou sur un second écran. Ceux qui ont un compte Claude peuvent l'ouvrir aussi. Évaluation à la fin du jour 2.
 
 TRANSITION — « Avant d'entrer dans le sujet, quelques mots sur moi. »`,
   `⏱ 3 min
@@ -8393,25 +8546,27 @@ DIRE — Présentez-vous en 60 à 90 secondes. À PERSONNALISER : votre parcours
 
 Puis les quatre engagements :
 1. Sans jargon — « Vous n'avez besoin d'aucune connaissance technique. Si j'utilise un mot compliqué, arrêtez-moi. »
-2. Vos outils — « On travaille avec ce que vous avez déjà : Outlook, Teams, Google, Notion, Trello… ou une version gratuite d'un assistant. »
-3. Des modèles réutilisables — « Vous repartez avec des demandes types : plan de projet, compte rendu, rapport d'avancement. »
+2. Vos outils — « On travaille avec Copilot, celui de votre compte Microsoft 365, dans Outlook, Teams, Word et Excel. Je montrerai aussi Claude, puisque certains d'entre vous y ont accès, et on parlera de Smartsheet, Procore et Bluebeam. »
+3. Des modèles réutilisables — « Vous repartez avec des demandes types : relance, tri de courriels, compte rendu de réunion, rapport de visite. »
 4. Un regard lucide — « L'IA se trompe. On verra quand, pourquoi, et comment s'en protéger. »
 
-INTERACTION — « Qui a déjà demandé quelque chose à ChatGPT ou à Copilot cette semaine ? » Réponses à voix haute : souvent la majorité. « Parfait, on part de là. »
+INTERACTION — « Qui a déjà demandé quelque chose à Copilot ou à ChatGPT cette semaine ? » Réponses à voix haute. Le questionnaire préalable indique que tout le monde connaît Copilot et ChatGPT : « Parfait, on part de là. »
 
 TRANSITION — « À votre tour maintenant. »`,
   `⏱ 15 min (1 min par personne, ajuster selon la taille du groupe)
 
 OBJECTIF — Connaître le groupe, ses projets et ses irritants, pour adapter les exemples des deux jours.
 
-ANIMATION — Lancez le minuteur. Appelez chaque personne par son prénom (ordre de la liste des participants) ; elle ouvre son micro et répond aux trois questions. Notez dans un document à vous les tâches qui « prennent le plus de temps » : vous y reviendrez au module 2 (cas d'usage) et à l'atelier 2 (mini-projet).
+ANIMATION — Lancez le minuteur. Appelez chaque personne par son prénom (ordre de la liste des participants) ; elle ouvre son micro et répond aux trois questions. Notez dans un document à vous les tâches qui « prennent le plus de temps » : vous y reviendrez au module 2 (cas d'usage) et à l'atelier 2 (mini-projet sur un vrai dossier).
 
-SONDAGE ÉCLAIR — Chacun annonce à voix haute le numéro de la ligne qui le décrit (1 à 5). Cliquez une fois la ligne par réponse (le bouton « − » corrige une erreur). Les barres se comparent automatiquement. Variante : le sondage intégré de Teams ou Zoom.
+CE QUE LE QUESTIONNAIRE A DÉJÀ DIT (3 réponses) — Suivis automatiques auprès des clients, rédaction de documents, comptes rendus de réunion, gestion des priorités, classement, remplacement de pages dans la voûte. Outils : Office, Outlook, Excel, Smartsheet, Bluebeam, Autodesk, Procore, Epicor Kinetic. Citez-les : « Vous m'avez parlé de… : on va le traiter. »
 
-LECTURE DU RÉSULTAT —
+SONDAGE ÉCLAIR — Chacun annonce à voix haute le numéro de la ligne qui le décrit (1 à 5). Cliquez une fois la ligne par réponse (le bouton « − » corrige une erreur). Variante : le sondage intégré de Teams.
+
+LECTURE DU RÉSULTAT — Le questionnaire montre des niveaux très différents (de « débutant total » à « avancé »).
 • Majorité « jamais / personnel » : prenez votre temps au module 1, multipliez les démonstrations en direct.
-• Majorité « au travail / dans mes projets » : accélérez les définitions, insistez sur les outils intégrés et la vérification.
-• Quelqu'un répond « Mon équipe a des règles d'usage » : demandez-lui de les partager au module 5.
+• Majorité « au travail / dans mes projets » : accélérez les définitions, insistez sur Copilot dans Outlook et Teams, et sur la vérification.
+• Repérez les utilisateurs avancés : proposez-leur les variantes « pour aller plus loin » des ateliers.
 
 TRANSITION — « Merci ! Voici ce que je vous propose d'atteindre ensemble. »`,
   `⏱ 2 min
@@ -8419,11 +8574,11 @@ TRANSITION — « Merci ! Voici ce que je vous propose d'atteindre ensemble. »`
 OBJECTIF — Présenter les cinq objectifs officiels comme une progression.
 
 DIRE — « Cinq marches, qui reprennent les objectifs de la formation. »
-1. COMPRENDRE — « Ce matin : ce qu'est l'IA, et ce qu'elle fait concrètement dans un projet. »
-2. UTILISER — « Cet après-midi : les assistants génériques, ChatGPT, Gemini, Copilot, Claude, et l'IA intégrée dans Notion, ClickUp ou Teams. Atelier : générer un plan de projet. »
-3. AUTOMATISER — « Demain matin : comptes rendus, résumés de réunions, suivi des tâches et alertes. »
-4. COLLABORER — « Des pratiques d'équipe : bibliothèque de demandes, règles communes. »
-5. MAÎTRISER — « Les biais, les erreurs, la confidentialité, et comment embarquer une équipe. »
+1. COMPRENDRE — « Ce matin : ce qu'est l'IA, et ce qu'elle fait concrètement dans un projet comme les vôtres. »
+2. UTILISER — « Cet après-midi : Copilot et les autres assistants. Atelier : lancer un projet à partir du dossier des ventes et reprendre le contrôle d'une boîte de réception. »
+3. AUTOMATISER — « Demain matin : comptes rendus de réunion de chantier, rapports de visite, tri des courriels, relances. »
+4. COLLABORER — « Des pratiques communes entre chargés de projet et adjointes : transferts, bibliothèque de demandes, règles. »
+5. MAÎTRISER — « Les erreurs, la confidentialité des données de vos clients, et comment adopter l'IA en équipe. »
 
 INTERACTION — « Laquelle de ces marches vous intéresse le plus ? » Deux ou trois réponses rapides suffisent.
 
@@ -8432,11 +8587,11 @@ TRANSITION — « Voici comment ces deux jours s'organisent. »`,
 
 OBJECTIF — Donner de la visibilité sur le déroulement.
 
-DIRE — « Jour 1 : comprendre et planifier. Module 1, l'IA expliquée simplement. Module 2, l'IA dans la gestion de projet : cas d'usage et outils du quotidien. Puis l'atelier 1 : vous générez un plan de projet avec l'IA et vous le vérifiez. »
+DIRE — « Jour 1 : comprendre et planifier. Module 1, l'IA expliquée simplement. Module 2, l'IA dans la gestion de projet : vos cas d'usage et Copilot au quotidien. Puis l'atelier 1 : vous lancez le projet des Méandres avec l'IA et vous triez sa boîte de réception. »
 
-« Jour 2 : automatiser et adopter. Module 4, comptes rendus, résumés de réunions et suivi des tâches. Module 5, limites, éthique et conduite du changement. Puis l'atelier 2, le gros morceau : un mini-projet complet avec l'IA, que vous présenterez au groupe. »
+« Jour 2 : automatiser et adopter. Module 4, réunions de chantier, visites, relances et suivi. Module 5, limites, confidentialité et adoption. Puis l'atelier 2 : un mini-projet complet, si possible sur un de vos vrais dossiers, anonymisé. »
 
-À SOULIGNER — Les ateliers sont les carrés jaunes (modules 3 et 6). Précisez qu'ils se font en autonomie, chacun sur son poste, avec des points d'étape réguliers.
+À SOULIGNER — Les ateliers sont les carrés jaunes (modules 3 et 6). Ils se font en autonomie, chacun sur son poste, avec des points d'étape réguliers.
 
 TRANSITION — « Parlons de la façon dont on va travailler. »`,
   `⏱ 2 min
@@ -8445,58 +8600,60 @@ OBJECTIF — Expliquer les codes visuels et le contrat de participation.
 
 DIRE — « Vous verrez des étiquettes en haut des pages. »
 • QCM (violet) — « Vous votez à voix haute, je clique la réponse majoritaire, la rétroaction est immédiate. Les mauvaises réponses sont des pièges volontaires. »
-• EXERCICE (vert) — « On manipule à l'écran : cartes, glisser-déposer, simulateurs. »
+• EXERCICE (vert) — « On manipule à l'écran : cartes, glisser-déposer, simulateurs. Vous me dites quoi faire, je clique. »
 • DÉMO (bleu) — « Je montre en direct, en partage d'écran. »
 • ATELIER (jaune) — « Chacun sur son poste, guidé pas à pas, avec un minuteur et un livrable. »
 
 LES TROIS RÈGLES —
 1. Questions bienvenues à tout moment, au micro ou par écrit.
-2. « Aucune donnée confidentielle dans les outils pendant la formation. » C'est déjà une bonne pratique : on y reviendra au module 5.
-3. Fil rouge : Vélo Fleuve, présenté juste après.
+2. « Aucune donnée confidentielle dans les outils pendant la formation : pas de nom de client, pas de prix, pas d'adresse. » On y reviendra au module 5.
+3. Fil rouge : le Centre sportif des Méandres, présenté juste après.
 
-CLASSE VIRTUELLE — Caméra si possible, micro coupé hors échanges. Idéal : deux écrans, ou la formation dans une fenêtre et l'outil d'IA dans l'autre. En atelier, on travaille sur le projet fictif ou sur une version anonymisée du sien.
+CLASSE VIRTUELLE — Caméra si possible, micro coupé hors échanges. Idéal : deux écrans, ou la formation dans une fenêtre et Copilot dans l'autre.
 
-TRANSITION — « Faisons connaissance avec Vélo Fleuve. »`,
+TRANSITION — « Faisons connaissance avec le projet des Méandres. »`,
   `⏱ 3 min · FIL ROUGE
 
-OBJECTIF — Ancrer la formation dans un projet concret et transversal, réutilisé dans chaque module et dans les deux ateliers.
+OBJECTIF — Ancrer la formation dans un projet qui ressemble aux leurs, réutilisé dans chaque module et dans les deux ateliers.
 
-DIRE — « Vélo Fleuve est une entreprise fictive, mais réaliste : un fabricant de vélos électriques de Lévis, 180 employés, trois boutiques-ateliers. Les ventes montent, alors la direction ouvre une quatrième boutique à Québec, dans Limoilou. »
+DIRE — « Le Centre sportif des Méandres est un projet fictif, mais il devrait vous sembler familier : un bâtiment institutionnel pour une ville, un entrepreneur général, un architecte, et votre lot, l'enveloppe en aluminium et verre. Un mur-rideau de 420 m² dans le hall, 46 fenêtres, 6 portes d'entrée et une verrière. »
+
+« Les noms sont inventés : Construction Boréa, Atelier Mercier, Ville de Rivière-Claire. Aucun vrai client n'apparaît dans la formation. »
 
 Présenter l'équipe (les cartes apparaissent une à une) :
-• Karim, chargé de projet. « Il vient de l'atelier. C'est son premier grand projet : il ressemble à beaucoup d'entre vous. »
-• Luc, le commanditaire : la date et le budget.
-• Julie, RH : huit embauches.
-• Maxime, marketing : campagne et portes ouvertes.
-• Annie, TI : caisse, inventaire, Wi-Fi, prise de rendez-vous.
+• Mathieu, chargé de projet. « Treize projets en parallèle, plus de 80 courriels par jour. Il devrait ressembler à beaucoup d'entre vous. »
+• Hélène, directrice de projets : chaque vendredi, elle veut savoir où en est chaque projet.
+• Nadia, adjointe : elle reçoit les transferts, fait les suivis, classe les documents.
+• Éric, aux ventes : il a vendu le contrat et transmet le dossier, avec ses exclusions et ses promesses.
+• Patrice, contremaître : relevés au chantier, pose, déficiences.
 
-INSISTER — Un projet transversal : RH, marketing, TI, opérations. Chacun d'entre vous s'y retrouvera.
+INSISTER — Tout le cycle est là : de la vente à l'installation et au service après-vente. « Les adjointes sont des personnages à part entière : plusieurs exercices se font de leur point de vue. »
 
-TRANSITION — « Regardons le mandat de Karim. »`,
+TRANSITION — « Regardons le dossier que Mathieu vient de recevoir. »`,
   `⏱ 3 min · FIL ROUGE
 
 OBJECTIF — Poser les données du projet et la question de la formation.
 
-DIRE — « 22 semaines pour ouvrir, le samedi 10 avril. 420 000 $ de budget, travaux compris. Cinq services autour de la table. Huit embauches. »
+DIRE — « 27 semaines avant le bâtiment fermé, le vendredi 14 mai : c'est la date à laquelle l'EG veut l'enveloppe étanche pour lancer les finitions intérieures. 1,2 million de dollars de contrat. 8 semaines de délai pour le verre, une fois la commande passée, donc une commande qui dépend de l'approbation des dessins d'atelier. Et 13 projets suivis par Mathieu en même temps. »
 
-« Et voici ce qui inquiète Karim. » Lire les quatre irritants : l'échéancier à bâtir, la réunion hebdomadaire et ses comptes rendus, savoir ce qui glisse sans relancer tout le monde, informer chacun à sa façon. « Ces quatre irritants correspondent aux quatre usages de l'IA qu'on verra au module 2 : planifier, suivre, faire rapport, communiquer. »
+« Voici ce qui inquiète Mathieu. » Lire les quatre irritants : l'échéancier en cascade, le volume de courriels, les comptes rendus de réunion et de visite, les relances. « Ces quatre irritants viennent du questionnaire que vous avez rempli, et du cadrage avec votre direction. Ils correspondent aux quatre usages qu'on verra au module 2 : planifier, suivre, faire rapport, communiquer. »
 
-QUESTION — Pointer l'encadré : « Où l'IA peut-elle faire gagner du temps à Karim, sans lui faire perdre le contrôle ? C'est la question qu'on se posera pendant deux jours. »
+QUESTION — Pointer l'encadré : « Où l'IA peut-elle faire gagner du temps à Mathieu et à Nadia, sans leur faire perdre le contrôle ? C'est la question qu'on se posera pendant deux jours. »
 
-INTERACTION — « Lequel de ces quatre irritants vivez-vous en ce moment ? » Réponses à voix haute (1 à 4).
+INTERACTION — « Lequel de ces quatre irritants vivez-vous le plus ? » Réponses à voix haute (1 à 4).
 
 TRANSITION — « Testons vos intuitions avant de commencer. »`,
   `⏱ 4 min · QCM À RÉPONSES MULTIPLES
 
 OBJECTIF — Faire émerger les représentations initiales sans juger.
 
-ANIMATION — Lisez la question. Les participants annoncent les lettres qu'ils retiennent (ex. « A et C »). Cochez les options choisies par la majorité, puis « Valider ma sélection ». Cliquez ensuite chaque option pour lire l'explication. Avec →, vous révélez les bonnes réponses, puis l'essentiel.
+ANIMATION — Lisez la question. Les participants annoncent les lettres qu'ils retiennent (ex. « B et D »). Cochez les options choisies par la majorité, puis « Valider ma sélection ». Cliquez ensuite chaque option pour lire l'explication. Avec →, vous révélez les bonnes réponses, puis l'essentiel.
 
-RÉPONSES — A et C.
-• A ✓ — Une première découpe des tâches : l'IA est très bonne pour proposer une structure de départ.
-• B ✗ PIÈGE — « L'IA ne connaît ni l'entrepreneur, ni les délais de livraison du fournisseur. Elle propose des durées plausibles, pas des engagements. »
-• C ✓ — Le compte rendu : un usage très rentable, à condition de relire.
-• D ✗ PIÈGE — « Couper dans le budget, c'est une décision. Elle reste humaine. L'IA peut préparer trois scénarios chiffrés ; Luc tranche. »
+RÉPONSES — B et D.
+• A ✗ PIÈGE — « L'IA ne voit pas l'usine du verrier. Elle propose des délais plausibles, pas des engagements. »
+• B ✓ — Résumer un long fil de courriels : un des usages les plus rentables pour vous.
+• C ✗ PIÈGE — « Accepter un avis de modification, c'est engager Lessard. L'IA peut comparer le prix demandé au contrat et préparer la réponse ; Mathieu, et souvent Hélène, décident. »
+• D ✓ — Une relance précise, à partir des faits que Mathieu fournit. Il relit avant d'envoyer.
 
 MESSAGE CLÉ — L'IA prépare, l'humain décide et vérifie.
 
@@ -8507,7 +8664,7 @@ OBJECTIF — Annoncer le plan du module.
 
 DIRE — « Module 1 : introduction à l'intelligence artificielle. Le but n'est pas de faire de vous des spécialistes, mais que vous compreniez assez bien la machine pour savoir quand lui faire confiance. »
 
-« Au programme : une définition simple et des exemples ; comment une machine apprend et comment un outil comme ChatGPT écrit ses réponses, avec des animations ; la différence entre IA, automatisation et robotisation, trois mots souvent mélangés ; et un panorama des usages, dans votre vie et en entreprise. »
+« Au programme : une définition simple et des exemples ; comment une machine apprend et comment un outil comme Copilot écrit ses réponses, avec des animations ; la différence entre IA, automatisation et robotisation, trois mots souvent mélangés ; et un panorama des usages, dans votre vie et dans une entreprise comme Lessard. »
 
 RYTHME — Environ 1 h 30, avec la pause de 10 h 30 vers la page « IA, automatisation, robotisation ».
 
@@ -8521,7 +8678,7 @@ DIRE — « Avant de définir quoi que ce soit, suivons une journée ordinaire. 
 → beat 2 : « 8 h 10 : le GPS vous fait éviter un bouchon. Il prédit la circulation à partir de millions de trajets. »
 → beat 3 : « 9 h : votre boîte de réception est presque sans pourriels. Le filtre a appris à les reconnaître. »
 → beat 4 : « 11 h 30 : un courriel en anglais ? Un clic, il est traduit. »
-→ beat 5 : « 14 h : votre clavier finit la phrase à votre place. C'est exactement le principe de ChatGPT, en miniature. »
+→ beat 5 : « 14 h : votre clavier finit la phrase à votre place. C'est exactement le principe de Copilot et de ChatGPT, en miniature. »
 → beat 6 : « 20 h 30 : "Vous aimerez aussi…". La plateforme a appris vos goûts. »
 
 QUESTION — « Avant ce matin, combien d'entre vous auraient dit "j'utilise l'IA tous les jours" ? »
@@ -8535,7 +8692,7 @@ DIRE — « Une définition simple, qu'on gardera pour deux jours : des programm
 → beat 1 : « Percevoir : voir une image, entendre une voix. Exemple projet : transcrire une réunion. »
 → beat 2 : « Comprendre : lire un texte et en saisir le sens. Exemple : résumer un fil de 40 courriels. »
 → beat 3 : « Prédire : anticiper à partir du passé. Exemple : repérer la tâche qui va glisser. »
-→ beat 4 : « Générer : produire un texte, une image, un plan. C'est l'IA générative, celle de ChatGPT. »
+→ beat 4 : « Générer : produire un texte, une image, un plan. C'est l'IA générative, celle de Copilot. »
 
 INSISTER — L'IA n'est pas « intelligente » comme nous : elle imite certaines capacités, sans conscience ni compréhension du monde.
 
@@ -8545,7 +8702,7 @@ TRANSITION — « Mais qu'est-ce qui la rend différente d'un logiciel ordinaire
 OBJECTIF — Faire comprendre l'idée centrale de l'apprentissage automatique.
 
 DIRE — « À gauche, la programmation classique. Un humain écrit les règles : si le courriel contient "gratuit", alors c'est un pourriel. »
-→ beat 1 : « Problème : le fournisseur écrit "Livraison gratuite de vos vélos", et le courriel est bloqué à tort. Les règles écrites à la main sont fragiles. »
+→ beat 1 : « Problème : un fournisseur écrit "Échantillons gratuits de quincaillerie", et le courriel est bloqué à tort. Les règles écrites à la main sont fragiles. »
 → beat 2 : « À droite, l'apprentissage automatique. On ne donne plus les règles : on donne 100 000 courriels déjà classés par des humains. La machine en déduit ses propres règles. »
 → beat 3 : « Elle repère seule des centaines d'indices. Ce qu'elle a appris s'appelle un modèle. Et revers de la médaille : elle apprend aussi les erreurs et les biais de ses exemples. On y reviendra demain au module 5. »
 
@@ -8563,7 +8720,7 @@ DIRE — « Chaque point est un courriel. Rond bleu : légitime. Carré rouge : 
 → beat 4 : « Un nouveau courriel arrive. Le modèle ne l'a jamais vu. »
 → beat 5 : « Il le classe… avec une probabilité : pourriel à 92 %. Jamais une certitude. »
 
-INSISTER — Le mot clé est « probabilité ». Toutes les IA, y compris ChatGPT, fonctionnent ainsi.
+INSISTER — Le mot clé est « probabilité ». Toutes les IA, y compris Copilot, fonctionnent ainsi.
 
 TRANSITION — « Toutes les IA apprennent comme ça. Mais elles ne produisent pas toutes la même chose. »`,
   `⏱ 3 min · TROIS FAMILLES (3 clics)
@@ -8571,8 +8728,8 @@ TRANSITION — « Toutes les IA apprennent comme ça. Mais elles ne produisent p
 OBJECTIF — Donner une carte simple des types d'IA.
 
 DIRE — → beat 1 : « L'IA qui prédit : elle classe, estime, anticipe. Le filtre anti-pourriel, la détection de fraude. En projet : estimer une durée, signaler une tâche à risque. »
-→ beat 2 : « L'IA qui perçoit : elle voit et entend. Votre visage, votre voix. En projet : transcrire une réunion, lire une facture numérisée. »
-→ beat 3 : « L'IA qui génère : elle produit du contenu nouveau. ChatGPT, Gemini, Copilot, Claude. En projet : un plan, un compte rendu, un courriel. C'est celle qui nous occupera le plus. »
+→ beat 2 : « L'IA qui perçoit : elle voit et entend. Votre visage, votre voix. Chez vous : transcrire une réunion de chantier, lire un bon de livraison numérisé. »
+→ beat 3 : « L'IA qui génère : elle produit du contenu nouveau. Copilot, ChatGPT, Claude, Gemini. Chez vous : un échéancier, un compte rendu, une relance. C'est celle qui nous occupera le plus. »
 
 À SOULIGNER — Les outils modernes combinent souvent les trois : Teams transcrit (perçoit), puis résume (génère).
 
@@ -8596,10 +8753,10 @@ TRANSITION — « Conséquence directe : ce qui est probable n'est pas toujours 
 
 OBJECTIF — Montrer une hallucination réaliste, dans le contexte du fil rouge.
 
-DIRE — « Karim demande combien de temps durent des travaux d'aménagement. La réponse est claire, précise, rassurante. »
-→ beat 1 : « 11,4 semaines. La virgule fait sérieux. Rien ne dit d'où vient ce chiffre. »
-→ beat 2 : « Une étude d'un "Observatoire québécois des chantiers commerciaux". Le nom est plausible. Cette étude n'existe pas : l'IA l'a fabriquée. »
-→ beat 3 : « Deux semaines pour le permis : peut-être juste. Seule la Ville le sait. »
+DIRE — « Mathieu demande le délai de fabrication des unités scellées. La réponse est claire, précise, rassurante. »
+→ beat 1 : « 6,8 semaines. La virgule fait sérieux. Rien ne dit d'où vient ce chiffre. »
+→ beat 2 : « Une étude d'un "Observatoire québécois du vitrage commercial". Le nom est plausible. Cette étude n'existe pas : l'IA l'a fabriquée. »
+→ beat 3 : « Une semaine de transport : peut-être juste. Seul votre verrier le sait. Et c'est lui qu'il faut appeler, pas l'IA. »
 → beat 4 : « Ça s'appelle une hallucination. Le modèle comble les trous avec du vraisemblable. »
 
 INSISTER — Plus la question est précise (chiffre, date, source, loi), plus il faut vérifier.
@@ -8613,7 +8770,7 @@ DIRE — « 1956 : le terme intelligence artificielle est inventé lors d'une co
 
 Pointer 2022 (en jaune) : « Novembre 2022 : ChatGPT. Pour la première fois, n'importe qui peut parler à une IA, en français, sans rien installer. »
 
-« Depuis 2023, l'IA entre dans les outils que vous utilisez déjà : Outlook, Teams, Google, Notion, ClickUp. C'est ce qui nous intéresse pour la gestion de projet. »
+« Depuis 2023, l'IA entre dans les outils que vous utilisez déjà : Outlook, Teams, Word, Excel, et aussi Procore, Smartsheet, Bluebeam. C'est ce qui nous intéresse pour vos projets. »
 
 TRANSITION — « Vérifions vos réflexes : IA ou pas IA ? »`,
   `⏱ 6 min · EXERCICE : IA OU PAS IA ?
@@ -8626,8 +8783,8 @@ RÉPONSES —
 • Rappel Outlook 15 min avant : pas d'IA, règle fixe.
 • Netflix : IA, apprentissage des goûts.
 • Résumé Teams : IA, perception (transcription) puis génération (résumé).
-• Excel en rouge : pas d'IA, mise en forme conditionnelle.
-• Réponse suggérée Gmail : IA, prédiction de texte.
+• Smartsheet en rouge : pas d'IA, mise en forme conditionnelle.
+• Réponse suggérée Outlook : IA, prédiction de texte.
 • Thermostat à 22 h : pas d'IA. « S'il apprenait vos habitudes tout seul, là ce serait de l'IA. »
 
 MESSAGE CLÉ — Tout ce qui est automatique n'est pas de l'IA. Le critère : est-ce que ça apprend ou interprète ?
@@ -8637,11 +8794,11 @@ TRANSITION — « Justement, trois mots se mélangent souvent : IA, automatisati
 
 OBJECTIF — Définir clairement automatisation, robotisation et IA.
 
-DIRE — « Automatisation : la recette suivie à la lettre. Des règles "si… alors…", toujours le même résultat. Exemple : une tâche passe en retard, un courriel part au responsable. »
+DIRE — « Automatisation : la recette suivie à la lettre. Des règles "si… alors…", toujours le même résultat. Exemple : chaque courriel de Construction Boréa est classé dans le dossier du projet. Une règle Outlook. »
 
-« Robotisation : la main qui exécute. Un robot physique, comme un bras d'usine, ou un robot logiciel, qu'on appelle RPA, qui refait les clics d'un humain dans un logiciel. Exemple : recopier chaque facture dans un vieux logiciel comptable. »
+« Robotisation : la main qui exécute. Un robot physique, comme un bras d'usine, ou un robot logiciel, qu'on appelle RPA, qui refait les clics d'un humain dans un logiciel. Exemple : recopier chaque bon de livraison PDF dans un registre. À l'usine, les bras qui scellent les unités de verre sont des robots physiques. »
 
-« Intelligence artificielle : le jugement appris. Elle interprète, prédit ou génère. Elle gère l'imprévu… avec des erreurs possibles. Exemple : lire un courriel libre du fournisseur et comprendre qu'il annonce un retard. »
+« Intelligence artificielle : le jugement appris. Elle interprète, prédit ou génère. Elle gère l'imprévu… avec des erreurs possibles. Exemple : lire un courriel libre du verrier et comprendre qu'il annonce un retard. »
 
 QUESTION — « Dans votre service, vous avez plutôt de l'automatisation, de la robotisation ou de l'IA ? »
 
@@ -8650,11 +8807,11 @@ TRANSITION — « Et dans la réalité, ils travaillent souvent ensemble. »`,
 
 OBJECTIF — Montrer que les trois se combinent dans un même flux.
 
-DIRE — « Le fournisseur de comptoirs écrit à Karim : "On aura deux semaines de retard, désolés." Un texte libre, comme tous les courriels. »
-→ beat 1 : « L'IA comprend : quel lot est touché, quel retard, quel impact sur l'ouverture. »
-→ beat 2 : « L'automatisation applique une règle : si un jalon bouge de plus d'une semaine, alerte à Karim et à Luc. »
-→ beat 3 : « Le robot logiciel inscrit le changement dans le registre, un vieil outil sans connecteur. »
-→ beat 4 : « Et qui décide ? Aucun des trois. Karim valide le nouvel échéancier ; Luc arbitre si l'ouverture est menacée. »
+DIRE — « Le verrier écrit à Mathieu : "Les unités scellées auront deux semaines de retard, désolés." Un texte libre, comme tous les courriels. Sans numéro de projet, bien sûr. »
+→ beat 1 : « L'IA comprend : quel projet est touché, quel retard, quel impact sur la pose du mur-rideau. »
+→ beat 2 : « L'automatisation applique une règle : si une livraison bouge de plus d'une semaine, alerte à Mathieu et à Patrice. »
+→ beat 3 : « Le robot logiciel recopie la nouvelle date dans le registre des livraisons, écran par écran. »
+→ beat 4 : « Et qui décide ? Aucun des trois. Mathieu revoit l'échéancier avec l'EG ; Hélène arbitre si le bâtiment fermé du 14 mai est menacé. »
 
 TRANSITION — « Résumons les différences critère par critère. »`,
   `⏱ 3 min · TABLEAU COMPARATIF (5 clics)
@@ -8671,32 +8828,34 @@ DIRE — Une ligne par clic.
 TRANSITION — « À vous de jouer. »`,
   `⏱ 6 min · EXERCICE GLISSER-DÉPOSER (1 clic pour le corrigé)
 
-OBJECTIF — Appliquer la distinction sur des tâches du projet Limoilou.
+OBJECTIF — Appliquer la distinction sur des tâches du projet des Méandres.
 
 ANIMATION — Pour chaque étiquette, demandez la colonne à voix haute (« auto », « robot » ou « IA ») et glissez-la selon la majorité. Double-cliquer une étiquette la remet à sa place.
 → beat 1 : le corrigé apparaît sur chaque étiquette.
 
 CORRIGÉ —
-• Automatisation : rappel la veille d'une échéance, tâche créée par formulaire, archivage du vendredi.
-• Robotisation : recopier les factures PDF (robot logiciel), bras qui assemble les cadres (robot physique).
-• IA : résumer 40 courriels, repérer les tâches à risque, rédiger l'annonce.
+• Automatisation : rappel la veille de la réunion de chantier, remplacer les pages révisées dans la voûte, classer les courriels de Boréa (règle Outlook).
+• Robotisation : recopier les bons de livraison PDF (robot logiciel), bras qui scelle les unités de verre (robot physique).
+• IA : résumer 40 courriels, repérer les commandes à risque, rédiger la relance.
 
-DÉBAT — « Repérer les tâches qui risquent de glisser » : certains diront automatisation. Nuance : une règle signale le retard constaté ; l'IA prédit le retard à venir.
+DÉBAT 1 — « Remplacer les pages révisées dans la voûte » : c'est un besoin cité dans le questionnaire. Réponse : c'est une règle (même numéro de feuille, nouvelle révision → on remplace), donc de l'automatisation, pas de l'IA générative. Bluebeam le fait déjà avec la fonction de feuilles de remplacement par lot (Batch Slip Sheet), qui reporte aussi les annotations. « Avant de demander à l'IA, demandez-vous si une règle suffit : c'est plus fiable et ça ne se trompe pas. »
+
+DÉBAT 2 — « Repérer les commandes qui risquent d'être en retard » : certains diront automatisation. Nuance : une règle signale le retard constaté ; l'IA prédit le retard à venir.
 
 TRANSITION — « Élargissons : où trouve-t-on l'IA en entreprise ? »`,
   `⏱ 3 min · PANORAMA PAR SERVICE
 
-OBJECTIF — Montrer l'IA dans chaque service, en écho aux profils du groupe.
+OBJECTIF — Montrer l'IA à chaque étape du cycle de leurs projets, de la vente au service après-vente.
 
-DIRE — Parcourez rapidement les six tuiles, en vous attardant sur les services des participants (notés au tour de table).
-• RH : offres d'emploi, questions des employés. « Attention au tri automatique de CV : on parlera des biais demain. »
-• Marketing : textes et visuels, idées de contenus.
-• TI : soutien, documentation, aide au code.
-• Finance : lecture de factures, prévision.
-• Service à la clientèle : agents conversationnels, tri des courriels.
-• Opérations : prévision de la demande, maintenance prédictive.
+DIRE — Parcourez les six tuiles dans l'ordre du cycle. Les chargés de projet sont en contact avec tous ces services : c'est pour ça que la tuile du voisin les concerne aussi.
+• Ventes et estimation : lire un devis de 300 pages et repérer les sections de l'enveloppe. « C'est aussi ce que Mathieu reçoit au transfert du dossier. »
+• Dessin et ingénierie : comparer deux révisions de plans. Bluebeam propose depuis 2026 une offre avec IA (Bluebeam Max) qui peut se connecter à Claude.
+• Approvisionnement : suivre les délais, comparer des soumissions.
+• Usine : planification, contrôle qualité par caméra, entretien prédictif.
+• Installation : rapport de visite à partir de notes et de photos. « On le fera demain. »
+• Service après-vente : trier les demandes, retrouver l'historique.
 
-QUESTION — « Dans votre service, qu'est-ce qui existe déjà ? »
+QUESTION — « Dans votre quotidien, lequel de ces services vous envoie le plus de courriels ? »
 
 TRANSITION — « Quelques chiffres pour mesurer la vitesse du mouvement. »`,
   `⏱ 3 min · CHIFFRES
@@ -8761,83 +8920,89 @@ OBJECTIF — Annoncer le plan du module.
 
 DIRE — « Module 2 : l'IA dans la gestion de projet. Maintenant qu'on sait ce qu'est l'IA, on la met au service de vos projets. »
 
-« Au programme : l'IA à chaque phase du cycle de vie ; quatre cas d'usage concrets sur le projet de Karim ; l'IA dans les outils que vous utilisez déjà, Outlook, Teams, Google, Notion, Trello, ClickUp ; et la compétence qui fait toute la différence : bien formuler sa demande. »
+« Au programme : l'IA à chaque étape de vos projets, du transfert des ventes à la fermeture ; quatre cas d'usage tirés de vos réponses au questionnaire : planifier, trier les courriels, rédiger les comptes rendus, relancer ; Copilot dans Outlook, Teams, Word et Excel, et l'IA qui arrive dans Procore, Smartsheet et Bluebeam ; et la compétence qui fait toute la différence : bien formuler sa demande. »
 
 RYTHME — Le dîner tombe vers la page « Deux familles d'outils ». Les outils et les demandes se font après le dîner.
 
-TRANSITION — « Commençons par le cycle de vie que vous connaissez. »`,
+TRANSITION — « Commençons par le cycle de vos projets. »`,
   `⏱ 4 min · CYCLE DE VIE (5 clics)
 
-OBJECTIF — Montrer que l'IA intervient à chaque phase, pas seulement pour « écrire des textes ».
+OBJECTIF — Montrer que l'IA intervient à chaque étape, pas seulement pour « écrire des textes ».
 
-DIRE — « Vous reconnaissez les cinq phases. Voyons ce que l'IA y apporte. »
-→ beat 1 : « Démarrer : un premier jet de la charte, la liste des parties prenantes, et les questions à poser au commanditaire avant de commencer. »
-→ beat 2 : « Planifier : le découpage en tâches, l'échéancier de départ, le registre des risques. C'est l'atelier de cet après-midi. »
-→ beat 3 : « Exécuter : comptes rendus, courriels, documents. Le gros du volume. »
-→ beat 4 : « Suivre : alertes, rapport d'avancement, écarts expliqués. Demain matin. »
-→ beat 5 : « Clôturer : bilan, leçons apprises, transfert. La phase qu'on bâcle souvent, faute de temps. »
+DIRE — « Vous reconnaissez les étapes d'un lot d'enveloppe. Voyons ce que l'IA y apporte. »
+→ beat 1 : « Transférer : le dossier arrive des ventes. L'IA résume la soumission et les exclusions, liste les intervenants, prépare les questions de la réunion de démarrage. »
+→ beat 2 : « Planifier : les étapes et leurs dépendances, l'échéancier des dessins d'atelier et des commandes, le registre des risques. C'est l'atelier de cet après-midi. »
+→ beat 3 : « Exécuter : comptes rendus de chantier, courriels, relances, demandes d'information. Le gros du volume. »
+→ beat 4 : « Suivre : alertes sur les livraisons, rapport du vendredi, et comparer un avis de modification au contrat. Demain matin. »
+→ beat 5 : « Fermer : la liste de déficiences, les documents de fin de projet, et ce qui passe au service après-vente. »
 
-QUESTION — « Dans quelle phase perdez-vous le plus de temps ? »
+QUESTION — « À quelle étape perdez-vous le plus de temps ? »
 
-TRANSITION — « Regardons justement où passe le temps de Karim. »`,
-  `⏱ 3 min · LA SEMAINE DE KARIM (1 clic)
+TRANSITION — « Regardons où passe le temps de Mathieu. »`,
+  `⏱ 3 min · LA SEMAINE DE MATHIEU (1 clic)
 
 OBJECTIF — Relier l'IA à un irritant mesurable : le temps.
 
-DIRE — « Karim a noté sa semaine. 11 heures de réunions, 9 heures de courriels et relances, 6 de planification, 5 de rapports, 5 d'imprévus, et seulement 4 heures sur le terrain avec l'équipe. »
-→ beat 1 : « L'IA aide surtout sur les quatre premières lignes : comptes rendus, rédaction, premiers jets, rapport hebdomadaire. Pas sur les imprévus ni sur l'équipe. »
+DIRE — « Mathieu a noté sa semaine, sur ses 13 projets. 11 heures de courriels et de relances, 9 heures de réunions et de visites, 6 heures à suivre les dessins et les commandes, 4 de rapports, 6 d'imprévus à régler, et 4 au téléphone ou au chantier. »
+→ beat 1 : « L'IA aide surtout sur les quatre premières lignes : tri et résumés de courriels, comptes rendus, suivi, rapport du vendredi. Pas sur les imprévus ni sur la relation avec le chantier. »
 
-INSISTER — « Le but n'est pas de faire plus de réunions. C'est de rendre du temps à ce que l'IA ne fait pas : régler les imprévus et animer l'équipe. »
+INSISTER — « Le but n'est pas d'en faire plus. C'est de rendre du temps à ce que l'IA ne fait pas : régler les problèmes, être présent pour le chantier et pour le client. »
 
-PRÉCISION — Ces heures sont un exemple de l'entreprise fictive, pas une statistique.
+PRÉCISION — Ces heures sont un exemple, pas une statistique. Mais le questionnaire et le cadrage avec Valérie vont dans ce sens : les courriels et les relances arrivent en tête.
 
-INTERACTION — « Si vous faisiez l'exercice, quelle serait votre plus grande barre ? »
+INTERACTION — « Si vous faisiez l'exercice, quelle serait votre plus grande barre ? » Écoutez deux ou trois réponses, dont une adjointe.
 
 TRANSITION — « Quatre usages concrets, un par page. Premier : planifier. »`,
   `⏱ 4 min · CAS D'USAGE 1 : PLANIFICATION (2 clics)
 
 OBJECTIF — Montrer une demande de planification réaliste et sa réponse.
 
-DIRE — « À gauche, ce que l'IA fait bien en planification : découper, ordonner, estimer, lister les risques. »
-→ beat 1 : « La demande de Karim. Remarquez : il donne le contexte (22 semaines, 420 k$, 8 embauches) et une contrainte (6 lots au maximum). »
-→ beat 2 : « La réponse, en quelques secondes : six lots cohérents. Est-ce parfait ? Non. Mais Karim ne part plus d'une page blanche. »
+DIRE — « À gauche, ce que l'IA fait bien au lancement d'un projet : résumer le dossier des ventes, ordonner les étapes, repérer les délais critiques, lister les risques. »
+→ beat 1 : « La demande de Mathieu. Il dit qui il est, colle la soumission et les exclusions, et donne la date qui compte : le bâtiment fermé du 14 mai. »
+→ beat 2 : « La réponse, en quelques secondes : six étapes cohérentes, et la bonne dépendance : le verre se commande après l'approbation des dessins. Est-ce parfait ? Non. Mais Mathieu ne part plus d'une page blanche. »
 
-QUESTION — « Que manque-t-il dans ce découpage ? » Réponses possibles : les achats d'inventaire, l'assurance, la gestion de projet elle-même, l'enseigne. « Bravo : c'est exactement votre valeur ajoutée. »
+QUESTION — « Que manque-t-il dans ce découpage ? » Réponses possibles : les relevés après la structure, la mobilisation de l'équipe de pose, la protection des ouvrages, les essais d'étanchéité, les documents de fin de projet exigés par l'EG. « Bravo : c'est exactement votre valeur ajoutée. »
 
-TRANSITION — « Deuxième usage : le suivi. »`,
-  `⏱ 4 min · CAS D'USAGE 2 : SUIVI (2 clics)
+ATTENTION — Une soumission contient des prix. Elle ne se colle que dans Copilot avec le compte Lessard, jamais dans un compte personnel.
 
-OBJECTIF — Montrer l'IA comme lecteur rapide d'un état d'avancement.
+TRANSITION — « Deuxième usage : la boîte de réception. »`,
+  `⏱ 4 min · CAS D'USAGE 2 : COURRIELS ET PRIORITÉS (2 clics)
 
-DIRE — « Le suivi, c'est consolider, repérer ce qui glisse, répondre à "où en est-on ?", préparer la réunion. »
-→ beat 1 : « Karim colle l'export de ses tâches et pose une question précise, avec un jalon et une date. »
-→ beat 2 : « La réponse liste trois retards et, surtout, identifie celui qui compte : la soumission de l'électricien, sur le chemin critique. »
+OBJECTIF — Répondre au premier besoin exprimé au cadrage : le volume de courriels, les priorités, le transfert aux adjointes.
 
-INSISTER — L'IA peut se tromper sur le chemin critique si les dépendances ne sont pas dans les données. Karim vérifie.
+DIRE — « 80 courriels par jour sur 13 projets. Le vrai problème n'est pas de les lire : c'est de savoir lesquels comptent. »
+→ beat 1 : « Mathieu demande un tri en quatre groupes : à traiter aujourd'hui, à transférer à Nadia avec la consigne, à relancer, à classer. »
+→ beat 2 : « La réponse : trois urgences, quatre transferts, deux relances. Les demandes restées sans réponse ressortent toutes seules. »
 
-LIEN — « Demain, on verra comment l'outil peut faire ce suivi tout seul, avec des alertes. »
+INSISTER — L'IA propose, Mathieu décide. Il vérifie surtout la colonne « à traiter aujourd'hui » : un courriel urgent mal classé coûte cher.
 
-TRANSITION — « Troisième usage : le rapport. »`,
-  `⏱ 3 min · CAS D'USAGE 3 : REPORTING (2 clics)
+DANS OUTLOOK — Avec la licence Microsoft 365 Copilot : « Résumer » en haut d'un fil, et la fonction « Prioriser ma boîte de réception » dans le nouvel Outlook (elle marque les courriels importants). Avec Copilot Chat seulement : copier les courriels dans Copilot, avec le compte Lessard.
 
-OBJECTIF — Montrer le gain sur le rapport d'avancement hebdomadaire.
+TRANSITION — « Troisième usage : les comptes rendus. »`,
+  `⏱ 3 min · CAS D'USAGE 3 : COMPTES RENDUS (2 clics)
 
-DIRE — « Le rapport du vendredi : une heure en moyenne pour beaucoup de chargés de projet. »
-→ beat 1 : « Karim donne ses notes en vrac et impose une structure : météo, avancement, trois points d'attention, décision attendue, 150 mots. »
-→ beat 2 : « Le résultat est prêt pour Luc. Météo jaune, 38 % contre 40 % prévu, et la décision attendue est claire. »
+OBJECTIF — Répondre au deuxième besoin du cadrage : comptes rendus de réunion et synthèse des visites de chantier.
 
-INSISTER — La météo (vert, jaune, rouge) est un jugement : l'IA la propose, Karim l'assume. Un rapport trop optimiste détruit la confiance.
+DIRE — « Le compte rendu de la réunion de chantier : une heure en moyenne, souvent le soir. »
+→ beat 1 : « Mathieu colle ses notes en vrac et impose une structure : décisions, actions avec qui, quoi, quand, points ouverts. Et une consigne précieuse : n'invente rien, écris "à confirmer". »
+→ beat 2 : « Le résultat : une décision conditionnelle, deux actions, un point ouvert. Et la date de la grue reste "à confirmer" : l'IA n'a pas comblé le trou. »
 
-TRANSITION — « Quatrième usage : communiquer. »`,
-  `⏱ 3 min · CAS D'USAGE 4 : COMMUNICATION (2 clics)
+LIEN — « Demain, on fera la même chose avec une visite de chantier : des notes dictées et des photos, transformées en rapport et en liste de déficiences. »
 
-OBJECTIF — Montrer l'adaptation d'un même message à plusieurs publics.
+INSISTER — Le compte rendu engage Lessard : une décision mal rapportée peut servir dans une réclamation. Relecture obligatoire.
 
-DIRE — « Une mauvaise nouvelle : deux semaines de retard sur les comptoirs. Trois publics, trois messages. »
-→ beat 1 : « Une seule demande pour trois versions. »
-→ beat 2 : « Pour Luc : impact et options. Pour l'équipe : les actions. Pour le fournisseur : poli, mais ferme sur le plan de rattrapage. »
+TRANSITION — « Quatrième usage : les relances. »`,
+  `⏱ 3 min · CAS D'USAGE 4 : RELANCES ET SUIVIS (2 clics)
 
-ASTUCE — Pour un message délicat, demandez aussi : « Relis ce courriel comme si tu étais Luc. Qu'est-ce qui pourrait l'irriter ? »
+OBJECTIF — Répondre au besoin du questionnaire : « faire des suivis auprès des clients ».
+
+DIRE — « Les dessins d'atelier du mur-rideau attendent l'approbation de l'architecte depuis le 23 novembre. Chaque jour de retard pousse la commande du verre. »
+→ beat 1 : « Une seule demande pour trois messages : une relance courtoise, une relance ferme à envoyer dans cinq jours, et un courriel à Boréa pour l'informer du risque. Ici avec Claude, que certains d'entre vous ont. »
+→ beat 2 : « Trois tons, trois publics. La relance ferme rappelle le délai du verre : c'est l'argument qui fait bouger. »
+
+ASTUCE — Pour un message délicat, demandez aussi : « Relis ce courriel comme si tu étais l'architecte. Qu'est-ce qui pourrait l'irriter ? »
+
+NUANCE — « Automatique » ne veut pas dire « envoyé sans vous ». L'IA prépare le brouillon ; demain, on verra comment préparer ces relances à l'avance, mais l'envoi reste humain.
 
 TRANSITION — « À vous de juger : que confier à l'IA ? »`,
   `⏱ 6 min · EXERCICE MATRICE (glisser-déposer)
@@ -8847,100 +9012,97 @@ OBJECTIF — Développer le jugement : gain de temps versus risque en cas d'erre
 ANIMATION — Pour chaque étiquette, demandez une case à voix haute (« priorité », « relecture », « pour soi », « si le temps ») et glissez-la selon la majorité. Double-cliquer une étiquette la remet à sa place. Laissez débattre : il n'y a pas de corrigé unique.
 
 PISTES DE CORRIGÉ —
-• À confier en priorité : compte rendu de réunion, ordre du jour, reformuler une note, premier découpage des tâches.
-• Avec relecture attentive : annonce d'un retard au client, budget final (l'IA peut mettre en forme, mais les chiffres se vérifient).
-• À garder pour soi : décision de reporter l'ouverture, évaluation d'un employé.
+• À confier en priorité : résumer un fil de 30 courriels, ordre du jour de la réunion, reformuler une note interne.
+• Avec relecture attentive : compte rendu de chantier (il engage Lessard), annonce d'un retard au client, prix d'un avenant (l'IA met en forme, les chiffres se vérifient).
+• À garder pour soi : accepter un avis de modification, évaluation d'un employé.
 
-DÉBAT ATTENDU — « Évaluation d'un employé » : l'IA peut aider à formuler, mais le jugement et les données personnelles posent problème (module 5).
+DÉBAT ATTENDU — « Compte rendu de chantier » : certains le mettront en priorité. Oui pour le gain, mais une décision mal rapportée peut coûter cher en cas de litige : relecture attentive.
 
 TRANSITION — « Avec quels outils ? Deux familles. » (Dîner vers ici selon l'heure.)`,
   `⏱ 3 min · DEUX FAMILLES D'OUTILS (1 clic)
 
 OBJECTIF — Distinguer assistants génériques et IA intégrée.
 
-DIRE — « Première famille : les assistants génériques. ChatGPT, Gemini, Copilot, Claude. Une fenêtre de conversation, pour tout. Avantages : polyvalents, et des versions gratuites pour commencer. Limites : ils ne voient que ce que vous leur collez, et on copie-colle entre les outils. »
-→ beat 1 : « Deuxième famille : l'IA intégrée, dans Teams, Outlook, Google, Notion, ClickUp, Trello. Elle voit vos courriels, vos réunions, vos tâches, et agit sur place. Limites : souvent une licence payante, et chaque IA reste dans son outil. »
+DIRE — « Première famille : les assistants génériques. Copilot Chat, Claude, ChatGPT, Gemini. Une fenêtre de conversation, pour tout. Avantage chez vous : Copilot Chat est inclus avec votre compte Microsoft 365. Limites : ils ne voient que ce que vous leur collez, et on copie-colle entre les outils. »
+→ beat 1 : « Deuxième famille : l'IA intégrée, dans Outlook, Teams, Excel, et maintenant Procore, Smartsheet, Bluebeam. Elle voit vos courriels, vos réunions, vos documents, et agit sur place. Limites : une licence en plus, et chaque IA reste dans son outil. »
 
-MESSAGE CLÉ — Les deux se complètent. Le générique pour réfléchir et rédiger ; l'intégré pour travailler sur les données du projet.
+MESSAGE CLÉ — Les deux se complètent. Le générique pour réfléchir et rédiger ; l'intégré pour travailler sur vos courriels, réunions et dossiers.
 
 TRANSITION — « Faisons le tour des génériques. »`,
   `⏱ 3 min · QUATRE ASSISTANTS
 
-OBJECTIF — Présenter les quatre assistants sans faire de palmarès.
+OBJECTIF — Présenter les quatre assistants, en partant de ce que Lessard a.
 
-DIRE — « ChatGPT, d'OpenAI : le plus répandu. Gemini, de Google : naturel si vous êtes sur Google Workspace. Copilot, de Microsoft : Copilot Chat est accessible avec un compte professionnel ; Microsoft 365 Copilot, payant, s'intègre dans Word, Outlook et Teams. Claude, d'Anthropic : apprécié pour les longs documents et la rédaction. »
+DIRE — « Copilot, de Microsoft : votre outil de référence. Copilot Chat est accessible à tous avec le compte Lessard ; la licence Microsoft 365 Copilot l'ajoute dans Outlook, Teams, Word et Excel. Claude, d'Anthropic : quelques comptes chez vous ; il est apprécié pour les longs documents, un devis de 300 pages par exemple. ChatGPT, d'OpenAI : tout le monde le connaît, mais jamais de données de clients dans un compte personnel. Gemini, de Google : surtout utile pour qui travaille dans Google. »
 
 MESSAGE CLÉ — « Le meilleur assistant, c'est celui que votre organisation autorise. Les écarts de qualité sont faibles pour nos usages ; les écarts de confidentialité, eux, sont importants. »
 
-À VÉRIFIER — Les offres changent souvent : vérifiez avant chaque session ce qui est gratuit ou inclus.
+À VÉRIFIER — Avant la session, confirmez avec Valérie ou les TI qui a une licence Microsoft 365 Copilot complète et qui a un compte Claude.
 
-DÉMO OPTIONNELLE — Posez la même question à deux assistants et comparez en direct.
+DÉMO OPTIONNELLE — Posez la même question à Copilot et à Claude, et comparez en direct.
 
-TRANSITION — « L'IA intégrée maintenant, en commençant par Microsoft. »`,
+TRANSITION — « Copilot là où vous travaillez : Outlook et Teams. »`,
   `⏱ 4 min · DÉMO OUTLOOK ET TEAMS (2 clics)
 
-OBJECTIF — Montrer concrètement l'IA intégrée de Microsoft 365.
+OBJECTIF — Montrer concrètement Copilot sur des courriels et une réunion.
 
-DIRE — « À gauche, Outlook. Un fil de 14 messages sur le retard des comptoirs. »
-→ beat 1 : « Copilot le résume : nouvelle date, proposition du fournisseur, question de Luc, et surtout : aucune décision prise. Karim sait quoi faire en 20 secondes. »
-« À droite, Teams. La réunion de suivi a été transcrite. »
+DIRE — « À gauche, Outlook. Un fil de 14 messages sur les dessins d'atelier du mur-rideau : l'architecte, Boréa, Hélène. »
+→ beat 1 : « Copilot le résume : deux corrections demandées, une date de pose attendue, une inquiétude d'Hélène, et surtout : aucune réponse envoyée. Mathieu sait quoi faire en 20 secondes. »
+« À droite, Teams. La réunion de chantier a été transcrite. »
 → beat 2 : « Le récapitulatif : la décision, la tâche avec son responsable et son échéance, le point ouvert. »
 
-PRÉCAUTION — Lire l'encadré : tout dépend de la licence et des réglages des TI. La transcription doit être activée, et les participants informés (module 5).
+PRÉCAUTION — Lire l'encadré : ces fonctions exigent la licence Microsoft 365 Copilot. La transcription doit être activée, et les participants informés (module 5). Une réunion de chantier se tient souvent sur place, sans Teams : la solution est alors la dictée de notes, demain matin.
 
 DÉMO EN DIRECT — Si vous avez accès à Microsoft 365 Copilot, montrez « Résumer » dans un fil Outlook de démonstration.
 
-TRANSITION — « Même logique chez Google. »`,
-  `⏱ 2 min · GOOGLE WORKSPACE
+TRANSITION — « Et dans les autres outils Microsoft ? »`,
+  `⏱ 2 min · WORD, EXCEL, PLANNER, POWER AUTOMATE
 
-OBJECTIF — Montrer l'équivalent Google pour les participants concernés.
+OBJECTIF — Montrer Copilot dans les autres outils Microsoft 365 de l'équipe.
 
-DIRE — « Gemini dans Gmail : résumer un fil, proposer une réponse. Dans Docs : "Aide-moi à écrire", pour un premier jet de charte ou de bilan. Dans Sheets : créer un tableau de suivi, expliquer une formule. Dans Meet : "Prendre des notes pour moi", qui produit un document de notes après la réunion. »
+DIRE — « Dans Word : résumer un devis ou un contrat, comparer deux versions, rédiger une lettre ou un rapport de visite. Dans Excel : analyser le registre des livraisons, écrire une formule. Dans Planner : créer un plan à partir d'un objectif. Et dans Power Automate : décrire un flux en français, par exemple "quand un courriel de Boréa arrive, l'enregistrer dans le dossier du projet". »
 
-MESSAGE CLÉ — « Même logique que Microsoft : l'IA travaille là où sont vos documents, avec vos droits d'accès. »
+MESSAGE CLÉ — « L'IA travaille là où sont vos documents, avec vos droits d'accès. Mais tout dépend de la licence. »
 
-QUESTION — « Qui est sur Google, qui est sur Microsoft ? » Adaptez les démonstrations de l'atelier.
+QUESTION — « Qui utilise Planner ou Power Automate aujourd'hui ? » Adaptez les démonstrations de demain.
 
-TRANSITION — « Et dans les outils de gestion de projet ? »`,
-  `⏱ 3 min · OUTILS DE GESTION DE PROJET
+TRANSITION — « Et dans vos outils métier ? »`,
+  `⏱ 3 min · VOS OUTILS MÉTIER
 
-OBJECTIF — Panorama des outils de gestion de tâches et de leurs fonctions d'IA.
+OBJECTIF — Faire le point sur l'IA dans les outils cités au questionnaire : Procore, Smartsheet, Bluebeam.
 
-DIRE — Parcourez les six tuiles :
-• Notion AI : rédiger, résumer, questions sur l'espace, notes de réunion.
-• ClickUp Brain : générer tâches et sous-tâches, résumer, rédiger des mises à jour de statut.
-• Trello : l'IA d'Atlassian pour rédiger, résumer, créer des listes de contrôle.
-• Planner : créer un plan à partir d'un objectif, avec Copilot.
-• Asana : résumés de projet, statuts, règles intelligentes.
-• monday.com : générer des tâches, résumer, remplir des colonnes.
+DIRE — Parcourez les trois tuiles :
+• Procore : l'IA de Procore (Helix) propose des agents qui rédigent les demandes d'information, recoupent les documents soumis et suivent les journaux de chantier. Déploiement progressif en 2026 : tous les comptes ne l'ont pas.
+• Smartsheet : décrire une formule en français, résumer une feuille, des colonnes qui classent chaque ligne. Réservé au forfait Enterprise.
+• Bluebeam Max : l'offre premium de 2026. Recherche en langage naturel, et Claude peut piloter Revu : créer des étiquettes de pages, des signets, des annotations.
 
-À SOULIGNER — « Notion AI et ClickUp sont nos deux outils de l'atelier 1 cet après-midi. »
+LIEN AVEC LA VOÛTE — Le besoin « remplacer des pages dans notre voûte » : aujourd'hui, la fonction de feuilles de remplacement par lot de Bluebeam (Batch Slip Sheet) le fait déjà, sans IA. Demain, Bluebeam Max avec Claude pourra peut-être enchaîner ces gestes à partir d'une consigne en français. À tester avec les TI avant d'y compter.
 
-À VÉRIFIER — Ces fonctions et leurs forfaits évoluent vite ; vérifiez avant la session.
+À VÉRIFIER — Ces fonctions évoluent vite ; vérifiez avant la session ce que Lessard a activé.
 
 TRANSITION — « Comment choisir, alors ? Trois questions. »`,
   `⏱ 3 min · CHOISIR L'OUTIL (3 clics)
 
 OBJECTIF — Donner un réflexe de choix fondé sur les données.
 
-DIRE — « Première question, toujours la même : les données sont-elles confidentielles ou personnelles ? »
-→ beat 1 : « Si oui : uniquement un outil approuvé par votre organisation, en version entreprise. Si non, on continue. »
-→ beat 2 : « L'information est-elle déjà dans Teams, Notion, ClickUp ? Si oui : l'IA intégrée. Elle voit le contexte et respecte les droits d'accès. »
+DIRE — « Première question, toujours la même : les données sont-elles confidentielles ou personnelles ? Un prix, un contrat, l'adresse d'un client, un nom : oui. »
+→ beat 1 : « Si oui : uniquement un outil approuvé par Lessard, Copilot avec votre compte. Si non, on continue. »
+→ beat 2 : « L'information est-elle déjà dans Outlook, Teams, Procore ? Si oui : l'IA intégrée. Elle voit le contexte et respecte les droits d'accès. »
 → beat 3 : « Besoin ponctuel, un texte, une idée ? Un assistant générique fait très bien l'affaire. »
 
-INSISTER — Le choix commence par les données, pas par la puissance de l'outil.
+INSISTER — Le choix commence par les données, pas par la puissance de l'outil. Claude : à utiliser pour des données de projet seulement si Lessard l'a approuvé pour cet usage.
 
 TRANSITION — « Quel que soit l'outil, une compétence fait la différence : bien demander. »`,
   `⏱ 5 min · CINQ INGRÉDIENTS (5 clics)
 
 OBJECTIF — Donner une structure de demande simple et mémorisable.
 
-DIRE — « À droite, la demande de Karim, en gris. À chaque clic, un ingrédient s'allume. »
-→ beat 1 : « Le rôle : "Tu es un chargé de projet expérimenté dans le commerce de détail." On oriente le vocabulaire et le niveau. »
-→ beat 2 : « Le contexte : date, budget, équipe. C'est l'ingrédient le plus oublié, et le plus important. »
-→ beat 3 : « La tâche : proposer les jalons. Un verbe d'action clair. »
-→ beat 4 : « Le format : un tableau, avec ses colonnes. »
-→ beat 5 : « Les contraintes : huit jalons au maximum, et "signale les dates que tu as dû deviner". Cette dernière phrase est précieuse : elle fait apparaître les inventions. »
+DIRE — « À droite, la demande de Mathieu, en gris. À chaque clic, un ingrédient s'allume. »
+→ beat 1 : « Le rôle : "Tu es chargé de projet chez un fabricant-installateur d'enveloppe en aluminium et verre." On oriente le vocabulaire : dessins d'atelier, mur-rideau, verrier. »
+→ beat 2 : « Le contexte : la date d'envoi, l'absence de retour, l'impact sur la commande du verre. C'est l'ingrédient le plus oublié, et le plus important. »
+→ beat 3 : « La tâche : rédiger une relance. Un verbe d'action clair. »
+→ beat 4 : « Le format : six lignes, un objet clair. »
+→ beat 5 : « Les contraintes : courtois mais précis, et "n'invente aucune date". Cette dernière phrase est précieuse : elle empêche l'IA de promettre à votre place. »
 
 MÉMO — Rôle, Contexte, Tâche, Format, Contraintes.
 
@@ -8951,8 +9113,8 @@ OBJECTIF — Faire constater l'effet du contexte sur la qualité.
 
 ANIMATION — Commencez sur « Demande vague ». Lisez la demande et la réponse. Puis cliquez l'interrupteur.
 
-DIRE — « Demande vague : "Fais-moi un plan pour recruter du monde." Réponse : sept étapes génériques, justes et inutilisables. Rien sur votre projet. »
-Cliquez l'interrupteur : « Même outil, demande en cinq ingrédients. Réponse : des postes, des dates, des formations, et un point d'alerte sur les mécaniciens. Utilisable, à vérifier avec Julie. »
+DIRE — « Demande vague : "Fais-moi un courriel pour relancer le fournisseur." Réponse : polie, et inutile. Quelle commande ? Quelle date ? Le verrier va répondre "laquelle ?". »
+Cliquez l'interrupteur : « Même outil, demande en cinq ingrédients. Réponse : un objet clair, la commande, la date attendue, l'impact et une échéance de réponse. Utilisable, après vérification des dates. »
 
 QUESTION — « Qu'est-ce qui a fait la différence ? » Réponse attendue : le contexte et le format.
 
@@ -8961,153 +9123,154 @@ TRANSITION — « Et si la réponse ne convient pas ? On ne recommence pas : on 
 
 OBJECTIF — Montrer que la qualité vient de la conversation.
 
-DIRE — « L'assistant propose huit jalons. Ce n'est qu'un début. »
+DIRE — « L'assistant propose les grandes étapes du lot. Ce n'est qu'un début. »
 → beat 1 : « Approfondir : "Ajoute les dépendances et le chemin critique." »
-→ beat 2 : « Corriger : "Le permis prend 6 semaines, pas 2." Vous apportez le fait, l'IA recalcule le reste. »
+→ beat 2 : « Corriger : "Le verre prend 8 semaines après l'approbation, pas 4." Vous apportez le fait, l'IA recalcule le reste. »
 → beat 3 : « Inverser les rôles : "Pose-moi 5 questions avant de finaliser." C'est la relance la plus sous-utilisée, et la plus puissante. »
-→ beat 4 : « Astuce : une conversation par sujet. Si elle part dans tous les sens, demandez un résumé et ouvrez une nouvelle conversation. »
+→ beat 4 : « Astuce : une conversation par sujet, ou par projet. Si elle part dans tous les sens, demandez un résumé et ouvrez une nouvelle conversation. »
 
 TRANSITION — « Un dernier QCM sur le choix d'outil. »`,
   `⏱ 3 min · QCM 3
 
-RÉPONSE — B : le récapitulatif de Copilot dans Teams (si la licence le permet).
-• A ✗ PIÈGE — Copier une transcription interne dans un outil public peut exposer des données.
-• C ✗ PIÈGE — Gemini ne voit pas une réunion Teams.
-• D ✗ PIÈGE — Possible, mais c'est justement ce que l'IA fait bien.
+RÉPONSE — D : le récapitulatif de Copilot dans Teams (avec la licence Microsoft 365 Copilot).
+• A ✗ PIÈGE — Copier une transcription interne dans un ChatGPT gratuit peut exposer des données.
+• B ✗ PIÈGE — Gemini ne voit pas une réunion Teams.
+• C ✗ PIÈGE — Possible, mais c'est justement ce que l'IA fait bien.
 
-NUANCE — Sans licence Copilot, la bonne réponse devient : demander au responsable de la réunion le compte rendu, ou utiliser l'outil approuvé par l'organisation.
+NUANCE — Sans licence Microsoft 365 Copilot, la bonne réponse devient : demander le compte rendu à Mathieu, ou coller la transcription dans Copilot Chat avec le compte Lessard.
 
 TRANSITION — « Faisons le bilan du module 2. »`,
   `⏱ 2 min · SYNTHÈSE MODULE 2
 
 DIRE — Relisez les cinq points :
-1. Quatre usages : planifier, suivre, rendre compte, communiquer.
+1. Quatre usages : planifier, trier, rendre compte, relancer.
 2. Génériques pour tout, intégrés là où sont les données.
-3. Données confidentielles : uniquement un outil approuvé.
+3. Données confidentielles : uniquement un outil approuvé, Copilot avec le compte Lessard.
 4. Cinq ingrédients : rôle, contexte, tâche, format, contraintes.
 5. On affine en conversation.
 
 À VOTRE POSTE — Lisez la carte bleue.
 
-TRANSITION — « Assez parlé : place à l'atelier 1. Vous allez générer le plan du projet Limoilou. »`,
+TRANSITION — « Assez parlé : place à l'atelier 1. Vous allez lancer le projet des Méandres. »`,
   `⏱ 1 min · DÉBUT DE L'ATELIER 1 (≈ 13 h 45)
 
 OBJECTIF — Lancer l'atelier avec énergie.
 
-DIRE — « Atelier 1 : un plan de projet avec l'IA. Vous allez faire ce que Karim doit faire cette semaine : bâtir le plan du projet Limoilou. Mais avec l'IA, et en vérifiant tout. »
+DIRE — « Atelier 1 : lancer un projet avec l'IA. Vous allez faire ce que Mathieu doit faire cette semaine : recevoir le dossier des ventes, en tirer le plan du projet des Méandres, et reprendre en main sa boîte de réception. Avec l'IA, et en vérifiant tout. »
 
-« D'abord une découverte guidée de deux outils : Notion AI et ClickUp. Puis on construit pas à pas : charte, découpage, échéancier, risques, RACI. On transfère les tâches dans l'outil. Et on termine par la partie la plus importante : vérifier ce que l'IA a raté. »
+« D'abord une découverte guidée : Copilot dans Outlook, puis Copilot Chat avec un document joint. Puis on construit pas à pas : fiche de démarrage, découpage, échéancier, risques, RACI. On trie une boîte de réception. Et on termine par la partie la plus importante : vérifier ce que l'IA a raté. »
 
-LOGISTIQUE — Atelier individuel : chacun travaille sur son poste, la classe virtuelle ouverte dans une fenêtre et l'outil dans une autre. Vérifiez que chacun a accès à Notion ou ClickUp (versions d'essai gratuites) ou, à défaut, à un assistant générique. Demandez un « prêt » à chacun avant de commencer.
+LOGISTIQUE — Atelier individuel : chacun travaille sur son poste, la classe virtuelle dans une fenêtre et Copilot dans une autre. Vérifiez que chacun est connecté à Copilot avec son compte Lessard (bouclier vert visible). Demandez un « prêt » à chacun avant de commencer.
 
 TRANSITION — « Voici l'atelier en un coup d'œil. »`,
   `⏱ 2 min · CONSIGNES
 
 OBJECTIF — Donner le déroulé, le livrable et les outils.
 
-DIRE — « Cinq étapes : 15 minutes de découverte de l'outil, 10 pour la charte, 25 pour planifier, 10 pour transférer les tâches dans l'outil, 15 pour vérifier et présenter. »
+DIRE — « Cinq étapes : 15 minutes de découverte, 10 pour la fiche de démarrage, 25 pour planifier, 10 pour trier la boîte de réception et préparer une relance, 15 pour vérifier et présenter. »
 
-« Le livrable : un plan dans l'outil, pas dans une conversation. Six à huit lots, des tâches datées avec un responsable, trois jalons, cinq risques. »
+« Le livrable : un plan dans un outil de suivi, pas dans une conversation. Six étapes, des tâches datées avec un responsable, trois jalons, cinq risques. Et une relance prête à envoyer. »
 
-« Les outils : Notion AI ou ClickUp. Si vous n'y avez pas accès, ChatGPT, Gemini, Copilot ou Claude, puis Excel ou Planner pour les tâches. »
+« Les outils : Copilot avec votre compte Lessard. Ceux qui ont Claude peuvent faire la même demande dans les deux et comparer. Pour les tâches : Excel, Planner ou Smartsheet, selon vos habitudes. »
 
-ASTUCE — Notion et ClickUp proposent des versions d'essai gratuites ; créez les comptes avant la formation si possible.
+PARCOURS ADJOINTE — Les adjointes suivent le même dossier, mais commencent par l'étape 4 (la boîte de réception), puis préparent la liste des suivis à faire et le plan de classement du dossier. Elles font ensuite les étapes 1 à 3 si le temps le permet.
 
-TRANSITION — « Vos données de départ : le dossier de Karim. »`,
-  `⏱ 2 min · LE DOSSIER DE KARIM
+TRANSITION — « Vos données de départ : le dossier transmis par Éric. »`,
+  `⏱ 2 min · LE DOSSIER TRANSMIS PAR ÉRIC
 
 OBJECTIF — Fournir le contexte à coller dans les demandes.
 
-DIRE — « Voici tout ce que l'IA doit savoir : objectif, date de départ, budget détaillé, équipe, embauches, contraintes, et ce qui est déjà connu. »
+DIRE — « Voici tout ce que l'IA doit savoir : l'objet du contrat, la date de départ, l'échéance, l'équipe, les délais, les contraintes, et ce qui est déjà connu. »
 
-INSISTER — « Ce dossier, c'est l'ingrédient "contexte". Plus il est complet, moins l'IA invente. Notez trois pièges cachés dans les contraintes : le permis de 6 semaines, les Fêtes, et les mécaniciens rares. On verra si l'IA en tient compte. »
+INSISTER — « Ce dossier, c'est l'ingrédient "contexte". Plus il est complet, moins l'IA invente. Notez trois pièges cachés : les 10 jours ouvrables d'approbation, la fermeture des Fêtes, et la promesse d'Éric, "dès mars", alors que la structure ne sera prête que vers le 1er mars. On verra si l'IA en tient compte. »
 
-LOGISTIQUE — Collez ce texte dans le clavardage (ou envoyez-le par courriel) pour que chacun puisse le copier.
+LOGISTIQUE — Collez ce texte dans le Chat pour que chacun puisse le copier :
+« DOSSIER DU PROJET — Centre sportif des Méandres (fictif). Objet : lot enveloppe en aluminium et verre, mur-rideau du hall (420 m²), 46 fenêtres, 6 portes d'entrée, 1 verrière. Départ : lundi 2 novembre. Contrat de 1,2 M$ avec Construction Boréa (entrepreneur général). Architecte : Atelier Mercier. Échéance : bâtiment fermé le vendredi 14 mai. Structure d'acier terminée vers le 1er mars. Équipe : Mathieu (chargé de projet), Hélène (directrice de projets), Nadia (adjointe), Éric (ventes), Patrice (contremaître d'installation). Délais : dessins d'atelier 3 semaines, puis 10 jours ouvrables d'approbation par l'architecte ; verre 8 semaines après la commande. Contraintes : usine et chantier fermés 2 semaines aux Fêtes ; relevés au chantier une fois la structure terminée. Exclusions : calfeutrage intérieur, stores. Déjà connu : Éric a promis à Boréa une pose du hall "dès mars". »
 
-TRANSITION — « Découvrons maintenant Notion AI. »`,
-  `⏱ 6 min · DÉMO NOTION AI (4 clics)
+TRANSITION — « Découvrons Copilot dans Outlook. »`,
+  `⏱ 6 min · DÉMO COPILOT DANS OUTLOOK (4 clics)
 
-OBJECTIF — Repérer les quatre points d'entrée de l'IA dans Notion.
+OBJECTIF — Repérer les quatre points d'entrée de Copilot dans Outlook.
 
-DIRE — « Notion, c'est un espace de pages et de bases de données. L'IA y est partout. »
-→ beat 1 : « Sur une ligne vide, la touche Espace ouvre l'IA : rédiger, résumer, traduire, continuer. »
-→ beat 2 : « On peut partir d'un modèle de plan de projet, ou générer une page entière à partir d'une consigne. »
-→ beat 3 : « Dans une base de données, une colonne peut être remplie par l'IA : un résumé ou une catégorie pour chaque tâche. »
-→ beat 4 : « Et on peut poser des questions sur tout l'espace : quelles tâches de Julie sont en retard ? »
+DIRE — « Le fil de 14 messages avec l'architecte sur les dessins du mur-rideau. Quatre endroits à connaître. »
+→ beat 1 : « En haut du courriel, "Résumer" : l'essentiel des 14 messages, et ce qui reste ouvert. »
+→ beat 2 : « "Brouillon avec Copilot" : vous décrivez la réponse en une phrase, il rédige. Vous relisez, vous corrigez, vous envoyez. »
+→ beat 3 : « L'accompagnement : il relit votre propre courriel et commente le ton et la clarté. Utile avant un courriel délicat à un client. »
+→ beat 4 : « Le volet Copilot, à droite : des questions sur vos courriels. "Quels courriels de Boréa attendent encore ma réponse ?" »
 
-DÉMO EN DIRECT — Si possible, montrez-le dans un vrai espace Notion de démonstration : créez une page « Projet Limoilou », appuyez sur Espace, demandez un plan.
+LICENCE — Ces quatre fonctions exigent la licence Microsoft 365 Copilot. Sans elle, on copie le texte du courriel dans Copilot Chat. C'est moins fluide, mais ça marche.
 
-À VÉRIFIER — L'interface évolue souvent et dépend du forfait. Testez avant la session.
+DÉMO EN DIRECT — Si vous avez la licence, montrez « Résumer » et « Brouillon avec Copilot » sur un fil de démonstration (jamais un vrai courriel client à l'écran).
 
-TRANSITION — « Même exercice avec ClickUp. »`,
-  `⏱ 6 min · DÉMO CLICKUP BRAIN (4 clics)
+TRANSITION — « Et pour un document : Copilot Chat. »`,
+  `⏱ 6 min · DÉMO COPILOT CHAT ET LE DOSSIER (4 clics)
 
-OBJECTIF — Repérer les usages de l'IA dans un outil de gestion de tâches.
+OBJECTIF — Montrer l'usage accessible à tous : joindre un document et l'interroger.
 
-DIRE — « ClickUp, c'est un outil de tâches. Son IA s'appelle Brain et travaille sur les tâches elles-mêmes. »
-→ beat 1 : « Générer des sous-tâches à partir du titre et de la description. Quatre sous-tâches pour choisir la caisse. »
-→ beat 2 : « Résumer un fil de commentaires : 23 commentaires en trois lignes, avec la décision attendue. »
-→ beat 3 : « Rédiger une mise à jour de statut à partir des tâches de la semaine. »
-→ beat 4 : « Poser une question : qu'est-ce qui bloque le lot TI ? »
+DIRE — « Copilot Chat, avec votre compte Lessard. On joint la soumission et on pose une question précise. »
+→ beat 1 : « Le fichier est joint ; la réponse sort en quatre lignes : périmètre, exclusions, échéance, et la promesse d'Éric. »
+→ beat 2 : « La relance la plus utile : "Qu'est-ce qui manque pour lancer le projet ? Pose-moi tes questions." Trois questions sortent, dont celle qui compte : "dès mars" est-il au contrat ? »
+→ beat 3 : « Le bouclier vert : vous êtes connecté au compte Lessard. Vos données ne servent pas à entraîner le modèle. Pas de bouclier, pas de dossier client. »
+→ beat 4 : « Pour ceux qui ont Claude : un "projet" garde les documents et vos consignes d'une conversation à l'autre. Pratique pour un dossier qui dure six mois. »
 
-DÉMO EN DIRECT — Si possible, montrez la génération de sous-tâches dans une vraie tâche.
+CONSIGNE — Laissez 5 minutes d'exploration : chacun ouvre Copilot Chat et colle le dossier depuis le Chat.
 
-CHOIX — Chacun annonce son outil (« Notion » ou « ClickUp »). Laissez 5 minutes d'exploration libre.
+TRANSITION — « On construit le lancement. Étape 1 : la fiche de démarrage. »`,
+  `⏱ 3 min de démonstration + 10 min en autonomie · FICHE DE DÉMARRAGE (5 clics)
 
-TRANSITION — « On construit le plan. Étape 1 : la charte. »`,
-  `⏱ 3 min de démonstration + 10 min en autonomie · CHARTE (5 clics)
+OBJECTIF — Produire la fiche de démarrage et apprendre le réflexe « signale ce qui manque ».
 
-OBJECTIF — Produire la charte et apprendre le réflexe « signale ce qui manque ».
-
-DIRE — « À gauche, la demande. Remarquez la dernière phrase : "Signale ce qui manque pour la compléter." »
-→ beat 1 : « L'objectif : date, budget, équipe formée. Mesurable. »
-→ beat 2 : « Le périmètre : inclus et exclu. L'exclu est aussi important que l'inclus : pas de vente en ligne, pas de location. »
-→ beat 3 : « Les livrables. »
-→ beat 4 : « Les critères de réussite. »
-→ beat 5 : « Et voilà le piège : "300 visiteurs aux portes ouvertes". D'où vient ce chiffre ? Nulle part. L'IA l'a proposé. C'est à Luc de le fixer. »
+DIRE — « À gauche, la demande. Remarquez la dernière phrase : "Signale ce qui manque ou se contredit." »
+→ beat 1 : « Le périmètre : inclus et exclu. L'exclu est aussi important que l'inclus : le calfeutrage intérieur et les stores ne sont pas à nous. »
+→ beat 2 : « Les dates clés. »
+→ beat 3 : « Les intervenants. »
+→ beat 4 : « Les engagements pris envers le client. »
+→ beat 5 : « Et voilà la contradiction : une pose "dès mars" promise, alors que la structure n'est prête que vers le 1er mars et qu'il faut d'abord faire les relevés. C'est à Éric et à Mathieu de clarifier, pas à l'IA de trancher. »
 
 CONSIGNE — Chacun colle le dossier, lance la demande et note les questions que l'IA renvoie.
+
+LIEN MÉTIER — « Le passage de la vente au projet, c'est là que se perdent les promesses. Une fiche comme celle-ci, relue par Éric, évite bien des surprises. »
 
 TRANSITION — « Étape 2 : le découpage. »`,
   `⏱ 3 min · DÉCOUPAGE (3 clics)
 
 OBJECTIF — Montrer un découpage généré et le compléter.
 
-DIRE — « La demande : découpe en lots, puis en tâches de 1 à 2 semaines. »
-→ beat 1 : « Six lots apparaissent : cadrage, local et travaux, RH, TI, marketing, ouverture. »
-→ beat 2 : « Puis les tâches de chaque lot. »
-→ beat 3 : « Qu'est-ce qui manque ? Karim ajoute un septième lot : la gestion de projet elle-même. Le suivi hebdomadaire, les rapports à Luc, le bilan. L'IA oublie très souvent le travail du chargé de projet ! »
+DIRE — « La demande : découpe le lot en étapes, puis en tâches de 1 à 2 semaines. »
+→ beat 1 : « Six étapes apparaissent : transfert, dessins d'atelier, achats et livraisons, fabrication, installation, fermeture. »
+→ beat 2 : « Puis les tâches de chaque étape. »
+→ beat 3 : « Qu'est-ce qui manque ? Mathieu ajoute une septième colonne : la gestion de projet elle-même. Les réunions de chantier, les rapports à Hélène, les avis de modification. L'IA oublie très souvent le travail du chargé de projet ! »
 
-QUESTION — « Voyez-vous d'autres oublis ? » Pistes : assurances, enseigne, ouverture du compte marchand, contrat d'entretien.
+QUESTION — « Voyez-vous d'autres oublis ? » Pistes : essais d'étanchéité, protection des ouvrages après la pose, échantillons et maquette à faire approuver, documents de fin de projet exigés par l'EG, mobilisation de la grue.
 
 TRANSITION — « Étape 3 : l'échéancier. »`,
   `⏱ 4 min · ÉCHÉANCIER (3 clics)
 
 OBJECTIF — Lire un diagramme de Gantt et le chemin critique.
 
-DIRE — « 23 semaines, de novembre à avril. En hachuré, les Fêtes : chantiers fermés. »
-→ beat 1 : « Les barres apparaissent : cadrage, permis de 6 semaines, travaux après les Fêtes, recrutement qui commence tôt, TI, marketing, essais. »
-→ beat 2 : « Trois jalons : permis obtenu, travaux finis le 5 mars, ouverture le 10 avril. »
-→ beat 3 : « Le chemin critique, encadré en bleu : cadrage, permis, travaux, systèmes, essais. Un jour de retard ici, c'est un jour de retard à l'ouverture. »
+DIRE — « 28 semaines, du 2 novembre au 14 mai. En hachuré, les Fêtes : usine et chantier fermés. »
+→ beat 1 : « Les barres apparaissent : transfert, dessins d'atelier, approbation, verre sur 8 semaines plus les Fêtes, fabrication, relevés en mars, installation jusqu'au 14 mai. »
+→ beat 2 : « Trois jalons : dessins approuvés début décembre, verre livré mi-février, bâtiment fermé le 14 mai. »
+→ beat 3 : « Le chemin critique, encadré en bleu : dessins, approbation, verre, relevés, pose. Un jour de retard ici, c'est un jour de retard au bâtiment fermé. »
 
 À SOULIGNER — « Ici, l'IA a respecté les Fêtes parce que le dossier les mentionnait. Sans cette ligne dans le contexte, elle les aurait ignorées. On le verra dans les pièges. »
 
-ASTUCE OUTIL — ClickUp, Notion (vue chronologie) et Planner affichent ce type de diagramme dès que les tâches ont des dates.
+ASTUCE OUTIL — Smartsheet, Planner (vue chronologie) et Excel (avec un modèle de diagramme de Gantt) affichent ce type de vue dès que les tâches ont des dates.
 
-TRANSITION — « Étape 4 : les risques. »`,
+TRANSITION — « Étape 4 du plan : les risques. »`,
   `⏱ 4 min · RISQUES (6 clics)
 
 OBJECTIF — Construire un registre des risques avec l'IA.
 
 DIRE — « La demande : six risques, probabilité, impact, une mesure chacun. » Un clic par risque :
-→ beat 1 : « R1, permis en retard : impact élevé, probabilité moyenne. »
-→ beat 2 : « R2, pénurie de mécaniciens : élevé et probable. Zone rouge. »
-→ beat 3 : « R3, retard du fournisseur de comptoirs : on le sait déjà. »
-→ beat 4 : « R4, dépassement du budget des travaux. »
-→ beat 5 : « R5, caisse non prête : peu probable mais grave. »
-→ beat 6 : « R6, peu de clients à l'ouverture. »
+→ beat 1 : « R1, approbation des dessins en retard : impact élevé, probabilité moyenne. »
+→ beat 2 : « R2, structure d'acier terminée en retard par l'EG : élevé et probable. Zone rouge. Vous le vivez souvent, je suppose. »
+→ beat 3 : « R3, délai du verre plus long que prévu. »
+→ beat 4 : « R4, écarts de mesures au chantier. »
+→ beat 5 : « R5, la promesse des ventes intenable : peu probable qu'on la tienne, mais grave pour la relation. »
+→ beat 6 : « R6, la météo pendant la pose. »
 
-INSISTER — L'IA est excellente pour proposer des risques auxquels on n'a pas pensé. Mais les notes de probabilité et d'impact sont un jugement : l'équipe les ajuste.
+INSISTER — L'IA est excellente pour proposer des risques auxquels on n'a pas pensé. Mais les notes de probabilité et d'impact sont un jugement : c'est votre expérience qui les fixe.
 
 TRANSITION — « Étape 5 : qui fait quoi. »`,
   `⏱ 4 min · RACI (2 clics)
@@ -9116,59 +9279,82 @@ OBJECTIF — Rappeler la RACI et montrer ses erreurs typiques quand l'IA la gén
 
 DIRE — « R réalise, A approuve, C est consulté, I est informé. Une règle d'or : un seul A par ligne. »
 → beat 1 : « Le premier jet de l'IA. Regardez bien… »
-→ beat 2 : « Deux erreurs. Recrutement : deux A, Karim et Luc. Qui tranche ? Inauguration : aucun A. Personne n'approuve. »
+→ beat 2 : « Deux erreurs. Commandes et livraisons : deux A, Mathieu et Hélène. Qui tranche ? Liste de déficiences : aucun A. Personne n'approuve. »
 
-« Pourquoi ? L'IA ne connaît pas votre organisation, ni qui a vraiment l'autorité. La RACI se valide avec les personnes concernées. »
+« Pourquoi ? L'IA ne connaît pas votre organisation, ni qui a vraiment l'autorité chez Lessard. La RACI se valide avec les personnes concernées. »
 
-TRANSITION — « Dernière étape : les tâches dans l'outil. »`,
+ADJOINTES — Faites remarquer la ligne « Classement et suivis » : Nadia réalise, Mathieu approuve. « C'est ce qu'on formalisera demain avec les règles de transfert. »
+
+TRANSITION — « Les tâches dans l'outil. »`,
   `⏱ 3 min · DANS L'OUTIL (3 clics)
 
 OBJECTIF — Montrer le passage du texte aux tâches suivables.
 
-DIRE — « Un plan qui reste dans une conversation ne se suit pas. À gauche, la réponse de l'IA sous forme de tableau. Trois façons de le transférer : le coller dans Notion, qui crée la base ; l'importer en CSV ou générer les tâches dans ClickUp ; ou créer le plan avec Copilot dans Planner. »
+DIRE — « Un plan qui reste dans une conversation ne se suit pas. À gauche, la réponse de l'IA sous forme de tableau. Trois façons de le transférer : le coller dans Excel, l'importer dans Smartsheet, ou créer le plan avec Copilot dans Planner. »
 → beat 1 : « Les tâches apparaissent sur le tableau. »
 → beat 2 : « Chacune avec son responsable et sa date. »
-→ beat 3 : « C'est ce qui permettra demain à l'IA de suivre et d'alerter. »
+→ beat 3 : « C'est ce qui permettra demain de suivre et d'alerter. »
 
-ASTUCE — Demandez à l'IA : « Donne-moi ce plan en tableau Markdown » ou « en CSV avec les colonnes Tâche, Responsable, Début, Fin ».
+ASTUCE — Demandez à Copilot : « Donne-moi ce plan en tableau avec les colonnes Tâche, Responsable, Début, Fin » ; il se colle tel quel dans Excel, puis s'importe dans Smartsheet.
 
 TRANSITION — « Avant de présenter : la grille de contrôle. »`,
   `⏱ 3 min · GRILLE DE CONTRÔLE (interactive)
 
 OBJECTIF — Donner une grille de vérification réutilisable.
 
-ANIMATION — Lisez chaque critère. Chacun l'applique à son propre plan pendant le travail. Au débriefing, cochez la grille pour un participant qui partage son écran (certains critères comptent double, ×2).
+ANIMATION — Lisez chaque critère. Chacun l'applique à son propre plan pendant le travail. Au débriefing, cochez la grille à l'écran pour un participant qui partage son écran (certains critères comptent double, ×2).
 
-DIRE — « Les trois critères qui comptent double : des durées validées par quelqu'un qui sait, un seul responsable par tâche, et aucun fait inventé. »
+DIRE — « Les trois critères qui comptent double : des délais validés par quelqu'un qui sait, un seul responsable par tâche, et aucun fait inventé. »
 
-INSISTER — « Ce que l'IA ne coche jamais seule : la réalité. Elle ne sait pas que l'électricien est en vacances, ni que la semaine de relâche tombe en mars. »
+INSISTER — « Ce que l'IA ne coche jamais seule : la réalité. Elle ne sait pas que l'équipe de Patrice est sur un autre chantier en avril, ni que le verrier ferme une semaine de plus cette année. »
 
 TRANSITION — « Entraînons-nous à repérer les pièges. »`,
   `⏱ 4 min · EXERCICE : LES QUATRE PIÈGES (4 clics ou clics sur les pastilles)
 
 OBJECTIF — Exercer l'œil critique sur un plan qui « a l'air complet ».
 
-ANIMATION — Laissez 1 minute au groupe pour chercher. Puis révélez un piège par clic (ou cliquez sur les pastilles).
-→ beat 1 : Permis en 2 semaines : durée inventée, le dossier dit 6.
-→ beat 2 : Travaux des semaines 4 à 13 : traversent les Fêtes.
-→ beat 3 : Formation à la caisse (sem. 12) avant son installation (sem. 15) : dépendance inversée.
-→ beat 4 : Mécaniciens affichés en semaine 16 : beaucoup trop tard pour des profils rares.
+ANIMATION — Laissez 1 minute pour chercher, chacun pour soi. Puis demandez les trouvailles au micro et révélez un piège par clic (ou cliquez sur les pastilles).
+→ beat 1 : Approbation en 2 jours : durée inventée, le dossier dit 10 jours ouvrables.
+→ beat 2 : Verre des semaines 4 à 11 : traverse les Fêtes, l'usine ferme 2 semaines.
+→ beat 3 : Pose des fenêtres (sem. 13) avant les relevés (sem. 15), et avant la fin de la structure : dépendance inversée.
+→ beat 4 : Pose du mur-rideau mi-avril : la promesse « dès mars » d'Éric est ignorée, sans que personne prévienne Boréa.
 
 MÉTHODE — « Confrontez chaque ligne au dossier et au calendrier. Et demandez à l'IA : quelles dates as-tu supposées ? Elle vous le dira souvent. »
 
-TRANSITION — « À vous ! »`,
-  `⏱ 45 min · TRAVAIL EN ÉQUIPE
+TRANSITION — « Dernière étape avant le travail : la boîte de réception. »`,
+  `⏱ 6 min · EXERCICE : LA BOÎTE DE RÉCEPTION (glisser-déposer, 1 clic pour le corrigé)
 
-OBJECTIF — Produire le plan du projet Limoilou dans un outil.
+OBJECTIF — Répondre au besoin exprimé par Valérie au cadrage : trier, prioriser, relancer, transférer aux adjointes.
+
+ANIMATION — Pour chaque courriel, demandez une case à voix haute (« traiter », « Nadia », « relancer », « classer ») et glissez-le selon la majorité. Double-cliquer une étiquette la remet à sa place.
+→ beat 1 : le corrigé apparaît sur chaque étiquette.
+
+CORRIGÉ —
+• À traiter : la date de pose demandée par Boréa, l'écart de 40 mm signalé par Patrice.
+• À Nadia : le certificat d'assurance, le formulaire d'accès au chantier.
+• À relancer : les dessins MR-01 envoyés sans retour, le prix des panneaux d'allège demandé.
+• À classer : le bordereau de livraison, la nouvelle liste des contacts.
+
+DÉBAT — Les adjointes classeront peut-être le bordereau « À Nadia » : très bien, si c'est elle qui le saisit. « La règle de transfert dépend de votre équipe : c'est justement ce qu'on écrira demain. »
+
+PUIS — Collez dans le Chat les huit courriels ci-dessous. Chacun les donne à Copilot avec la demande du module 2 (« Classe-les en quatre groupes… »), compare avec le corrigé, puis demande la relance pour les dessins MR-01.
+« 1. Boréa (chargé de projet EG) : Bonjour Mathieu, pouvez-vous nous confirmer la date de début de pose du mur-rideau du hall ? Nous bâtissons l'échéancier des finitions. 2. Boréa : Il nous manque votre certificat d'assurance à jour pour le dossier du chantier. 3. Vous, le 23 novembre : Veuillez trouver ci-joints les dessins d'atelier MR-01 pour approbation. (aucune réponse) 4. Verrier : Bordereau de livraison 4471, ci-joint. 5. Ville de Rivière-Claire : Formulaire d'accès au chantier à remplir pour chaque travailleur avant le 15. 6. Patrice : Relevé fait à l'axe C, on a 40 mm de plus que les plans. On fait quoi ? 7. Boréa : Voici la nouvelle liste des contacts du chantier. 8. Vous, à un fournisseur, il y a 10 jours : Pouvez-vous nous transmettre votre prix pour les panneaux d'allège ? (aucune réponse) »
+
+TRANSITION — « À vous ! »`,
+  `⏱ 45 min · TRAVAIL INDIVIDUEL
+
+OBJECTIF — Lancer le projet des Méandres : la fiche, le plan dans un outil de suivi, la boîte de réception triée, une relance.
 
 ANIMATION — Démarrez le minuteur (il continue si vous changez de page). Les participants travaillent seuls, micro coupé. Vous ne voyez pas leurs écrans : faites un point d'étape toutes les 15 minutes (« Où en êtes-vous : étape 1, 2, 3 ou 4 ? »). La pause de 14 h 30 peut être prise pendant l'atelier, selon le rythme.
 
-QUESTIONS À POSER DANS LE CLAVARDAGE (ou à la personne qui partage son écran) —
+QUESTIONS À POSER (à la personne qui partage son écran) —
 • « Montrez-moi votre demande. Où est le contexte ? »
 • « Quelles dates l'IA a-t-elle supposées ? »
 • « Qui est le A de cette ligne ? »
 
-AIDE — Quelqu'un écrit « bloqué » : invitez-le à partager son écran 2 minutes, ou suggérez « Demandez à l'IA de vous poser les questions qui lui manquent. »
+AIDE — Quelqu'un est bloqué : invitez-le à partager son écran 2 minutes, ou suggérez « Demandez à Copilot de vous poser les questions qui lui manquent. »
+
+POUR ALLER PLUS LOIN (utilisateurs avancés) — Comparer Copilot et Claude sur la même demande ; demander à Copilot un tableau prêt pour l'import dans Smartsheet ; demander la relance en anglais pour un fournisseur.
 
 SIGNAL — À 5 minutes de la fin, demandez à chacun de passer son plan à la grille de contrôle.
 
@@ -9177,21 +9363,21 @@ TRANSITION — « Temps écoulé ! Débriefing. »`,
 
 OBJECTIF — Tirer les leçons de l'atelier.
 
-ANIMATION — Trois ou quatre volontaires partagent leur écran 2 minutes et répondent aux trois questions ; les autres réagissent au micro. Puis sondage : un numéro par personne, à voix haute, cliquez une ligne par réponse.
+ANIMATION — Deux ou trois volontaires partagent leur écran 2 minutes et répondent aux trois questions ; les autres réagissent au micro ou déposent une capture dans le Chat. Puis sondage : un numéro par personne, à voix haute, cliquez une ligne par réponse.
 
 POINTS À FAIRE ÉMERGER —
-• L'IA donne une structure et des idées très vite.
-• Elle se trompe sur les dates, les dépendances, les responsabilités : tout ce qui demande de connaître la réalité.
-• Le gain de temps est réel… à condition de vérifier.
+• L'IA donne une structure et des idées très vite, et résume un dossier en une minute.
+• Elle se trompe sur les délais, les dépendances, les responsabilités : tout ce qui demande de connaître la réalité du chantier.
+• Le tri des courriels marche bien… à condition de vérifier la colonne « à traiter ».
 
 LECTURE DU SONDAGE — Souvent « environ la moitié ». Si quelqu'un répond « temps perdu » : demandez pourquoi (demande trop vague ? outil mal maîtrisé ?). C'est précieux.
 
 TRANSITION — « Faisons le bilan de cette journée. »`,
   `⏱ 3 min · BILAN DU JOUR 1
 
-DIRE — « Module 1 : l'IA apprend d'exemples, prédit le mot probable, et peut inventer avec aplomb. Module 2 : quatre usages en gestion de projet et une demande en cinq ingrédients. Atelier 1 : un plan généré en quelques minutes, mais vérifié ligne par ligne. »
+DIRE — « Module 1 : l'IA apprend d'exemples, prédit le mot probable, et peut inventer avec aplomb. Module 2 : quatre usages, planifier, trier, rendre compte, relancer, et une demande en cinq ingrédients. Atelier 1 : un plan généré en quelques minutes, mais vérifié ligne par ligne, et une boîte de réception triée. »
 
-« Demain : les comptes rendus et résumés de réunions, le suivi et les alertes, les limites et l'éthique, puis le mini-projet complet de l'atelier 2. »
+« Demain : les réunions et les visites de chantier, le tri et les relances préparés à l'avance, les limites et la confidentialité, puis le mini-projet de l'atelier 2, si possible sur un de vos vrais dossiers. »
 
 QUESTION — « Qu'est-ce qui vous a le plus surpris aujourd'hui ? »
 
@@ -9202,7 +9388,9 @@ OBJECTIF — Mesurer les acquis et récolter les questions pour demain.
 
 ANIMATION — Tour rapide au micro : chacun donne trois réponses courtes, une chose apprise, une question, un essai à faire ce soir. Notez les questions pour y répondre demain matin.
 
-DIRE — « Je lirai vos questions ce soir et on commencera par y répondre demain matin. Et ce soir, si vous avez cinq minutes : une demande en cinq ingrédients sur votre vrai projet, sans données confidentielles. »
+DIRE — « Je lirai vos questions ce soir et on commencera par y répondre demain matin. Et ce soir, si vous avez cinq minutes : une demande en cinq ingrédients sur un de vos vrais courriels, dans Copilot avec votre compte Lessard. »
+
+À PRÉPARER POUR DEMAIN — Demandez à chacun de penser à un de ses projets en cours pour l'atelier 2 : on le travaillera anonymisé (pas de nom de client, pas de prix, pas d'adresse).
 
 LOGISTIQUE — Rappel : demain 9 h, même lien de classe virtuelle.
 
@@ -9211,9 +9399,9 @@ CLÔTURE — « Merci pour cette belle journée, et à demain ! »`,
 
 OBJECTIF — Relancer l'énergie et annoncer le fil de la journée.
 
-DIRE — « Bonjour et bienvenue au jour 2 ! Hier, on a compris l'IA et on a planifié avec elle. Aujourd'hui, on automatise ce qui se répète dans un projet : les réunions, les comptes rendus, le suivi. On parle des limites et de l'éthique. Et cet après-midi, vous menez un mini-projet complet avec l'IA. »
+DIRE — « Bonjour et bienvenue au jour 2 ! Hier, on a compris l'IA et on a planifié avec elle. Aujourd'hui, on automatise ce qui se répète dans vos projets : les réunions et les visites de chantier, les comptes rendus, le tri des courriels, les relances. On parle des limites et de l'éthique. Et cet après-midi, vous menez un mini-projet complet avec l'IA, si possible sur un de vos vrais dossiers, anonymisé. »
 
-Montrer l'animation : « Réunion, compte rendu, tâches. C'est la chaîne qu'on va automatiser ce matin. »
+Montrer l'animation : « Le chantier, le compte rendu, les suivis. C'est la chaîne qu'on va accélérer ce matin. »
 
 LOGISTIQUE — Mêmes horaires qu'hier. Évaluation de la formation en fin de journée.
 
@@ -9231,47 +9419,47 @@ RÉPONSES —
 4. Un seul A par ligne.
 5. Automatisation : une règle fixe. L'IA anticiperait le retard.
 
-VOS QUESTIONS D'HIER — Sur la 6ᵉ case, répondez aux questions recueillies dans les billets de sortie (préparez-les la veille). Si quelqu'un a essayé une demande en cinq ingrédients sur son vrai projet, demandez-lui de raconter.
+VOS QUESTIONS D'HIER — Sur la 6ᵉ case, répondez aux questions recueillies dans les billets de sortie (préparez-les la veille). Si quelqu'un a essayé une demande en cinq ingrédients sur un vrai courriel, demandez-lui de raconter.
 
 TRANSITION — « Voici le programme de la journée. »`,
   `⏱ 1 min · PROGRAMME DU JOUR 2
 
-DIRE — « Ce matin, module 4 : automatiser et collaborer. Comptes rendus, résumés de réunions, suivi des tâches et alertes, pratiques d'équipe. Après la pause, module 5 : limites, éthique et adoption. Cet après-midi, l'atelier 2 : un mini-projet complet avec l'IA, que vous présenterez au groupe, avec une rétroaction collective. On termine par votre plan d'action. »
+DIRE — « Ce matin, module 4 : réunions et visites de chantier, tri des courriels, relances et transferts aux adjointes, pratiques d'équipe. Après la pause, module 5 : limites, confidentialité et adoption. Cet après-midi, l'atelier 2 : un mini-projet complet avec l'IA ; deux ou trois volontaires présenteront le leur, avec une rétroaction collective. On termine par votre plan d'action. »
 
-TRANSITION — « Commençons par ce qui occupe une grande partie de la semaine de Karim : les réunions. »`,
+TRANSITION — « Commençons par ce qui occupe une grande partie de la semaine de Mathieu : les réunions. »`,
   `⏱ 1 min · DÉBUT DU MODULE 4 (≈ 9 h 15)
 
 OBJECTIF — Annoncer le plan du module.
 
-DIRE — « Module 4 : automatiser et collaborer. On s'attaque à ce qui se répète chaque semaine dans un projet : les réunions et leurs comptes rendus, le suivi des tâches, les relances, le rapport du vendredi. »
+DIRE — « Module 4 : automatiser et collaborer. On s'attaque à ce qui se répète chaque semaine dans vos projets, et que Valérie a cité au cadrage : les comptes rendus de réunion, la synthèse des visites de chantier, le tri des courriels, les relances, et le transfert aux adjointes. »
 
-« Quatre temps : comptes rendus et résumés de réunions ; transformer les actions en tâches sans ressaisie ; le suivi automatique et les alertes intelligentes ; et les pratiques d'équipe pour que l'IA profite à tous. »
+« Quatre temps : comptes rendus et rapports de visite ; transformer les actions en tâches sans ressaisie ; le tri, les relances et les alertes ; et les pratiques d'équipe entre chargés de projet et adjointes. »
 
-RYTHME — Environ 1 h 15, de 9 h 15 à 10 h 30. Gardez un bon rythme : le simulateur et l'exercice des erreurs sont les deux moments à ne pas couper.
+RYTHME — Environ 1 h 15, de 9 h 15 à 10 h 30. Gardez un bon rythme : la visite de chantier et l'exercice des erreurs sont les deux moments à ne pas couper.
 
 TRANSITION — « Commençons par la réunion. »`,
   `⏱ 3 min · AVANT, PENDANT, APRÈS (3 clics)
 
-OBJECTIF — Montrer que l'IA aide à chaque moment d'une réunion.
+OBJECTIF — Montrer que l'IA aide à chaque moment d'une réunion ou d'une visite.
 
-DIRE — « 11 heures de réunions par semaine pour Karim. Trois moments où l'IA aide. »
-→ beat 1 : « Avant : proposer l'ordre du jour à partir des tâches en retard, résumer les documents à lire, rédiger l'invitation avec un objectif clair. »
-→ beat 2 : « Pendant : transcrire, avec l'accord des participants ; demander "qu'a-t-on décidé jusqu'ici ?" ; rattraper quelqu'un qui arrive en retard. »
-→ beat 3 : « Après : le compte rendu, les tâches dans l'outil, le courriel de suivi aux absents. C'est là que le gain est le plus grand. »
+DIRE — « 9 heures de réunions et de visites par semaine pour Mathieu. Trois moments où l'IA aide. »
+→ beat 1 : « Avant : l'ordre du jour à partir des points ouverts, le résumé du fil de courriels avec l'EG, les questions à poser à l'architecte. »
+→ beat 2 : « Pendant : transcrire dans Teams, avec l'accord de tous. Et au chantier, où il n'y a pas de Teams : dicter ses notes au téléphone, prendre les photos des déficiences. »
+→ beat 3 : « Après : le compte rendu ou le rapport de visite, les tâches dans l'outil, le courriel de suivi à l'EG et à l'adjointe. C'est là que le gain est le plus grand. »
 
-QUESTION — « Combien de temps vous prend un compte rendu ? Et combien de temps après la réunion le diffusez-vous ? »
+QUESTION — « Combien de temps vous prend un compte rendu de chantier ? Et combien de temps après la réunion le diffusez-vous ? »
 
 TRANSITION — « Voyons comment l'IA passe d'une transcription à un compte rendu. »`,
   `⏱ 4 min · DÉMO : TRANSCRIPTION → COMPTE RENDU (3 clics)
 
 OBJECTIF — Visualiser l'extraction : décisions, actions, points ouverts.
 
-DIRE — « À gauche, un extrait de la transcription de la réunion du 2 février. Des phrases spontanées, dans le désordre. »
-→ beat 1 : « L'IA repère la décision, en vert : la pose des comptoirs le samedi 20. »
-→ beat 2 : « Les actions, en bleu : Annie avance le câblage réseau d'ici le 12 ; Julie relance les candidats demain, donc le 3 février. »
-→ beat 3 : « Les points ouverts, en jaune : la date des portes ouvertes. Luc tranche jeudi. »
+DIRE — « À gauche, un extrait de la transcription de la réunion de chantier du 2 mars, sur Teams. Des phrases spontanées, dans le désordre. »
+→ beat 1 : « L'IA repère la décision, en vert : on commence la pose le 22 par la façade nord. »
+→ beat 2 : « Les actions, en bleu : Patrice refait les relevés d'ici le 9 ; Nadia relance le verrier demain, donc le 3 mars. »
+→ beat 3 : « Les points ouverts, en jaune : la couleur des panneaux d'allège. Décision jeudi, avec la Ville. »
 
-INSISTER — « Remarquez : "on en reparle jeudi" n'est pas une décision. Une bonne extraction distingue ce qui est décidé de ce qui est discuté. »
+INSISTER — « Remarquez : "on en reparle jeudi" n'est pas une décision. Une bonne extraction distingue ce qui est décidé de ce qui est discuté. Dans une réclamation, cette nuance vaut cher. »
 
 TRANSITION — « Voici la demande qui produit ce résultat. »`,
   `⏱ 3 min · MODÈLE DE DEMANDE DE COMPTE RENDU
@@ -9283,23 +9471,40 @@ DIRE — « Les zones jaunes changent à chaque réunion : le projet, la date. L
 Pointer les quatre conseils :
 • « Seulement les décisions clairement prises » : évite les fausses décisions.
 • « [à confirmer] » : l'IA montre les trous au lieu de les combler.
-• La liste des participants : moins d'erreurs de noms, surtout avec une transcription automatique.
+• La liste des participants : moins d'erreurs de noms, surtout avec une transcription automatique et des gens de plusieurs entreprises.
 • Relire avant de diffuser : « C'est vous qui signez. »
 
 ASTUCE — Pour une réunion en anglais ou bilingue : ajoutez « Rédige le compte rendu en français ».
+
+LOGISTIQUE — Collez ce modèle dans le Chat ; il fait partie de la bibliothèque remise en fin de journée.
 
 TRANSITION — « Et si la demande est trop vague ? Exercice. »`,
   `⏱ 5 min · EXERCICE : QUATRE ERREURS (4 clics)
 
 OBJECTIF — Entraîner l'œil à repérer les erreurs typiques d'un compte rendu généré.
 
-ANIMATION — Laissez 2 minutes : chacun compare avec la transcription de la page précédente (revenez-y si besoin) et repère les erreurs. Faites-les annoncer, puis un clic par erreur.
-→ beat 1 : Fausse décision : les portes ouvertes n'ont pas été reportées, on a seulement discuté.
-→ beat 2 : Mauvaise personne : c'est Annie qui avance le câblage.
-→ beat 3 : Date inventée : Julie a dit « demain », donc le 3 février, pas le 15.
-→ beat 4 : Point ouvert effacé : la date des portes ouvertes reste à trancher.
+ANIMATION — Laissez 2 minutes : chacun compare, pour soi, avec la transcription de la page précédente (revenez-y si besoin). Faites annoncer les erreurs au micro, puis un clic par erreur.
+→ beat 1 : Fausse décision : la couleur des panneaux n'a pas été retenue, on en a seulement discuté.
+→ beat 2 : Mauvaise personne : c'est Patrice qui refait les relevés.
+→ beat 3 : Date inventée : Nadia a dit « demain », donc le 3 mars, pas le 15.
+→ beat 4 : Point ouvert effacé : la couleur des panneaux reste à trancher.
 
 MESSAGE CLÉ — « Ce sont exactement les quatre erreurs à vérifier : décisions, responsables, dates, points ouverts. Deux minutes de relecture. »
+
+TRANSITION — « Et quand la réunion se tient sur le chantier, sans Teams ? »`,
+  `⏱ 5 min · DÉMO : LA VISITE DE CHANTIER (4 clics)
+
+OBJECTIF — Répondre au besoin du cadrage : la synthèse des visites de chantier.
+
+DIRE — « Mathieu fait le tour de la façade nord. Il dicte ses notes au téléphone en marchant, comme il parle, et prend trois photos. De retour au bureau, il donne le tout à Copilot : le texte de la dictée et les photos. »
+→ beat 1 : « L'avancement, en une ligne. »
+→ beat 2 : « Les déficiences, numérotées, avec le lieu et le responsable. C'est la liste que Boréa attend. »
+→ beat 3 : « Ce que Nadia doit faire : commander la vitre, envoyer la liste à Boréa avant vendredi. C'est le transfert à l'adjointe, déjà rédigé. »
+→ beat 4 : « Le réflexe : l'IA ne sait que ce que vous dictez. Elle peut décrire une photo, mais elle ne sait pas si l'égratignure est dans la tolérance. Vérifiez chaque ligne. »
+
+COMMENT FAIRE — Dicter : l'enregistreur vocal du téléphone, la dictée de Word, ou le micro de l'application Copilot. Puis coller la transcription et joindre les photos dans Copilot Chat, avec le compte Lessard.
+
+ATTENTION — Pas de visages ni de plaques d'immatriculation sur les photos que vous donnez à l'IA. Les photos d'un bâtiment client sont des données du client.
 
 TRANSITION — « Quels outils font ces résumés ? »`,
   `⏱ 4 min · OUTILS DE RÉSUMÉ DE RÉUNION
@@ -9307,13 +9512,13 @@ TRANSITION — « Quels outils font ces résumés ? »`,
 OBJECTIF — Panorama des outils, avec le critère qui compte : où vont les données.
 
 DIRE — Parcourez les cinq lignes :
-• Copilot dans Teams : récapitulatif, tâches de suivi, questions sur la réunion. Licence Copilot et transcription nécessaires.
-• Google Meet : « Prendre des notes pour moi », dans un Google Doc, selon l'édition Workspace.
-• Zoom : AI Companion, résumé et prochaines étapes, avec les comptes payants.
-• Otter.ai : un assistant qui rejoint l'appel, transcrit et résume. « Attention : c'est un service externe. Vos réunions partent chez un tiers. À faire approuver. »
-• Notion : notes de réunion transcrites directement dans la page.
+• Copilot dans Teams : récapitulatif, tâches de suivi, questions sur la réunion. Licence Microsoft 365 Copilot et transcription nécessaires.
+• Copilot Chat : à partir de vos notes, d'une dictée ou de photos. Inclus avec votre compte : c'est la solution pour tout le monde, et pour le chantier.
+• La dictée de Word : pour dicter ses notes, puis les mettre en forme.
+• Procore : ses agents suivent les journaux de chantier et les observations ; déploiement progressif, à vérifier chez vous.
+• Otter.ai : un assistant qui rejoint l'appel. « Attention : service externe. Vos réunions partent chez un tiers. À faire approuver. »
 
-INSISTER — « La qualité est comparable. La vraie question : est-ce que mon organisation autorise cet outil pour ce type de réunion ? »
+INSISTER — « La qualité est comparable. La vraie question : est-ce que Lessard autorise cet outil pour ce type de réunion ? »
 
 À VÉRIFIER — Ces offres évoluent vite ; vérifiez avant chaque session (français, licence, hébergement des données).
 
@@ -9323,9 +9528,9 @@ TRANSITION — « Justement : les règles pour transcrire une réunion. »`,
 OBJECTIF — Installer de bons réflexes éthiques et légaux.
 
 DIRE — « Une transcription contient des renseignements personnels et des propos spontanés. Cinq règles. »
-1. Annoncer et obtenir l'accord, à l'oral et dans l'invitation.
-2. Pas pour les sujets sensibles : RH, santé, conflits, négociations.
-3. Un outil approuvé par l'organisation.
+1. Annoncer et obtenir l'accord, à l'oral et dans l'invitation. Y compris pour les gens de l'EG et de l'architecte : ce ne sont pas vos employés.
+2. Pas pour les sujets sensibles : négociations de prix, réclamations, litiges, RH.
+3. Un outil approuvé par Lessard.
 4. Une durée de conservation : on garde le compte rendu, pas forcément l'enregistrement.
 5. Relire avant de diffuser : celui qui envoie en est responsable.
 
@@ -9339,42 +9544,42 @@ TRANSITION — « Le compte rendu est prêt. Que deviennent les actions ? »`,
 OBJECTIF — Montrer la continuité compte rendu → outil de tâches.
 
 DIRE — « Une action qui reste dans un compte rendu est souvent une action oubliée. »
-→ beat 1 : « L'action d'Annie devient une tâche dans Planner, avec responsable, date, et un lien vers le compte rendu. »
-→ beat 2 : « Celle de Julie. »
-→ beat 3 : « Celle de Karim. »
+→ beat 1 : « L'action de Patrice devient une tâche dans Planner, avec responsable, date, et un lien vers le compte rendu. »
+→ beat 2 : « Celle de Nadia. »
+→ beat 3 : « Celle de Mathieu. »
 
-COMMENT — « Selon l'outil : le récapitulatif propose directement les tâches, on demande à l'IA "crée ces tâches", ou on passe par une automatisation. »
+COMMENT — « Selon l'outil : le récapitulatif de Teams propose directement les tâches, on demande à Copilot "crée ces tâches", ou on copie le tableau dans Smartsheet. »
 
 INSISTER — Le lien vers le compte rendu donne le contexte à celui qui ouvre la tâche dans deux semaines.
 
-TRANSITION — « Les tâches sont dans l'outil. Le suivi peut maintenant s'automatiser. »`,
+TRANSITION — « Les tâches et les courriels peuvent maintenant se suivre presque tout seuls. »`,
   `⏱ 4 min · RÈGLES « SI… ALORS » (3 clics)
 
-OBJECTIF — Montrer l'automatisation simple du suivi, avant même l'IA.
+OBJECTIF — Montrer l'automatisation simple du tri et des relances, avant même l'IA.
 
 DIRE — « Une règle a trois parties : quand, si, alors. »
-→ beat 1 : « Quand une tâche change de statut, si elle passe à "Bloquée", alors message à Karim dans Teams. Karim n'a plus besoin de demander "où en es-tu ?". »
-→ beat 2 : « Chaque matin à 8 h, si une échéance arrive dans 2 jours et que la tâche n'est pas commencée, rappel au responsable. Les relances se font toutes seules. »
-→ beat 3 : « Chaque vendredi à 14 h, l'outil rassemble les tâches terminées, et cette fois l'IA rédige le brouillon du rapport. On combine automatisation et IA. »
+→ beat 1 : « Quand un courriel arrive, s'il vient de Boréa ou parle des Méandres, alors il est classé dans le dossier du projet. C'est une simple règle Outlook, sans IA, sans licence. Faites-en une par gros projet. »
+→ beat 2 : « Chaque matin à 8 h, si un courriel envoyé il y a 5 jours n'a pas de réponse, alors rappel à Mathieu : relancer ? Avec Power Automate, ou simplement un indicateur de suivi Outlook. »
+→ beat 3 : « Quand un courriel arrive, si c'est une demande administrative, alors l'IA prépare le transfert à Nadia, avec la consigne. Ici on combine règle et IA, et c'est Mathieu qui clique "envoyer". »
 
-OÙ — ClickUp, Planner (avec Power Automate), Notion, Trello, monday.
+LA RÈGLE D'OR — « Automatique ne veut pas dire sans vous. Jamais d'envoi automatique à un client ou à un fournisseur : l'IA prépare, vous envoyez. »
 
-DÉMO OPTIONNELLE — Créez une règle en direct dans ClickUp ou Trello.
+DÉMO OPTIONNELLE — Créez une règle Outlook en direct : clic droit sur un courriel, Règles, Créer une règle, Déplacer vers le dossier.
 
 TRANSITION — « Les règles constatent. L'IA, elle, peut anticiper. »`,
   `⏱ 4 min · ALERTE INTELLIGENTE (5 clics)
 
 OBJECTIF — Distinguer constat (règle) et anticipation (IA).
 
-DIRE — « À gauche, l'alerte par règle : la soumission est en retard de 4 jours. Utile, mais le retard est déjà là. »
+DIRE — « À gauche, l'alerte par règle : l'approbation des dessins est en retard de 4 jours. Utile, mais le retard est déjà là. »
 « À droite, l'alerte intelligente : l'IA croise des signaux faibles. »
-→ beat 1 : « Pas de mise à jour depuis 9 jours. »
-→ beat 2 : « Son responsable est surchargé. »
-→ beat 3 : « La tâche est sur le chemin critique. »
-→ beat 4 : « Et le dernier commentaire : "petit souci avec le maître électricien". Une règle ne lit pas le ton ; l'IA, si. »
-→ beat 5 : « Conclusion : risque de glissement, avec une suggestion d'action. Avant que le retard n'arrive. »
+→ beat 1 : « Aucune réponse de l'architecte depuis 9 jours. »
+→ beat 2 : « Le verrier ne garantit son créneau de production que jusqu'au 11 décembre. »
+→ beat 3 : « L'approbation est sur le chemin critique du 14 mai. »
+→ beat 4 : « Et le dernier courriel de l'architecte : "on manque de monde avant les Fêtes". Une règle ne lit pas le ton ; l'IA, si. »
+→ beat 5 : « Conclusion : risque que la commande du verre passe après les Fêtes. Suggestion : appeler l'architecte aujourd'hui. Avant que le retard n'arrive. »
 
-NUANCE — Ces alertes existent à des degrés divers selon les outils ; elles supposent des tâches tenues à jour.
+NUANCE — Ces alertes existent à des degrés divers selon les outils ; elles supposent des données tenues à jour. Aujourd'hui, le plus simple : demander chaque lundi à Copilot « Qu'est-ce qui risque de glisser cette semaine ? » en lui donnant vos fils de courriels.
 
 TRANSITION — « Voyons-le évoluer semaine après semaine. »`,
   `⏱ 5 min · SIMULATEUR (curseur)
@@ -9384,18 +9589,18 @@ OBJECTIF — Faire vivre le suivi d'un projet qui dérive, et le rôle de l'huma
 ANIMATION — Commencez en semaine 10 (vous pouvez reculer à 8). Faites glisser le curseur semaine par semaine jusqu'à 16 (ou cliquez le curseur puis utilisez les flèches du clavier). Commentez chaque nouvelle alerte.
 
 DIRE —
-• Semaines 9 et 10 : « Tout va bien… puis un premier silence. »
-• Semaine 11 : « Annie est surchargée. »
-• Semaine 12 : « Le logiciel de caisse bloque la formation : rouge. »
-• Semaine 13 : « Le ton du fournisseur change. »
-• Semaine 14 : « Le jalon du 5 mars va glisser. Météo rouge. »
-• Semaine 15 : « Une suggestion d'action. »
+• Semaines 9 et 10 : « Tout va bien… puis un premier silence de l'architecte. »
+• Semaine 11 : « L'équipe de Patrice est surchargée en mars. »
+• Semaine 12 : « La quincaillerie des portes n'est pas commandée : rouge. »
+• Semaine 13 : « Le ton du verrier change. »
+• Semaine 14 : « Le jalon "Verre livré" va glisser. Météo rouge. »
+• Semaine 15 : « Une suggestion : commencer par la façade nord. »
 
-QUESTION — « À quelle semaine Karim aurait-il dû réagir ? » Réponse attendue : dès la 10 ou la 11, pas à la 14.
+QUESTION — « À quelle semaine Mathieu aurait-il dû réagir ? » Réponse attendue : dès la 10 ou la 11, pas à la 14.
 
-INSISTER — Encadré : la météo envoyée à Luc reste le jugement de Karim.
+INSISTER — Encadré : la météo envoyée à Hélène reste le jugement de Mathieu.
 
-TRANSITION — « Justement, le rapport à Luc. »`,
+TRANSITION — « Justement, le rapport à Hélène. »`,
   `⏱ 3 min · LE RAPPORT DU VENDREDI (4 clics)
 
 OBJECTIF — Montrer la chaîne complète et la répartition des rôles.
@@ -9403,44 +9608,44 @@ OBJECTIF — Montrer la chaîne complète et la répartition des rôles.
 DIRE —
 → beat 1 : « L'outil rassemble : tâches terminées, en retard, à venir. »
 → beat 2 : « L'IA rédige : avancement, points d'attention, décision attendue. »
-→ beat 3 : « Karim relit et juge. Ici, il a fait passer la météo de vert à jaune, et ajouté le contexte sur l'électricité. Voyez l'encadré bleu. »
-→ beat 4 : « Luc reçoit le même format chaque semaine : il sait où regarder. »
+→ beat 3 : « Mathieu relit et juge. Ici, il a fait passer la météo de vert à jaune, et ajouté le retard de la structure. Voyez l'encadré bleu. »
+→ beat 4 : « Hélène reçoit le même format pour les 13 projets de Mathieu, et pour ceux de ses collègues : elle sait où regarder. »
 
-INSISTER — « Un rapport trop optimiste, c'est la confiance de Luc qui s'en va. L'IA a tendance à arrondir les angles : c'est à vous de nommer les problèmes. »
+INSISTER — « Un rapport trop optimiste, c'est la confiance de votre direction qui s'en va. L'IA a tendance à arrondir les angles : c'est à vous de nommer les problèmes. »
 
 TRANSITION — « Passons de l'individu à l'équipe. »`,
   `⏱ 4 min · PRATIQUES D'ÉQUIPE
 
-OBJECTIF — Donner six pratiques concrètes pour intégrer l'IA au travail collaboratif.
+OBJECTIF — Donner six pratiques concrètes entre chargés de projet et adjointes.
 
 DIRE — « L'IA individuelle fait gagner des minutes. L'IA d'équipe fait gagner des heures. »
-1. Une seule source : tâches, comptes rendus, décisions au même endroit. L'IA y trouve le contexte.
-2. Une bibliothèque de demandes, partagée et améliorée.
+1. Un dossier par projet : courriels, comptes rendus, décisions au même endroit. L'IA y trouve le contexte.
+2. Des règles de transfert : ce que l'adjointe reçoit, avec quelle consigne. « Certificat d'assurance : Nadia l'envoie. Bordereau : Nadia le classe. Demande de prix : Mathieu répond. » Écrites une fois, appliquées par tous.
 3. Une mention claire : « Brouillon IA, relu par… ».
-4. Un relecteur désigné pour chaque livrable généré.
+4. Une bibliothèque de demandes, partagée et améliorée par les sept membres de l'équipe.
 5. Partager les bons coups : cinq minutes en réunion d'équipe.
 6. Des règles communes : outils permis, données interdites, écrites quelque part.
 
-QUESTION — « Laquelle de ces pratiques pourriez-vous lancer dès la semaine prochaine ? »
+QUESTION — Faites répondre une adjointe et un chargé de projet : « Laquelle de ces pratiques pourriez-vous lancer dès la semaine prochaine ? »
 
-TRANSITION — « Voici la bibliothèque de l'équipe Limoilou. »`,
+TRANSITION — « Voici la bibliothèque de l'équipe. »`,
   `⏱ 3 min · BIBLIOTHÈQUE DE DEMANDES
 
 OBJECTIF — Remettre six modèles prêts à l'emploi (ils serviront dans l'atelier 2).
 
-DIRE — « Six modèles : plan de projet, compte rendu, rapport hebdomadaire, message délicat, risques, préparer une réunion. Les crochets se remplacent à chaque usage. »
+DIRE — « Six modèles, tirés de vos besoins : tri des courriels, compte rendu, rapport de visite, relance, fiche de démarrage, rapport du vendredi. Les crochets se remplacent à chaque usage. »
 
-« Remarquez que chacun contient les cinq ingrédients d'hier, et un garde-fou : "signale les durées supposées", "n'invente rien", "150 mots". »
+« Remarquez que chacun contient les cinq ingrédients d'hier, et un garde-fou : "n'invente rien", "signale ce qui manque", "150 mots". »
 
-ASTUCE — Stockez-les dans une page Notion, un OneNote d'équipe ou une note épinglée dans Teams. Certains assistants permettent aussi d'enregistrer des instructions ou des « projets » réutilisables.
+ASTUCE — Stockez-les dans un OneNote d'équipe ou une publication épinglée dans le canal Teams de l'équipe. Dans Copilot, on peut aussi enregistrer des demandes ; dans Claude, un « projet » garde les instructions.
 
-LOGISTIQUE — Partagez ces modèles aux participants (document ou clavardage) pour l'atelier 2.
+LOGISTIQUE — Partagez ces modèles aux participants (document ou Chat) pour l'atelier 2.
 
 TRANSITION — « Deux QCM pour vérifier. »`,
   `⏱ 3 min · QCM 4
 
-RÉPONSE — B : il vérifie décisions, responsables, dates et points ouverts.
-• A ✗ PIÈGE — « Ce n'est pas une transcription, c'est une interprétation de la transcription. »
+RÉPONSE — A : il vérifie décisions, responsables, dates et points ouverts.
+• B ✗ PIÈGE — « Ce n'est pas une transcription, c'est une interprétation de la transcription. Et il part chez l'EG. »
 • C ✗ PIÈGE — On perdrait tout le temps gagné.
 • D ✗ PIÈGE — Une autre IA ne sait pas ce qui a été dit ; seule une personne présente le sait.
 
@@ -9451,21 +9656,21 @@ RÉPONSE — C : la tâche Z risque de glisser.
 • A, B, D ✗ — Ce sont des règles fixes : date dépassée, statut, horaire. Très utiles, mais pas de l'IA.
 • C ✓ — Aucune règle simple ne peut combiner le silence, la surcharge et le ton des échanges.
 
-LIEN — « C'est la distinction du module 1 : automatisation = règles, IA = jugement appris. »
+LIEN — « C'est la distinction du module 1 : automatisation = règles, IA = jugement appris. Et la voûte : des règles suffisent. »
 
 TRANSITION — « Faisons le bilan du module 4. »`,
   `⏱ 2 min · SYNTHÈSE MODULE 4
 
 DIRE — Relisez les cinq points :
-1. Compte rendu : décisions, actions, points ouverts, et rien d'inventé.
+1. Compte rendu et visite : décisions, actions, déficiences, rien d'inventé.
 2. Transcrire : annoncer, outil approuvé, pas de sujets sensibles.
 3. Les actions deviennent des tâches avec responsable et date.
-4. Règles pour constater, IA pour anticiper.
-5. En équipe : une source, une bibliothèque, un relecteur.
+4. Règles pour constater, IA pour anticiper. Jamais d'envoi automatique à un client.
+5. En équipe : un dossier par projet, des règles de transfert, une bibliothèque.
 
 À VOTRE POSTE — Lisez la carte bleue.
 
-TRANSITION — « On a vu tout ce que l'IA peut faire. Parlons maintenant de ses limites, de l'éthique et de la façon d'embarquer une équipe. »`,
+TRANSITION — « On a vu tout ce que l'IA peut faire. Parlons maintenant de ses limites, de la confidentialité de vos données, et de la façon d'embarquer une équipe. »`,
   `⏱ 1 min · DÉBUT DU MODULE 5 (≈ 10 h 45)
 
 OBJECTIF — Annoncer un module lucide, sans tomber dans la peur.
@@ -9478,9 +9683,9 @@ TRANSITION — « Trois familles de risques. »`,
   `⏱ 2 min · TROIS FAMILLES (3 clics)
 
 DIRE — « Aucune n'est une raison de renoncer. Toutes sont une raison d'encadrer. »
-→ beat 1 : « Les biais : l'IA reproduit les déséquilibres de ses exemples. Dans un projet : trier des CV, estimer des durées. »
+→ beat 1 : « Les biais : l'IA reproduit les déséquilibres de ses exemples. Dans vos projets : estimer des durées à partir des projets passés, et l'exemple classique, trier des CV. »
 → beat 2 : « Les erreurs : elle se trompe avec aplomb. Un chiffre faux dans le rapport à la direction. »
-→ beat 3 : « La confidentialité : ce que vous collez sort de votre organisation. Un contrat fournisseur dans un outil gratuit. »
+→ beat 3 : « La confidentialité : ce que vous collez sort de votre organisation. Une soumission dans un compte personnel. »
 
 TRANSITION — « Commençons par les biais, avec un exemple très concret. »`,
   `⏱ 5 min · LE BIAIS (4 clics)
@@ -9491,7 +9696,7 @@ DIRE — « Imaginons un outil de tri de CV, entraîné sur dix ans d'embauches 
 → beat 1 : « Le modèle n'a aucune intention. Il en déduit simplement qu'un bon profil ressemble aux profils déjà embauchés. »
 → beat 2 : « Deux CV identiques, sauf une ligne : "capitaine de l'équipe féminine de hockey". 82 contre 61. Le mot "féminine" est devenu un signal négatif. »
 → beat 3 : « Ce n'est pas de la fiction : en 2018, Reuters a révélé qu'Amazon avait abandonné un outil expérimental de tri de CV qui pénalisait les candidatures contenant le mot "women's". »
-→ beat 4 : « Pour le recrutement de Julie : l'IA aide à rédiger l'offre et à préparer les entrevues. Le tri et le choix restent humains, sur des critères écrits à l'avance. »
+→ beat 4 : « Et chez vous ? Une IA qui estime les durées à partir de vos anciens projets hérite de leurs habitudes : les retards que vous avez toujours eus deviennent "normaux", les étapes souvent oubliées restent oubliées. Une durée "moyenne" se vérifie. »
 
 PRÉCISION — Les scores 82 / 61 sont illustratifs.
 
@@ -9502,7 +9707,7 @@ DIRE —
 → beat 1 : « La complaisance : "Mon échéancier est réaliste, non ?" "Oui, tout à fait !" Les assistants ont tendance à vous donner raison. Parade : demandez les cinq faiblesses. »
 → beat 2 : « La formulation : une question orientée appelle une réponse orientée. Posez des questions ouvertes. »
 → beat 3 : « Le biais culturel : les exemples sont surtout américains. L'IA oublie les Fêtes, la Saint-Jean, les vacances de la construction. Précisez "au Québec", "en dollars canadiens". »
-→ beat 4 : « L'optimisme moyen : ses durées reflètent un projet typique, pas votre fournisseur qui a toujours du retard. Comparez avec vos projets passés. »
+→ beat 4 : « L'optimisme moyen : ses durées reflètent un projet typique, pas votre verrier qui a toujours du retard en décembre. Comparez avec vos projets passés. »
 
 INTERACTION — « Avez-vous déjà vu l'IA vous donner raison trop vite ? »
 
@@ -9512,7 +9717,7 @@ TRANSITION — « Deuxième famille : les erreurs, avec des cas réels. »`,
 DIRE —
 → beat 1 : « Février 2024 : le clavardeur d'Air Canada invente une politique de remboursement pour les voyages liés à un deuil. Le Tribunal de résolution civile de la Colombie-Britannique (affaire Moffatt) donne raison au client : Air Canada est responsable de ce que dit son agent conversationnel. Leçon : l'organisation répond de son IA. »
 → beat 2 : « 2023, New York (affaire Mata c. Avianca) : des avocats déposent un mémoire avec six décisions de justice inventées par ChatGPT. Le juge les sanctionne d'une amende de 5 000 $ US. Leçon : toute source se vérifie à la source. »
-→ beat 3 : « Et le vôtre : dans le rapport de la semaine 14, l'IA additionne mal deux lots du budget. 6 000 $ "disponibles" qui n'existent pas. Luc approuve une dépense. Personne n'a menti ; personne n'a vérifié. »
+→ beat 3 : « Et le vôtre : dans le rapport de la semaine 14, l'IA additionne mal deux avis de modification. 6 000 $ "disponibles" qui n'existent pas. Hélène approuve une dépense. Personne n'a menti ; personne n'a vérifié. »
 
 TRANSITION — « Alors, faut-il tout vérifier ? Non : selon l'enjeu. »`,
   `⏱ 3 min · COMBIEN VÉRIFIER (4 clics)
@@ -9543,8 +9748,9 @@ ANIMATION — Pour chaque étiquette, demandez la couleur à voix haute (« vert
 
 CORRIGÉ —
 • Vert (tout outil) : texte de l'affiche (public), procédure générique.
-• Jaune (outil approuvé seulement) : budget détaillé, contrat fournisseur (aussi soumis à la confidentialité contractuelle), compte rendu de réunion.
-• Rouge (jamais tel quel) : CV, salaire, arrêt maladie. Renseignements personnels, voire sensibles.
+• Jaune (outil approuvé seulement, Copilot avec le compte Lessard) : le prix de la soumission, le contrat avec l'EG (aussi soumis à la confidentialité contractuelle), le compte rendu de chantier.
+• Rouge (jamais tel quel) : le cellulaire personnel d'un propriétaire, un salaire, un arrêt maladie. Renseignements personnels, voire sensibles.
+• Vert : une fiche technique publique, une procédure générique.
 
 DÉBAT ATTENDU — « Le compte rendu » : vert pour certains. Il contient souvent des noms, des retards, des tensions : jaune par prudence.
 
@@ -9557,7 +9763,7 @@ DIRE — « La réponse de l'IA sera tout aussi bonne : elle n'a besoin ni du no
 
 Les quatre gestes : noms → rôles ; retirer coordonnées et numéros ; masquer les montants ; remettre les vrais éléments à la fin.
 
-LIMITE — « Anonymiser réduit le risque, sans le supprimer : "la gérante de la boutique de Limoilou" suffit à reconnaître une personne. »
+LIMITE — « Anonymiser réduit le risque, sans le supprimer : "le contremaître du chantier du centre sportif de Rivière-Claire" suffit à reconnaître une personne. »
 
 TRANSITION — « Le cadre légal en quatre repères. »`,
   `⏱ 4 min · CADRE LÉGAL
@@ -9566,7 +9772,7 @@ DIRE —
 • « Loi 25, au Québec : protection des renseignements personnels. Pour un nouveau système qui traite des renseignements personnels, une évaluation des facteurs relatifs à la vie privée, l'EFVP. Et si une décision concernant une personne repose uniquement sur un traitement automatisé, il faut l'en informer. »
 • « La politique de votre organisation : votre premier document à lire en rentrant. »
 • « Vos contrats : une entente de confidentialité avec un client s'applique aussi à ce que vous collez dans une IA. »
-• « Si vous travaillez avec l'Europe : le règlement européen sur l'IA, l'AI Act, en vigueur depuis 2024, avec des obligations progressives, plus fortes pour les usages à haut risque, dont le recrutement. »
+• « Les exigences du donneur d'ouvrage : un devis public ou un contrat d'EG peut restreindre la diffusion des plans et des documents. Coller un plan dans une IA, c'est le diffuser. En cas de doute, lisez la clause de confidentialité du contrat. »
 
 PRÉCISION — Au fédéral, le projet de loi C-27, qui incluait la Loi sur l'intelligence artificielle et les données, est mort au feuilleton lors de la prorogation de janvier 2025. VÉRIFIEZ l'état de la législation avant chaque session.
 
@@ -9594,10 +9800,12 @@ OBJECTIF — Travailler des réponses concrètes aux réactions typiques.
 ANIMATION — Pour chaque carte : lisez la phrase, demandez « Que répondriez-vous ? », écoutez deux réponses, puis retournez la carte.
 
 DIRE —
-• Julie, l'inquiète : la peur d'être remplacée ou de perdre le contrôle. Réponse : clarifier ce que l'IA fait et ne fait pas.
-• Annie, l'enthousiaste : un atout, à canaliser. En faire la personne-ressource, dans le cadre.
-• Maxime, le sceptique : le convaincre par un cas où il gagne du temps, et respecter son expertise.
-• Luc, le commanditaire : il veut des résultats. Mesurer et montrer.
+• Nadia, l'inquiète : la peur d'être remplacée. Réponse : clarifier ce que l'IA fait et ne fait pas, et l'associer aux règles de transfert.
+• Éric, l'enthousiaste : un atout, à canaliser. Partager ses trucs, mais dans le cadre : jamais de prix dans un compte personnel.
+• Patrice, le sceptique : le convaincre par un cas où il gagne du temps (la liste de déficiences), et respecter son expertise.
+• Hélène, la direction : elle veut des résultats. Mesurer et montrer.
+
+ATTENTION — Ces personnages sont fictifs. Ne les associez jamais à des personnes réelles du groupe.
 
 MESSAGE CLÉ — « On n'accompagne pas une équipe avec un outil : on l'accompagne avec des réponses à ses craintes. »
 
@@ -9605,10 +9813,10 @@ TRANSITION — « Ces quatre profils ont un nom : la courbe d'adoption. »`,
   `⏱ 3 min · COURBE D'ADOPTION (5 clics)
 
 DIRE — « Everett Rogers a décrit comment une innovation se diffuse. »
-→ beat 1 : « Les innovateurs, 2,5 % : Annie. Ils essaient tout. »
-→ beat 2 : « Les adopteurs précoces, 13,5 % : Karim. Ils essaient quand ils voient l'utilité, et les autres les écoutent. »
-→ beat 3 : « La majorité précoce, 34 % : Julie. Ils suivent quand ça a fait ses preuves. »
-→ beat 4 : « La majorité tardive, 34 % : Maxime. Ils suivent quand c'est devenu la norme. »
+→ beat 1 : « Les innovateurs, 2,5 % : Éric. Ils essaient tout. »
+→ beat 2 : « Les adopteurs précoces, 13,5 % : Mathieu. Ils essaient quand ils voient l'utilité, et les autres les écoutent. »
+→ beat 3 : « La majorité précoce, 34 % : Nadia. Ils suivent quand ça a fait ses preuves. »
+→ beat 4 : « La majorité tardive, 34 % : Patrice. Ils suivent quand c'est devenu la norme. »
 → beat 5 : « Les retardataires, 16 %. Ne forcez pas : rassurez, et laissez les résultats parler. »
 
 MESSAGE CLÉ — « Commencez par les volontaires. Leurs résultats convaincront la majorité. Imposer l'IA à tout le monde le même jour, c'est se mettre la majorité à dos. »
@@ -9617,13 +9825,13 @@ TRANSITION — « Concrètement, un plan sur 90 jours. »`,
   `⏱ 3 min · PLAN SUR 90 JOURS (3 clics)
 
 DIRE —
-→ beat 1 : « Jours 1 à 30 : essayer. Deux cas pilotes seulement, les comptes rendus et le rapport hebdo. Une charte d'une page. Annie comme personne-ressource. »
-→ beat 2 : « Jours 31 à 60 : mesurer. Temps gagné, erreurs repérées à la relecture, satisfaction de l'équipe. C'est ce que Luc attend. »
-→ beat 3 : « Jours 61 à 90 : étendre. Bibliothèque partagée, trois nouveaux cas, charte révisée avec l'équipe. »
+→ beat 1 : « Jours 1 à 30 : essayer. Deux cas pilotes seulement, les comptes rendus et le tri des courriels. Une charte d'une page. Un chargé de projet et une adjointe comme personnes-ressources. »
+→ beat 2 : « Jours 31 à 60 : mesurer. Temps gagné, erreurs repérées à la relecture, satisfaction de l'équipe. C'est ce que la direction attend. »
+→ beat 3 : « Jours 61 à 90 : étendre. Bibliothèque partagée, trois nouveaux cas, les visites de chantier, les relances, la fiche de démarrage, et une charte révisée avec l'équipe. »
 
 INSISTER — Petit, mesuré, partagé. Mieux vaut deux usages bien installés que dix essais abandonnés.
 
-TRANSITION — « Voici la charte de l'équipe Limoilou. »`,
+TRANSITION — « Voici un modèle de charte pour votre équipe. »`,
   `⏱ 3 min · CHARTE D'USAGE
 
 DIRE — « Une page, huit règles, décidées ensemble. » Lisez les huit règles en soulignant :
@@ -9637,12 +9845,12 @@ ATELIER 2 — « Cet après-midi, votre mini-projet inclura une charte de ce typ
 TRANSITION — « Deux QCM pour terminer. »`,
   `⏱ 3 min · QCM 6
 
-RÉPONSE — B.
+RÉPONSE — D : des données confidentielles sortent dans un outil non approuvé.
 • A ✗ PIÈGE — La longueur n'est pas le problème.
-• C ✗ PIÈGE — Les assistants lisent les PDF.
-• D ✗ PIÈGE — Vérifier le classement ne règle ni la fuite de données ni le biais.
+• B ✗ PIÈGE — Les assistants lisent les PDF.
+• C ✗ PIÈGE — Vérifier le résumé ne fait pas revenir les données : elles sont déjà sorties.
 
-POUR ALLER PLUS LOIN — « Que peut faire Annie à la place ? » Aider Julie à écrire une grille de critères, préparer des questions d'entrevue, rédiger les réponses aux candidats.
+POUR ALLER PLUS LOIN — « Que peut faire Éric à la place ? » La même demande dans Copilot avec le compte Lessard (bouclier vert), ou retirer les prix et le nom du client avant de coller.
 
 TRANSITION — « Dernière question, sur la complaisance. »`,
   `⏱ 2 min · QCM 7
@@ -9668,54 +9876,58 @@ TRANSITION — « Bon dîner ! Cet après-midi : votre mini-projet avec l'IA, de
 
 OBJECTIF — Lancer l'atelier final avec énergie.
 
-DIRE — « Atelier 2 : un mini-projet avec l'IA, de bout en bout, chacun sur son poste. Vous allez tout mobiliser : planifier comme hier, suivre et rédiger des comptes rendus comme ce matin, communiquer, et appliquer les règles du module 5. Avec une surprise en cours de route. »
+DIRE — « Atelier 2 : un mini-projet avec l'IA, de bout en bout, chacun sur son poste. Et cette fois, si possible, sur un de vos vrais projets, anonymisé. Vous allez tout mobiliser : planifier comme hier, rédiger des comptes rendus comme ce matin, relancer, transférer à l'adjointe, et appliquer les règles du module 5. Avec une surprise en cours de route. »
 
-LOGISTIQUE — Classe virtuelle : chacun garde la réunion ouverte, micro coupé, et travaille dans son outil (Notion, ClickUp ou un assistant générique). Demandez un « prêt » à chacun.
+LOGISTIQUE — Classe virtuelle : chacun garde la réunion ouverte, micro coupé, et travaille dans Copilot avec son compte Lessard, puis dans Excel, Planner ou Smartsheet. Demandez un « prêt » à chacun.
 
 TRANSITION — « Voici la mission. »`,
   `⏱ 3 min · LA MISSION
 
-DIRE — « Quatre étapes, en autonomie. Planifier en 30 minutes : vous connaissez la méthode. Suivre en 25 minutes : un imprévu va tomber, il faudra réagir. Communiquer en 20 minutes : trois messages et une mini-charte. Puis présenter, 3 minutes chacun en partage d'écran. »
+DIRE — « Quatre étapes, en autonomie. Planifier en 30 minutes : vous connaissez la méthode. Suivre en 25 minutes : un imprévu de chantier va tomber, il faudra réagir. Communiquer en 20 minutes : trois messages, et vos règles de transfert à l'adjointe. Puis deux ou trois volontaires présentent leur travail, 3 minutes chacun, en partage d'écran. »
 
 LA RÈGLE DU JEU — « On ne récompense pas le plus beau plan. On regarde le plus réaliste, et la façon dont vous avez vérifié l'IA. Dire "l'IA s'est trompée ici et je l'ai corrigée", c'est un point fort. »
+
+PARCOURS ADJOINTE — Les adjointes peuvent prendre le projet de service après-vente, ou suivre un de leurs dossiers réels du point de vue du suivi : relances, classement, transferts reçus.
 
 TRANSITION — « Premier choix : votre projet. »`,
   `⏱ 4 min · CHOIX DU PROJET
 
-DIRE — « Quatre projets issus de Vélo Fleuve, un par profil : RH, marketing, TI, opérations. Choisissez celui qui ressemble le plus à votre métier, ou l'un de vos vrais projets, anonymisé. »
+DIRE — « Le meilleur choix : un de vos projets en cours. C'est celui qui vous servira lundi. Sinon, quatre projets du fil rouge, un par étape du cycle : la pose du hall, les déficiences de fin de projet, un appel de service après-vente, le transfert d'un nouveau contrat. »
 
-ANIMATION — Chacun annonce son choix (« recrues », « portes ouvertes », « rendez-vous », « inventaire » ou « mon projet »). Notez les choix : ils vous serviront pour l'imprévu et l'ordre de passage.
+ANIMATION — Chacun annonce son choix (« mon projet », « hall », « déficiences », « après-vente », « transfert »). Notez les choix : ils vous serviront pour l'imprévu.
 
-PROJET RÉEL — Rappelez le feu tricolore du module 5 : aucun nom, aucun chiffre réel, aucune donnée confidentielle.
+PROJET RÉEL — Rappelez le feu tricolore du module 5 : pas de nom de client, pas de prix, pas d'adresse, pas de nom d'employé. On écrit « l'EG », « l'architecte », « le bâtiment institutionnel ».
 
 TRANSITION — « Étape 1 : planifier. »`,
   `⏱ 30 min · ÉTAPE 1 · PLANIFIER
 
 ANIMATION — Lancez le minuteur. Les livrables restent affichés : laissez cette page en partage pendant le travail. À mi-parcours, point d'étape : « Où en êtes-vous (1 à 5) ? »
 
-DIRE — « Comme hier, mais plus vite. Partez des modèles de la bibliothèque : plan de projet et risques. Et n'oubliez pas : "Signale ce que tu as supposé." »
+DIRE — « Comme hier, mais plus vite. Partez des modèles de la bibliothèque : fiche de démarrage, relance. Et n'oubliez pas : "Signale ce que tu as supposé." »
 
-QUESTIONS À POSER DANS LE CLAVARDAGE —
-• « Collez votre chemin critique en une ligne. »
-• « Quelles durées l'IA a-t-elle inventées ? »
+QUESTIONS À POSER (au micro, ou à la personne qui partage son écran) —
+• « Donnez-moi votre chemin critique en une phrase. »
+• « Quels délais l'IA a-t-elle inventés ? »
 
-AIDE — Quelqu'un écrit « bloqué » : invitez-le à partager son écran 2 minutes pendant que les autres continuent.
+AIDE — Quelqu'un est bloqué : invitez-le à partager son écran 2 minutes pendant que les autres continuent.
 
-TRANSITION — À la fin de l'étape 1 : « Vos plans sont prêts ? Parfait. Parce que la réalité arrive. »`,
+TRANSITION — À la fin de l'étape 1 : « Vos plans sont prêts ? Parfait. Parce que le chantier arrive. »`,
   `⏱ 5 min · L'IMPRÉVU (bouton interactif)
 
-ANIMATION — Appelez chaque participant par son prénom et cliquez « Tirer un imprévu » pour lui. Annoncez-le avec un peu de théâtre et écrivez-le dans le clavardage (« Julie : budget réduit »). Si l'imprévu n'a pas d'effet sur son projet (ex. bilingue pour l'inventaire), tirez-en un autre. Grand groupe : tirez un imprévu par projet choisi.
+ANIMATION — Appelez chaque participant par son prénom et cliquez « Tirer un imprévu » pour lui. Annoncez-le avec un peu de théâtre et écrivez-le dans le Chat (« Prénom : avis de modification »). Si l'imprévu n'a pas d'effet sur son projet, tirez-en un autre. Grand groupe : tirez un imprévu par projet choisi.
 
-LES SIX IMPRÉVUS — retard fournisseur (3 semaines) ; budget réduit de 10 % ; personne clé absente 2 semaines ; échéance avancée d'une semaine ; tout en bilingue ; outil en panne 3 jours.
+LES SIX IMPRÉVUS — livraison du verre en retard de 3 semaines ; avis de modification (4 fenêtres à ajouter, prix demandé d'ici vendredi) ; contremaître absent 2 semaines ; bâtiment fermé avancé d'une semaine ; 6 fenêtres refusées par l'architecte ; client mécontent qui menace de retenir un paiement.
 
 DIRE — « Comme dans la vraie vie, il arrive au pire moment. Votre plan était beau ; voyons s'il est solide. »
+
+POUR L'AVIS DE MODIFICATION — Rappelez : l'IA peut comparer la demande au contrat et préparer la réponse ; le prix et l'acceptation restent une décision humaine.
 
 TRANSITION — « Étape 2 : suivre. »`,
   `⏱ 25 min · ÉTAPE 2 · SUIVRE
 
 ANIMATION — Lancez le minuteur. Laissez cette page en partage.
 
-DIRE — « Imaginez que vous sortez de la réunion de suivi où l'imprévu a été discuté. Écrivez en 5 minutes 8 à 10 lignes de notes brutes, en vrac : qui a dit quoi, ce qui a été décidé, ce qui reste ouvert. Puis l'IA en fait le compte rendu, avec le modèle de ce matin. Relisez-le avec les quatre erreurs typiques : fausse décision, mauvaise personne, date inventée, point ouvert disparu. Mettez le plan à jour dans l'outil. Et rédigez le rapport au commanditaire, avec une météo que vous assumez. »
+DIRE — « Imaginez que vous sortez de la réunion de chantier où l'imprévu a été discuté. Écrivez, ou dictez au téléphone, 8 à 10 lignes de notes brutes, en vrac : qui a dit quoi, ce qui a été décidé, ce qui reste ouvert. Puis l'IA en fait le compte rendu, avec le modèle de ce matin. Relisez-le avec les quatre erreurs typiques : fausse décision, mauvaise personne, date inventée, point ouvert disparu. Mettez le plan à jour dans l'outil. Et rédigez le rapport à la direction, avec une météo que vous assumez. »
 
 POINT D'ÉTAPE — À mi-parcours : « Une erreur que l'IA a faite dans votre compte rendu ? » Faites-en raconter deux ou trois : c'est très parlant.
 
@@ -9724,7 +9936,9 @@ TRANSITION — « Étape 3 : communiquer. »`,
 
 ANIMATION — Lancez le minuteur.
 
-DIRE — « Le même imprévu, trois publics. Au commanditaire : impact et deux options. À l'équipe projet : ce qui change et qui fait quoi. À l'externe : le fournisseur, le partenaire ou les employés, selon votre projet. Anonymisez avant de coller. Et terminez par une mini-charte d'usage de l'IA, cinq règles pour votre équipe projet. »
+DIRE — « Le même imprévu, trois publics. Au client ou à l'EG : impact et deux options. À l'équipe : ce qui change et qui fait quoi. Au fournisseur ou à l'architecte : une relance précise. Anonymisez avant de coller. Et terminez par vos règles de transfert : cinq situations courantes, et pour chacune, ce que l'adjointe reçoit et avec quelle consigne. »
+
+EXEMPLE DE RÈGLE — « Certificat d'assurance demandé par l'EG : transférer à l'adjointe, consigne "envoyer la version à jour, me mettre en copie". »
 
 ASTUCE — « Relis ce courriel comme si tu étais le destinataire : qu'est-ce qui pourrait l'irriter ? »
 
@@ -9733,9 +9947,7 @@ TRANSITION — « Préparez votre présentation : voici le format. »`,
 
 DIRE — « Trois minutes, cinq temps, en partage d'écran. Le projet en une phrase. Le plan, montré dans l'outil, pas dans des diapositives. L'imprévu et votre réaction. Un message lu à voix haute. Et surtout : ce que l'IA a raté, et ce que vous avez corrigé. »
 
-ORDRE DE PASSAGE — Annoncez-le (ordre alphabétique ou volontaires d'abord). Rappelez de fermer les onglets personnels avant de partager l'écran.
-
-GRAND GROUPE — Au-delà de 10 participants : 5 ou 6 présentent, les autres déposent une capture de leur plan et leur « ce que l'IA a raté » dans le clavardage.
+VOLONTAIRES — Deux ou trois volontaires présentent. Demandez-les maintenant pour qu'ils se préparent ; si personne ne se propose, sollicitez une personne qui a travaillé sur un vrai projet. Les autres peuvent déposer une capture de leur plan et leur « ce que l'IA a raté » dans le Chat. Rappelez de fermer les onglets personnels avant de partager l'écran.
 
 POUR LE PUBLIC — « Pendant chaque présentation, préparez un point fort et une piste. »
 
@@ -9746,12 +9958,14 @@ ANIMATION — Cette page sert de tableau de bord pendant tout l'atelier : le min
 
 RYTHME — Pause de 14 h 30 entre la fin du travail et les présentations. En virtuel, la fatigue d'écran arrive vite : ne sautez pas la pause.
 
-POINTS D'ÉTAPE — À 0:30, tirez les imprévus (page « Coup de théâtre »). À 0:55, annoncez l'étape 3. À 5 minutes de la fin, demandez à chacun de préparer ses 5 temps. À chaque fois, un tour rapide pour savoir où chacun en est.
+POINTS D'ÉTAPE — À 0:30, tirez les imprévus (page « Coup de théâtre »). À 0:55, annoncez l'étape 3. À 5 minutes de la fin, demandez aux volontaires de préparer leurs 5 temps. À chaque fois, un tour rapide pour savoir où chacun en est.
 
-AIDE — Quelqu'un écrit « bloqué » : partage d'écran 2 minutes, ou « Demandez à l'IA de vous poser ses questions. »
+AIDE — Quelqu'un est bloqué : partage d'écran 2 minutes, ou « Demandez à Copilot de vous poser ses questions. »
+
+POUR ALLER PLUS LOIN (utilisateurs avancés) — Faire la même étape avec Claude et comparer ; préparer la règle Outlook ou le flux Power Automate qui accompagne leurs règles de transfert.
 
 TRANSITION — « Temps écoulé ! Pause, puis présentations. »`,
-  `⏱ 3 min par participant + 1 min de rétroaction · RÉTROACTION COLLECTIVE (étoiles interactives)
+  `⏱ 3 min par volontaire + 1 min de rétroaction · RÉTROACTION COLLECTIVE (étoiles interactives)
 
 ANIMATION — Après chaque présentation, reprenez votre partage d'écran sur cette page. Recueillez au micro un point fort et une piste. Cochez les étoiles en synthétisant ce que vous avez vu et entendu (vous pouvez aussi demander une note de 1 à 5 par critère). « Participant suivant » remet la grille à zéro.
 
@@ -9761,24 +9975,24 @@ DIRE — « Un point fort d'abord, toujours. Puis une piste, formulée comme une
 
 TON — Bienveillant et concret. Valorisez explicitement ceux qui montrent ce que l'IA a raté : c'est l'objectif de la formation.
 
-TRANSITION — « Merci à toutes et à tous ! Quelques leçons pour finir. »`,
+TRANSITION — « Merci à nos volontaires ! Quelques leçons pour finir. »`,
   `⏱ 8 min · DÉBRIEFING DE L'ATELIER
 
-ANIMATION — Sondage à voix haute (un numéro par personne, cliquez une ligne par réponse), puis les trois questions : deux ou trois réponses au micro.
+ANIMATION — Sondage à voix haute (un numéro par personne, cliquez une ligne par réponse), puis les trois questions : deux ou trois réponses au micro, dont une adjointe.
 
-LECTURE DU SONDAGE — Souvent : compte rendu ou plan de départ. Si « Aucun » ressort : explorez. La vérification prend du temps au début ; elle devient rapide avec l'habitude et de bonnes demandes.
+LECTURE DU SONDAGE — Souvent : le compte rendu ou le tri et les relances. Si « Aucun » ressort : explorez. La vérification prend du temps au début ; elle devient rapide avec l'habitude et de bonnes demandes.
 
 POINTS À FAIRE ÉMERGER —
-• L'IA accélère surtout les premiers jets et la mise en forme.
-• Les erreurs portent sur les dates, les responsables et les faits : ce que seul le chargé de projet connaît.
-• L'imprévu montre la vraie valeur : mettre à jour plan, compte rendu et messages en quelques minutes.
+• L'IA accélère surtout les premiers jets, les résumés et la mise en forme.
+• Les erreurs portent sur les délais, les responsables et les faits : ce que seul le chargé de projet connaît.
+• L'imprévu montre la vraie valeur : mettre à jour le plan, le compte rendu et les messages en quelques minutes.
 
 TRANSITION — « Il est temps de conclure ces deux jours. »`,
   `⏱ 3 min · CLÔTURE (≈ 15 h 40)
 
 OBJECTIF — Remettre en perspective le chemin parcouru.
 
-DIRE — « Deux jours, six modules. Hier matin, on a compris ce qu'est l'IA : elle apprend d'exemples et prédit le mot probable, pas le vrai. On l'a appliquée à la gestion de projet, avec cinq ingrédients pour bien demander. On a généré un plan et appris à le vérifier. Ce matin, on a automatisé comptes rendus, tâches et alertes, on a parlé des biais, des erreurs, des données et de l'adoption en équipe. Et cet après-midi, vous avez tout mis en pratique. »
+DIRE — « Deux jours, six modules. Hier matin, on a compris ce qu'est l'IA : elle apprend d'exemples et prédit le mot probable, pas le vrai. On l'a appliquée à vos projets, avec cinq ingrédients pour bien demander. On a lancé le projet des Méandres, appris à vérifier le plan, et trié une boîte de réception. Ce matin, on a accéléré les comptes rendus, les visites de chantier, les relances et les transferts aux adjointes, on a parlé des biais, des erreurs, des données et de l'adoption en équipe. Et cet après-midi, vous avez tout mis en pratique. »
 
 QUESTION — « Quel module vous servira le plus lundi ? »
 
@@ -9791,7 +10005,7 @@ RÉPONSES — A et C.
 • A ✓ — Le contexte réduit les inventions.
 • B ✗ PIÈGE — Un compte rendu se relit, toujours.
 • C ✓ — Demander ce qui a été supposé.
-• D ✗ PIÈGE — Données personnelles et tri biaisé.
+• D ✗ PIÈGE — Une relance part sous votre nom : jamais d'envoi automatique à un client sans relecture.
 
 MESSAGE CLÉ — « L'IA prépare, vous décidez et vous vérifiez. »
 
@@ -9802,14 +10016,14 @@ OBJECTIF — Transformer la formation en engagements concrets.
 
 ANIMATION — Chacun écrit ses trois engagements dans un document ou un carnet. Laissez 3 minutes de silence (caméras allumées si possible). Puis invitez 2 ou 3 personnes à en lire un au micro.
 
-DIRE — « Trois engagements. Cette semaine : une demande de la bibliothèque, essayée sur un vrai cas. Ce mois-ci : un usage installé dans votre routine, et le temps gagné mesuré. Dans trois mois : une pratique partagée avec votre équipe, une charte d'usage par exemple. »
+DIRE — « Trois engagements. Cette semaine : une demande de la bibliothèque, essayée sur un vrai cas, par exemple le tri de votre boîte de réception lundi matin. Ce mois-ci : un usage installé dans votre routine, comme les comptes rendus de chantier, et le temps gagné mesuré. Dans trois mois : une pratique partagée avec votre équipe, par exemple des règles de transfert écrites avec votre adjointe. »
 
-INSISTER — « Petit et précis vaut mieux que grand et vague. "Utiliser l'IA plus souvent" ne marche pas ; "faire mon compte rendu du mardi avec le modèle" marche. »
+INSISTER — « Petit et précis vaut mieux que grand et vague. "Utiliser l'IA plus souvent" ne marche pas ; "faire le compte rendu de la réunion de chantier du mardi avec le modèle" marche. »
 
 TRANSITION — « Ce que vous emportez. »`,
   `⏱ 2 min · BOÎTE À OUTILS
 
-DIRE — « Six outils à retrouver dans ce support : les cinq ingrédients, la bibliothèque de demandes, la grille de contrôle, le feu tricolore, la charte d'équipe, et des ressources : le site de la Commission d'accès à l'information du Québec pour la protection des renseignements personnels, et l'aide en ligne de vos outils, qui évoluent tous les mois. »
+DIRE — « Six outils à retrouver dans ce support : les cinq ingrédients, la bibliothèque de six demandes, du tri des courriels au rapport de visite, la grille de contrôle, le feu tricolore, la charte d'équipe, et des ressources : le site de la Commission d'accès à l'information du Québec pour la protection des renseignements personnels, et l'aide en ligne de vos outils, qui évoluent tous les mois. »
 
 LOGISTIQUE — Indiquez comment les participants récupèrent le support (courriel, plateforme Technologia, lien de partage).
 
