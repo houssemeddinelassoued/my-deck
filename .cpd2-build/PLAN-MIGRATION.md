@@ -1,7 +1,7 @@
 # Plan de migration · GitHub Copilot Débutant v2 (Docaposte Institute)
 
 > Version du 7 novembre 2026 (points ouverts tranchés, § 10). **Plan validé le 7 novembre 2026.**
-> Avancement : phase 1 (labs) faite → `labs/copilot-debutant-v2/` ; phase 2 (deck) faite → `slides/copilot-debutant-v2` (141 pages, `node .cpd2-build/build.mjs`). Écarts acceptés : voir `labs/copilot-debutant-v2/LISEZMOI-formateur.md` § Écarts. Reste : phase 3 (guide PDF, zip Labs, publication du template après OK), phase 4 (répétition sur compte Free, mesures).
+> Avancement : phase 1 (labs) faite → `labs/copilot-debutant-v2/` ; phase 2 (deck) faite → `slides/copilot-debutant-v2` (141 pages, `node .cpd2-build/build.mjs`). Écarts acceptés : voir `labs/copilot-debutant-v2/LISEZMOI-formateur.md` § Écarts. Phase 3 faite en local le 7 novembre (guide et fiche d'accueil en PDF, zip Labs branché sur `meta.labs`, zip des corrigés : `node .cpd2-labs/guide.mjs && python .cpd2-labs/pack.py`). Reste : publication du template `parafo-copilot` sur GitHub (accord explicite), phase 4 (répétition sur compte Free, mesures).
 > Deck actuel : `slides/copilot-debutant` (v1, 128 pages, 9 ateliers TaskFlow) **conservé tel quel**.
 > Nouveau deck : `slides/copilot-debutant-v2`, généré depuis `.cpd2-build/` (copie du kit `.cpd-build/`).
 
