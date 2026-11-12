@@ -10,8 +10,8 @@ const M3_Divider: Page = () => (
         la génération de tests
       </>
     }
-    sub="Une stratégie d’abord, des tests ensuite : unitaires, mocks, intégration, couverture… et les pièges des tests générés."
-    dur="11:40 – 12:30 · TP inclus"
+    sub="Une stratégie d’abord, des tests ensuite : unitaires, mocks, intégration, couverture… et votre méthode de test écrite une fois, dans une skill."
+    dur="11:35 – 12:30 · TP inclus"
     labs={<Tag tone="green" size={19}>TP 3 · suite de tests complète</Tag>}
   >
     <SecItem n={1}>Stratégie : couverture, cas limites, cas négatifs</SecItem>
@@ -402,34 +402,39 @@ const M3_TP: Page = () => (
     n="3"
     title="Une suite de tests complète"
     defi="tests"
-    who="Binôme"
+    who="Individuel"
     minutes={25}
+    feats={
+      <Tag tone="violet" size={19}>
+        <Icon name="sparkles" size={20} /> skill + applyTo
+      </Tag>
+    }
     where={
       <>
-        <PathChip>tests/CASES.md</PathChip> matrice validée
+        <PathChip>.github/skills/matrice-de-tests/</PathChip> SKILL.md + modèle
         <br />
-        <PathChip>tests/unit/**</PathChip> <PathChip>tests/integration/**</PathChip>
+        <PathChip>.github/instructions/tests.instructions.md</PathChip>
         <br />
-        rapport de couverture (capture)
+        <PathChip>tests/CASES.md</PathChip> <PathChip>tests/**</PathChip> couverture
       </>
     }
-    objective={<>Sur l’API du TP 2 : tests unitaires paramétrés, doubles de test pour isoler les dépendances, scénarios d’intégration et couverture mesurée.</>}
+    objective={<>Écrire votre méthode de test une fois, dans une skill, puis l’appliquer à l’API du TP 2 : matrice, unitaires paramétrés, doubles, intégration, couverture.</>}
     crit={
       <>
-        <CheckItem id="tp3-1" size={21}>Matrice en 4 colonnes validée avant génération</CheckItem>
-        <CheckItem id="tp3-2" size={21}>Un test paramétré par règle métier</CheckItem>
+        <CheckItem id="tp3-1" size={21}>La skill se charge seule (Références)</CheckItem>
+        <CheckItem id="tp3-2" size={21}>Matrice en 4 colonnes validée avant génération</CheckItem>
         <CheckItem id="tp3-3" size={21}>Trois scénarios d’intégration, dont un 403</CheckItem>
-        <CheckItem id="tp3-4" size={21}>Services couverts à 80 % des branches</CheckItem>
+        <CheckItem id="tp3-4" size={21}>Diff des tests relu, services à 80 % des branches</CheckItem>
       </>
     }
   >
     <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-      <M2Step n={1}>Faites produire la matrice de cas, complétez-la, tranchez les « ? ».</M2Step>
-      <M2Step n={2}>Tests unitaires du domaine et des services, doubles injectés.</M2Step>
-      <M2Step n={3}>Scénarios d’intégration à partir de la matrice « sécurité ».</M2Step>
-      <M2Step n={4}>Couverture : ciblez les branches manquantes, relisez le diff des tests.</M2Step>
+      <M2Step n={1}>tests.instructions.md (applyTo tests/**) : vos conventions de test.</M2Step>
+      <M2Step n={2}>Skill matrice-de-tests : la méthode en 4 colonnes et le modèle CASES.md.</M2Step>
+      <M2Step n={3}>« Prépare les tests de BookingService » : la skill se charge-t-elle ? Validez la matrice.</M2Step>
+      <M2Step n={4}>Unitaires, doubles, intégration, puis la couverture des branches manquantes.</M2Step>
     </div>
-    <TpBonus>Changez un {'<'} en {'<='} dans overlaps : au moins un test doit casser. Sinon, faites-le écrire.</TpBonus>
+    <TpBonus>Changez un {'<'} en {'<='} dans overlaps : au moins un test doit casser. Sinon, ajoutez la règle à la skill.</TpBonus>
   </LabPage>
 );
 
@@ -439,11 +444,11 @@ export const __pages = [M3_Divider, M3_Strategy, M3_Unit, M3_Mocks, M3_Integrati
 
 // @@NOTES-BEGIN
 export const __notes = [
-  `⏱ 1 min · DIVISEUR M3 · 11:40
+  `⏱ 1 min · DIVISEUR M3 · 11:35
 
 OBJECTIF — Annoncer le module 3 du programme : automatisation de la génération de tests.
 
-DIRE — « Module 3 : les tests. C’est là que Copilot fait gagner le plus de temps… et là qu’il donne la plus fausse impression de sécurité. Stratégie d’abord — couverture, cas limites, cas négatifs —, puis tests unitaires, mocks et stubs, tests d’intégration, et enfin l’analyse de couverture et ses pièges. TP 3 : la suite complète de l’API du TP 2. »
+DIRE — « Module 3 : les tests. C’est là que Copilot fait gagner le plus de temps… et là qu’il donne la plus fausse impression de sécurité. Stratégie d’abord — couverture, cas limites, cas négatifs —, puis tests unitaires, mocks et stubs, tests d’intégration, et enfin l’analyse de couverture et ses pièges. TP 3 : la suite complète de l’API du TP 2, avec votre première skill : la méthode de test de l’équipe, écrite une fois. »
 
 TRANSITION — « Tout commence par une stratégie, pas par /tests. »`,
   `⏱ 4 min · MATRICE DE CAS (4 temps)
@@ -494,16 +499,18 @@ TRANSITION — « Ce qui nous amène au QCM. »`,
 
 OBJECTIF — Ancrer le réflexe de relire le diff des tests.
 
-DIRE — « Quand l’objectif est "tout au vert", modifier le test est un chemin valide pour l’agent. La règle d’équipe : le diff des tests se relit avant le diff du code. »
+DIRE — « Quand l’objectif est "tout au vert", modifier le test est un chemin valide pour l’agent. La règle d’équipe : le diff des tests se relit avant le diff du code. Écrivez-la dans vos instructions de test : c’est le premier fichier du TP 3. »
+
+ANIMATION — Vote à voix haute, clic sur la réponse majoritaire, → bonne réponse, → l’essentiel.
 
 TRANSITION — « TP 3, puis déjeuner. »`,
   `⏱ 25 min (minuteur) · TP 3
 
 OBJECTIF — Atelier du programme : à partir du module développé au module 2, générer une suite complète de tests unitaires, mocks et tests d’intégration.
 
-DIRE — « D’abord la matrice : faites-la produire, complétez-la, tranchez les points d’interrogation. Ensuite les tests unitaires, puis les scénarios d’intégration — reprenez la colonne sécurité —, puis la couverture. Avant de dire "fini", relisez le diff des tests. Bonus : faites une mutation à la main dans overlaps et vérifiez qu’un test casse. »
+DIRE — « TP individuel, en deux temps. D’abord vous écrivez votre méthode, une fois. Un fichier d’instructions ciblé, tests.instructions.md avec applyTo tests/** : framework, nommage, horloge fixe, ne jamais toucher tests/acceptance. Puis une skill, .github/skills/matrice-de-tests : un SKILL.md dont la description dit quand l’utiliser — « préparer ou compléter les tests de SalleLibre » —, la méthode en quatre colonnes, et un modèle CASES.md à côté. Ensuite vous l’appliquez : demandez « Prépare les tests de BookingService » sans citer la skill. Elle doit se charger seule : vérifiez les Références. Si elle ne se charge pas, c’est sa description qui est mauvaise. Puis matrice validée, unitaires, intégration — reprenez la colonne sécurité —, couverture. Avant de dire "fini", relisez le diff des tests. »
 
-ANIMATION — Minuteur. Repérer un test d’intégration 403 qui échoue : c’est normal si l’API n’a pas de contrôle de propriétaire, et c’est précieux pour le module 5. Le noter.
+ANIMATION — Coller dans le Chat le squelette d’un SKILL.md (en-tête name + description, trois sections). Lancer le minuteur. Points d’étape à 8 et 18 minutes : « Skill écrite ? Chargée ? Matrice validée ? » Quelqu’un bloqué partage son écran 2 minutes. Repérer un test d’intégration 403 qui échoue : c’est normal si l’API n’a pas de contrôle de propriétaire, et c’est précieux pour le module 5. Le noter.
 
 TRANSITION — « Bon appétit. Reprise à 13:30 avec un quiz flash. »`,
 ];

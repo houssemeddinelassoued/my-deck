@@ -16,9 +16,9 @@ const R_Quiz: Page = () => (
         q="Une tâche va toucher six fichiers. Votre première étape ?"
         explain="Plan en lots, chacun avec son test, validé par vous : l’agent exécute ensuite un lot à la fois."
       >
-        <QOpt>Mode Agent directement, avec un prompt détaillé</QOpt>
-        <QOpt ok>Mode Plan : un plan en lots, validé avant toute ligne de code</QOpt>
-        <QOpt>Mode Ask, puis copier-coller les fichiers proposés</QOpt>
+        <QOpt>Rôle Agent directement, avec un prompt détaillé</QOpt>
+        <QOpt ok>Rôle Plan : un plan en lots, validé avant toute ligne de code</QOpt>
+        <QOpt>Rôle Ask, puis copier-coller les fichiers proposés</QOpt>
       </QuizQ>
       <QuizQ
         q="Comment comparer deux prompts de façon fiable ?"
@@ -29,12 +29,12 @@ const R_Quiz: Page = () => (
         <QOpt ok>Plusieurs essais en session neuve, grille fixée à l’avance</QOpt>
       </QuizQ>
       <QuizQ
-        q="Pourquoi vérifier un état plutôt qu’une interaction dans un test ?"
-        explain="Un test d’état survit à un refactoring interne ; un test d’interaction casse dès que l’implémentation change, même si le comportement est identique."
+        q="Votre ancien /nouvel-endpoint (un .prompt.md) ne répond plus dans une session Copilot. Que faites-vous ?"
+        explain="Le harnais Copilot ignore les prompt files, format de l’ancien harnais Local. Une skill avec disable-model-invocation: true se lance de la même façon, par /nom."
       >
-        <QOpt ok>Il résiste mieux au refactoring</QOpt>
-        <QOpt>Il s’exécute plus vite</QOpt>
-        <QOpt>Copilot le génère plus facilement</QOpt>
+        <QOpt ok>Le convertir en skill, appelée par /nouvel-endpoint</QOpt>
+        <QOpt>Le déplacer dans .github/instructions/</QOpt>
+        <QOpt>Changer de modèle dans le sélecteur</QOpt>
       </QuizQ>
       <QuizQ
         q="« 100 % de couverture » signifie que…"
@@ -54,14 +54,14 @@ export const __pages = [R_Quiz];
 
 // @@NOTES-BEGIN
 export const __notes = [
-  `⏱ 8 min · QUIZ FLASH · 13:30
+  `⏱ 6 min · QUIZ FLASH · 13:30
 
 OBJECTIF — Réactiver la matinée et vérifier les acquis avant l’après-midi (évaluation continue).
 
-DIRE — « Bon retour ! Cinq questions sur la matinée, à main levée. On clique la réponse majoritaire, et on discute quand le groupe se trompe. »
+DIRE — « Bon retour ! Cinq questions sur la matinée, réponses à voix haute. Je clique la réponse majoritaire, et on discute quand le groupe se trompe. »
 
 ANIMATION — Une question à la fois, bouton « Suivante ». Le compteur « du premier coup » donne un score collectif : l’annoncer. Si une question est majoritairement ratée, reprendre la page correspondante en deux minutes.
 
-TRANSITION — « L’après-midi commence par ce que Copilot fait le moins bien seul : du code propre. Module 4. »`,
+TRANSITION — « L’après-midi commence par ce que Copilot fait le moins bien seul : du code propre. Et vous allez écrire votre premier agent. Module 4. »`,
 ];
 // @@NOTES-END

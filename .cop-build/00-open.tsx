@@ -90,12 +90,12 @@ const O_Welcome: Page = () => (
     </div>
     <div style={{ position: 'absolute', left: 520, top: 300, width: 1280, display: 'flex', gap: 26 }}>
       <OPromise value={<CountUp to={7} suffix=" h" />} label="de formation intensive : 60 % d’apports et de démos, 40 % de pratique" tone="blue" d={150} />
-      <OPromise value={<CountUp to={6} />} label="TP enchaînés sur le même projet fil rouge, du prompt à la CI" tone="green" d={280} />
-      <OPromise value={<CountUp to={1} />} label="feature complète (code, tests, doc, sécurité) défendue devant le groupe" tone="violet" d={410} />
+      <OPromise value={<CountUp to={6} />} label="TP individuels enchaînés sur le même projet, du prompt à l’orchestration d’agents" tone="green" d={280} />
+      <OPromise value={<CountUp to={1} />} label="feature complète (code, tests, doc, sécurité) livrée par vos agents, sous votre contrôle" tone="violet" d={410} />
     </div>
     <div className={A.in} style={{ position: 'absolute', left: 520, top: 640, width: 1280, ...dl(600) }}>
       <Callout title="Notre contrat" tone="blue" icon="hand">
-        Vous repartez avec des prompts éprouvés, des fichiers d’équipe réutilisables et une méthode de vérification.
+        Vous repartez avec des prompts éprouvés, des instructions, skills et agents réutilisables, et une méthode de vérification.
         Le formateur montre, vous pratiquez : <strong>c’est vous qui tenez le clavier</strong>.
       </Callout>
     </div>
@@ -110,7 +110,7 @@ const O_Welcome: Page = () => (
 const O_Poll: Page = () => (
   <Frame mod={0} kind="exercice">
     <Title>Tour de table : qui êtes-vous, qu’attendez-vous ?</Title>
-    <Lede>Main levée (ou réaction dans le chat) : cliquez une ligne par vote. Le « − » retire un vote.</Lede>
+    <Lede>Répondez à voix haute : je clique une ligne par réponse. Le « − » retire un vote.</Lede>
     <div className={A.in} style={{ position: 'absolute', left: 120, top: 270, width: 760 }}>
       <Eyebrow c={C.navy} style={{ marginBottom: 14 }}>
         Ma stack pour les TP
@@ -133,11 +133,11 @@ const O_Poll: Page = () => (
         <PollRow id="o-a3" label="Des tests générés qui servent vraiment" tone="pink" icon="flask" />
         <PollRow id="o-a4" label="Refactorer et moderniser du legacy" tone="violet" icon="wand" />
         <PollRow id="o-a5" label="Sécuriser le code produit par l’IA" tone="coral" icon="shield" />
-        <PollRow id="o-a6" label="Cadrer l’usage dans mon équipe" tone="green" icon="users" />
+        <PollRow id="o-a6" label="Créer des agents et les orchestrer en équipe" tone="green" icon="bot" />
       </Poll>
     </div>
     <Hint cls={A.fade} style={{ position: 'absolute', left: 120, top: 905, ...dl(500) }}>
-      Les binômes se forment par stack : même langage, deux profils différents si possible.
+      Chaque TP se fait seul, sur votre poste, dans le langage de votre choix.
     </Hint>
   </Frame>
 );
@@ -193,7 +193,7 @@ const O_Objectifs: Page = () => (
         <OBar label="TP et mises en situation" value="40 %" pct={40} bg={G.green} c={C.green} d={750} />
       </div>
       <div style={{ marginTop: 28, fontSize: 22, lineHeight: 1.45, color: C.muted }}>
-        Évaluation continue : questions orales, QCM à chaque module, TP, soutenance finale. Auto-positionnement au début et à la fin.
+        Évaluation continue : questions orales, QCM à chaque module, TP, présentation finale par des volontaires. Fil technique de la journée : instructions, skills, agents personnalisés, orchestration.
       </div>
     </div>
   </Frame>
@@ -233,57 +233,23 @@ const O_Programme: Page = () => (
     <div style={{ position: 'absolute', left: 120, top: 190, width: 1680, display: 'flex', gap: 60 }}>
       <OHalf icon="chat" tone="blue" title="Matinée" sub="Prompt engineering et génération avancée" d={0}>
         <OSlot t="9:00" title={`Ouverture · fil rouge ${PROJECT}`} tone="grey" d={150} />
-        <OSlot t="9:20" mod="M1" title="Prompt engineering avancé" sub="Contexte, prompts structurés, multi-étapes · TP 1" tone="blue" d={250} />
-        <OSlot t="10:30" title="Pause" tone="yellow" d={330} />
-        <OSlot t="10:45" mod="M2" title="Modules & architectures" sub="Arborescence, API REST, patterns · TP 2" tone="teal" d={400} />
-        <OSlot t="11:40" mod="M3" title="Automatiser les tests" sub="Unitaires, mocks, intégration, couverture · TP 3" tone="pink" d={500} />
+        <OSlot t="9:15" mod="M1" title="Prompt engineering avancé" sub="Contexte, session et harnais, prompts structurés · TP 1" tone="blue" d={250} />
+        <OSlot t="10:10" title="Pause" tone="yellow" d={330} />
+        <OSlot t="10:25" mod="M2" title="Modules & architectures" sub="API REST, patterns, fichiers qui guident Copilot · TP 2" tone="teal" d={400} />
+        <OSlot t="11:35" mod="M3" title="Automatiser les tests" sub="Matrice, mocks, intégration, skill de test · TP 3" tone="pink" d={500} />
       </OHalf>
-      <OHalf icon="shieldCheck" tone="violet" title="Après-midi" sub="Sécurité, optimisation et intégration équipe" d={200}>
+      <OHalf icon="shieldCheck" tone="violet" title="Après-midi" sub="Agents, sécurité et orchestration en équipe" d={200}>
         <OSlot t="13:30" title="Reprise · quiz flash de la matinée" tone="grey" d={450} />
-        <OSlot t="13:40" mod="M4" title="Optimisation & refactoring" sub="Anti-patterns, SOLID, performance, legacy · TP 4" tone="violet" d={550} />
-        <OSlot t="14:30" mod="M5" title="Sécurité & audit" sub="OWASP, failles du code généré, licences · TP 5" tone="coral" d={650} />
-        <OSlot t="15:40" mod="M6" title="Copilot en équipe" sub="Conventions, PR, CI/CD, mesure, charte · TP 6" tone="green" d={750} />
-        <OSlot t="16:30" title="Soutenances · synthèse · évaluation" tone="navy" d={850} />
+        <OSlot t="13:35" mod="M4" title="Optimisation & refactoring" sub="SOLID, performance, legacy, agents personnalisés · TP 4" tone="violet" d={550} />
+        <OSlot t="14:40" mod="M5" title="Sécurité & audit" sub="OWASP, failles du code généré, agent auditeur · TP 5" tone="coral" d={650} />
+        <OSlot t="15:40" mod="M6" title="Copilot en équipe" sub="PR, CI/CD, orchestration d’agents, charte · TP 6" tone="green" d={750} />
+        <OSlot t="16:40" title="Présentations · synthèse · évaluation" tone="navy" d={850} />
       </OHalf>
     </div>
     <div className={A.fade} style={{ position: 'absolute', left: 120, top: 905, display: 'flex', alignItems: 'center', gap: 12, fontSize: 21, color: C.muted, ...dl(1000) }}>
       <Icon name="map" size={24} color={C.electric} />
       Le bandeau en haut à droite indique toujours où nous en sommes : M1 → M3 le matin, M4 → M6 l’après-midi.
     </div>
-  </Frame>
-);
-
-// ─── Auto-positionnement ────────────────────────────────────────────────────
-const O_AutoPos: Page = () => (
-  <Frame mod={0} kind="exercice">
-    <Title>Auto-positionnement : votre point de départ</Title>
-    <Lede>Cochez ce que vous savez déjà faire aujourd’hui, honnêtement. On refera l’exercice en fin de journée.</Lede>
-    <Checklist>
-      <div className={A.in} style={{ position: 'absolute', left: 120, top: 270, width: 1150, display: 'flex', flexDirection: 'column', gap: 14 }}>
-        <CheckItem id="ap1" size={27}>Expliquer ce que Copilot « voit » quand il propose une complétion</CheckItem>
-        <CheckItem id="ap2" size={27}>Découper une tâche complexe en une suite de prompts vérifiables</CheckItem>
-        <CheckItem id="ap3" size={27}>Faire générer un module qui respecte l’architecture existante</CheckItem>
-        <CheckItem id="ap4" size={27}>Obtenir des tests qui couvrent cas limites et cas négatifs</CheckItem>
-        <CheckItem id="ap5" size={27}>Refactorer du code généré en appliquant SOLID, tests au vert</CheckItem>
-        <CheckItem id="ap6" size={27}>Repérer une injection ou un contrôle d’accès manquant dans une suggestion</CheckItem>
-        <CheckItem id="ap7" size={27}>Partager instructions et prompts d’équipe via le dépôt</CheckItem>
-        <CheckItem id="ap8" size={27}>Mesurer l’apport réel de Copilot sur une équipe</CheckItem>
-      </div>
-      <div className={A.right} style={{ position: 'absolute', left: 1330, top: 270, width: 470, ...dl(300) }}>
-        <CheckScore
-          max={8}
-          label="Mon niveau de départ"
-          levels={[
-            { min: 0, text: 'Utilisateur régulier : on va structurer.', tone: 'grey' },
-            { min: 3, text: 'Utilisateur confirmé : on va industrialiser.', tone: 'blue' },
-            { min: 6, text: 'Expert : visez les bonus de chaque TP.', tone: 'green' },
-          ]}
-        />
-        <div style={{ marginTop: 20, fontSize: 22, lineHeight: 1.45, color: C.muted }}>
-          Notez votre score : il servira de référence pour mesurer votre progression à 16:50.
-        </div>
-      </div>
-    </Checklist>
   </Frame>
 );
 
@@ -342,12 +308,12 @@ const O_FilRouge: Page = () => (
         Votre parcours
       </Eyebrow>
       <div style={{ marginTop: 18, display: 'flex', flexDirection: 'column', gap: 16 }}>
-        <OStep n={1} tone="blue" title="Prompts avancés" out="Bibliothèque de prompts mesurés" d={300} />
-        <OStep n={2} tone="teal" title="API complète" out="Routes, auth, validation, OpenAPI" d={400} />
-        <OStep n={3} tone="pink" title="Suite de tests" out="Unitaires, mocks, intégration" d={500} />
-        <OStep n={4} tone="violet" title="Refactoring" out="SOLID, performance, tests au vert" d={600} />
-        <OStep n={5} tone="coral" title="Audit de sécurité" out="Failles trouvées, prouvées, corrigées" d={700} />
-        <OStep n={6} tone="green" title="Feature défendue" out="PR, CI, documentation, soutenance" d={800} />
+        <OStep n={1} tone="blue" title="Prompts avancés" out="Prompts mesurés, modèle fixé" d={300} />
+        <OStep n={2} tone="teal" title="API complète" out="copilot-instructions.md, puis l’API" d={400} />
+        <OStep n={3} tone="pink" title="Suite de tests" out="Une skill de test, des tests qui protègent" d={500} />
+        <OStep n={4} tone="violet" title="Refactoring" out="Votre agent Refactoreur, tests au vert" d={600} />
+        <OStep n={5} tone="coral" title="Audit de sécurité" out="Un agent Auditeur en lecture seule" d={700} />
+        <OStep n={6} tone="green" title="Feature orchestrée" out="Un chef d’orchestre et ses agents, PR" d={800} />
       </div>
     </div>
   </Frame>
@@ -361,11 +327,11 @@ const O_Setup: Page = () => (
     <Checklist>
       <div className={A.in} style={{ position: 'absolute', left: 120, top: 270, width: 1060, display: 'flex', flexDirection: 'column', gap: 14 }}>
         <CheckItem id="su1" size={26}>VS Code à jour, extension GitHub Copilot connectée (Chat inclus)</CheckItem>
-        <CheckItem id="su2" size={26}>Vue Chat : modes Ask, Plan et Agent visibles, sélecteur de modèle actif</CheckItem>
+        <CheckItem id="su2" size={26}>Chat : sélecteurs Session (Copilot), rôle (Ask, Plan, Agent) et modèle visibles</CheckItem>
         <CheckItem id="su3" size={26}>Runtime de votre stack : Node 22, Python 3.12, JDK 21 ou .NET 8+</CheckItem>
         <CheckItem id="su4" size={26}>Framework de test prêt : Jest/Vitest, pytest, JUnit 5 ou xUnit</CheckItem>
         <CheckItem id="su5" size={26}>Dépôt Git « sallelibre » initialisé, premier commit poussé</CheckItem>
-        <CheckItem id="su6" size={26}>Binôme formé : un pilote au clavier, un copilote qui relit</CheckItem>
+        <CheckItem id="su6" size={26}>Classe virtuelle : micro coupé hors échanges, caméra si possible, idéalement deux écrans</CheckItem>
       </div>
       <div style={{ position: 'absolute', left: 1240, top: 270, width: 560, display: 'flex', flexDirection: 'column', gap: 22 }}>
         <Timer id="setup" minutes={3} label="Check-up" cls={A.right} style={{ width: 560, ...dl(200) }} />
@@ -378,7 +344,7 @@ const O_Setup: Page = () => (
 );
 
 // @@PAGES-BEGIN
-export const __pages = [O_Cover, O_Welcome, O_Poll, O_Objectifs, O_Programme, O_AutoPos, O_FilRouge, O_Setup];
+export const __pages = [O_Cover, O_Welcome, O_Poll, O_Objectifs, O_Programme, O_FilRouge, O_Setup];
 // @@PAGES-END
 
 // @@NOTES-BEGIN
@@ -387,66 +353,57 @@ export const __notes = [
 
 OBJECTIF — Accueillir, poser le niveau : ce n’est pas une découverte de Copilot.
 
-DIRE — « Bonjour à toutes et à tous. Cette journée s’adresse à des développeurs qui utilisent déjà GitHub Copilot au quotidien. On ne va pas apprendre à appuyer sur Tab : on va apprendre à obtenir du code qu’on peut défendre en revue. Prompts structurés, architectures, tests, refactoring, sécurité et travail d’équipe. »
+DIRE — « Bonjour à toutes et à tous. Cette journée s’adresse à des développeurs qui utilisent déjà GitHub Copilot au quotidien. On ne va pas apprendre à appuyer sur Tab : on va apprendre à obtenir du code qu’on peut défendre en revue. Prompts structurés, architectures, tests, refactoring, sécurité, et surtout ce qui a changé cette année : les fichiers qui guident Copilot, les agents personnalisés et leur orchestration. »
 
-ANIMATION — Laisser la page affichée pendant l’installation.
+ANIMATION — Laisser la page affichée pendant les connexions. Vérifier le son et le partage d’écran.
 
 TRANSITION — « Quelques mots sur la journée et sur ce que vous allez produire. »`,
   `⏱ 2 min · BIENVENUE
 
 OBJECTIF — Donner la promesse chiffrée et le contrat pédagogique.
 
-DIRE — « Sept heures, dont environ 40 % de pratique : six TP qui s’enchaînent sur le même projet. Le TP 2 produit une API, le TP 3 la teste, le TP 4 la refactore, le TP 5 l’audite, et en fin de journée chaque binôme défend une feature complète devant le groupe. Le contrat : je montre, vous pratiquez. Et le fil conducteur : Copilot propose, le développeur dispose… et prouve. Prouver, c’est le mot de la journée : des tests, des mesures, des revues. »
+DIRE — « Sept heures, dont environ 40 % de pratique : six TP individuels qui s’enchaînent sur le même projet. À chaque TP, vous ajoutez une brique au dossier .github de votre dépôt : des instructions au TP 2, une skill au TP 3, un agent Refactoreur au TP 4, un agent Auditeur au TP 5, et au TP 6 un chef d’orchestre qui fait travailler vos agents ensemble sur une feature complète. Le contrat : je montre, vous pratiquez. Et le fil conducteur : Copilot propose, le développeur dispose… et prouve. »
 
 TRANSITION — « Faisons connaissance. »`,
-  `⏱ 4 min · TOUR DE TABLE (sondage)
+  `⏱ 3 min · TOUR DE TABLE (sondage)
 
-OBJECTIF — Connaître les stacks pour former les binômes, et les attentes pour doser les modules.
+OBJECTIF — Connaître les stacks et les attentes pour doser les modules.
 
-DIRE — « Premier vote : la stack que vous utiliserez dans les TP. Les binômes se forment par langage. » Compter, cliquer. « Deuxième vote : votre attente numéro un. Chaque ligne correspond à un module de la journée. »
+DIRE — « Premier vote : la stack que vous utiliserez dans les TP. Dites-la à voix haute, je clique. » Compter, cliquer. « Deuxième vote : votre attente numéro un. Chaque ligne correspond à un module de la journée. »
 
-ANIMATION — Cliquer une ligne par main levée. Noter les deux attentes les plus fortes : y revenir explicitement dans les modules correspondants.
+ANIMATION — Appeler les participants par prénom, dans l’ordre de la liste. Cliquer une ligne par réponse. Noter les deux attentes les plus fortes : y revenir explicitement dans les modules correspondants.
 
 TRANSITION — « Voici les objectifs officiels de la formation. »`,
   `⏱ 2 min · OBJECTIFS
 
 OBJECTIF — Présenter les six objectifs du programme et l’équilibre de la journée.
 
-DIRE — « Six objectifs, un par module, à une nuance près : le sixième — identifier et contourner les limites de Copilot — est transversal. Chaque module se termine par un QCM et un TP. L’équilibre annoncé : 60 % d’apports et de démonstrations, 40 % de pratique. Évaluation continue, et auto-positionnement au début et à la fin pour mesurer votre progression. »
+DIRE — « Six objectifs, un par module, à une nuance près : le sixième — identifier et contourner les limites de Copilot — est transversal. Chaque module se termine par un QCM et un TP. L’équilibre annoncé : 60 % d’apports et de démonstrations, 40 % de pratique. Le fil technique de la journée, ce sont les fichiers qui guident Copilot : instructions, skills, agents, jusqu’à l’orchestration. »
 
 TRANSITION — « Le déroulé heure par heure. »`,
   `⏱ 2 min · PROGRAMME
 
 OBJECTIF — Donner le déroulé horaire et le repère visuel du bandeau.
 
-DIRE — « Le matin : prompt engineering, génération d’architectures, puis tests. L’après-midi : refactoring, sécurité, et intégration en équipe. On reprend à 13:30 par un quiz flash sur la matinée. La fin de journée est réservée aux soutenances : chaque binôme présente sa feature. Le bandeau en haut à droite vous dit toujours où on en est. »
+DIRE — « Le matin : prompt engineering avec les réglages de session, génération d’architecture guidée par vos fichiers d’instructions, puis les tests avec une skill. L’après-midi : refactoring avec votre premier agent, sécurité avec un agent auditeur, et le travail en équipe avec l’orchestration d’agents. On reprend à 13:30 par un quiz flash sur la matinée. En fin de journée, deux ou trois volontaires présentent leur feature. Le bandeau en haut à droite vous dit toujours où on en est. »
 
 ANIMATION — Les horaires sont indicatifs : ajuster selon le rythme du groupe.
-
-TRANSITION — « Avant de commencer, mesurons votre point de départ. »`,
-  `⏱ 3 min · AUTO-POSITIONNEMENT (exercice)
-
-OBJECTIF — Mesurer le niveau de départ, exigence du dispositif d’évaluation.
-
-DIRE — « Huit affirmations, une par compétence visée. Cochez seulement ce que vous savez faire aujourd’hui, sans aide. Notez votre score : on refera exactement le même exercice en fin de journée. »
-
-ANIMATION — Faire cocher collectivement un participant volontaire, ou laisser chacun noter sur papier. Repérer les scores très hauts : leur proposer les bonus des TP.
 
 TRANSITION — « Parlons du projet sur lequel vous allez travailler toute la journée. »`,
   `⏱ 3 min · FIL ROUGE SALLELIBRE
 
 OBJECTIF — Présenter le projet commun et la chaîne des TP.
 
-DIRE — « SalleLibre est une API REST de réservation de salles de réunion. Volontairement banale : tout le monde comprend le métier, donc on peut se concentrer sur la technique. Mais elle contient tout ce qui rend Copilot intéressant… et dangereux : de la logique métier avec des cas limites — les chevauchements de créneaux —, de l’authentification et des rôles — chacun ne gère que ses réservations —, un algorithme de recherche, et de la documentation. Chaque binôme choisit sa stack. À droite, votre parcours : six TP, chacun produit quelque chose que le suivant réutilise. »
+DIRE — « SalleLibre est une API REST de réservation de salles de réunion. Volontairement banale : tout le monde comprend le métier, donc on peut se concentrer sur la technique. Mais elle contient tout ce qui rend Copilot intéressant… et dangereux : de la logique métier avec des cas limites — les chevauchements de créneaux —, de l’authentification et des rôles, un algorithme de recherche, et de la documentation. Chacun choisit sa stack. À droite, votre parcours : six TP, chacun produit quelque chose que le suivant réutilise, et votre dossier .github grossit à chaque étape. »
 
 TRANSITION — « Dernière étape avant de coder : le check-up technique. »`,
-  `⏱ 4 min · CHECK-UP (minuteur 3 min)
+  `⏱ 3 min · CHECK-UP (minuteur 3 min)
 
-OBJECTIF — Vérifier les prérequis techniques du programme : VS Code et Copilot actif.
+OBJECTIF — Vérifier les prérequis techniques : VS Code, Copilot, harnais Copilot, classe virtuelle.
 
-DIRE — « Trois minutes. Vérifiez chaque ligne et cochez. Le point le plus fréquent en panne : le mode Agent absent, souvent parce que l’extension n’est pas à jour ou qu’une politique d’organisation le désactive. Et la règle d’or : aucune donnée réelle dans un prompt aujourd’hui. »
+DIRE — « Trois minutes. Vérifiez chaque ligne. Le point le plus fréquent en panne : le sélecteur de session ou le rôle Agent absent, souvent parce que l’extension n’est pas à jour ou qu’une politique d’organisation le désactive. Côté classe virtuelle : micro coupé hors échanges, caméra si possible, et idéalement deux écrans, un pour moi, un pour VS Code. Et la règle d’or : aucune donnée réelle dans un prompt aujourd’hui. »
 
-ANIMATION — Lancer le minuteur. Passer dans les rangs. Si un poste n’a pas Copilot, le binôme travaille sur le poste de l’autre.
+ANIMATION — Lancer le minuteur. Demander à voix haute : « Quelqu’un est bloqué ? » Un participant bloqué partage son écran 2 minutes.
 
 TRANSITION — « Tout le monde est prêt ? Module 1 : le prompt engineering avancé. »`,
 ];

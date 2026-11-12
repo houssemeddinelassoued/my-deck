@@ -11,8 +11,8 @@ const M5_Divider: Page = () => (
       </>
     }
     sub="Les risques propres au code produit par IA, la grille OWASP, les prompts orientés sécurité, les outils… et le droit."
-    dur="14:30 – 15:25 · TP inclus"
-    labs={<Tag tone="green" size={19}>TP 5 · audit de sécurité</Tag>}
+    dur="14:40 – 15:30 · TP inclus"
+    labs={<Tag tone="green" size={19}>TP 5 · audit par un agent Auditeur</Tag>}
   >
     <SecItem n={1}>Risques spécifiques au code généré</SecItem>
     <SecItem n={2}>Détecter les vulnérabilités suggérées</SecItem>
@@ -125,7 +125,7 @@ const M5Owasp = ({ id, code, name, children }: { id: string; code: string; name:
 const M5_Owasp: Page = () => (
   <Frame mod={5} kind="exercice">
     <Title>La checklist OWASP Top 10 : 2025, appliquée à Copilot</Title>
-    <Lede>Pour chaque catégorie, ce que le code généré oublie le plus souvent. Cochez ce que votre revue vérifie déjà.</Lede>
+    <Lede>Pour chaque catégorie, ce que le code généré oublie le plus souvent. Comptez pour vous ce que votre revue vérifie déjà.</Lede>
     <Checklist>
       <div className={A.in} style={{ position: 'absolute', left: 120, top: 258, width: 1180, display: 'flex', flexDirection: 'column', gap: 8 }}>
         <M5Owasp id="ow1" code="A01" name="Contrôle d’accès">propriétaire jamais vérifié</M5Owasp>
@@ -293,32 +293,37 @@ const M5_TP: Page = () => (
     n="5"
     title="Audit de sécurité du code généré"
     defi="audit"
-    who="Binôme"
+    who="Individuel"
+    feats={
+      <Tag tone="coral" size={19}>
+        <Icon name="shield" size={20} /> sous-agent Auditeur · lecture seule
+      </Tag>
+    }
     minutes={25}
     where={
       <>
-        <PathChip>SECURITY-AUDIT.md</PathChip> failles classées
+        <PathChip>.github/agents/auditeur.agent.md</PathChip>
         <br />
-        <PathChip>tests/security/**</PathChip> un test par faille
+        <PathChip>SECURITY-AUDIT.md</PathChip> + <PathChip>tests/security/**</PathChip>
         <br />
         <PathChip>.github/instructions/security…</PathChip>
       </>
     }
-    objective={<>Analyser le code de {PROJECT} généré par Copilot, identifier les failles et les corriger avec des prompts ciblés.</>}
+    objective={<>Faire auditer le code de {PROJECT} par un agent Auditeur qui ne peut rien modifier, puis prouver et corriger chaque faille avec des prompts ciblés.</>}
     crit={
       <>
-        <CheckItem id="tp5-1" size={21}>Au moins quatre failles trouvées et classées</CheckItem>
-        <CheckItem id="tp5-2" size={21}>Un test d’exploitation par faille corrigée</CheckItem>
-        <CheckItem id="tp5-3" size={21}>DELETE d’autrui : 403, prouvé par un test</CheckItem>
+        <CheckItem id="tp5-1" size={21}>Auditeur : read et search seulement, sous-agent</CheckItem>
+        <CheckItem id="tp5-1b" size={21}>Au moins quatre failles trouvées et classées</CheckItem>
+        <CheckItem id="tp5-2" size={21}>Un test d’exploitation par faille, dont le DELETE d’autrui</CheckItem>
         <CheckItem id="tp5-4" size={21}>security.instructions.md commité</CheckItem>
       </>
     }
   >
     <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-      <M2Step n={1}>Audit en rôle d’attaquant, grille OWASP en référence (#file).</M2Step>
-      <M2Step n={2}>Classez chaque faille : criticité, preuve, correctif proposé.</M2Step>
-      <M2Step n={3}>Une faille, un test qui l’exploite (rouge), un prompt ciblé (vert).</M2Step>
-      <M2Step n={4}>Rendez les règles permanentes : instructions par chemin.</M2Step>
+      <M2Step n={1}>Écrivez auditeur.agent.md : read + search, user-invocable: false, grille OWASP.</M2Step>
+      <M2Step n={2}>Rôle Agent : « Utilise l’agent Auditeur comme sous-agent pour auditer src/api. »</M2Step>
+      <M2Step n={3}>Classez dans SECURITY-AUDIT.md. Une faille : un test rouge, un correctif, vert.</M2Step>
+      <M2Step n={4}>Rendez les règles permanentes : security.instructions.md (applyTo).</M2Step>
     </div>
     <TpBonus>Lancez CodeQL ou Semgrep et comparez avec l’audit de Copilot : qui a trouvé quoi ?</TpBonus>
   </LabPage>
@@ -330,11 +335,11 @@ export const __pages = [M5_Divider, M5_Risks, M5_Detect, M5_Owasp, M5_SecureProm
 
 // @@NOTES-BEGIN
 export const __notes = [
-  `⏱ 1 min · DIVISEUR M5 · 14:30
+  `⏱ 1 min · DIVISEUR M5 · 14:40
 
 OBJECTIF — Annoncer le module 5 du programme : sécurité et audit du code généré.
 
-DIRE — « Module 5. Votre code est testé et propre. Est-il sûr ? On va voir les risques spécifiques au code généré, la checklist OWASP appliquée à Copilot, comment détecter les vulnérabilités dans une suggestion, comment écrire des prompts orientés sécurité, et la question des droits d’auteur et des licences. TP 5 : vous auditez votre propre code. »
+DIRE — « Module 5. Votre code est testé et propre. Est-il sûr ? On va voir les risques spécifiques au code généré, la checklist OWASP appliquée à Copilot, comment détecter les vulnérabilités dans une suggestion, comment écrire des prompts orientés sécurité, et la question des droits d’auteur et des licences. TP 5 : vous faites auditer votre propre code par un agent Auditeur en lecture seule, sollicité comme sous-agent. »
 
 TRANSITION — « D’abord, l’ampleur du problème. »`,
   `⏱ 4 min · RISQUES
@@ -357,7 +362,7 @@ OBJECTIF — Checklist de sécurité : OWASP et bonnes pratiques appliquées à 
 
 DIRE — « L’OWASP Top 10 dans sa version 2025, avec pour chaque catégorie ce que le code généré oublie le plus souvent. Nouveautés 2025 à noter : la chaîne d’approvisionnement logicielle monte en troisième position — c’est notre slopsquatting — et une catégorie dédiée aux conditions exceptionnelles mal gérées. Cochez ce que votre revue de code vérifie déjà aujourd’hui. »
 
-ANIMATION — Faire cocher par un volontaire pour son équipe. Commenter le score.
+ANIMATION — Un volontaire dit à voix haute ce que sa revue vérifie ; le formateur coche pour illustrer. Commenter le score.
 
 TRANSITION — « Comment obtenir du code sûr dès la génération ? »`,
   `⏱ 4 min · PROMPTS SÉCURITÉ (2 temps)
@@ -387,15 +392,17 @@ OBJECTIF — Ancrer la vérification des correctifs générés.
 
 DIRE — « Le piège D est le plus dangereux : une alerte fermée à tort n’est plus jamais regardée. »
 
+ANIMATION — Vote à voix haute, clic sur la réponse majoritaire, → bonne réponse, → l’essentiel.
+
 TRANSITION — « TP 5 : auditez votre code. »`,
   `⏱ 25 min (minuteur) · TP 5
 
 OBJECTIF — Atelier du programme : analyser un code généré par Copilot, identifier les failles et les corriger avec des prompts ciblés.
 
-DIRE — « Vous auditez votre propre API, celle générée ce matin. Prompt d’audit en rôle d’attaquant, avec la grille OWASP. Classez. Puis pour chaque faille : un test qui l’exploite, rouge ; un prompt ciblé ; vert. Et rendez les règles permanentes avec le fichier d’instructions de sécurité. Si votre API semble propre, testez le DELETE d’autrui : c’est la faille la plus fréquente. »
+DIRE — « TP individuel. Vous faites auditer votre propre API, celle générée ce matin, par un regard extérieur. Écrivez l’agent Auditeur : read et search seulement — il ne peut rien modifier —, user-invocable à false, et dans son corps la grille OWASP et le format du rapport : fichier, ligne, criticité, requête qui exploite, correctif proposé. Puis, en rôle Agent : « Utilise l’agent Auditeur comme sous-agent pour auditer src/api. » Regardez l’appel replié dans le Chat : le sous-agent travaille dans son propre contexte et ne renvoie que son rapport. Classez dans SECURITY-AUDIT.md. Ensuite, pour chaque faille : un test qui l’exploite, rouge ; un correctif ciblé ; vert. Enfin les règles permanentes, security.instructions.md avec applyTo. Si votre API semble propre, testez le DELETE d’autrui : c’est la faille la plus fréquente. »
 
-ANIMATION — Minuteur. Collecter au tableau les failles trouvées par les binômes : en général IDOR, surexposition, secret, absence de limite de débit.
+ANIMATION — Coller dans le Chat le squelette d’auditeur.agent.md. Lancer le minuteur. Points d’étape à 8 et 18 minutes : « Auditeur écrit ? Rapport reçu ? Combien de failles prouvées ? » Quelqu’un bloqué partage son écran 2 minutes. À la fin, demander à deux ou trois volontaires la faille la plus surprenante ; noter les réponses : en général IDOR, surexposition, secret, absence de limite de débit.
 
-TRANSITION — « Pause de 15 minutes. Ensuite : comment faire tout ça en équipe. »`,
+TRANSITION — « Pause de 10 minutes. Ensuite : comment faire tout ça en équipe. »`,
 ];
 // @@NOTES-END

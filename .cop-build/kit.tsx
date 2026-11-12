@@ -3051,7 +3051,7 @@ const DEFIS = {
   tests: { label: 'Suite de tests', icon: 'flask' as IconName, tone: 'pink' as Tone, aide: 'Matrice de cas d’abord, génération ensuite, couverture pour finir.' },
   refacto: { label: 'Refactoring', icon: 'wand' as IconName, tone: 'violet' as Tone, aide: 'Tests au vert avant et après chaque étape : le comportement ne bouge pas.' },
   audit: { label: 'Audit de sécurité', icon: 'shield' as IconName, tone: 'coral' as Tone, aide: 'Trouvez, prouvez, corrigez : chaque faille reçoit un test qui l’empêche de revenir.' },
-  soutenance: { label: 'Soutenance', icon: 'flag' as IconName, tone: 'navy' as Tone, aide: 'Présentez, montrez les preuves, défendez vos choix face au groupe.' },
+  soutenance: { label: 'Projet de clôture', icon: 'flag' as IconName, tone: 'navy' as Tone, aide: 'Livrez avec vos agents, gardez les deux validations, prouvez. Deux ou trois volontaires présentent.' },
 };
 type Defi = keyof typeof DEFIS;
 
@@ -3386,3 +3386,32 @@ const BLOOM: SlideTransition = {
     ],
   },
 };
+
+// ─── Agents : classes partagées (pages reprises de copilot-debutant v1 / v2) ─
+CSS.push(`
+@keyframes ${P}-swap{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.${P}-swap{animation:${P}-swap 480ms ${EASE} var(--d,0ms) both}
+@keyframes ${P}-pkt{from{transform:translate(var(--x0),var(--y0)) translate(-50%,-50%) scale(.6);opacity:0}12%{opacity:1}to{transform:translate(var(--x1),var(--y1)) translate(-50%,-50%) scale(1);opacity:1}}
+.${P}-pkt{position:absolute;left:0;top:0;animation:${P}-pkt 1050ms ${EASE} var(--d,0ms) both;pointer-events:none}
+@keyframes ${P}-edge{to{stroke-dashoffset:-28}}
+.${P}-edge{stroke-dasharray:10 8;animation:${P}-edge 700ms linear infinite}
+.${P}-agn{transition:transform 360ms ${EASE_BACK},box-shadow 300ms ${EASE},opacity 300ms ${EASE},background 300ms ${EASE}}
+.${P}-row{cursor:pointer;transition:background 220ms ${EASE}}
+.${P}-chip{cursor:pointer;transition:all 220ms ${EASE}}
+`);
+
+// Inline code chip (light).
+const Ic = ({ children }: { children: ReactNode }) => (
+  <code style={{ fontFamily: mono, fontSize: '0.86em', color: C.electric, background: T.blue.bg, borderRadius: 6, padding: '1px 7px' }}>{children}</code>
+);
+
+// Boutons « onglets » réutilisés par plusieurs pages.
+const MTabs = ({ items, cur, set, size = 21 }: { items: string[]; cur: number; set: (i: number) => void; size?: number }) => (
+  <div style={{ display: 'flex', gap: 12 }}>
+    {items.map((t, i) => (
+      <Btn key={t} size={size} tone="blue" ghost={i !== cur} onClick={() => set(i)}>
+        {t}
+      </Btn>
+    ))}
+  </div>
+);

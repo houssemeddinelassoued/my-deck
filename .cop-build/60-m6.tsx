@@ -10,13 +10,13 @@ const M6_Divider: Page = () => (
         d’intégration en équipe
       </>
     }
-    sub="Conventions, prompts partagés, pull requests, CI/CD, mesure et charte : passer d’usages individuels à une pratique d’équipe."
-    dur="15:40 – 16:30 · TP inclus"
-    labs={<Tag tone="green" size={19}>TP 6 · projet de clôture</Tag>}
+    sub="Conventions, pull requests, CI/CD, orchestration d’agents, mesure et charte : passer d’usages individuels à une pratique d’équipe."
+    dur="15:40 – 16:40 · TP inclus"
+    labs={<Tag tone="green" size={19}>TP 6 · feature orchestrée</Tag>}
   >
     <SecItem n={1}>Des conventions d’usage d’équipe</SecItem>
-    <SecItem n={2}>Prompts et templates dans le dépôt</SecItem>
-    <SecItem n={3}>Pull requests, revue de code et CI/CD</SecItem>
+    <SecItem n={2}>Pull requests, revue de code et CI/CD</SecItem>
+    <SecItem n={3}>Orchestrer une équipe d’agents</SecItem>
     <SecItem n={4}>Mesurer avec et sans Copilot</SecItem>
     <SecItem n={5}>Une charte d’utilisation responsable</SecItem>
   </Section>
@@ -45,53 +45,6 @@ const M6_Conventions: Page = () => (
     <div className={A.fade} style={{ position: 'absolute', left: 120, top: 880, display: 'flex', alignItems: 'center', gap: 12, fontSize: 22, color: C.muted, ...dl(700) }}>
       <Icon name="doc" size={24} color={C.electric} />
       Les réponses vont dans le dépôt : <span style={{ fontFamily: mono, color: C.navy }}>CONTRIBUTING.md</span> et <span style={{ fontFamily: mono, color: C.navy }}>.github/copilot-instructions.md</span>.
-    </div>
-  </Frame>
-);
-
-// ─── Partager prompts et templates ──────────────────────────────────────────
-const M6_RepoAssets: Page = () => (
-  <Frame mod={6} beats={1}>
-    <Title>Partager prompts et templates via le dépôt</Title>
-    <Lede>Ce qui marche pour un développeur devient l’outil de toute l’équipe : versionné, relu en PR, amélioré.</Lede>
-    <div className={A.in} style={{ position: 'absolute', left: 120, top: 262, width: 700, background: C.card, borderRadius: 20, boxShadow: SHADOW, padding: '22px 28px' }}>
-      <PanelTitle icon="layers">.github/</PanelTitle>
-      <M2Tree name="copilot-instructions.md" note="stack, arbo, conventions" />
-      <M2Tree dir name="instructions/" tone="blue" />
-      <M2Tree depth={1} name="tests.instructions.md" note="applyTo **/*.test.*" />
-      <M2Tree depth={1} name="security.instructions.md" note="TP 5" />
-      <M2Tree dir name="prompts/" tone="green" />
-      <M2Tree depth={1} name="new-endpoint.prompt.md" note="/new-endpoint" />
-      <M2Tree depth={1} name="security-review.prompt.md" note="grille OWASP" />
-      <M2Tree depth={1} name="overlap.prompt.md" note="TP 1" />
-      <M2Tree dir name="agents/" tone="violet" />
-      <M2Tree depth={1} name="reviewer.agent.md" note="relecteur outillé" />
-      <div style={{ marginTop: 10, fontSize: 19, color: C.muted }}>
-        <span style={{ fontFamily: mono }}>AGENTS.md</span> à la racine : portable entre outils.
-      </div>
-    </div>
-    <div className={A.right} style={{ position: 'absolute', left: 880, top: 262, width: 920, ...dl(200) }}>
-      <CodeDark file=".github/prompts/new-endpoint.prompt.md" size={20}>
-        <Cc>---</Cc>
-        {'\n'}
-        <Ck>description</Ck>: <Cs>Crée un endpoint REST complet avec ses tests</Cs>
-        {'\n'}
-        <Ck>agent</Ck>: <Cs>agent</Cs>
-        {'\n'}
-        <Cc>---</Cc>
-        {'\n'}
-        Crée l’endpoint <Cn>{'${input:route:ex. GET /rooms/{id}/bookings}'}</Cn>.{'\n'}
-        Modèle à suivre : #file:src/api/routes/bookings{'\n'}
-        1. Propose le plan (route, validation, service, tests).{'\n'}
-        {'   '}Attends ma validation.{'\n'}
-        2. Tests d’abord : nominal, limites, négatifs, sécurité.{'\n'}
-        3. Implémente jusqu’au vert, puis mets à jour l’OpenAPI.
-      </CodeDark>
-    </div>
-    <div className={b.on(1)} style={{ position: 'absolute', left: 880, top: 700, width: 920 }}>
-      <Callout title="Dans le chat" tone="green" icon="terminal" size={24}>
-        On tape <span style={{ fontFamily: mono }}>/new-endpoint</span> : la méthode de l’équipe, en une commande. Un prompt partagé se relit en PR comme du code.
-      </Callout>
     </div>
   </Frame>
 );
@@ -248,7 +201,7 @@ const M6_Metrics: Page = () => (
 const M6_Charter: Page = () => (
   <Frame mod={6} kind="atelier">
     <Title>Une charte d’utilisation responsable de l’IA</Title>
-    <Lede>Huit engagements, à adapter. Cochez ceux que votre équipe applique déjà, réellement.</Lede>
+    <Lede>Huit engagements, à adapter. Comptez pour vous ceux que votre équipe applique déjà, réellement.</Lede>
     <Checklist>
       <div className={A.in} style={{ position: 'absolute', left: 120, top: 262, width: 1180, display: 'flex', flexDirection: 'column', gap: 11 }}>
         <CheckItem id="ch1" size={23} tone="navy">Le développeur reste l’auteur et le responsable du code qu’il commite.</CheckItem>
@@ -275,6 +228,383 @@ const M6_Charter: Page = () => (
         </div>
       </div>
     </Checklist>
+  </Frame>
+);
+
+// ═══ Orchestration d’agents (orchestrateur ; simulation et potentiel repris de copilot-debutant v1, p. 119–120) ═══
+// Harnais Copilot (doc VS Code « Use subagents », 11 novembre 2026) : l’agent principal délègue à des agents
+// intégrés ou personnalisés via l’outil natif (alias « agent ») ; chaque sous-agent a son propre contexte.
+
+// ─── Le chef d’orchestre : un agent qui délègue ─────────────────────────────
+const M6Worker = ({ icon, tone, name, tools, children, cls }: { icon: IconName; tone: Tone; name: string; tools: string; children: ReactNode; cls: string }) => (
+  <div className={cls} style={{ display: 'grid', gridTemplateColumns: '48px minmax(0, 1fr)', gap: 14, alignItems: 'center', background: C.card, borderRadius: 16, boxShadow: SHADOW_SM, padding: '10px 16px', borderLeft: `6px solid ${STRONG[tone]}` }}>
+    <IconTile name={icon} tone={tone} size={48} />
+    <div>
+      <div style={{ display: 'flex', alignItems: 'baseline', gap: 10 }}>
+        <span style={{ fontFamily: display, fontWeight: 800, fontSize: 22, color: C.ink }}>{name}</span>
+        <span style={{ fontFamily: mono, fontSize: 16, color: T[tone].fg }}>{tools}</span>
+      </div>
+      <div style={{ fontSize: 18, lineHeight: 1.3, color: C.soft }}>{children}</div>
+    </div>
+  </div>
+);
+
+const M6Gate = ({ children, cls }: { children: ReactNode; cls: string }) => (
+  <div className={cls} style={{ display: 'flex', alignItems: 'center', gap: 10, fontSize: 19, fontWeight: 700, color: T.green.fg }}>
+    <span style={{ width: 18, height: 18, background: C.green, transform: 'rotate(45deg)', borderRadius: 4, flex: 'none' }} />
+    {children}
+  </div>
+);
+
+const M6_Orchestrateur: Page = () => (
+  <Frame mod={6} beats={3}>
+    <Title>Un chef d’orchestre : l’agent qui fait travailler les autres</Title>
+    <Lede>Il ne fait pas tout : il découpe, délègue à chaque agent dans un contexte séparé, et s’arrête là où vous devez décider.</Lede>
+    <CodeDark file=".github/agents/chef-orchestre.agent.md" size={18} cls={A.in} style={{ position: 'absolute', left: 120, top: 262, width: 860 }}>
+      <Cc>---</Cc>
+      {'\n'}
+      <Ck>name</Ck>: Chef d’orchestre
+      {'\n'}
+      <Ck>description</Ck>: Mène une feature de SalleLibre de bout en{'\n  '}bout en déléguant aux agents spécialisés.
+      {'\n'}
+      <Ck>tools</Ck>: [<Cs>'agent'</Cs>, <Cs>'read'</Cs>, <Cs>'search'</Cs>, <Cs>'edit'</Cs>, <Cs>'execute'</Cs>, <Cs>'todo'</Cs>]
+      {'\n'}
+      <Cc>---</Cc>
+      {'\n'}Tu coordonnes. Sollicite chaque agent comme{'\n'}sous-agent, par son nom exact.{'\n'}
+      <Cf>1.</Cf> Architecte : un plan en lots.{'\n   '}
+      <strong style={{ color: '#9BE29B' }}>ARRÊTE-TOI : j’approuve le plan.</strong>
+      {'\n'}
+      <Cf>2.</Cf> Pour chaque lot :{'\n   '}a. Testeur : les tests du lot, ROUGES.{'\n   '}b. Toi : le code minimal, jusqu’au vert.{'\n      '}Ne modifie aucun test.{'\n   '}c. Auditeur : audit du diff.{'\n      '}Faille bloquante : retour en a.{'\n'}
+      <Cf>3.</Cf> Documentaliste : OpenAPI et README.{'\n'}
+      <Cf>4.</Cf> Résume lots, tests, failles, risques.{'\n   '}
+      <strong style={{ color: '#9BE29B' }}>Je relis le diff avant la PR.</strong>
+    </CodeDark>
+    <div style={{ position: 'absolute', left: 1030, top: 262, width: 770, display: 'flex', flexDirection: 'column', gap: 12 }}>
+      <div className={A.right} style={{ display: 'flex', alignItems: 'center', gap: 14, background: G.navy, color: '#fff', borderRadius: 16, padding: '12px 18px', ...dl(150) }}>
+        <IconTile name="route" tone="navy" size={48} solid />
+        <div>
+          <div style={{ fontFamily: display, fontWeight: 800, fontSize: 23 }}>Chef d’orchestre</div>
+          <div style={{ fontSize: 18, color: '#C9D2EA' }}>choisi par vous dans la liste des rôles · code lui-même</div>
+        </div>
+      </div>
+      <M6Worker icon="layers" tone="teal" name="Architecte" tools="read · search" cls={b.on(1)}>
+        rend un plan en lots ; ne peut rien modifier
+      </M6Worker>
+      <M6Worker icon="flask" tone="pink" name="Testeur" tools="+ edit · execute" cls={b.on(1)}>
+        écrit les tests rouges, seulement dans tests/
+      </M6Worker>
+      <M6Worker icon="shield" tone="coral" name="Auditeur" tools="read · search" cls={b.on(1)}>
+        rend un rapport de failles ; ne corrige pas
+      </M6Worker>
+      <M6Worker icon="doc" tone="green" name="Documentaliste" tools="+ edit" cls={b.on(1)}>
+        met à jour la doc, seulement la doc
+      </M6Worker>
+      <div style={{ display: 'flex', gap: 30, paddingLeft: 6, marginTop: 4 }}>
+        <M6Gate cls={b.on(2)}>Vous : le plan</M6Gate>
+        <M6Gate cls={b.on(2)}>Vous : le diff, puis la PR</M6Gate>
+      </div>
+    </div>
+    <div className={b.on(3)} style={{ position: 'absolute', left: 1030, top: 790, width: 770 }}>
+      <Callout tone="yellow" icon="bulb" title="Dans le Chat" size={20}>
+        Chaque sous-agent apparaît replié, avec son nom : dépliez-le pour voir ce qu’il a lu et rendu. Les boutons de relais (handoffs) des anciens tutoriels sont ignorés.
+      </Callout>
+    </div>
+  </Frame>
+);
+
+// ─── Orchestration : la simulation ──────────────────────────────────────────
+type NodeId = 'H' | 'HUB' | 'ARC' | 'TST' | 'REF' | 'AUD' | 'DOC';
+const NODES6: Record<NodeId, { x: number; y: number; label: string; icon: IconName; tone: Tone }> = {
+  H: { x: 215, y: 655, label: 'Vous', icon: 'humanCheck', tone: 'green' },
+  HUB: { x: 700, y: 655, label: 'Chef d’orchestre', icon: 'route', tone: 'navy' },
+  ARC: { x: 450, y: 420, label: 'Architecte', icon: 'layers', tone: 'teal' },
+  TST: { x: 780, y: 390, label: 'Testeur', icon: 'flask', tone: 'pink' },
+  REF: { x: 1090, y: 450, label: 'Refactoreur', icon: 'wand', tone: 'violet' },
+  AUD: { x: 1090, y: 800, label: 'Auditeur', icon: 'shield', tone: 'coral' },
+  DOC: { x: 700, y: 900, label: 'Documentaliste', icon: 'doc', tone: 'green' },
+};
+type Move = [NodeId, NodeId, string];
+type SStep = { m: Move[]; log: string; bad?: boolean; gate?: boolean; cost: number };
+const SCEN6: { label: string; kind: string; steps: SStep[] }[] = [
+  {
+    label: 'Nouvelle fonctionnalité',
+    kind: 'Relais par lots',
+    steps: [
+      { m: [['H', 'HUB', 'brief']], log: 'Vous : « réservations récurrentes, chaque mardi, avec exceptions »', cost: 1 },
+      { m: [['HUB', 'ARC', 'demande']], log: 'Architecte : 3 lots, un test par lot', cost: 2 },
+      { m: [['ARC', 'HUB', 'plan']], log: 'Architecte → plan rendu au chef d’orchestre', cost: 1 },
+      { m: [['HUB', 'H', 'plan']], log: 'Chef d’orchestre s’arrête : vous relisez et validez le plan', gate: true, cost: 0 },
+      { m: [['HUB', 'TST', 'lot 1']], log: 'Testeur : 6 tests du lot 1, tous rouges', cost: 3 },
+      { m: [['TST', 'HUB', 'tests ✗']], log: 'Chef d’orchestre : code minimal, les 6 tests passent', cost: 4 },
+      { m: [['HUB', 'REF', 'lot 1 ✓']], log: 'Refactoreur : extrait RecurrenceRule, tests intouchés, verts', cost: 2 },
+      { m: [['HUB', 'AUD', 'diff']], log: 'Auditeur : récurrence sans limite → 10 000 réservations possibles', cost: 2 },
+      { m: [['AUD', 'HUB', '✗ faille']], log: 'Faille bloquante : retour au Testeur, test d’exploitation rouge', bad: true, cost: 1 },
+      { m: [['HUB', 'TST', 'faille']], log: 'Testeur + chef : limite à 52 occurrences, test vert', cost: 3 },
+      { m: [['HUB', 'DOC', 'diff']], log: 'Documentaliste : OpenAPI et README à jour', cost: 1 },
+      { m: [['HUB', 'H', 'synthèse']], log: 'Vous : relecture du diff (tests d’abord), puis la PR', gate: true, cost: 0 },
+    ],
+  },
+  {
+    label: 'Revue en parallèle',
+    kind: 'Éventail puis synthèse',
+    steps: [
+      { m: [['H', 'HUB', 'PR #42']], log: 'Vous : « fais relire la PR #42 »', cost: 1 },
+      { m: [['HUB', 'ARC', 'diff'], ['HUB', 'TST', 'diff'], ['HUB', 'AUD', 'diff']], log: 'Chef d’orchestre : 3 sous-agents lancés en même temps', cost: 2 },
+      { m: [['ARC', 'HUB', '1 écart au plan'], ['TST', 'HUB', '2 tests manquants'], ['AUD', 'HUB', '1 faille']], log: 'Chacun rend son rapport, depuis un contexte séparé', cost: 6 },
+      { m: [['HUB', 'H', 'synthèse']], log: 'Synthèse : 1 bloquant (faille), 2 tests à ajouter → vous décidez', gate: true, cost: 1 },
+    ],
+  },
+  {
+    label: 'Bug en production',
+    kind: 'Boucle courte',
+    steps: [
+      { m: [['H', 'HUB', 'ticket #87']], log: 'Vous : « 409 à tort : 10h–11h puis 11h–12h »', cost: 1 },
+      { m: [['HUB', 'TST', 'ticket']], log: 'Testeur : un test qui reproduit le bug, rouge', cost: 2 },
+      { m: [['TST', 'HUB', 'test ✗']], log: 'Chef d’orchestre : correctif minimal sur la borne, vert', cost: 2 },
+      { m: [['HUB', 'AUD', 'diff']], log: 'Auditeur : rien à signaler sur 6 lignes', cost: 1 },
+      { m: [['HUB', 'H', 'PR 6 lignes']], log: 'Vous : relecture rapide et fusion', gate: true, cost: 0 },
+    ],
+  },
+  {
+    label: 'Garde-fou sécurité',
+    kind: 'Blocage et arbitrage',
+    steps: [
+      { m: [['H', 'HUB', 'brief']], log: 'Vous : « branche SalleLibre sur l’annuaire de l’entreprise »', cost: 1 },
+      { m: [['HUB', 'AUD', 'diff']], log: 'Chef d’orchestre : client d’annuaire écrit, envoyé à l’audit', cost: 3 },
+      { m: [['AUD', 'HUB', '✗ secret en clair']], log: 'Auditeur : BLOQUÉ, mot de passe de service dans le code', bad: true, cost: 1 },
+      { m: [['HUB', 'AUD', 'variable d’env.']], log: 'Chef d’orchestre : secret lu depuis l’environnement, nouvel audit', cost: 2 },
+      { m: [['HUB', 'H', 'question']], log: 'Auditeur via le chef : « quel coffre-fort en production ? » → décision humaine', gate: true, cost: 1 },
+    ],
+  },
+];
+
+const AgNode = ({ id, state }: { id: NodeId; state: 'idle' | 'on' | 'done' | 'bad' }) => {
+  const n = NODES6[id];
+  const on = state === 'on' || state === 'bad';
+  const ring = state === 'bad' ? C.coral : STRONG[n.tone];
+  const hub = id === 'HUB';
+  return (
+    <div
+      className={k('agn')}
+      style={{
+        position: 'absolute',
+        left: n.x - 115,
+        top: n.y - 42,
+        width: 230,
+        height: 84,
+        boxSizing: 'border-box',
+        borderRadius: 18,
+        background: hub ? G.navy : on ? T[n.tone].bg : C.card,
+        color: hub ? '#fff' : C.ink,
+        boxShadow: on ? `0 0 0 4px ${ring}, 0 0 0 14px ${T[n.tone].bg}` : SHADOW,
+        transform: on ? 'scale(1.07)' : 'none',
+        opacity: state === 'idle' ? 0.72 : 1,
+        display: 'flex',
+        alignItems: 'center',
+        gap: 12,
+        padding: '0 14px',
+        zIndex: 2,
+      }}
+    >
+      <IconTile name={n.icon} tone={n.tone} size={50} solid={on || hub} />
+      <span style={{ fontSize: 21, fontWeight: 700, lineHeight: 1.15 }}>{n.label}</span>
+      {state === 'done' ? (
+        <span style={{ position: 'absolute', right: -8, top: -8, width: 28, height: 28, borderRadius: 99, background: C.green, color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <Icon name="check" size={18} sw={3} />
+        </span>
+      ) : null}
+    </div>
+  );
+};
+
+const M6_Orchestration: Page = () => {
+  const [ref, beats] = useBeats();
+  const [sc, setSc] = useState(0);
+  const [step, setStep] = useState(0);
+  const [playing, setPlaying] = useState(false);
+  const scen = SCEN6[sc];
+  const N = scen.steps.length;
+  useEffect(() => {
+    if (beats > 3) return;
+    setSc(Math.max(0, Math.min(beats, 3)));
+    setStep(0);
+    setPlaying(true);
+  }, [beats]);
+  useEffect(() => {
+    if (!playing) return;
+    const id = window.setInterval(() => setStep((s) => Math.min(N, s + 1)), 1700);
+    return () => window.clearInterval(id);
+  }, [playing, N, sc]);
+  useEffect(() => {
+    if (step >= N) setPlaying(false);
+  }, [step, N]);
+  const cur = step > 0 ? scen.steps[step - 1] : null;
+  const done = new Set<NodeId>();
+  scen.steps.slice(0, Math.max(0, step - 1)).forEach((s) => s.m.forEach(([, to]) => done.add(to)));
+  const active = new Set<NodeId>();
+  cur?.m.forEach(([, to]) => active.add(to));
+  const used = new Set<NodeId>();
+  scen.steps.slice(0, step).forEach((s) => s.m.forEach(([a, z]) => [a, z].forEach((x) => x !== 'H' && x !== 'HUB' && used.add(x))));
+  const gates = scen.steps.slice(0, step).filter((s) => s.gate).length;
+  const cost = scen.steps.slice(0, step).reduce((a, s) => a + s.cost, 0);
+  const choose = (i: number) => {
+    setSc(i);
+    setStep(0);
+    setPlaying(true);
+  };
+  return (
+    <Frame mod={6} kind="demo" beats={3}>
+      <Title>Simulation : une équipe d’agents orchestrée</Title>
+      <Lede>Le chef d’orchestre sollicite chaque agent comme sous-agent, dans son propre contexte. Choisissez un scénario et regardez circuler le travail.</Lede>
+      <div ref={ref} className={A.in} style={{ position: 'absolute', left: 120, top: 262 }}>
+        <MTabs items={SCEN6.map((s) => s.label)} cur={sc} set={choose} size={19} />
+      </div>
+      <svg width={1920} height={1080} style={{ position: 'absolute', left: 0, top: 0, pointerEvents: 'none' }}>
+        {(Object.keys(NODES6) as NodeId[])
+          .filter((id) => id !== 'HUB')
+          .map((id) => (
+            <line key={id} x1={NODES6.HUB.x} y1={NODES6.HUB.y} x2={NODES6[id].x} y2={NODES6[id].y} stroke={C.rule} strokeWidth={3} strokeDasharray="4 10" />
+          ))}
+        {cur?.m.map(([a, z], i) => (
+          <line key={`${sc}-${step}-${i}`} className={k('edge')} x1={NODES6[a].x} y1={NODES6[a].y} x2={NODES6[z].x} y2={NODES6[z].y} stroke={cur.bad ? C.coral : C.electric} strokeWidth={5} strokeLinecap="round" />
+        ))}
+      </svg>
+      {(Object.keys(NODES6) as NodeId[]).map((id) => (
+        <AgNode key={id} id={id} state={active.has(id) ? (cur?.bad ? 'bad' : 'on') : done.has(id) ? 'done' : 'idle'} />
+      ))}
+      {cur?.m.map(([a, z, art], i) => (
+        <div
+          key={`p-${sc}-${step}-${i}`}
+          className={k('pkt')}
+          style={{ ['--x0' as string]: `${NODES6[a].x}px`, ['--y0' as string]: `${NODES6[a].y}px`, ['--x1' as string]: `${NODES6[z].x}px`, ['--y1' as string]: `${NODES6[z].y - 62}px`, ...dl(i * 120), zIndex: 3, padding: '6px 14px', borderRadius: 99, background: cur.bad ? C.coral : C.electric, color: '#fff', fontSize: 18, fontWeight: 700, whiteSpace: 'nowrap', boxShadow: '0 10px 24px -10px rgba(11,31,92,.8)' } as CSSProperties}
+        >
+          {art}
+        </div>
+      ))}
+      <div className={A.right} style={{ position: 'absolute', left: 1320, top: 262, width: 480, height: 700, boxSizing: 'border-box', background: '#0F1730', borderRadius: 20, boxShadow: SHADOW, padding: '18px 20px', display: 'flex', flexDirection: 'column', ...dl(200) }}>
+        <div style={{ fontSize: 17, letterSpacing: '.1em', textTransform: 'uppercase', color: '#9AA6C8' }}>{scen.kind}</div>
+        <div style={{ marginTop: 10, display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', gap: 8 }}>
+          {(
+            [
+              ['étapes', `${step} / ${N}`],
+              ['sous-agents mobilisés', `${used.size}`],
+              ['validations humaines', `${gates}`],
+              ['crédits (illustratif)', `≈ ${cost * 6}`],
+            ] as [string, string][]
+          ).map(([l, v]) => (
+            <div key={l} style={{ background: 'rgba(255,255,255,.06)', borderRadius: 10, padding: '8px 12px' }}>
+              <div style={{ fontFamily: display, fontWeight: 800, fontSize: 26, color: '#fff' }}>{v}</div>
+              <div style={{ fontSize: 15, color: '#9AA6C8' }}>{l}</div>
+            </div>
+          ))}
+        </div>
+        <div style={{ marginTop: 12, flex: 1, display: 'flex', flexDirection: 'column', gap: 6, overflow: 'hidden' }}>
+          {scen.steps.slice(Math.max(0, step - 6), step).map((s, i, arr) => {
+            const last = i === arr.length - 1;
+            return (
+              <div key={`${sc}-${step - arr.length + i}`} className={k('swap')} style={{ display: 'grid', gridTemplateColumns: '26px minmax(0, 1fr)', gap: 8, padding: '6px 8px', borderRadius: 8, background: last ? 'rgba(255,255,255,.08)' : 'transparent' }}>
+                <Icon name={s.bad ? 'alert' : s.gate ? 'humanCheck' : 'send'} size={20} color={s.bad ? C.coral : s.gate ? '#3DDC97' : '#82AAFF'} sw={2.2} />
+                <span style={{ fontSize: 17, lineHeight: 1.3, color: last ? '#fff' : '#C9D2EA' }}>{s.log}</span>
+              </div>
+            );
+          })}
+          {step === 0 ? <div style={{ fontSize: 18, color: '#7C86A8' }}>Appuyez sur Lecture…</div> : null}
+        </div>
+      </div>
+      <div className={A.right} style={{ position: 'absolute', left: 1320, top: 980, display: 'flex', gap: 10, ...dl(300) }}>
+        <Btn icon={playing ? 'pause' : 'play'} size={19} onClick={() => (step >= N ? choose(sc) : setPlaying((p) => !p))}>
+          {playing ? 'Pause' : 'Lecture'}
+        </Btn>
+        <Btn
+          icon="arrow"
+          size={19}
+          ghost
+          onClick={() => {
+            setPlaying(false);
+            setStep((s) => Math.min(N, s + 1));
+          }}
+        >
+          Pas
+        </Btn>
+        <Btn
+          icon="reset"
+          size={19}
+          ghost
+          tone="grey"
+          onClick={() => {
+            setPlaying(false);
+            setStep(0);
+          }}
+        />
+      </div>
+    </Frame>
+  );
+};
+
+// ─── Le potentiel ───────────────────────────────────────────────────────────
+const GANTT_SOLO: [string, number, number, Tone][] = [
+  ['Planifier', 0, 2, 'teal'],
+  ['Tester', 2, 5, 'pink'],
+  ['Coder', 5, 9, 'navy'],
+  ['Refactorer', 9, 11, 'violet'],
+  ['Sécurité', 11, 13, 'coral'],
+  ['Documenter', 13, 15, 'green'],
+];
+const GANTT_TEAM: [string, number, number, Tone][] = [
+  ['Planifier', 0, 1, 'teal'],
+  ['Tester', 1, 3, 'pink'],
+  ['Coder', 2, 5, 'navy'],
+  ['Refactorer', 4, 5.5, 'violet'],
+  ['Sécurité', 4, 6, 'coral'],
+  ['Documenter', 5, 6.5, 'green'],
+];
+const GX6 = (u: number) => (u / 15) * 1180;
+
+const M6Gantt = ({ rows, beat, top, gates }: { rows: [string, number, number, Tone][]; beat: number; top: number; gates: number[] }) => (
+  <div style={{ position: 'absolute', left: 300, top, width: 1180, height: rows.length * 34 }}>
+    {rows.map(([t, a, z, tone], i) => (
+      <div key={t} className={beat ? b.grow(beat) : A.grow} style={{ position: 'absolute', left: GX6(a), top: i * 34, width: GX6(z - a), height: 26, borderRadius: 8, background: STRONG[tone], transformOrigin: 'left center', display: 'flex', alignItems: 'center', paddingLeft: 10, boxSizing: 'border-box', color: '#fff', fontSize: 16, fontWeight: 700, whiteSpace: 'nowrap', overflow: 'hidden', ...dl(i * 140) }}>
+        {t}
+      </div>
+    ))}
+    {gates.map((g) => (
+      <div key={g} className={beat ? b.pop(beat) : A.pop} style={{ position: 'absolute', left: GX6(g) - 13, top: -34, width: 26, height: 26, transform: 'rotate(45deg)', background: C.green, borderRadius: 5, ...dl(900) }} />
+    ))}
+  </div>
+);
+
+const M6_Potentiel: Page = () => (
+  <Frame mod={6} beats={2}>
+    <Title>Le potentiel : spécialiser, paralléliser, se vérifier</Title>
+    <Lede>Une équipe d’agents ne pense pas mieux qu’un seul modèle : elle découpe, parallélise et se contrôle. Durées illustratives.</Lede>
+    <div className={A.in} style={{ position: 'absolute', left: 120, top: 320, width: 170, fontSize: 21, fontWeight: 700, color: C.ink }}>
+      Un agent seul
+      <div style={{ fontSize: 17, fontWeight: 400, color: C.muted }}>tout dans un contexte</div>
+    </div>
+    <M6Gantt rows={GANTT_SOLO} beat={0} top={320} gates={[15]} />
+    <div className={b.on(1)} style={{ position: 'absolute', left: 120, top: 560, width: 170, fontSize: 21, fontWeight: 700, color: C.ink }}>
+      Une équipe orchestrée
+      <div style={{ fontSize: 17, fontWeight: 400, color: C.muted }}>un contexte par rôle</div>
+    </div>
+    <M6Gantt rows={GANTT_TEAM} beat={1} top={560} gates={[1, 6.5]} />
+    <div className={b.fade(1)} style={{ position: 'absolute', left: 1500, top: 560, width: 300, fontSize: 19, color: C.soft, lineHeight: 1.4 }}>
+      <span style={{ display: 'inline-block', width: 16, height: 16, background: C.green, transform: 'rotate(45deg)', borderRadius: 3, marginRight: 10 }} />
+      vos validations : le plan, puis le diff
+    </div>
+    <div className={b.on(2)} style={{ position: 'absolute', left: 120, top: 800, width: 1680, display: 'grid', gridTemplateColumns: 'repeat(4, minmax(0, 1fr))', gap: 22 }}>
+      <Card tone="blue" icon="target" title="Spécialisation" size={19} pad={18}>
+        Un contexte court et propre par rôle : moins de bruit, de meilleures réponses.
+      </Card>
+      <Card tone="violet" icon="layers" title="Parallélisme" size={19} pad={18}>
+        Tests, sécurité et relecture en même temps, sur le même diff.
+      </Card>
+      <Card tone="teal" icon="shieldCheck" title="Contrôle croisé" size={19} pad={18}>
+        L’Auditeur n’a pas écrit le code qu’il relit : il le prouve.
+      </Card>
+      <Card tone="green" icon="note" title="Traçabilité" size={19} pad={18}>
+        Chaque relais laisse un artefact relisible : plan, tests, rapport.
+      </Card>
+    </div>
   </Frame>
 );
 
@@ -316,41 +646,46 @@ const M6_TP: Page = () => (
   <LabPage
     mod={6}
     n="6"
-    title="Projet de clôture : une feature complète"
+    title="Projet de clôture : une feature orchestrée"
     defi="soutenance"
-    who="Binôme · 4 min de soutenance"
+    who="Individuel · 2 ou 3 volontaires présentent"
     minutes={25}
+    feats={
+      <Tag tone="navy" size={19}>
+        <Icon name="route" size={20} /> agent Chef d’orchestre
+      </Tag>
+    }
     where={
       <>
-        une pull request avec description
+        <PathChip>.github/agents/chef-orchestre.agent.md</PathChip>
         <br />
-        code, tests, doc OpenAPI, audit
+        + architecte, testeur, documentaliste
         <br />
-        CI verte
+        une PR décrite : code, tests, doc, audit
       </>
     }
-    objective={<>Développer entièrement avec Copilot une feature de {PROJECT}, puis la présenter et la défendre : code, tests, documentation, sécurité.</>}
+    objective={<>Livrer une feature de {PROJECT} en orchestrant vos agents, en gardant la main aux deux décisions : le plan, puis le diff.</>}
     crit={
       <>
-        <CheckItem id="tp6-1" size={21}>Plan et prompt d’équipe utilisés</CheckItem>
-        <CheckItem id="tp6-2" size={21}>Matrice de cas et tests au vert</CheckItem>
-        <CheckItem id="tp6-3" size={21}>Revue OWASP faite, failles traitées</CheckItem>
-        <CheckItem id="tp6-4" size={21}>PR décrite, CI verte</CheckItem>
+        <CheckItem id="tp6-1" size={21}>Délégation par nom, deux points d’arrêt</CheckItem>
+        <CheckItem id="tp6-2" size={21}>Plan validé, tests rouges puis verts</CheckItem>
+        <CheckItem id="tp6-3" size={21}>Audit du diff fait, failles traitées</CheckItem>
+        <CheckItem id="tp6-4" size={21}>Diff des tests relu, PR décrite, CI verte</CheckItem>
       </>
     }
   >
-    Choisissez une feature :
+    Écrivez le chef d’orchestre (les autres agents sont dans le Chat), choisissez-le, décrivez la feature :
     <div style={{ marginTop: 10, display: 'flex', flexDirection: 'column', gap: 10 }}>
       <M6Feat icon="loop" tone="violet" title="Réservations récurrentes">chaque mardi, avec exceptions</M6Feat>
       <M6Feat icon="clock" tone="yellow" title="Liste d’attente">la salle se libère, le suivant est notifié</M6Feat>
       <M6Feat icon="calendar" tone="teal" title="Export iCal">vos réservations dans votre agenda</M6Feat>
     </div>
-    <TpBonus>Passez la PR à la revue Copilot avant la soutenance, et montrez ce que vous avez accepté ou refusé.</TpBonus>
+    <TpBonus>Lancez la revue en parallèle : Architecte, Testeur et Auditeur relisent votre PR en même temps.</TpBonus>
   </LabPage>
 );
 
 // @@PAGES-BEGIN
-export const __pages = [M6_Divider, M6_Conventions, M6_RepoAssets, M6_PR, M6_CICD, M6_Metrics, M6_Charter, M6_Qcm, M6_TP];
+export const __pages = [M6_Divider, M6_Conventions, M6_PR, M6_CICD, M6_Orchestrateur, M6_Orchestration, M6_Potentiel, M6_Metrics, M6_Charter, M6_Qcm, M6_TP];
 // @@PAGES-END
 
 // @@NOTES-BEGIN
@@ -359,53 +694,84 @@ export const __notes = [
 
 OBJECTIF — Annoncer le module 6 du programme : bonnes pratiques d’intégration en équipe.
 
-DIRE — « Dernier module. Tout ce que vous avez fait aujourd’hui, vous l’avez fait seul ou en binôme. Comment en faire une pratique d’équipe ? Conventions d’usage, prompts et templates partagés dans le dépôt, Copilot dans les pull requests et la revue de code, dans la CI/CD, la mesure de la productivité et de la qualité, et une charte d’utilisation responsable. Puis le projet de clôture. »
+DIRE — « Dernier module. Tout ce que vous avez fait aujourd’hui, vous l’avez fait seul, avec un agent à la fois. Comment en faire une pratique d’équipe ? Conventions d’usage, Copilot dans les pull requests et la CI/CD, puis une équipe d’agents orchestrée par un chef d’orchestre, la mesure de la productivité et de la qualité, et une charte d’utilisation responsable. Puis le projet de clôture : une feature livrée par vos agents. »
 
 TRANSITION — « Premier chantier : les conventions. »`,
   `⏱ 3 min · CONVENTIONS
 
 OBJECTIF — Définir des conventions d’usage de Copilot au sein d’une équipe.
 
-DIRE — « Six questions à trancher une fois, par écrit. Quels modes où : l’agent est-il autorisé partout, ou pas sur le code de paiement ? Quels modèles, avec quel budget ? Quelles données ne partent jamais ? Quelle revue : qui approuve une PR créée par un agent ? Quelle traçabilité ? Et quelle preuve : des tests obligatoires pour tout code généré. Les réponses vont dans le dépôt, pas dans un wiki que personne ne lit : CONTRIBUTING et les instructions Copilot. »
-
-TRANSITION — « Le dépôt est aussi l’endroit où partager ce qui marche. »`,
-  `⏱ 4 min · PROMPTS PARTAGÉS (1 temps)
-
-OBJECTIF — Partager des prompts et templates efficaces via le dépôt de projet.
-
-DIRE — « Le dossier .github devient la boîte à outils de l’équipe. Les instructions globales, les instructions par chemin — dont celle de sécurité du TP 5 —, les fichiers de prompt — dont celui du TP 1 —, et des agents personnalisés, comme un relecteur. À droite, un fichier de prompt : une description, l’agent à utiliser, une variable de saisie, et la méthode de la journée en trois étapes. » → clic. « Dans le chat, on tape /new-endpoint : toute la méthode en une commande. Et un prompt partagé se relit en PR comme du code. »
-
-ANIMATION — Les noms de champs de l’en-tête évoluent selon les versions de VS Code : vérifier la documentation.
+DIRE — « Six questions à trancher une fois, par écrit. Quels rôles où : l’agent est-il autorisé partout, ou pas sur le code de paiement ? Quels modèles, avec quel budget ? Quelles données ne partent jamais ? Quelle revue : qui approuve une PR créée par un agent ? Quelle traçabilité ? Et quelle preuve : des tests obligatoires pour tout code généré. Les réponses vont dans le dépôt, pas dans un wiki que personne ne lit : CONTRIBUTING et les fichiers que vous avez écrits aujourd’hui — instructions, skills, agents. »
 
 TRANSITION — « Ce code finit en pull request. »`,
   `⏱ 4 min · PULL REQUEST (5 temps)
 
 OBJECTIF — Intégrer Copilot dans un workflow de pull request et de revue de code.
 
-DIRE — « Tout part d’une issue avec des critères d’acceptation : c’est le meilleur prompt qui soit. » → clic. « L’agent travaille, en local ou parce que l’issue est assignée à Copilot, qui ouvre lui-même une PR. » → clic. « La description de PR est générée, puis relue et complétée. » → clic. « La CI prouve. » → clic. « Copilot fait une première revue. » → clic. « Un humain décide. Trois règles : la PR d’un agent est approuvée par quelqu’un d’autre que celui qui l’a demandée ; la revue Copilot lit vos instructions, mettez-y vos points de contrôle ; et au-delà de 400 lignes, la revue humaine décroche. »
+DIRE — « Tout part d’une issue avec des critères d’acceptation : c’est le meilleur prompt qui soit. »
+→ beat 1 « L’agent travaille, en local ou parce que l’issue est assignée à Copilot, qui ouvre lui-même une PR. »
+→ beat 2 « La description de PR est générée, puis relue et complétée. »
+→ beat 3 « La CI prouve. »
+→ beat 4 « Copilot fait une première revue. »
+→ beat 5 « Un humain décide. Trois règles : la PR d’un agent est approuvée par quelqu’un d’autre que celui qui l’a demandée ; la revue Copilot lit vos instructions, mettez-y vos points de contrôle ; et au-delà de 400 lignes, la revue humaine décroche. »
 
 TRANSITION — « La CI, justement : Copilot sait l’écrire. »`,
   `⏱ 3 min · CI/CD (4 temps)
 
 OBJECTIF — Copilot et CI/CD : automatiser la génération de scripts et de pipelines.
 
-DIRE — « Copilot écrit du YAML impeccable en apparence. Quatre vérifications. Les permissions : lecture seule par défaut. » → clic. « Les actions épinglées par SHA, avec une version vérifiée : le modèle propose celles de sa date d’entraînement. » → clic. « Une installation reproductible. » → clic. « Des portes de qualité bloquantes. La même démarche vaut pour GitLab, Azure Pipelines, Jenkins, et pour les Dockerfile ou scripts de migration. »
+DIRE — « Copilot écrit du YAML impeccable en apparence. Quatre vérifications. Les permissions : lecture seule par défaut. »
+→ beat 1 « Les actions épinglées par SHA, avec une version vérifiée : le modèle propose celles de sa date d’entraînement. »
+→ beat 2 « Une installation reproductible. »
+→ beat 3 « Des portes de qualité bloquantes. La même démarche vaut pour GitLab, Azure Pipelines, Jenkins, et pour les Dockerfile ou scripts de migration. »
 
-TRANSITION — « Tout ça a un coût. Est-ce que ça rapporte ? »`,
+TRANSITION — « Vous avez écrit un agent par TP. Et si on les faisait travailler ensemble ? »`,
+  `⏱ 5 min · LE CHEF D’ORCHESTRE (3 temps)
+
+OBJECTIF — Montrer un agent orchestrateur complet : outils, délégation par nom, points d’arrêt humains.
+
+DIRE — « Voici le fichier de votre TP 6. Un agent comme les autres, avec un outil de plus : agent, qui lui permet de solliciter d’autres agents comme sous-agents. Dans le harnais Copilot, il les appelle par leur nom exact, et chaque sous-agent travaille dans son propre contexte : il ne voit que la tâche confiée, et ne renvoie que son résultat. Lisez le corps : un plan d’abord, puis pour chaque lot les tests rouges, le code, l’audit. Le chef d’orchestre code lui-même, mais ne touche jamais aux tests. »
+→ beat 1 « Ses quatre équipiers, et leurs droits : l’Architecte et l’Auditeur sont en lecture seule, ils ne peuvent rien casser. Le Testeur n’écrit que dans tests, le Documentaliste que dans la doc. »
+→ beat 2 « Et les deux losanges verts : les deux moments où le chef d’orchestre s’arrête et vous rend la main. Le plan, puis le diff. Ce sont les deux lignes en vert dans le fichier : sans elles, l’agent enchaîne tout seul. »
+→ beat 3 « Dans le Chat, chaque sous-agent apparaît replié avec son nom : dépliez-le pour voir ce qu’il a lu et rendu. Et si un ancien tutoriel vous fait écrire des handoffs, des boutons de relais : c’est l’ancien harnais Local, le harnais Copilot les ignore. »
+
+TRANSITION — « Voyons-le tourner, sur quatre scénarios. »`,
+  `⏱ 5 min · SIMULATION D’ORCHESTRATION (3 temps, animation)
+
+OBJECTIF — Visualiser quatre schémas d’orchestration : relais par lots, éventail parallèle, boucle courte, blocage par un garde-fou.
+
+DIRE — « Premier scénario, une nouvelle fonctionnalité : les réservations récurrentes. Regardez : l’Architecte rend un plan, et le chef d’orchestre s’arrête pour vous. Puis le Testeur, le code, le Refactoreur… et l’Auditeur trouve une faille : une récurrence sans limite crée dix mille réservations. Retour en arrière, test d’exploitation, correctif. Le Documentaliste, et vous relisez le diff. »
+→ beat 1 « Deuxième schéma : la revue en parallèle. Trois sous-agents relisent la même PR en même temps, chacun dans son contexte. Le chef d’orchestre fait la synthèse, vous décidez. »
+→ beat 2 « Troisième : la boucle courte, un bug en production. Un test qui reproduit, un correctif minimal, un audit rapide. »
+→ beat 3 « Quatrième : le garde-fou. L’Auditeur bloque un secret en clair. Et la dernière question — quel coffre-fort en production ? — n’est pas une question pour un agent : c’est une décision humaine. Regardez le compteur de crédits : chaque sous-agent consomme. On n’orchestre pas une correction de faute de frappe. »
+
+ANIMATION — Chaque clic change de scénario et lance la lecture. Boutons Pause, Pas et Réinitialiser à droite ; les onglets sont cliquables.
+
+TRANSITION — « Qu’est-ce qu’on y gagne vraiment ? »`,
+  `⏱ 3 min · LE POTENTIEL (2 temps)
+
+OBJECTIF — Expliquer ce que l’orchestration apporte réellement, sans survendre.
+
+DIRE — « En haut, un agent seul : tout dans un seul contexte, une étape après l’autre, une seule validation à la fin. »
+→ beat 1 « En bas, une équipe orchestrée : les étapes se chevauchent, lot par lot, et vous validez deux fois, au plan et au diff. Durées illustratives. »
+→ beat 2 « Quatre gains, et aucun ne vient d’une intelligence supérieure. La spécialisation : un contexte court et propre par rôle. Le parallélisme. Le contrôle croisé : l’Auditeur n’a pas écrit le code qu’il relit. La traçabilité : chaque relais laisse un artefact relisible. »
+
+TRANSITION — « Tout ça a un coût. Est-ce que ça rapporte ? Il faut mesurer. »`,
   `⏱ 4 min · MESURER (1 temps)
 
 OBJECTIF — Évaluer la productivité et la qualité avec et sans Copilot.
 
-DIRE — « Deux études sérieuses. GitHub, 2022 : 55 % plus rapide sur une tâche isolée, écrire un serveur HTTP. METR, 2025 : seize développeurs expérimentés, sur leurs propres dépôts, 19 % plus lents avec l’IA… alors qu’ils estimaient être 20 % plus rapides. Les deux sont vraies : tout dépend de la tâche, du contexte, de la maturité. La leçon : le ressenti n’est pas une mesure. » → clic. « Le protocole : métriques fixées avant, tâches comparables, plusieurs semaines. À droite, quoi mesurer : le flux, la qualité, l’expérience — et l’usage, en sachant que le taux d’acceptation dit qu’on utilise l’outil, pas qu’il crée de la valeur. »
+DIRE — « Deux études sérieuses. GitHub, 2022 : 55 % plus rapide sur une tâche isolée, écrire un serveur HTTP. METR, 2025 : seize développeurs expérimentés, sur leurs propres dépôts, 19 % plus lents avec l’IA… alors qu’ils estimaient être 20 % plus rapides. Les deux sont vraies : tout dépend de la tâche, du contexte, de la maturité. La leçon : le ressenti n’est pas une mesure. »
+→ beat 1 « Le protocole : métriques fixées avant, tâches comparables, plusieurs semaines. À droite, quoi mesurer : le flux, la qualité, l’expérience — et l’usage, en sachant que le taux d’acceptation dit qu’on utilise l’outil, pas qu’il crée de la valeur. »
 
 TRANSITION — « Dernière brique : la charte. »`,
   `⏱ 4 min · CHARTE (atelier)
 
 OBJECTIF — Construire une charte d’utilisation responsable de l’IA en développement.
 
-DIRE — « Huit engagements, qui reprennent la journée : responsabilité, données, relecture, dépendances, licences, agents, partage, mesure. Cochez ce que votre équipe applique réellement aujourd’hui. Ce qui n’est pas coché alimente votre plan d’action. »
+DIRE — « Huit engagements, qui reprennent la journée : responsabilité, données, relecture, dépendances, licences, agents, partage, mesure. Chacun compte pour soi ce que son équipe applique réellement aujourd’hui ; je coche à l’écran ce que deux volontaires me disent. Ce qui n’est pas coché alimente votre plan d’action. »
 
-ANIMATION — Faire cocher par un volontaire. Demander quel engagement manque le plus dans les équipes présentes.
+ANIMATION — Demander à deux volontaires, par prénom, leur engagement le plus difficile à tenir. Cocher pour illustrer.
 
 TRANSITION — « QCM, puis le projet de clôture. »`,
   `⏱ 2 min · QCM 6
@@ -414,15 +780,17 @@ OBJECTIF — Savoir lire un indicateur d’usage.
 
 DIRE — « Le taux d’acceptation est l’indicateur le plus visible du tableau de bord Copilot, et le plus mal interprété. »
 
+ANIMATION — Vote à voix haute, clic sur la réponse majoritaire, → bonne réponse, → l’essentiel.
+
 TRANSITION — « Projet de clôture. »`,
-  `⏱ 25 min (minuteur) + soutenances · TP 6
+  `⏱ 25 min (minuteur) · TP 6
 
-OBJECTIF — Projet de clôture du programme : présenter et défendre une feature complète (code, tests, documentation, sécurité) développée entièrement avec Copilot.
+OBJECTIF — Projet de clôture du programme : livrer une feature complète (code, tests, documentation, sécurité) en orchestrant des agents, puis la présenter.
 
-DIRE — « Une feature au choix. Appliquez tout : le plan, le prompt d’équipe, la matrice de cas, les tests, la revue de sécurité, la PR décrite, la CI. À 16:30, chaque binôme a quatre minutes : la démo, une preuve par critère, et un moment où vous avez refusé une proposition de Copilot — et pourquoi. »
+DIRE — « TP individuel. Je colle dans le Chat les fichiers de l’Architecte, du Testeur et du Documentaliste ; votre Refactoreur et votre Auditeur existent déjà. Vous écrivez le chef d’orchestre : l’outil agent, la délégation par nom exact, et surtout les deux points d’arrêt — le plan, le diff. Choisissez-le dans la liste des rôles et décrivez une feature parmi les trois. Validez le plan quand il s’arrête. À la fin, relisez le diff des tests avant celui du code, puis la PR. Mieux vaut une feature réduite et prouvée qu’une feature complète et douteuse. À 16:40, deux ou trois volontaires présentent. »
 
-ANIMATION — Minuteur. À 15 minutes, rappeler que la soutenance compte plus que l’exhaustivité : mieux vaut une feature réduite et prouvée.
+ANIMATION — Coller dans le Chat les trois fichiers d’agents (catalogue du module 4) et le squelette du chef d’orchestre. Lancer le minuteur. Points d’étape à 8, 15 et 22 minutes : « Plan validé ? Premier lot vert ? Audit fait ? » Quelqu’un bloqué partage son écran 2 minutes. Repérer pendant le TP deux ou trois volontaires dont le parcours est intéressant (une faille bloquée, un plan refusé).
 
-TRANSITION — « Place aux soutenances. »`,
+TRANSITION — « Place aux présentations. »`,
 ];
 // @@NOTES-END

@@ -70,8 +70,18 @@ const pages = parts.flatMap((p) => p.pages);
 const notes = parts.flatMap((p) => p.notes);
 for (const p of parts) console.log(`  ${p.file}: ${p.pages.length} pages`);
 
+// Guide des TP (« Labs » toolbar button) — only wired once the PDF exists (node .cop-labs/guide.mjs).
+const LABS_PDF = path.join(ROOT, 'slides', DECK.id, 'assets', 'guide-copilot-avance.pdf');
+const hasLabs = fs.existsSync(LABS_PDF);
+let kit = fs.readFileSync(path.join(BUILD, 'kit.tsx'), 'utf8').replace(/\r\n/g, '\n').trimEnd();
+if (hasLabs) {
+  const anchor = "import formateur from '@assets/houssem-formateur.png';";
+  if (!kit.includes(anchor)) throw new Error('kit: formateur import anchor missing');
+  kit = kit.replace(anchor, `${anchor}\nimport labsPack from './assets/guide-copilot-avance.pdf?url';`);
+}
+
 const text = [
-  fs.readFileSync(path.join(BUILD, 'kit.tsx'), 'utf8').replace(/\r\n/g, '\n').trimEnd(),
+  kit,
   '',
   ...parts.map((p) => `// ═══ ${p.file.replace(/\.tsx$/, '')} ${'═'.repeat(Math.max(4, 70 - p.file.length))}\n\n${p.code}\n`),
   `// ─── Styles (collected above, injected once; updated in place on HMR) ───────
@@ -89,7 +99,7 @@ if (typeof document !== 'undefined') {
 
 export const meta: SlideMeta = {
   title: ${JSON.stringify(DECK.title)},
-  createdAt: '${DECK.createdAt}',
+  createdAt: '${DECK.createdAt}',${hasLabs ? '\n  labs: labsPack,' : ''}
 };
 
 export default [

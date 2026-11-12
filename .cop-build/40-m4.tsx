@@ -11,14 +11,14 @@ const M4_Divider: Page = () => (
       </>
     }
     sub="Repérer les anti-patterns du code généré, restructurer avec SOLID, optimiser en mesurant, moderniser le legacy."
-    dur="13:40 – 14:30 · TP inclus"
-    labs={<Tag tone="green" size={19}>TP 4 · refactoring en profondeur</Tag>}
+    dur="13:35 – 14:40 · TP inclus"
+    labs={<Tag tone="green" size={19}>TP 4 · refactoring avec votre agent</Tag>}
   >
     <SecItem n={1}>Les anti-patterns du code généré</SecItem>
     <SecItem n={2}>Refactoring avancé : SOLID</SecItem>
     <SecItem n={3}>Optimiser les performances</SecItem>
-    <SecItem n={4}>Moderniser du code legacy</SecItem>
-    <SecItem n={5}>Comparer les implémentations générées</SecItem>
+    <SecItem n={4}>Moderniser le legacy, comparer les implémentations</SecItem>
+    <SecItem n={5}>Agents personnalisés : un rôle, des outils, des interdits</SecItem>
   </Section>
 );
 M4_Divider.transition = BLOOM;
@@ -262,6 +262,377 @@ const M4_Compare: Page = () => {
   );
 };
 
+// ═══ Les agents personnalisés (repris de copilot-debutant-v2, p. 94 et 96, adaptés à SalleLibre) ═══
+// Formats vérifiés le 11 novembre 2026 (code.visualstudio.com, docs.github.com) : .github/agents/*.agent.md,
+// champs name, description, tools, model, skills, user-invocable, disable-model-invocation.
+// Harnais Copilot : délégation par l’outil natif (alias « agent ») ; handoffs ignorés.
+
+// ─── Anatomie d’un agent ────────────────────────────────────────────────────
+type AnaField = 'name' | 'desc' | 'tools' | 'skills' | 'model' | 'body';
+const ANA_LINES: { f: AnaField; node: ReactNode }[] = [
+  { f: 'name', node: <span style={{ color: '#7C86A8' }}>---</span> },
+  { f: 'name', node: <><Ck>name</Ck>: Refactoreur</> },
+  { f: 'desc', node: <><Ck>description</Ck>: Refactore SalleLibre par petits pas</> },
+  { f: 'desc', node: <>{'  '}sûrs, sans changer le comportement.</> },
+  { f: 'tools', node: <><Ck>tools</Ck>: [<Cs>'read'</Cs>, <Cs>'search'</Cs>, <Cs>'edit'</Cs>, <Cs>'execute'</Cs>]</> },
+  { f: 'skills', node: <><Ck>skills</Ck>: [<Cs>'refactoring-sur'</Cs>]</> },
+  { f: 'model', node: <span style={{ color: '#7C86A8' }}># model : facultatif</span> },
+  { f: 'body', node: <span style={{ color: '#7C86A8' }}>---</span> },
+  { f: 'body', node: <>Tu es le Refactoreur de SalleLibre.</> },
+  { f: 'body', node: <>- Lance les tests avant et après chaque geste.</> },
+  { f: 'body', node: <>- Un refactoring à la fois ; test rouge : annule.</> },
+  { f: 'body', node: <>- Aucune correction de bug pendant un refactoring.</> },
+  { f: 'body', node: <>- Ne modifie jamais tests/.</> },
+];
+const ANA_INFO: Record<AnaField, { t: string; tone: Tone; icon: IconName; text: ReactNode; tip: string }> = {
+  name: { t: 'name · le nom', tone: 'navy', icon: 'user', text: 'Le nom affiché dans la liste des rôles du Chat, et celui qu’un autre agent utilise pour le solliciter. Sans lui, le nom du fichier.', tip: 'Court et unique : « Refactoreur », pas « Agent 2 ».' },
+  desc: { t: 'description · quand l’utiliser', tone: 'blue', icon: 'note', text: 'Obligatoire pour le harnais Copilot. Elle dit ce que fait l’agent et quand le choisir : c’est elle qui décide de la délégation.', tip: 'Dites aussi ce qu’il ne fait jamais.' },
+  tools: { t: 'tools · ce qu’il a le droit de faire', tone: 'coral', icon: 'tool', text: 'La liste des outils : sans « edit », il ne peut pas modifier de fichier ; sans « execute », pas de terminal. Cliquez les outils pour voir le risque.', tip: 'Le minimum nécessaire, jamais « * » par confort.' },
+  skills: { t: 'skills · ses savoir-faire', tone: 'violet', icon: 'book', text: 'Les skills chargées dans son contexte : ici la méthode de refactoring, écrite une fois, réutilisable par d’autres agents.', tip: 'Une skill = un dossier .github/skills/<nom>/, comme au TP 3.' },
+  model: { t: 'model · facultatif', tone: 'green', icon: 'cpu', text: 'Un modèle, ou une liste par ordre de préférence. Sans ce champ : le modèle choisi dans le sélecteur.', tip: 'Les champs handoffs et agents des anciens tutoriels sont ignorés par le harnais Copilot.' },
+  body: { t: 'Le corps · son rôle et ses règles', tone: 'pink', icon: 'chat', text: 'Les consignes en Markdown, ajoutées à chaque demande faite à cet agent, en plus de copilot-instructions.md : sa mission, sa méthode, ses interdits.', tip: 'Des règles vérifiables, pas des vœux pieux.' },
+};
+const ANA_ORDER: AnaField[] = ['name', 'desc', 'tools', 'skills', 'model', 'body'];
+const TOOLS_AG = [
+  { id: 'read', what: 'lire les fichiers', risk: 1 },
+  { id: 'search', what: 'chercher dans le code', risk: 1 },
+  { id: 'todo', what: 'tenir une liste de tâches', risk: 0 },
+  { id: 'edit', what: 'créer et modifier des fichiers', risk: 2 },
+  { id: 'agent', what: 'déléguer à d’autres agents', risk: 2 },
+  { id: 'execute', what: 'lancer des commandes (terminal)', risk: 3 },
+  { id: 'web', what: 'lire des pages Internet', risk: 3 },
+];
+
+const M4_Agent: Page = () => {
+  const [ref, beats] = useBeats();
+  const [pick, setPick] = useState<AnaField | null>(null);
+  const [tools, setTools] = useState<string[]>(['read', 'search', 'edit', 'execute']);
+  useEffect(() => setPick(null), [beats]);
+  const sel = pick ?? ANA_ORDER[Math.min(beats, 5)];
+  const info = ANA_INFO[sel];
+  const risk = TOOLS_AG.filter((t) => tools.includes(t.id)).reduce((a, t) => a + t.risk, 0);
+  const lvl = risk <= 3 ? { t: 'faible', tone: 'green' as Tone } : risk <= 7 ? { t: 'modéré', tone: 'yellow' as Tone } : { t: 'élevé', tone: 'coral' as Tone };
+  const injection = tools.includes('execute') && tools.includes('web');
+  return (
+    <Frame mod={4} beats={5}>
+      <Title>Un agent personnalisé, c’est un fichier .agent.md</Title>
+      <Lede>Un rôle, des outils et des savoir-faire, écrits une fois et versionnés. Créez-le dans Customizations › Agents, ou à la main.</Lede>
+      <div ref={ref} className={A.in} style={{ position: 'absolute', left: 120, top: 270, width: 900, boxSizing: 'border-box', background: '#0F1730', borderRadius: 20, boxShadow: SHADOW, padding: '16px 0 18px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '0 22px 10px', fontFamily: mono, fontSize: 18, color: '#9AA6C8' }}>
+          <Icon name="doc" size={22} color="#9AA6C8" /> .github/agents/refactoreur.agent.md
+        </div>
+        {ANA_LINES.map((l, i) => {
+          const on = l.f === sel;
+          return (
+            <div
+              key={i}
+              role="button"
+              data-osd-interactive
+              className={k('row')}
+              onClick={() => setPick(l.f)}
+              style={{ display: 'grid', gridTemplateColumns: '44px minmax(0, 1fr)', fontFamily: mono, fontSize: 21, lineHeight: '33px', color: on ? '#fff' : '#C9D2EA', background: on ? 'rgba(116,66,224,.32)' : 'transparent', boxShadow: on ? `inset 5px 0 0 ${STRONG[ANA_INFO[l.f].tone]}` : 'none', whiteSpace: 'pre' }}
+            >
+              <span style={{ textAlign: 'right', paddingRight: 14, color: '#56607E' }}>{i + 1}</span>
+              <span>{l.node}</span>
+            </div>
+          );
+        })}
+      </div>
+      <div key={sel} className={k('swap')} style={{ position: 'absolute', left: 1070, top: 270, width: 730, boxSizing: 'border-box', background: C.card, borderRadius: 22, boxShadow: `${SHADOW}, inset 0 7px 0 ${STRONG[info.tone]}`, padding: '26px 30px', display: 'flex', flexDirection: 'column', gap: 16 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
+          <IconTile name={info.icon} tone={info.tone} size={56} solid />
+          <span style={{ fontFamily: display, fontWeight: 800, fontSize: 28, color: C.ink }}>{info.t}</span>
+        </div>
+        <div style={{ fontSize: 23, lineHeight: 1.45, color: C.soft }}>{info.text}</div>
+        {sel === 'tools' ? (
+          <>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', gap: 8 }}>
+              {TOOLS_AG.map((t) => {
+                const on = tools.includes(t.id);
+                const tone: Tone = t.risk >= 3 ? 'coral' : t.risk === 2 ? 'yellow' : 'green';
+                return (
+                  <div
+                    key={t.id}
+                    role="button"
+                    data-osd-interactive
+                    className={k('chip')}
+                    onClick={() => setTools((o) => (o.includes(t.id) ? o.filter((x) => x !== t.id) : [...o, t.id]))}
+                    style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '8px 12px', borderRadius: 12, background: on ? T[tone].bg : C.panel, boxShadow: on ? `inset 0 0 0 2px ${STRONG[tone]}` : 'none', opacity: on ? 1 : 0.6 }}
+                  >
+                    <Icon name={on ? 'checkCircle' : 'x'} size={22} color={on ? STRONG[tone] : C.faint} sw={2.4} />
+                    <span style={{ fontFamily: mono, fontSize: 19, fontWeight: 700, color: C.ink }}>{t.id}</span>
+                    <span style={{ fontSize: 17, color: C.soft, lineHeight: 1.2 }}>{t.what}</span>
+                  </div>
+                );
+              })}
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 14, fontSize: 21, color: C.soft }}>
+              Pouvoir donné :
+              <div style={{ flex: 1, height: 16, borderRadius: 8, background: C.panel, overflow: 'hidden' }}>
+                <div style={{ width: `${Math.min(100, (risk / 12) * 100)}%`, height: '100%', background: STRONG[lvl.tone], transition: `width 400ms ${EASE}` }} />
+              </div>
+              <Tag tone={lvl.tone} size={18}>
+                {lvl.t}
+              </Tag>
+            </div>
+            {injection ? <div style={{ fontSize: 19, color: T.coral.fg, fontWeight: 600 }}>⚠ Terminal + Internet : une page piégée peut lui dicter une commande (injection de prompt).</div> : null}
+          </>
+        ) : (
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12, background: T[info.tone].bg, color: T[info.tone].fg, borderRadius: 14, padding: '14px 18px', fontSize: 21, fontWeight: 600 }}>
+            <Icon name="bulb" size={26} sw={2.2} /> {info.tip}
+          </div>
+        )}
+      </div>
+    </Frame>
+  );
+};
+
+// ─── Six agents pour SalleLibre (catalogue détaillé) ────────────────────────
+type AgDef = {
+  tab: string;
+  file: string;
+  icon: IconName;
+  tone: Tone;
+  tp: string;
+  desc: string;
+  tools: string[];
+  extra: ReactNode[];
+  body: string[];
+  mission: string;
+  never: string;
+  call: string;
+};
+const AGENTS6: AgDef[] = [
+  {
+    tab: 'Architecte',
+    file: 'architecte.agent.md',
+    icon: 'layers',
+    tone: 'teal',
+    tp: 'TP 6',
+    desc: 'Découpe une demande en lots vérifiables. Ne code jamais.',
+    tools: ['read', 'search'],
+    extra: [],
+    body: ['Tu es l’Architecte de SalleLibre.', '- Lis PLAN.md et le code concerné.', '- Propose des lots de 1 à 3 fichiers,', '  chacun avec le test qui le valide.', '- Signale tout écart à PLAN.md.', '- Tu ne modifies aucun fichier.'],
+    mission: 'Transformer une demande floue en plan relisible, avant la première ligne de code.',
+    never: 'Écrire ou modifier du code.',
+    call: 'Choisi dans la liste des rôles, ou sollicité par le chef d’orchestre.',
+  },
+  {
+    tab: 'Testeur',
+    file: 'testeur.agent.md',
+    icon: 'flask',
+    tone: 'pink',
+    tp: 'TP 6',
+    desc: 'Écrit les tests d’un lot à partir de la matrice validée.',
+    tools: ['read', 'search', 'edit', 'execute'],
+    extra: [<><Ck>skills</Ck>: [<Cs>'matrice-de-tests'</Cs>]</>],
+    body: ['Tu es le Testeur de SalleLibre.', '- Matrice validée d’abord, puis les tests.', '- Un nouveau test doit d’abord être ROUGE.', '- Tu ne modifies que tests/, jamais src/.', '- Tu ne supprimes ni n’affaiblis un test.'],
+    mission: 'Prouver le comportement attendu avant qu’il existe : des tests rouges, puis verts.',
+    never: 'Toucher au code de production, sauter ou affaiblir un test.',
+    call: 'Votre skill du TP 3, devenue un rôle à part entière.',
+  },
+  {
+    tab: 'Refactoreur',
+    file: 'refactoreur.agent.md',
+    icon: 'wand',
+    tone: 'violet',
+    tp: 'TP 4',
+    desc: 'Refactore par petits pas sûrs, sans changer le comportement.',
+    tools: ['read', 'search', 'edit', 'execute'],
+    extra: [<><Ck>skills</Ck>: [<Cs>'refactoring-sur'</Cs>]</>],
+    body: ['Tu es le Refactoreur de SalleLibre.', '- Tests avant et après chaque geste.', '- Un refactoring à la fois ; rouge : annule.', '- Aucune correction de bug au passage.', '- Ne modifie jamais tests/.'],
+    mission: 'Améliorer la structure (SOLID, performance) avec la preuve que rien n’a bougé.',
+    never: 'Modifier un test, corriger un bug en douce, livrer un diff géant.',
+    call: 'Choisi dans la liste des rôles pendant le TP 4.',
+  },
+  {
+    tab: 'Auditeur',
+    file: 'auditeur.agent.md',
+    icon: 'shield',
+    tone: 'coral',
+    tp: 'TP 5',
+    desc: 'Audite un diff selon OWASP Top 10 : 2025. Lecture seule.',
+    tools: ['read', 'search'],
+    extra: [<><Ck>user-invocable</Ck>: <Cn>false</Cn> <Cc>{'# sous-agent seulement'}</Cc></>],
+    body: ['Tu es l’Auditeur sécurité de SalleLibre.', '- Grille : OWASP Top 10 : 2025.', '- Par faille : fichier, ligne, criticité,', '  la requête qui l’exploite, le correctif.', '- Tu ne modifies aucun fichier.'],
+    mission: 'Un regard extérieur, dans un contexte neuf : il n’a pas écrit le code qu’il relit.',
+    never: 'Corriger lui-même : il rapporte, l’agent principal corrige avec un test.',
+    call: 'Masqué de la liste : on le sollicite comme sous-agent.',
+  },
+  {
+    tab: 'Documentaliste',
+    file: 'documentaliste.agent.md',
+    icon: 'doc',
+    tone: 'green',
+    tp: 'TP 6',
+    desc: 'Met à jour OpenAPI et README à partir du code.',
+    tools: ['read', 'search', 'edit'],
+    extra: [<Cc>{'# model : un modèle rapide suffit'}</Cc>],
+    body: ['Tu es le Documentaliste de SalleLibre.', '- Pars du code et des tests, pas du plan.', '- Mets à jour openapi.yaml et README.md.', '- Exemples de requête et codes d’erreur.', '- Tu ne modifies aucun autre fichier.'],
+    mission: 'Une documentation qui décrit ce que fait le code, pas ce qu’on voulait qu’il fasse.',
+    never: 'Toucher à src/ ou à tests/.',
+    call: 'Sollicité en fin de lot par le chef d’orchestre.',
+  },
+  {
+    tab: 'Chef d’orchestre',
+    file: 'chef-orchestre.agent.md',
+    icon: 'route',
+    tone: 'navy',
+    tp: 'TP 6',
+    desc: 'Mène une feature de bout en bout en déléguant.',
+    tools: ['agent', 'read', 'search', 'edit', 'execute', 'todo'],
+    extra: [],
+    body: ['Délègue, par leur nom exact :', '1. Architecte : le plan. STOP, attends-moi.', '2. Testeur : les tests du lot, rouges.', '3. Toi : le code, jusqu’au vert.', '4. Auditeur, puis Documentaliste.', '5. Résume ; je relis avant la PR.'],
+    mission: 'Coordonner : chaque rôle travaille dans son propre contexte, vous validez aux étapes clés.',
+    never: 'Passer une étape de validation humaine, modifier un test pour passer au vert.',
+    call: 'Choisi dans la liste des rôles. Détaillé au module 6.',
+  },
+];
+const toolTone = (id: string): Tone => (['execute', 'web'].includes(id) ? 'coral' : ['edit', 'agent'].includes(id) ? 'yellow' : 'green');
+
+const M4AgRow = ({ label, children }: { label: string; children: ReactNode }) => (
+  <div style={{ display: 'grid', gridTemplateColumns: '150px minmax(0, 1fr)', gap: 14, alignItems: 'baseline' }}>
+    <span style={{ fontSize: 16, letterSpacing: '0.08em', textTransform: 'uppercase', color: C.muted, fontWeight: 700 }}>{label}</span>
+    <div style={{ fontSize: 20, lineHeight: 1.4, color: C.soft }}>{children}</div>
+  </div>
+);
+
+const M4_Equipe: Page = () => {
+  const [ref, beats] = useBeats();
+  const [pick, setPick] = useState<number | null>(null);
+  useEffect(() => setPick(null), [beats]);
+  const i = pick ?? Math.min(beats, AGENTS6.length - 1);
+  const a = AGENTS6[i];
+  return (
+    <Frame mod={4} beats={5}>
+      <Title>Six agents pour SalleLibre : un rôle, des droits, des interdits</Title>
+      <Lede>Six fichiers dans .github/agents/. Pour chacun : le fichier complet, ce qu’il peut faire, ce qu’il ne fait jamais.</Lede>
+      <div ref={ref} className={A.in} style={{ position: 'absolute', left: 120, top: 258 }}>
+        <MTabs items={AGENTS6.map((x) => x.tab)} cur={i} set={setPick} size={19} />
+      </div>
+      <div key={`f-${i}`} className={k('swap')} style={{ position: 'absolute', left: 120, top: 340, width: 860, boxSizing: 'border-box', background: '#0F1730', borderRadius: 20, boxShadow: SHADOW, padding: '16px 24px 20px', fontFamily: mono, fontSize: 20, lineHeight: '31px', color: '#C9D2EA', whiteSpace: 'pre' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10, paddingBottom: 8, fontSize: 18, color: '#9AA6C8' }}>
+          <Icon name="doc" size={22} color="#9AA6C8" /> .github/agents/{a.file}
+        </div>
+        <div style={{ color: '#7C86A8' }}>---</div>
+        <div>
+          <Ck>name</Ck>: {a.tab}
+        </div>
+        <div>
+          <Ck>description</Ck>: {a.desc}
+        </div>
+        <div>
+          <Ck>tools</Ck>: [
+          {a.tools.map((t, j) => (
+            <span key={t}>
+              <Cs>'{t}'</Cs>
+              {j < a.tools.length - 1 ? ', ' : ''}
+            </span>
+          ))}
+          ]
+        </div>
+        {a.extra.map((x, j) => (
+          <div key={j}>{x}</div>
+        ))}
+        <div style={{ color: '#7C86A8' }}>---</div>
+        {a.body.map((l) => (
+          <div key={l} style={{ color: '#E6EAF6' }}>
+            {l}
+          </div>
+        ))}
+      </div>
+      <div key={`c-${i}`} className={k('swap')} style={{ position: 'absolute', left: 1020, top: 340, width: 780, boxSizing: 'border-box', background: C.card, borderRadius: 22, boxShadow: `${SHADOW}, inset 0 7px 0 ${STRONG[a.tone]}`, padding: '24px 28px', display: 'flex', flexDirection: 'column', gap: 16, ...dl(80) }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
+          <IconTile name={a.icon} tone={a.tone} size={56} solid />
+          <span style={{ flex: 1, fontFamily: display, fontWeight: 800, fontSize: 30, color: C.ink }}>{a.tab}</span>
+          <Tag tone={a.tone} size={18}>
+            {a.tp}
+          </Tag>
+        </div>
+        <M4AgRow label="Mission">{a.mission}</M4AgRow>
+        <M4AgRow label="Outils">
+          <span style={{ display: 'inline-flex', gap: 8, flexWrap: 'wrap' }}>
+            {a.tools.map((t) => (
+              <Tag key={t} tone={toolTone(t)} size={17}>
+                {t}
+              </Tag>
+            ))}
+          </span>
+        </M4AgRow>
+        <M4AgRow label="Appel">{a.call}</M4AgRow>
+        <div style={{ display: 'flex', alignItems: 'flex-start', gap: 12, background: T.coral.bg, color: T.coral.fg, borderRadius: 14, padding: '12px 16px', fontSize: 20, lineHeight: 1.4, fontWeight: 600 }}>
+          <Icon name="x" size={24} sw={2.6} style={{ marginTop: 2 }} /> Jamais : {a.never}
+        </div>
+      </div>
+      <Hint cls={A.fade} style={{ position: 'absolute', left: 120, top: 915, ...dl(600) }}>
+        Moins un agent a d’outils, plus on lui fait confiance : l’Auditeur et l’Architecte ne peuvent rien casser.
+      </Hint>
+    </Frame>
+  );
+};
+
+// ─── Instructions, skill, agent ou MCP : quel fichier ? ─────────────────────
+const FILES_AG = [
+  { name: 'copilot-instructions.md', path: '.github/ ou AGENTS.md', icon: 'note' as IconName, tone: 'navy' as Tone, when: 'Chargé à chaque demande', what: 'Les règles d’équipe : stack, couches, interdits.' },
+  { name: 'SKILL.md', path: '.github/skills/<nom>/', icon: 'book' as IconName, tone: 'violet' as Tone, when: 'Chargé si la demande correspond', what: 'Un savoir-faire, avec ses fichiers.' },
+  { name: '*.agent.md', path: '.github/agents/', icon: 'bot' as IconName, tone: 'blue' as Tone, when: 'Choisi ou sollicité', what: 'Un rôle : consignes, outils, skills.' },
+  { name: 'mcp.json', path: '.vscode/', icon: 'plug' as IconName, tone: 'teal' as Tone, when: 'Outils appelés par l’agent', what: 'Un accès à un système externe : tickets, base.' },
+];
+const SIT_AG = [
+  { q: '« Toute erreur métier est une erreur typée. »', a: 0 },
+  { q: '« Notre méthode de matrice de tests, avec son modèle. »', a: 1 },
+  { q: '« Un auditeur qui ne modifie jamais de fichier. »', a: 2 },
+  { q: '« Lire les tickets ouverts sur SalleLibre. »', a: 3 },
+];
+
+const M4_QuelFichier: Page = () => {
+  const [ref, beats] = useBeats();
+  const [pick, setPick] = useState<number | null>(null);
+  useEffect(() => setPick(null), [beats]);
+  const si = pick ?? (beats >= 1 ? Math.min(beats - 1, 3) : null);
+  const ans = si === null ? null : SIT_AG[si].a;
+  return (
+    <Frame mod={4} kind="exercice" beats={4}>
+      <Title>Instructions, skill, agent ou MCP : quel fichier ?</Title>
+      <Lede>Quatre fichiers, quatre usages. Pour chaque besoin, votez à voix haute, puis je clique la réponse.</Lede>
+      <div ref={ref} className={A.in} style={{ position: 'absolute', left: 120, top: 270, width: 1680, display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', gap: 12 }}>
+        {SIT_AG.map((s, i) => (
+          <Btn key={s.q} size={20} tone="navy" ghost={si !== i} onClick={() => setPick(i)} style={{ justifyContent: 'flex-start', whiteSpace: 'normal', textAlign: 'left' }}>
+            {i + 1}. {s.q}
+          </Btn>
+        ))}
+      </div>
+      <div style={{ position: 'absolute', left: 120, top: 430, width: 1680, display: 'grid', gridTemplateColumns: 'repeat(4, minmax(0, 1fr))', gap: 24 }}>
+        {FILES_AG.map((f, i) => {
+          const on = ans === i;
+          const off = ans !== null && !on;
+          return (
+            <div key={f.name} className={cx(A.in, k('agn'))} style={{ ...dl(150 + i * 100), height: 420, boxSizing: 'border-box', background: C.card, borderRadius: 22, padding: '24px 24px', boxShadow: on ? `0 0 0 5px ${STRONG[f.tone]}, 0 24px 50px -24px rgba(11,31,92,.6)` : `${SHADOW}, inset 0 7px 0 ${STRONG[f.tone]}`, transform: on ? 'translateY(-10px)' : 'none', opacity: off ? 0.4 : 1, display: 'flex', flexDirection: 'column', gap: 14 }}>
+              <IconTile name={f.icon} tone={f.tone} size={60} solid={on} />
+              <div style={{ fontFamily: mono, fontSize: 22, fontWeight: 700, color: C.ink }}>{f.name}</div>
+              <div style={{ fontFamily: mono, fontSize: 17, color: C.muted }}>{f.path}</div>
+              <div style={{ fontSize: 21, lineHeight: 1.4, color: C.soft }}>{f.what}</div>
+              <div style={{ marginTop: 'auto' }}>
+                <Tag tone={f.tone} size={17}>
+                  {f.when}
+                </Tag>
+              </div>
+              {on ? (
+                <div className={k('swap')} style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 21, fontWeight: 700, color: T.green.fg }}>
+                  <Icon name="checkCircle" size={26} sw={2.4} color={C.green} /> Réponse {(si ?? 0) + 1}
+                </div>
+              ) : null}
+            </div>
+          );
+        })}
+      </div>
+      <div className={A.fade} style={{ position: 'absolute', left: 120, top: 890, width: 1680, fontSize: 21, color: C.muted, ...dl(700) }}>
+        Ils se combinent : l’agent Testeur suit les instructions du dépôt et charge la skill matrice-de-tests.
+      </div>
+    </Frame>
+  );
+};
+
 // ─── QCM ────────────────────────────────────────────────────────────────────
 const M4_Qcm: Page = () => (
   <QcmPage
@@ -293,48 +664,53 @@ const M4_TP: Page = () => (
     n="4"
     title="Refactoring en profondeur"
     defi="refacto"
-    who="Binôme"
+    who="Individuel"
     minutes={25}
+    feats={
+      <Tag tone="violet" size={19}>
+        <Icon name="bot" size={20} /> agent Refactoreur
+      </Tag>
+    }
     where={
       <>
-        <PathChip>REFACTO.md</PathChip> rapport priorisé
+        <PathChip>.github/agents/refactoreur.agent.md</PathChip>
         <br />
-        un commit par refactoring
+        <PathChip>.github/skills/refactoring-sur/</PathChip>
         <br />
-        <PathChip>bench/availability.*</PathChip>
+        <PathChip>REFACTO.md</PathChip> + un commit par refactoring
       </>
     }
-    objective={<>Optimiser le code généré le matin en appliquant les principes SOLID et les patterns vus, sans changer le comportement.</>}
+    objective={<>Optimiser le code du matin (SOLID, patterns, performance) avec <strong>votre</strong> agent Refactoreur, sans changer le comportement.</>}
     crit={
       <>
-        <CheckItem id="tp4-1" size={21}>Rapport d’anti-patterns produit et priorisé</CheckItem>
-        <CheckItem id="tp4-2" size={21}>Trois refactorings, un commit chacun</CheckItem>
-        <CheckItem id="tp4-3" size={21}>Aucun fichier de test modifié entre-temps</CheckItem>
+        <CheckItem id="tp4-1" size={21}>Rapport d’anti-patterns en rôle Ask, priorisé</CheckItem>
+        <CheckItem id="tp4-2" size={21}>Refactoreur : 4 outils au plus, règles vérifiables</CheckItem>
+        <CheckItem id="tp4-3" size={21}>Trois refactorings, un commit chacun, tests intouchés</CheckItem>
         <CheckItem id="tp4-4" size={21}>Benchmark avant / après de la recherche</CheckItem>
       </>
     }
   >
     <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-      <M2Step n={1}>Mode Ask : anti-patterns et violations SOLID de votre code. Un rapport, aucune modification.</M2Step>
-      <M2Step n={2}>Priorisez trois refactorings avec votre binôme.</M2Step>
-      <M2Step n={3}>Un refactoring, un prompt, un commit. Tests au vert à chaque fois.</M2Step>
+      <M2Step n={1}>Rôle Ask : anti-patterns et violations SOLID dans REFACTO.md. Priorisez-en trois.</M2Step>
+      <M2Step n={2}>Écrivez refactoreur.agent.md et sa skill refactoring-sur (vos gestes, 10 lignes).</M2Step>
+      <M2Step n={3}>Rôle Refactoreur : un refactoring, les tests, un commit. Trois fois.</M2Step>
       <M2Step n={4}>Optimisez findAvailableRooms, benchmark à l’appui.</M2Step>
     </div>
-    <TpBonus>Ajoutez le type de salle « amphi » sans modifier une seule classe existante.</TpBonus>
+    <TpBonus>Retirez « execute » de l’agent et relancez : que fait-il quand il ne peut plus lancer les tests ?</TpBonus>
   </LabPage>
 );
 
 // @@PAGES-BEGIN
-export const __pages = [M4_Divider, M4_Smells, M4_Solid, M4_Perf, M4_Legacy, M4_Compare, M4_Qcm, M4_TP];
+export const __pages = [M4_Divider, M4_Smells, M4_Solid, M4_Perf, M4_Legacy, M4_Compare, M4_Agent, M4_Equipe, M4_QuelFichier, M4_Qcm, M4_TP];
 // @@PAGES-END
 
 // @@NOTES-BEGIN
 export const __notes = [
-  `⏱ 1 min · DIVISEUR M4 · 13:40
+  `⏱ 1 min · DIVISEUR M4 · 13:35
 
 OBJECTIF — Annoncer le module 4 du programme : optimisation et refactoring avancé.
 
-DIRE — « Module 4. Copilot produit du code qui marche ; il ne produit pas spontanément du code qui dure. On va identifier les anti-patterns du code généré, refactorer avec SOLID, optimiser les performances en mesurant, moderniser du legacy, et apprendre à comparer plusieurs implémentations. TP 4 : un refactoring en profondeur de votre code du matin. »
+DIRE — « Module 4. Copilot produit du code qui marche ; il ne produit pas spontanément du code qui dure. On va identifier les anti-patterns du code généré, refactorer avec SOLID, optimiser les performances en mesurant, moderniser du legacy, comparer plusieurs implémentations. Puis on industrialise : un agent personnalisé, un rôle écrit une fois avec ses outils et ses interdits. TP 4 : un refactoring en profondeur de votre code du matin, avec votre propre agent Refactoreur. »
 
 TRANSITION — « Commençons par un exercice d’œil. »`,
   `⏱ 5 min · ANTI-PATTERNS (exercice, 6 temps)
@@ -374,20 +750,63 @@ DIRE — « On demande trois versions aux compromis différents, et surtout on i
 ANIMATION — Faire proposer les poids par le groupe.
 
 TRANSITION — « QCM. »`,
+  `⏱ 5 min · ANATOMIE D’UN AGENT (5 temps, interactif)
+
+OBJECTIF — Lire et écrire un fichier .agent.md : nom, description, outils, skills, modèle, corps.
+
+DIRE — « Un agent personnalisé, c’est un fichier Markdown dans .github/agents. Le nom : celui que vous voyez dans la liste des rôles, et celui qu’un autre agent utilisera pour le solliciter. »
+→ beat 1 « La description : obligatoire pour le harnais Copilot. Elle dit quand choisir cet agent, et c’est elle qui décide de la délégation. »
+→ beat 2 « Les outils : ce qu’il a le droit de faire. Sans edit, il ne modifie rien ; sans execute, pas de terminal. » Cliquer web : « Terminal plus Internet : une page piégée peut lui dicter une commande. » Re-cliquer pour retirer.
+→ beat 3 « Les skills : ses savoir-faire. Exactement le format de votre skill du TP 3. »
+→ beat 4 « Le modèle : facultatif. Et attention aux anciens tutoriels : handoffs et agents sont des champs de l’ancien harnais Local, ignorés par le harnais Copilot. »
+→ beat 5 « Le corps : la mission, la méthode, les interdits. Des règles vérifiables : « lance les tests avant et après », pas « sois rigoureux ». »
+
+ANIMATION — Les lignes du fichier sont cliquables ; les outils aussi. Démo possible : Chat: Open Customizations › Agents › nouveau fichier.
+
+TRANSITION — « Un agent seul, c’est utile. Une équipe d’agents, c’est autre chose. Voici six rôles pour SalleLibre. »`,
+  `⏱ 5 min · SIX AGENTS POUR SALLELIBRE (5 temps, onglets)
+
+OBJECTIF — Montrer des exemples complets d’agents, leurs droits et leurs interdits, et préparer l’orchestration du module 6.
+
+DIRE — « L’Architecte : lecture seule. Il découpe une demande en lots de un à trois fichiers, chacun avec son test. Il ne peut rien casser. »
+→ beat 1 « Le Testeur : il reprend votre skill du TP 3. Sa règle d’or : un nouveau test doit d’abord être rouge, et il ne touche jamais src. »
+→ beat 2 « Le Refactoreur : celui que vous écrivez au TP 4. »
+→ beat 3 « L’Auditeur : lecture seule, et user-invocable à false : il n’apparaît pas dans la liste, on le sollicite comme sous-agent. Intérêt : un contexte neuf, il n’a pas écrit le code qu’il relit. Vous l’utiliserez au TP 5. »
+→ beat 4 « Le Documentaliste : edit, mais seulement sur la doc ; un modèle rapide suffit. »
+→ beat 5 « Et le chef d’orchestre : il a l’outil agent, il délègue aux autres par leur nom exact, et il s’arrête pour vous demander de valider le plan. On le détaille au module 6, c’est votre TP 6. Regardez les outils : moins un agent en a, plus on peut lui faire confiance. »
+
+ANIMATION — Les onglets sont cliquables : revenir sur l’onglet demandé par un participant.
+
+TRANSITION — « Avec tous ces fichiers, comment choisir le bon ? Petit exercice. »`,
+  `⏱ 3 min · QUEL FICHIER (exercice, 4 temps)
+
+OBJECTIF — Distinguer instructions, skill, agent et MCP.
+
+DIRE — « Quatre besoins. Pour chacun, dites-moi à voix haute : instructions, skill, agent ou MCP ? »
+→ beat 1 « Une règle valable à chaque demande : les instructions du dépôt. »
+→ beat 2 « Une méthode avec son modèle de fichier, utile seulement quand on écrit des tests : une skill. »
+→ beat 3 « Un rôle avec des droits restreints : un agent, ici sans edit. »
+→ beat 4 « Un accès à un système externe, les tickets : un serveur MCP, déclaré dans mcp.json. Et ils se combinent : le Testeur suit les instructions du dépôt et charge la skill matrice-de-tests. »
+
+ANIMATION — Faire voter à voix haute avant chaque clic ; les boutons de situation sont cliquables.
+
+TRANSITION — « QCM, puis votre premier agent. »`,
   `⏱ 2 min · QCM 4
 
 OBJECTIF — Ancrer la discipline du refactoring par petits pas.
 
-DIRE — « Le réflexe : un diff que vous ne pouvez pas relire se rejette. Les tests modifiés dans le même diff ne prouvent plus rien. »
+DIRE — « Le réflexe : un diff que vous ne pouvez pas relire se rejette. Les tests modifiés dans le même diff ne prouvent plus rien. C’est exactement la règle « ne modifie jamais tests/ » de votre Refactoreur. »
+
+ANIMATION — Vote à voix haute, clic sur la réponse majoritaire, → bonne réponse, → l’essentiel.
 
 TRANSITION — « TP 4. »`,
   `⏱ 25 min (minuteur) · TP 4
 
 OBJECTIF — Atelier du programme : refactoring en profondeur, optimiser le code généré le matin en appliquant SOLID et les patterns vus.
 
-DIRE — « D’abord un diagnostic en mode Ask : un rapport, aucune modification. Priorisez trois refactorings. Puis un prompt, un commit, à chaque fois tests au vert et aucun fichier de test touché. Enfin la recherche de salles, benchmark avant et après. Bonus : ajouter un type de salle sans modifier une classe existante, c’est le test de l’ouvert-fermé. »
+DIRE — « TP individuel. D’abord un diagnostic en rôle Ask : un rapport dans REFACTO.md, aucune modification, et vous priorisez trois refactorings. Ensuite vous écrivez votre agent : .github/agents/refactoreur.agent.md, quatre outils au plus — read, search, edit, execute —, et des règles vérifiables : tests avant et après chaque geste, un refactoring à la fois, aucune correction de bug au passage, ne jamais modifier tests. Sa skill refactoring-sur contient vos gestes en dix lignes. Puis vous choisissez Refactoreur dans la liste des rôles : un refactoring, les tests, un commit. Trois fois. Enfin la recherche de salles, benchmark avant et après. Bonus : retirez execute et relancez : l’agent ne peut plus prouver, regardez ce qu’il fait. »
 
-ANIMATION — Minuteur. Vérifier les historiques git : un commit par refactoring.
+ANIMATION — Coller dans le Chat le squelette d’un .agent.md (en-tête name, description, tools, skills). Lancer le minuteur. Points d’étape à 8 et 18 minutes : « Rapport, agent écrit, premier commit ? » Quelqu’un bloqué partage son écran 2 minutes. Faire montrer à un volontaire son historique git : un commit par refactoring.
 
 TRANSITION — « Votre code est propre. Est-il sûr ? Module 5. »`,
 ];
