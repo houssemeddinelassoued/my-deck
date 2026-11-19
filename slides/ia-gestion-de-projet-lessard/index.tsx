@@ -22,16 +22,68 @@ import {
   useState,
 } from 'react';
 import formateur from '@assets/houssem-formateur.png';
+import logoNationalQuantum from '@assets/national-quantum/logo-national-quantum.png';
 import logoStack from '@assets/technologia/logo-stack.png';
 import logoWide from '@assets/technologia/logo-horizontal.png';
+import labsPack from './assets/guide-atelier1.pdf?url';
+import lgAutomate from './assets/logos/automate.svg';
+import lgBluebeam from './assets/logos/bluebeam.png';
+import lgChatgpt from './assets/logos/chatgpt.svg';
+import lgClaude from './assets/logos/claude.svg';
+import lgCopilot from './assets/logos/copilot.svg';
+import lgExcel from './assets/logos/excel.svg';
+import lgGemini from './assets/logos/gemini.svg';
+import lgOutlook from './assets/logos/outlook.svg';
+import lgPlanner from './assets/logos/planner.svg';
+import lgTeams from './assets/logos/teams.svg';
+import lgWord from './assets/logos/word.svg';
 
 export const design: DesignSystem = {
-  palette: { bg: '#F4F7F9', text: '#2B2F33', accent: '#1F78C1' },
+  palette: {
+    bg: '#F4F7F9',
+    text: '#2B2F33',
+    accent: '#1F78C1',
+    soft: '#4B545B',
+    muted: '#77818A',
+    faint: '#AFB8C0',
+    rule: '#DCE3E8',
+    panel: '#EAF0F4',
+    card: '#FFFFFF',
+    teal: '#22A6B3',
+    green: '#3A9F45',
+    yellow: '#FFD000',
+    amber: '#E8A600',
+    coral: '#E0573D',
+    violet: '#6B57C9',
+  },
+  logos: {
+    provider: true,
+    nationalQuantum: false,
+  },
+  labels: {
+    soft: 'Texte doux',
+    muted: 'Texte discret',
+    faint: 'Texte estompé',
+    rule: 'Filets',
+    panel: 'Panneaux',
+    card: 'Cartes',
+    teal: 'Sarcelle (info)',
+    green: 'Vert (succès)',
+    yellow: 'Jaune (attention)',
+    amber: 'Ambre',
+    coral: 'Corail (alerte)',
+    violet: 'Violet',
+    'logos.provider': 'Technologia · mon client',
+    'logos.nationalQuantum': 'National Quantum',
+  },
   fonts: {
     display: '"Barlow Condensed", "Arial Narrow", "Segoe UI", sans-serif',
     body: '"Barlow", "Segoe UI", system-ui, -apple-system, sans-serif',
   },
-  typeScale: { hero: 128, body: 30 },
+  typeScale: {
+    hero: 128,
+    body: 30,
+  },
   radius: 18,
 };
 
@@ -93,7 +145,7 @@ const SLIDE_ID = 'ia-gestion-de-projet-lessard';
 const P = 'gpl'; // CSS class prefix, unique per deck
 const DAY: number = 1;
 // Combined 2-day deck: pages after DAY_SPLIT belong to day 2 (0 = single-day deck).
-const DAY_SPLIT: number = 66;
+const DAY_SPLIT: number = 71;
 const useDay = (): number => {
   const { current } = useSlidePageNumber();
   return DAY_SPLIT > 0 && current > DAY_SPLIT ? 2 : DAY;
@@ -113,31 +165,38 @@ const MOD_TITLES: Record<number, string> = {
 const LAST_MOD = 6;
 
 // ─── Palette (Technologia: anthracite + blue/teal, green, yellow squares) ───
+// @@deck-features v1 — palette driven by the design tokens (Design panel, key D).
+// tv('blue', '#0A62D0') → var(--osd-blue, #0A62D0); tints and gradients use
+// color-mix, so changing one token recolours its whole family.
+const tv = (key: string, fallback: string) =>
+  `var(--osd-${key.replace(/([a-z0-9])([A-Z])/g, '$1-$2').toLowerCase()}, ${fallback})`;
+const mix = (c: string, pct: number, other = 'white') => `color-mix(in srgb, ${c} ${pct}%, ${other})`;
+
 const C = {
-  ink: '#2B2F33',
-  soft: '#4B545B',
-  muted: '#77818A',
-  faint: '#AFB8C0',
-  rule: '#DCE3E8',
-  panel: '#EAF0F4',
-  card: '#FFFFFF',
-  blue: '#1F78C1',
-  teal: '#22A6B3',
-  green: '#3A9F45',
-  yellow: '#FFD000',
-  amber: '#E8A600',
-  coral: '#E0573D',
-  violet: '#6B57C9',
+  ink: tv('text', '#2B2F33'),
+  soft: tv('soft', '#4B545B'),
+  muted: tv('muted', '#77818A'),
+  faint: tv('faint', '#AFB8C0'),
+  rule: tv('rule', '#DCE3E8'),
+  panel: tv('panel', '#EAF0F4'),
+  card: tv('card', '#FFFFFF'),
+  blue: tv('accent', '#1F78C1'),
+  teal: tv('teal', '#22A6B3'),
+  green: tv('green', '#3A9F45'),
+  yellow: tv('yellow', '#FFD000'),
+  amber: tv('amber', '#E8A600'),
+  coral: tv('coral', '#E0573D'),
+  violet: tv('violet', '#6B57C9'),
 };
 
 const T = {
-  blue: { bg: '#E4F0FA', bd: '#93C1E8', fg: '#1A65A3' },
-  teal: { bg: '#DFF3F5', bd: '#86D0D6', fg: '#137C87' },
-  green: { bg: '#E4F3E3', bd: '#95CD93', fg: '#2B7A33' },
-  yellow: { bg: '#FFF5CC', bd: '#F0CB45', fg: '#7D6000' },
-  coral: { bg: '#FCE7E2', bd: '#EFA593', fg: '#B3432B' },
-  violet: { bg: '#ECE8F9', bd: '#B6A9E6', fg: '#5644A6' },
-  grey: { bg: '#EEF2F5', bd: '#CBD4DB', fg: '#4B545B' },
+  blue: { bg: mix(C.blue, 12), bd: mix(C.blue, 47), fg: mix(C.blue, 84, 'black') },
+  teal: { bg: mix(C.teal, 14), bd: mix(C.teal, 54), fg: mix(C.teal, 75, 'black') },
+  green: { bg: mix(C.green, 14), bd: mix(C.green, 55), fg: mix(C.green, 76, 'black') },
+  yellow: { bg: mix(C.yellow, 20), bd: mix(C.amber, 71), fg: mix(C.yellow, 48, 'black') },
+  coral: { bg: mix(C.coral, 15), bd: mix(C.coral, 55), fg: mix(C.coral, 79, 'black') },
+  violet: { bg: mix(C.violet, 13), bd: mix(C.violet, 50), fg: mix(C.violet, 82, 'black') },
+  grey: { bg: mix(C.muted, 11), bd: mix(C.muted, 35), fg: C.soft },
 };
 type Tone = keyof typeof T;
 
@@ -153,9 +212,9 @@ const STRONG: Record<Tone, string> = {
 };
 
 const G = {
-  blue: 'linear-gradient(135deg, #2A74BF 0%, #3D9FCB 55%, #6CCBD0 100%)',
-  green: 'linear-gradient(135deg, #0F9A4A 0%, #47A83F 60%, #7DB83A 100%)',
-  yellow: 'linear-gradient(135deg, #FFE24D 0%, #FFD000 55%, #F4B400 100%)',
+  blue: `linear-gradient(135deg, ${mix(C.blue, 98)} 0%, #3D9FCB 55%, ${mix(C.teal, 65)} 100%)`,
+  green: `linear-gradient(135deg, #0F9A4A 0%, ${mix(C.green, 97)} 60%, #7DB83A 100%)`,
+  yellow: `linear-gradient(135deg, ${mix(C.yellow, 70)} 0%, ${C.yellow} 55%, ${mix(C.yellow, 92, 'black')} 100%)`,
 };
 
 const display = 'var(--osd-font-display)';
@@ -589,6 +648,7 @@ const ICONS = {
     </>
   ),
   plus: <path d="M12 5v14M5 12h14" />,
+  minus: <path d="M5 12h14" />,
   arrow: <path d="M4.5 12h15M13.5 6l6 6-6 6" />,
   scale: (
     <>
@@ -917,9 +977,30 @@ const KindBadge = ({ kind }: { kind: Kind }) => {
 const ProgSq = ({ n, mod }: { n: number; mod: number }) => {
   const now = n === mod;
   const past = mod > n;
+  // Click = jump to the module's opening page (MOD_START, appended by the build);
+  // only the live page reacts. data-inspector-ui: the editor inspector lets the click through.
+  const live = useIsActivePage();
+  const target = MOD_START[n];
+  const tip = `Module ${n} · ${MOD_TITLES[n] ?? ''}`;
+  const go = (e: { stopPropagation: () => void; preventDefault: () => void }) => {
+    e.stopPropagation();
+    e.preventDefault();
+    if (!live || target === undefined || typeof window === 'undefined') return;
+    window.dispatchEvent(new CustomEvent('open-slide:goto', { detail: { index: target } }));
+  };
   return (
     <span
+      role="button"
+      tabIndex={-1}
+      className={k('chip')}
+      data-inspector-ui=""
+      data-tip={tip}
+      aria-label={tip}
+      onClick={go}
+      onPointerDown={(e) => e.stopPropagation()}
       style={{
+        position: 'relative',
+        cursor: live && target !== undefined ? 'pointer' : 'default',
         width: 34,
         height: 34,
         display: 'inline-flex',
@@ -928,7 +1009,7 @@ const ProgSq = ({ n, mod }: { n: number; mod: number }) => {
         fontFamily: display,
         fontWeight: 700,
         fontSize: 18,
-        background: now ? C.blue : past ? '#D3E6F5' : 'transparent',
+        background: now ? C.blue : past ? mix(C.blue, 19) : 'transparent',
         color: now ? '#fff' : past ? C.blue : C.faint,
         boxShadow: now || past ? 'none' : `inset 0 0 0 2px ${C.rule}`,
       }}
@@ -937,6 +1018,20 @@ const ProgSq = ({ n, mod }: { n: number; mod: number }) => {
     </span>
   );
 };
+
+CSS.push(`
+.${P}-chip{transition:transform .15s ease, filter .15s ease}
+.${P}-live .${P}-chip:hover{transform:translateY(-2px);filter:brightness(1.06)}
+.${P}-chip::after{content:attr(data-tip);position:absolute;top:calc(100% + 12px);right:0;z-index:50;
+  padding:10px 16px;border-radius:10px;background:${C.ink};color:#fff;white-space:nowrap;
+  font:600 19px/1.2 var(--osd-font-body);letter-spacing:0;text-transform:none;box-shadow:0 14px 30px -12px rgba(0,0,0,.45);
+  opacity:0;transform:translateY(-4px);pointer-events:none;transition:opacity .15s ease, transform .15s ease}
+.${P}-chip::before{content:'';position:absolute;top:calc(100% + 4px);right:12px;z-index:50;
+  border:8px solid transparent;border-bottom-color:${C.ink};border-top:0;
+  opacity:0;pointer-events:none;transition:opacity .15s ease}
+.${P}-live .${P}-chip:hover::after{opacity:1;transform:none}
+.${P}-live .${P}-chip:hover::before{opacity:1}
+`);
 
 const Progress = ({ mod }: { mod: number }) => {
   const day = useDay();
@@ -1004,6 +1099,32 @@ const Header = ({ mod, label, kind }: { mod: number; label?: string; kind?: Kind
   </div>
 );
 
+// Footer logos — each toggled in the Design panel (design.logos), live via
+// --osd-logo-<key>: flex | none. All off → the strip and its rules disappear.
+// @@client-logo: the build swaps the next line for an import when
+// slides/<id>/assets/logos/logo-client.(png|svg|jpg|webp) exists.
+const CLIENT_LOGO: string | null = null;
+const FOOTER_LOGOS: { key: string; node: ReactNode }[] = [
+  ...(CLIENT_LOGO
+    ? [{ key: 'client', node: <img src={CLIENT_LOGO} alt="Client" style={{ height: 36, width: 'auto', display: 'block' }} /> }]
+    : []),
+  { key: 'provider', node: <img src={logoWide} alt="Technologia" style={{ height: 40, display: 'block', mixBlendMode: 'multiply' }} /> },
+  {
+    key: 'national-quantum',
+    node: <img src={logoNationalQuantum} alt="National Quantum" style={{ height: 34, width: 'auto', display: 'block' }} />,
+  },
+];
+const FooterLogos = () => (
+  <>
+    {FOOTER_LOGOS.map((l) => (
+      <span key={l.key} style={{ display: `var(--osd-logo-${l.key}, flex)`, alignItems: 'center', gap: 20 }}>
+        {l.node}
+        <span style={{ width: 1.5, height: 26, background: C.rule }} />
+      </span>
+    ))}
+  </>
+);
+
 const Footer = () => {
   const { current, total } = useSlidePageNumber();
   const day = useDay();
@@ -1021,8 +1142,7 @@ const Footer = () => {
       }}
     >
       <div style={{ display: 'flex', alignItems: 'center', gap: 20 }}>
-        <img src={logoWide} alt="Technologia" style={{ height: 40, display: 'block', mixBlendMode: 'multiply' }} />
-        <span style={{ width: 1.5, height: 26, background: C.rule }} />
+        <FooterLogos />
         <span style={{ fontSize: 20, fontWeight: 600, color: C.soft }}>{AUTHOR}</span>
         <span style={{ width: 1.5, height: 26, background: C.rule }} />
         <span style={{ fontSize: 20, color: C.muted }}>{COURSE} · IA124</span>
@@ -2241,9 +2361,21 @@ const Drag = ({
 };
 
 // ─── Workshop timer (keeps running when you navigate away and back) ─────────
-type TimerRec = { total: number; left: number; t0: number | null };
+type TimerRec = { total: number; left: number; t0: number | null; base: number };
 const TIMERS = new Map<string, TimerRec>();
 const timerLeft = (r: TimerRec) => (r.t0 === null ? r.left : Math.max(0, r.left - (Date.now() - r.t0) / 1000));
+// Durations re-set from the presenter view (« Minuteurs ») live in localStorage,
+// per deck; other windows hear the storage event, this window the custom one.
+const OVERRIDES_KEY = `osd-timers:${SLIDE_ID}`;
+const OVERRIDES_EVENT = 'osd-timers';
+const readOverride = (id: string): number | null => {
+  try {
+    const n = JSON.parse(window.localStorage.getItem(OVERRIDES_KEY) ?? 'null')?.[id];
+    return typeof n === 'number' && n > 0 ? n : null;
+  } catch {
+    return null;
+  }
+};
 
 const Timer = ({
   id,
@@ -2263,11 +2395,29 @@ const Timer = ({
   const key = `${SLIDE_ID}:${id}`;
   let rec = TIMERS.get(key);
   if (!rec) {
-    rec = { total: minutes * 60, left: minutes * 60, t0: null };
+    rec = { total: minutes * 60, left: minutes * 60, t0: null, base: minutes };
     TIMERS.set(key, rec);
   }
   const r = rec;
   const [, tick] = useState(0);
+  const [override, setOverride] = useState<number | null>(() => readOverride(id));
+  useEffect(() => {
+    const sync = () => setOverride(readOverride(id));
+    window.addEventListener('storage', sync);
+    window.addEventListener(OVERRIDES_EVENT, sync);
+    return () => {
+      window.removeEventListener('storage', sync);
+      window.removeEventListener(OVERRIDES_EVENT, sync);
+    };
+  }, [id]);
+  const mins = override ?? minutes;
+  if (r.base !== mins) {
+    // Re-timed from the presenter view: shift the duration, keep what has elapsed.
+    const d = (mins - r.base) * 60;
+    r.total = Math.max(0, r.total + d);
+    r.left = Math.max(0, r.left + d);
+    r.base = mins;
+  }
   const running = r.t0 !== null;
   useEffect(() => {
     if (!running) return;
@@ -2292,8 +2442,9 @@ const Timer = ({
     refresh();
   };
   const reset = () => {
-    r.total = minutes * 60;
-    r.left = minutes * 60;
+    r.total = mins * 60;
+    r.left = mins * 60;
+    r.base = mins;
     r.t0 = null;
     refresh();
   };
@@ -2301,6 +2452,12 @@ const Timer = ({
     r.left = timerLeft(r) + 60;
     if (r.t0 !== null) r.t0 = Date.now();
     r.total = Math.max(r.total, r.left);
+    refresh();
+  };
+  const subMin = () => {
+    r.left = Math.max(0, timerLeft(r) - 60);
+    if (r.t0 !== null) r.t0 = Date.now();
+    r.total = Math.max(r.left, r.total - 60);
     refresh();
   };
   const secs = Math.ceil(left);
@@ -2341,21 +2498,33 @@ const Timer = ({
       {pad(Math.floor(secs / 60))}:{pad(secs % 60)}
     </div>
   );
-  const buttons = (
-    <div style={{ display: 'flex', gap: 12 }}>
+  // Icon-only buttons: Btn pads for text, so give them a square padding; the row wraps rather than leaving the card.
+  const sq: CSSProperties = { padding: compact ? 9 : 12 };
+  const buttons = compact ? (
+    <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'flex-end', gap: 8, marginLeft: 'auto' }}>
+      {running ? <Btn icon="pause" onClick={pause} size={19} style={sq} /> : <Btn icon="play" onClick={start} size={19} disabled={secs === 0} style={sq} />}
+      <Btn icon="minus" ghost onClick={subMin} size={19} style={sq} />
+      <Btn icon="plus" ghost onClick={addMin} size={19} style={sq} />
+      <Btn icon="reset" ghost tone="grey" onClick={reset} size={19} style={sq} />
+    </div>
+  ) : (
+    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
       {running ? (
-        <Btn icon="pause" onClick={pause} size={22}>
+        <Btn icon="pause" onClick={pause} size={19}>
           Pause
         </Btn>
       ) : (
-        <Btn icon="play" onClick={start} size={22} disabled={secs === 0}>
+        <Btn icon="play" onClick={start} size={19} disabled={secs === 0}>
           Démarrer
         </Btn>
       )}
-      <Btn icon="plus" ghost onClick={addMin} size={22}>
-        1 min
+      <Btn ghost onClick={subMin} size={19}>
+        −1 min
       </Btn>
-      <Btn icon="reset" ghost tone="grey" onClick={reset} size={22} />
+      <Btn ghost onClick={addMin} size={19}>
+        +1 min
+      </Btn>
+      <Btn icon="reset" ghost tone="grey" onClick={reset} size={19} style={sq} />
     </div>
   );
   const card: CSSProperties = {
@@ -2367,7 +2536,7 @@ const Timer = ({
   if (compact) {
     // One row, ~140 px tall: ring · label + time · buttons.
     return (
-      <div className={cls} style={{ ...card, display: 'flex', alignItems: 'center', gap: 22, padding: '18px 26px', ...style }}>
+      <div className={cls} data-osd-timer={id} data-osd-timer-minutes={minutes} data-osd-timer-label={label} style={{ ...card, display: 'flex', alignItems: 'center', gap: 22, padding: '18px 26px', ...style }}>
         {clock(false)}
         <div style={{ minWidth: 190 }}>
           <Eyebrow c={secs === 0 ? C.coral : C.muted} size={20}>
@@ -2380,7 +2549,13 @@ const Timer = ({
     );
   }
   return (
-    <div className={cls} style={{ ...card, width: 440, padding: '24px 28px', display: 'flex', flexDirection: 'column', gap: 18, ...style }}>
+    <div
+      className={cls}
+      data-osd-timer={id}
+      data-osd-timer-minutes={minutes}
+      data-osd-timer-label={label}
+      style={{ ...card, width: 'max-content', minWidth: 480, padding: '24px 28px', display: 'flex', flexDirection: 'column', gap: 18, ...style }}
+    >
       <div style={{ display: 'flex', alignItems: 'center', gap: 24 }}>
         {clock(true)}
         <div>
@@ -2855,7 +3030,65 @@ const APPS = {
 };
 type AppId = keyof typeof APPS;
 
-const AppTile = ({ id, size = 44, cls, style }: { id: AppId; size?: number; cls?: string; style?: CSSProperties }) => (
+// Real vendor logos (slides/<id>/assets/logos). `crop` = the mark's box inside a wider lockup image,
+// as fractions of the image (x, y, w, h) + its aspect ratio (height / width).
+// Apps without a logo file (Smartsheet, Procore…) keep their monogram tile.
+const APP_LOGOS: Partial<Record<AppId, { src: string; crop?: { x: number; y: number; w: number; ar: number } }>> = {
+  copilot: { src: lgCopilot },
+  claude: { src: lgClaude },
+  chatgpt: { src: lgChatgpt },
+  gemini: { src: lgGemini },
+  outlook: { src: lgOutlook },
+  teams: { src: lgTeams },
+  excel: { src: lgExcel },
+  planner: { src: lgPlanner },
+  automate: { src: lgAutomate },
+  word: { src: lgWord },
+  bluebeam: { src: lgBluebeam, crop: { x: 0.322, y: 0.035, w: 0.328, ar: 225 / 400 } },
+};
+
+const AppTile = ({ id, size = 44, cls, style }: { id: AppId; size?: number; cls?: string; style?: CSSProperties }) => {
+  const logo = APP_LOGOS[id];
+  if (logo) {
+    const inner = Math.round(size * 0.7);
+    const off = (size - inner) / 2;
+    const c = logo.crop;
+    const imgW = c ? inner / c.w : inner;
+    return (
+      <span
+        className={cls}
+        title={APPS[id].name}
+        style={{
+          flex: 'none',
+          position: 'relative',
+          overflow: 'hidden',
+          width: size,
+          height: size,
+          boxSizing: 'border-box',
+          borderRadius: Math.round(size * 0.26),
+          background: '#fff',
+          boxShadow: `inset 0 0 0 ${size >= 60 ? 1.5 : 1}px ${C.rule}, 0 6px 14px -8px rgba(20,60,100,.45)`,
+          display: 'inline-flex',
+          alignItems: 'center',
+          fontSize: Math.round(size * 0.42),
+          ...style,
+        }}
+      >
+        {/* zero-width text: gives the tile the same baseline as a monogram tile */}
+        <span aria-hidden style={{ width: 0, overflow: 'hidden' }}>{'​'}</span>
+        <img
+          src={logo.src}
+          alt={APPS[id].name}
+          style={
+            c
+              ? { position: 'absolute', width: imgW, height: imgW * c.ar, left: off - c.x * imgW, top: off - c.y * imgW * c.ar, maxWidth: 'none' }
+              : { position: 'absolute', left: off, top: off, width: inner, height: inner, objectFit: 'contain' }
+          }
+        />
+      </span>
+    );
+  }
+  return (
   <span
     className={cls}
     style={{
@@ -2878,7 +3111,8 @@ const AppTile = ({ id, size = 44, cls, style }: { id: AppId; size?: number; cls?
   >
     {APPS[id].mono}
   </span>
-);
+  );
+};
 
 const AppChip = ({ id, size = 22 }: { id: AppId; size?: number }) => (
   <span style={{ display: 'inline-flex', alignItems: 'center', gap: 10, fontWeight: 600, fontSize: size, color: C.ink, whiteSpace: 'nowrap' }}>
@@ -2940,7 +3174,7 @@ const AnswerBox = ({ id = 'chatgpt', children, label, size = 23, cls, style }: {
   </div>
 );
 
-// ─── Fil rouge : le projet Centre sportif des Méandres (fictif) ─────────────
+// ─── Fil rouge : le projet Centre sportif de Montréal (fictif) ─────────────
 const CAST = {
   mathieu: { name: 'Mathieu', role: 'Chargé de projet', tone: 'blue' as Tone, icon: 'target' as IconName },
   helene: { name: 'Hélène', role: 'Directrice de projets', tone: 'teal' as Tone, icon: 'org' as IconName },
@@ -3432,7 +3666,7 @@ const GP_HowWeWork: Page = () => (
         Aucune donnée confidentielle dans les outils
       </RuleChip>
       <RuleChip icon="facade" d={800}>
-        Fil rouge : le Centre sportif des Méandres
+        Fil rouge : le Centre sportif de Montréal
       </RuleChip>
     </div>
     <Callout
@@ -3448,7 +3682,7 @@ const GP_HowWeWork: Page = () => (
   </Frame>
 );
 
-// ─── Running case: Centre sportif des Méandres ──────────────────────────────────────────────────────────────────────
+// ─── Running case: Centre sportif de Montréal ──────────────────────────────────────────────────────────────────────
 const Fact = ({ icon, children }: { icon: IconName; children: ReactNode }) => (
   <div style={{ display: 'flex', alignItems: 'center', gap: 16, fontSize: 27, color: C.ink }}>
     <Icon name={icon} size={30} color={C.teal} />
@@ -3470,7 +3704,7 @@ const CastCard = ({ id, d, children }: { id: CastId; d: number; children: ReactN
 
 const GP_Case: Page = () => (
   <Frame mod={0} kind="cas" label="Ouverture · Fil rouge">
-    <Title>Notre fil rouge : le Centre sportif des Méandres</Title>
+    <Title>Notre fil rouge : le Centre sportif de Montréal</Title>
     <Lede>Un projet fictif, mais typique de vos dossiers. Nous le retrouverons dans chaque module.</Lede>
     <div
       className={A.left}
@@ -3479,7 +3713,7 @@ const GP_Case: Page = () => (
       <div style={{ display: 'flex', alignItems: 'center', gap: 20 }}>
         <IconTile name="facade" tone="teal" size={76} solid />
         <div>
-          <div style={{ fontFamily: display, fontWeight: 700, fontSize: 36, lineHeight: 1.05, color: C.ink }}>Centre sportif des Méandres</div>
+          <div style={{ fontFamily: display, fontWeight: 700, fontSize: 36, lineHeight: 1.05, color: C.ink }}>Centre sportif de Montréal</div>
           <div style={{ fontSize: 22, color: C.muted }}>Ville de Rivière-Claire · institutionnel</div>
         </div>
       </div>
@@ -3531,10 +3765,10 @@ const Pain = ({ icon, d, children }: { icon: IconName; d: number; children: Reac
 
 const GP_Brief: Page = () => (
   <Frame mod={0} kind="cas" label="Ouverture · Fil rouge">
-    <Title>Le projet des Méandres en quatre chiffres</Title>
+    <Title>Le projet de Montréal en quatre chiffres</Title>
     <Lede>Éric a transmis le dossier lundi. Mathieu doit le lancer… entre douze autres projets.</Lede>
     <div style={{ position: 'absolute', left: 120, top: 290, width: 1680, display: 'flex', gap: 28 }}>
-      <KeyNum value="27 sem." label="avant le bâtiment fermé, le vendredi 14 mai" tone="blue" d={100} />
+      <KeyNum value="27 sem." label="avant le bâtiment fermé, le vendredi 28 mai" tone="blue" d={100} />
       <KeyNum value="1,2 M$" label="de contrat pour le lot enveloppe" tone="green" d={220} />
       <KeyNum value="8 sem." label="de délai pour le verre, une fois commandé" tone="yellow" d={340} />
       <KeyNum value="13" label="projets suivis par Mathieu en même temps" tone="violet" d={460} />
@@ -3586,7 +3820,7 @@ const GP_Quiz0: Page = () => (
       <Opt why="Piège ! Accepter un avis de modification engage Lessard : c’est une décision humaine. L’IA peut comparer le prix au devis, pas trancher.">
         Accepter seule un avis de modification de 18 000 $
       </Opt>
-      <Opt ok why="Oui : à partir des faits donnés par Mathieu (dessins envoyés le 23 novembre, toujours pas de retour), elle propose une relance polie et précise. Mathieu relit avant d’envoyer.">
+      <Opt ok why="Oui : à partir des faits donnés par Mathieu (dessins envoyés le 7 décembre, toujours pas de retour), elle propose une relance polie et précise. Mathieu relit avant d’envoyer.">
         Rédiger une relance à l’architecte pour les dessins d’atelier
       </Opt>
     </Qcm>
@@ -4211,7 +4445,7 @@ const M1_Pipeline: Page = () => (
       </M1Station>
     </div>
     <Callout cls={b.on(4)} title="Qui décide ?" tone="yellow" icon="humanCheck" style={{ position: 'absolute', left: 120, top: 760, width: 1680 }}>
-      Aucun des trois. Mathieu valide le nouvel échéancier avec l’EG ; Hélène arbitre si le 14 mai est menacé.
+      Aucun des trois. Mathieu valide le nouvel échéancier avec l’EG ; Hélène arbitre si le 28 mai est menacé.
     </Callout>
   </Frame>
 );
@@ -4301,7 +4535,7 @@ const M1Key = ({ tone, children }: { tone: Tone; children: ReactNode }) => (
 
 const M1_Sort: Page = () => (
   <Frame mod={1} kind="exercice" beats={1}>
-    <Title>À vous : classez ces tâches du projet des Méandres</Title>
+    <Title>À vous : classez ces tâches du projet de Montréal</Title>
     <Lede>Dites-moi où va chaque étiquette. Le corrigé apparaît au clic.</Lede>
     <M1Zone x={120} icon="gear" tone="grey" label="Automatisation" />
     <M1Zone x={690} icon="arm" tone="teal" label="Robotisation" />
@@ -4731,7 +4965,7 @@ const M2_UcPlan: Page = () => (
       </>
     }
     app="copilot"
-    prompt="Tu es chargé de projet chez un fabricant-installateur d’enveloppe en aluminium et verre. Voici la soumission et les exclusions transmises par les ventes (ci-dessous). Propose les grandes étapes jusqu’au bâtiment fermé du 14 mai, avec leurs dépendances."
+    prompt="Tu es chargé de projet chez un fabricant-installateur d’enveloppe en aluminium et verre. Voici la soumission et les exclusions transmises par les ventes (ci-dessous). Propose les grandes étapes jusqu’au bâtiment fermé du 28 mai, avec leurs dépendances."
     answer={
       <>
         <M2Line>
@@ -4788,7 +5022,7 @@ const M2_UcTrack: Page = () => (
           <b>À transférer à Nadia (4)</b> : bordereau de livraison à classer ; certificat d’assurance demandé par Boréa…
         </M2Line>
         <M2Line>
-          <b>À relancer (2)</b> : dessins d’atelier soumis le 23 novembre, sans retour ; prix des panneaux d’allège.
+          <b>À relancer (2)</b> : dessins d’atelier soumis le 7 décembre, sans retour ; prix des panneaux d’allège.
         </M2Line>
       </>
     }
@@ -4823,7 +5057,7 @@ const M2_UcReport: Page = () => (
     answer={
       <>
         <M2Line>
-          <b>Décision</b> : pose du mur-rideau du hall à partir du 22 mars, si la dalle est libérée (accord de Boréa).
+          <b>Décision</b> : pose du mur-rideau du hall à partir du 5 avril, si la dalle est libérée (accord de Boréa).
         </M2Line>
         <M2Line>
           <b>Actions</b> : Mathieu envoie les dessins corrigés du solin (vendredi) ; Boréa confirme l’accès à la grue (date à confirmer).
@@ -4860,17 +5094,17 @@ const M2_UcComm: Page = () => (
       </>
     }
     app="claude"
-    prompt="Les dessins d’atelier du mur-rideau ont été soumis à l’architecte le 23 novembre, sans retour. Sans approbation d’ici le 7 décembre, la commande du verre glisse. Rédige une relance courtoise, une relance ferme pour dans 5 jours, et un courriel à Boréa sur le risque."
+    prompt="Les dessins d’atelier du mur-rideau ont été soumis à l’architecte le 7 décembre, sans retour. Sans approbation d’ici le 21 décembre, la commande du verre glisse. Rédige une relance courtoise, une relance ferme pour dans 5 jours, et un courriel à Boréa sur le risque."
     answer={
       <>
         <M2Line>
-          <b>Relance courtoise</b> : « Nous avons transmis le 23 novembre les dessins d’atelier du mur-rideau. Pourriez-vous nous indiquer… »
+          <b>Relance courtoise</b> : « Nous avons transmis le 7 décembre les dessins d’atelier du mur-rideau. Pourriez-vous nous indiquer… »
         </M2Line>
         <M2Line>
-          <b>Relance ferme</b> : « Sans approbation d’ici le 7 décembre, la commande du verre (8 semaines) ne pourra… »
+          <b>Relance ferme</b> : « Sans approbation d’ici le 21 décembre, la commande du verre (8 semaines) ne pourra… »
         </M2Line>
         <M2Line>
-          <b>À Boréa</b> : « Pour votre information : l’approbation des dessins conditionne la pose du 22 mars… »
+          <b>À Boréa</b> : « Pour votre information : l’approbation des dessins conditionne la pose du 5 avril… »
         </M2Line>
       </>
     }
@@ -5060,22 +5294,22 @@ const M2_Microsoft: Page = () => (
     <AppWin id="outlook" title="Dessins d’atelier · mur-rideau (14)" cls={A.left} style={{ position: 'absolute', left: 120, top: 280, width: 820, ...dl(100) }}>
       <M2Mail from="Architecte" subj="RE: RE: Dessins MR-01, commentaires" />
       <M2Mail from="Boréa" subj="RE: Date de pose du hall ?" faded />
-      <M2Mail from="Hélène" subj="RE: Risque sur le 14 mai ?" faded />
+      <M2Mail from="Hélène" subj="RE: Risque sur le 28 mai ?" faded />
       <div className={b.on(1)}>
         <M2Mini>
-          <b>Résumé par Copilot</b> : l’architecte demande deux corrections (solin, ancrages). Boréa veut une date de pose. Hélène demande si le 14 mai est menacé. Aucune réponse envoyée.
+          <b>Résumé par Copilot</b> : l’architecte demande deux corrections (solin, ancrages). Boréa veut une date de pose. Hélène demande si le 28 mai est menacé. Aucune réponse envoyée.
         </M2Mini>
       </div>
     </AppWin>
-    <AppWin id="teams" title="Réunion de chantier · Méandres" cls={A.right} style={{ position: 'absolute', left: 980, top: 280, width: 820, ...dl(250) }}>
+    <AppWin id="teams" title="Réunion de chantier · Montréal" cls={A.right} style={{ position: 'absolute', left: 980, top: 280, width: 820, ...dl(250) }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 12, fontSize: 22, color: C.soft }}>
         <Icon name="video" size={26} color={C.violet} /> Réunion terminée · 52 min · transcription activée
       </div>
       <div className={b.on(2)}>
         <M2Mini>
           <b>Récapitulatif</b>
-          <br />• Décision : pose du hall à partir du 22 mars.
-          <br />• Tâche : Mathieu renvoie les dessins corrigés (échéance 11 décembre).
+          <br />• Décision : pose du hall à partir du 5 avril.
+          <br />• Tâche : Mathieu renvoie les dessins corrigés (échéance 18 décembre).
           <br />• Point ouvert : accès à la grue, à confirmer par Boréa.
         </M2Mini>
       </div>
@@ -5087,11 +5321,11 @@ const M2_Microsoft: Page = () => (
 );
 
 // ─── M2 · Google Workspace ──────────────────────────────────────────────────
-const M2GTile = ({ d, icon, app, children }: { d: number; icon: IconName; app: string; children: ReactNode }) => (
+const M2GTile = ({ d, icon, id, app, children }: { d: number; icon: IconName; id?: AppId; app: string; children: ReactNode }) => (
   <div className={A.in} style={{ flex: 1, ...dl(d) }}>
     <div style={{ boxSizing: 'border-box', height: 420, background: C.card, borderRadius: 18, boxShadow: `${SHADOW}, inset 0 7px 0 ${C.green}`, padding: '28px 28px' }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
-        <IconTile name={icon} tone="green" size={60} />
+        {id ? <AppTile id={id} size={60} /> : <IconTile name={icon} tone="green" size={60} />}
         <span style={{ fontFamily: display, fontWeight: 700, fontSize: 38, color: C.ink }}>{app}</span>
       </div>
       <div style={{ marginTop: 20, fontSize: 26, lineHeight: 1.45, color: C.soft }}>{children}</div>
@@ -5104,16 +5338,16 @@ const M2_Google: Page = () => (
     <Title>Copilot dans Word, Excel, Planner et Power Automate</Title>
     <Lede>La même IA, dans les autres outils Microsoft 365 que vous ouvrez chaque jour.</Lede>
     <div style={{ position: 'absolute', left: 120, top: 290, width: 1680, display: 'flex', gap: 26 }}>
-      <M2GTile d={100} icon="doc" app="Word">
+      <M2GTile d={100} icon="doc" id="word" app="Word">
         Résumer un devis ou un contrat, comparer deux versions, rédiger une lettre ou un rapport de visite.
       </M2GTile>
-      <M2GTile d={220} icon="chart" app="Excel">
+      <M2GTile d={220} icon="chart" id="excel" app="Excel">
         Analyser le registre des livraisons, expliquer ou écrire une formule, repérer les écarts.
       </M2GTile>
-      <M2GTile d={340} icon="kanban" app="Planner">
+      <M2GTile d={340} icon="kanban" id="planner" app="Planner">
         Créer un plan et des tâches à partir d’un objectif, résumer l’avancement d’un plan.
       </M2GTile>
-      <M2GTile d={460} icon="loop" app="Automate">
+      <M2GTile d={460} icon="loop" id="automate" app="Automate">
         Décrire un flux en français : « quand un courriel de Boréa arrive, l’enregistrer dans le dossier ».
       </M2GTile>
     </div>
@@ -5261,7 +5495,7 @@ const M2_Anatomy: Page = () => (
           Tu es chargé de projet chez un fabricant-installateur d’enveloppe en aluminium et verre.
         </M2Seg>{' '}
         <M2Seg n={2} tone="teal">
-          Les dessins d’atelier du mur-rideau ont été soumis à l’architecte le 23 novembre, sans retour. Sans approbation d’ici le 7 décembre, la commande du verre glisse.
+          Les dessins d’atelier du mur-rideau ont été soumis à l’architecte le 7 décembre, sans retour. Sans approbation d’ici le 21 décembre, la commande du verre glisse.
         </M2Seg>{' '}
         <M2Seg n={3} tone="green">
           Rédige une relance à l’architecte
@@ -5289,7 +5523,7 @@ const M2_BeforeAfter: Page = () => {
       <div style={{ position: 'absolute', left: 120, top: 290, width: 760 }}>
         <PromptBox size={30} style={{ boxShadow: `${SHADOW_SM}, inset 6px 0 0 ${good ? C.green : C.coral}` }}>
           {good
-            ? 'Tu es chargé de projet. Le verrier devait confirmer hier la date de livraison des unités scellées (projet des Méandres, commande du 8 décembre). Rédige une relance de cinq lignes : rappel de la commande, date attendue, impact sur la pose du 22 mars. Ton courtois et ferme.'
+            ? 'Tu es chargé de projet. Le verrier devait confirmer hier la date de livraison des unités scellées (projet de Montréal, commande du 22 décembre). Rédige une relance de cinq lignes : rappel de la commande, date attendue, impact sur la pose du 5 avril. Ton courtois et ferme.'
             : 'Fais-moi un courriel pour relancer le fournisseur.'}
         </PromptBox>
         <div style={{ marginTop: 26, display: 'flex', gap: 14, flexWrap: 'wrap' }}>
@@ -5305,10 +5539,10 @@ const M2_BeforeAfter: Page = () => {
           {good ? (
             <>
               <M2Line>
-                <b>Objet</b> : Méandres · confirmation de livraison des unités scellées
+                <b>Objet</b> : Montréal · confirmation de livraison des unités scellées
               </M2Line>
-              <M2Line>Bonjour, nous attendions hier la confirmation de la date de livraison des unités scellées (commande du 8 décembre).</M2Line>
-              <M2Line>Notre pose du mur-rideau débute le 22 mars : il nous faut une livraison au plus tard le 15 février.</M2Line>
+              <M2Line>Bonjour, nous attendions hier la confirmation de la date de livraison des unités scellées (commande du 22 décembre).</M2Line>
+              <M2Line>Notre pose du mur-rideau débute le 5 avril : il nous faut une livraison au plus tard le 1er mars.</M2Line>
               <M2Line>Pourriez-vous nous confirmer la date d’ici jeudi ? Merci de votre suivi.</M2Line>
             </>
           ) : (
@@ -5426,7 +5660,7 @@ const M2_Synth: Page = () => (
 
 // ─── M3 · Divider ───────────────────────────────────────────────────────────
 const M3_Divider: Page = () => (
-  <Section n={3} title="Atelier 1 · Lancer un projet avec l’IA" sub="Du dossier des ventes au plan du projet des Méandres, puis une boîte de réception à reprendre en main." dur="≈ 1 h 45" kind="atelier">
+  <Section n={3} title="Atelier 1 · Lancer un projet avec l’IA" sub="Du dossier des ventes au plan du projet de Montréal, puis une boîte de réception à reprendre en main." dur="≈ 1 h 45" kind="atelier">
     <SecItem n={1}>Découverte guidée de Copilot dans Outlook et de Copilot Chat</SecItem>
     <SecItem n={2}>Fiche de démarrage, découpage, échéancier, risques, RACI</SecItem>
     <SecItem n={3}>Trier une boîte de réception et préparer une relance</SecItem>
@@ -5452,7 +5686,7 @@ const M3Stage = ({ n, t, title, children }: { n: number; t: string; title: strin
 const M3_Brief: Page = () => (
   <Frame mod={3} kind="atelier">
     <Title>L’atelier en un coup d’œil</Title>
-    <Lede>En autonomie, chacun sur son poste. Une mission : lancer le projet des Méandres, comme Mathieu cette semaine.</Lede>
+    <Lede>En autonomie, chacun sur son poste. Une mission : lancer le projet de Montréal, comme Mathieu cette semaine.</Lede>
     <div style={{ position: 'absolute', left: 120, top: 280, width: 1000, display: 'flex', flexDirection: 'column', gap: 14 }}>
       <M3Stage n={1} t="15 min" title="Découvrir l’outil">
         Copilot dans Outlook et Copilot Chat, démonstration guidée
@@ -5461,7 +5695,7 @@ const M3_Brief: Page = () => (
         Le dossier des ventes en une fiche de démarrage
       </M3Stage>
       <M3Stage n={3} t="25 min" title="Planifier">
-        Découpage, échéancier, risques, RACI, puis Excel ou Planner
+        Découpage, échéancier, risques, RACI, puis l’outil de suivi
       </M3Stage>
       <M3Stage n={4} t="10 min" title="Trier et relancer">
         La boîte de réception de Mathieu, et une relance prête
@@ -5475,7 +5709,7 @@ const M3_Brief: Page = () => (
         Un plan de 6 étapes, des tâches datées avec un responsable, 3 jalons, 5 risques. Et une relance prête à envoyer.
       </Card>
       <Card tone="blue" icon="tool" title="Les outils" size={23} style={{ marginTop: 16 }}>
-        Copilot avec votre compte Lessard. Claude pour comparer, si vous l’avez. Puis Excel, Planner ou Smartsheet.
+        Copilot avec votre compte Lessard. Claude pour comparer, si vous l’avez. Puis Excel, Planner, Smartsheet… ou votre mini-outil.
       </Card>
       <Card tone="green" icon="inbox" title="Parcours adjointe" size={23} style={{ marginTop: 16 }}>
         Même dossier, autre point de vue : commencez par l’étape 4, puis la liste des suivis à faire.
@@ -5497,9 +5731,9 @@ const M3_File: Page = () => (
     <Title>Le dossier transmis par Éric : vos données de départ</Title>
     <Lede>Tout ce que l’IA doit savoir. Le reste, elle le devinera… et il faudra le vérifier.</Lede>
     <div className={A.in} style={{ position: 'absolute', left: 120, top: 270, width: 1680, boxSizing: 'border-box', background: C.card, borderRadius: 18, boxShadow: `${SHADOW}, inset 6px 0 0 ${C.teal}`, padding: '14px 36px 18px', ...dl(100) }}>
-      <M3Field label="Objet">Lot enveloppe du Centre sportif des Méandres : mur-rideau du hall (420 m²), 46 fenêtres, 6 portes d’entrée, 1 verrière.</M3Field>
-      <M3Field label="Départ">Lundi 2 novembre. Contrat de 1,2 M$ avec Construction Boréa (EG). Architecte : Atelier Mercier.</M3Field>
-      <M3Field label="Échéance">Bâtiment fermé le vendredi 14 mai. Structure d’acier terminée vers le 1ᵉʳ mars.</M3Field>
+      <M3Field label="Objet">Lot enveloppe du Centre sportif de Montréal : mur-rideau du hall (420 m²), 46 fenêtres, 6 portes d’entrée, 1 verrière.</M3Field>
+      <M3Field label="Départ">Lundi 16 novembre. Contrat de 1,2 M$ avec Construction Boréa (EG). Architecte : Atelier Mercier.</M3Field>
+      <M3Field label="Échéance">Bâtiment fermé le vendredi 28 mai. Structure d’acier terminée vers le 15 mars.</M3Field>
       <M3Field label="Équipe">Mathieu (chargé de projet), Hélène (direction), Nadia (adjointe), Éric (ventes), Patrice (installation).</M3Field>
       <M3Field label="Délais">Dessins d’atelier : 3 semaines, puis 10 jours ouvrables d’approbation. Verre : 8 semaines après commande.</M3Field>
       <M3Field label="Contraintes">Usine et chantier fermés 2 semaines aux Fêtes. Relevés au chantier une fois la structure terminée.</M3Field>
@@ -5546,12 +5780,12 @@ const M3OBtn = ({ hi, children }: { hi?: number; children: ReactNode }) => (
 );
 
 const M3_Outlook: Page = () => (
-  <Frame mod={3} kind="demo" beats={4}>
+  <Frame mod={3} kind="demo" beats={4} label="Atelier 1 · Étape 1 · Découvrir">
     <Title>Découverte guidée : Copilot dans Outlook</Title>
     <Lede>Quatre endroits à connaître, directement dans vos courriels. Avec la licence Microsoft 365 Copilot.</Lede>
     <AppWin id="outlook" title="Boîte de réception · Mathieu" cls={A.in} style={{ position: 'absolute', left: 120, top: 280, width: 1110, height: 650, ...dl(100) }} pad={30}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <div style={{ fontFamily: display, fontWeight: 700, fontSize: 34, color: C.ink }}>RE: Méandres · dessins d’atelier MR-01</div>
+        <div style={{ fontFamily: display, fontWeight: 700, fontSize: 34, color: C.ink }}>RE: Montréal · dessins d’atelier MR-01</div>
         <AppTile id="copilot" size={46} />
       </div>
       <div style={{ marginTop: 8, display: 'flex', alignItems: 'center', gap: 16 }}>
@@ -5605,7 +5839,7 @@ const M3Sub = ({ n, children }: { n: number; children: ReactNode }) => (
 );
 
 const M3_Chat: Page = () => (
-  <Frame mod={3} kind="demo" beats={4}>
+  <Frame mod={3} kind="demo" beats={4} label="Atelier 1 · Étape 1 · Découvrir">
     <Title>Découverte guidée : Copilot Chat et le dossier</Title>
     <Lede>Pour tous les comptes Lessard : joindre un document, puis lui poser des questions.</Lede>
     <AppWin id="copilot" title="Copilot Chat · compte Lessard" cls={A.in} style={{ position: 'absolute', left: 120, top: 280, width: 1320, height: 650, ...dl(100) }} pad={30}>
@@ -5614,7 +5848,7 @@ const M3_Chat: Page = () => (
           <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
             <span className={b.hi(1)} style={{ borderRadius: 999, display: 'inline-flex' }}>
               <Tag tone="blue" size={20}>
-                <Icon name="doc" size={19} /> Soumission_Meandres.pdf
+                <Icon name="doc" size={19} /> Soumission_Montreal.pdf
               </Tag>
             </span>
             <span style={{ fontSize: 21, color: C.muted }}>joint à la conversation</span>
@@ -5625,7 +5859,7 @@ const M3_Chat: Page = () => (
           <div style={{ marginTop: 14 }}>
             <M3Sub n={0}>Périmètre : mur-rideau, 46 fenêtres, 6 entrées, verrière</M3Sub>
             <M3Sub n={1}>Exclus : calfeutrage intérieur, stores</M3Sub>
-            <M3Sub n={2}>Échéance : bâtiment fermé le 14 mai</M3Sub>
+            <M3Sub n={2}>Échéance : bâtiment fermé le 28 mai</M3Sub>
             <M3Sub n={3}>Promesse : pose du hall « dès mars »</M3Sub>
           </div>
         </div>
@@ -5669,8 +5903,8 @@ const M3Ch = ({ n, label, children }: { n: number; label: string; children: Reac
 );
 
 const M3_Charter: Page = () => (
-  <Frame mod={3} kind="atelier" beats={5} label="Atelier 1 · Étape 1 · Cadrer">
-    <Title>Étape 1 · Le dossier des ventes en une fiche</Title>
+  <Frame mod={3} kind="atelier" beats={5} label="Atelier 1 · Étape 2 · Cadrer">
+    <Title>Étape 2 · Le dossier des ventes en une fiche</Title>
     <PromptBox cls={A.left} size={25} style={{ position: 'absolute', left: 120, top: 210, width: 760, ...dl(100) }}>
       Tu es chargé de projet. À partir du dossier transmis par les ventes ci-dessous, rédige la fiche de démarrage en une page : périmètre (inclus / exclu), dates clés, intervenants, engagements pris envers le client. Signale ce qui manque ou se contredit.
       <div style={{ marginTop: 10, fontFamily: mono, fontSize: 20, color: C.muted }}>[collez ici le dossier transmis par Éric]</div>
@@ -5679,12 +5913,12 @@ const M3_Charter: Page = () => (
       « Signale ce qui manque » : l’IA liste les questions à poser à Éric au lieu d’inventer les réponses.
     </Callout>
     <div className={A.right} style={{ position: 'absolute', left: 940, top: 210, width: 860, boxSizing: 'border-box', background: C.card, borderRadius: 18, boxShadow: `${SHADOW}, inset 0 7px 0 ${C.teal}`, padding: '24px 32px 18px', ...dl(200) }}>
-      <div style={{ fontFamily: display, fontWeight: 700, fontSize: 34, color: C.ink }}>Fiche de démarrage · Méandres</div>
+      <div style={{ fontFamily: display, fontWeight: 700, fontSize: 34, color: C.ink }}>Fiche de démarrage · Montréal</div>
       <M3Ch n={1} label="Périmètre">
         Inclus : mur-rideau, 46 fenêtres, 6 entrées, verrière. Exclu : calfeutrage intérieur, stores.
       </M3Ch>
       <M3Ch n={2} label="Dates clés">
-        Structure terminée vers le 1ᵉʳ mars. Bâtiment fermé le vendredi 14 mai.
+        Structure terminée vers le 15 mars. Bâtiment fermé le vendredi 28 mai.
       </M3Ch>
       <M3Ch n={3} label="Intervenants">
         Boréa (EG), Atelier Mercier (architecte), le verrier, l’équipe de pose de Patrice.
@@ -5693,7 +5927,7 @@ const M3_Charter: Page = () => (
         Pose du hall « dès mars », promise par Éric à Boréa.
       </M3Ch>
       <div className={b.on(5)} style={{ marginTop: 12, background: T.coral.bg, borderRadius: 10, padding: '10px 14px', fontSize: 22, lineHeight: 1.4, color: T.coral.fg }}>
-        <b>À clarifier avec Éric</b> : « dès mars » est-il au contrat ? La structure ne sera prête que vers le 1ᵉʳ mars.
+        <b>À clarifier avec Éric</b> : « dès mars » est-il au contrat ? La structure ne sera prête que vers le 15 mars.
       </div>
     </div>
   </Frame>
@@ -5732,11 +5966,11 @@ const M3Lot = ({ i, n, tone, name, t1, t2, t3, added }: { i: number; n: number; 
 );
 
 const M3_Wbs: Page = () => (
-  <Frame mod={3} kind="atelier" beats={3} label="Atelier 1 · Étape 2 · Découper">
-    <Title>Étape 2 · Le découpage du projet</Title>
+  <Frame mod={3} kind="atelier" beats={3} label="Atelier 1 · Étape 3a · Découper">
+    <Title>Étape 3a · Le découpage du projet</Title>
     <Lede>Demande : « Découpe le lot en étapes, puis en tâches de 1 à 2 semaines. » Puis on complète.</Lede>
     <div className={A.pop} style={{ position: 'absolute', left: 760, top: 280, width: 400, height: 80, borderRadius: 14, background: C.ink, color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: display, fontWeight: 700, fontSize: 30, ...dl(100) }}>
-      Lot enveloppe · Méandres
+      Lot enveloppe · Montréal
     </div>
     <svg width={1680} height={100} style={{ position: 'absolute', left: 120, top: 360, overflow: 'visible' }}>
       <path d="M840 0 V40 M111 40 H1551 M111 40 V90 M351 40 V90 M591 40 V90 M831 40 V90 M1071 40 V90 M1311 40 V90" stroke={C.faint} strokeWidth={3} fill="none" pathLength={1} className={b.draw(1)} />
@@ -5786,20 +6020,20 @@ const M3Mile = ({ w, row, label, d, flip }: { w: number; row: number; label: str
 );
 
 const M3_Gantt: Page = () => (
-  <Frame mod={3} kind="atelier" beats={3} label="Atelier 1 · Étape 3 · Planifier">
-    <Title>Étape 3 · L’échéancier et ses jalons</Title>
+  <Frame mod={3} kind="atelier" beats={3} label="Atelier 1 · Étape 3b · Planifier">
+    <Title>Étape 3b · L’échéancier et ses jalons</Title>
     <Lede>Demande : « Place les étapes sur 28 semaines, avec dépendances, jalons et chemin critique. »</Lede>
     <div className={A.in} style={{ position: 'absolute', left: 120, top: 270, width: 1680, height: 640, boxSizing: 'border-box', background: C.card, borderRadius: 18, boxShadow: SHADOW, ...dl(100) }}>
       <div style={{ position: 'absolute', left: 30, top: 24, right: 30, bottom: 20 }}>
-        <M3Month w0={1} w1={4} label="NOV." />
-        <M3Month w0={5} w1={9} label="DÉC." />
-        <M3Month w0={10} w1={13} label="JANV." />
-        <M3Month w0={14} w1={17} label="FÉVR." />
-        <M3Month w0={18} w1={22} label="MARS" />
-        <M3Month w0={23} w1={26} label="AVRIL" />
-        <M3Month w0={27} w1={28} label="MAI" />
-        <div style={{ position: 'absolute', left: GX + 7 * GW, top: 40, width: 2 * GW, height: 540, background: 'repeating-linear-gradient(135deg, #EEF2F5 0 10px, #F7FAFC 10px 20px)' }} />
-        <div style={{ position: 'absolute', left: GX + 7 * GW + 8, top: 518, fontSize: 19, color: C.muted }}>Fêtes</div>
+        <M3Month w0={1} w1={2} label="NOV." />
+        <M3Month w0={3} w1={7} label="DÉC." />
+        <M3Month w0={8} w1={11} label="JANV." />
+        <M3Month w0={12} w1={15} label="FÉVR." />
+        <M3Month w0={16} w1={20} label="MARS" />
+        <M3Month w0={21} w1={24} label="AVRIL" />
+        <M3Month w0={25} w1={28} label="MAI" />
+        <div style={{ position: 'absolute', left: GX + 5 * GW, top: 40, width: 2 * GW, height: 540, background: 'repeating-linear-gradient(135deg, #EEF2F5 0 10px, #F7FAFC 10px 20px)' }} />
+        <div style={{ position: 'absolute', left: GX + 5 * GW + 8, top: 518, fontSize: 19, color: C.muted }}>Fêtes</div>
         <M3Gbar row={0} w0={1} w1={1} tone="blue" label="Transfert" crit />
         <M3Gbar row={1} w0={1} w1={3} tone="teal" label="Dessins d’atelier" crit />
         <M3Gbar row={2} w0={4} w1={5} tone="teal" label="Approbation" crit />
@@ -5808,8 +6042,8 @@ const M3_Gantt: Page = () => (
         <M3Gbar row={5} w0={18} w1={19} tone="grey" label="Relevés au chantier" crit />
         <M3Gbar row={6} w0={21} w1={28} tone="yellow" label="Installation" crit />
         <M3Mile w={5} row={2} label="Dessins approuvés" d={0} />
-        <M3Mile w={15} row={3} label="Verre livré · mi-février" d={200} />
-        <M3Mile w={28} row={7} label="Bâtiment fermé · 14 mai" d={400} flip />
+        <M3Mile w={15} row={3} label="Verre livré · fin février" d={200} />
+        <M3Mile w={28} row={7} label="Bâtiment fermé · 28 mai" d={400} flip />
       </div>
     </div>
     <div className={b.on(3)} style={{ position: 'absolute', left: 120, top: 930, display: 'flex', alignItems: 'center', gap: 12, fontSize: 24, fontWeight: 600, color: C.blue, ...dl(300) }}>
@@ -5840,8 +6074,8 @@ const M3Cell = ({ c, r, tone }: { c: number; r: number; tone: Tone }) => (
 );
 
 const M3_Risks: Page = () => (
-  <Frame mod={3} kind="atelier" beats={6} label="Atelier 1 · Étape 4 · Anticiper">
-    <Title>Étape 4 · Le registre des risques</Title>
+  <Frame mod={3} kind="atelier" beats={6} label="Atelier 1 · Étape 3c · Anticiper">
+    <Title>Étape 3c · Le registre des risques</Title>
     <Lede>Demande : « Liste 6 risques, note probabilité et impact, propose une mesure pour chacun. »</Lede>
     <div className={A.in} style={{ position: 'absolute', left: 120, top: 270, width: 660, height: 650, ...dl(100) }}>
       <M3Cell c={0} r={0} tone="yellow" />
@@ -5922,8 +6156,8 @@ const M3RaciRow = ({ d, task, v, flag }: { d: number; task: string; v: [string, 
 const M3Who = ({ name }: { name: string }) => <span style={{ width: 150, textAlign: 'center', fontFamily: display, fontWeight: 700, fontSize: 26, color: C.ink }}>{name}</span>;
 
 const M3_Raci: Page = () => (
-  <Frame mod={3} kind="atelier" beats={2} label="Atelier 1 · Étape 5 · Répartir">
-    <Title>Étape 5 · Qui fait quoi ? La matrice RACI</Title>
+  <Frame mod={3} kind="atelier" beats={2} label="Atelier 1 · Étape 3d · Répartir">
+    <Title>Étape 3d · Qui fait quoi ? La matrice RACI</Title>
     <Lede>R réalise · A approuve (un seul !) · C est consulté · I est informé. Premier jet de l’IA :</Lede>
     <div className={A.in} style={{ position: 'absolute', left: 120, top: 280, width: 1140, ...dl(100) }}>
       <div style={{ display: 'flex', alignItems: 'center', height: 56 }}>
@@ -5975,17 +6209,17 @@ const M3Task = ({ i, title, who, due }: { i: number; title: string; who: string;
 );
 
 const M3_Board: Page = () => (
-  <Frame mod={3} kind="atelier" beats={3} label="Atelier 1 · Transférer dans l’outil">
-    <Title>Du plan aux tâches : dans l’outil, pas dans un document</Title>
+  <Frame mod={3} kind="atelier" beats={3} label="Atelier 1 · Étape 3e · Transférer">
+    <Title>Étape 3e · Du plan aux tâches : dans l’outil, pas dans un document</Title>
     <Lede>Un plan qui reste dans une conversation ne se suit pas. On le transforme en tâches.</Lede>
     <Code title="Réponse de l’IA (extrait)" size={21} cls={A.left} style={{ position: 'absolute', left: 120, top: 280, width: 560, ...dl(100) }}>
-      {'| Tâche               | Resp.   | Fin    |\n'}
-      {'|---------------------|---------|--------|\n'}
-      {'| Revue du contrat    | Mathieu | 6 nov  |\n'}
-      {'| Classer le dossier  | Nadia   | 6 nov  |\n'}
-      {'| Dessins MR-01       | Mathieu | 20 nov |\n'}
-      {'| Commander le verre  | Mathieu | 8 déc  |\n'}
-      {'| Relevés au chantier | Patrice | 5 mars |'}
+      {'| Tâche               | Resp.   | Fin     |\n'}
+      {'|---------------------|---------|---------|\n'}
+      {'| Revue du contrat    | Mathieu | 20 nov  |\n'}
+      {'| Classer le dossier  | Nadia   | 20 nov  |\n'}
+      {'| Dessins MR-01       | Mathieu | 4 déc   |\n'}
+      {'| Commander le verre  | Mathieu | 22 déc  |\n'}
+      {'| Relevés au chantier | Patrice | 19 mars |'}
     </Code>
     <div className={A.left} style={{ position: 'absolute', left: 120, top: 640, width: 560, display: 'flex', flexDirection: 'column', gap: 12, ...dl(300) }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 12, fontSize: 24, color: C.ink }}>
@@ -6000,15 +6234,15 @@ const M3_Board: Page = () => (
     </div>
     <div style={{ position: 'absolute', left: 740, top: 280, width: 1060, height: 600 }}>
       <M3Col x={0} title="À FAIRE" tone="grey">
-        <M3Task i={0} title="Classer le dossier du projet" who="Nadia" due="6 nov." />
-        <M3Task i={1} title="Commander le verre" who="Mathieu" due="8 déc." />
-        <M3Task i={2} title="Relevés au chantier" who="Patrice" due="5 mars" />
+        <M3Task i={0} title="Classer le dossier du projet" who="Nadia" due="20 nov." />
+        <M3Task i={1} title="Commander le verre" who="Mathieu" due="22 déc." />
+        <M3Task i={2} title="Relevés au chantier" who="Patrice" due="19 mars" />
       </M3Col>
       <M3Col x={330} title="EN COURS" tone="blue">
-        <M3Task i={3} title="Dessins d’atelier MR-01" who="Mathieu" due="20 nov." />
+        <M3Task i={3} title="Dessins d’atelier MR-01" who="Mathieu" due="4 déc." />
       </M3Col>
       <M3Col x={660} title="À VALIDER" tone="yellow">
-        <M3Task i={4} title="Fiche de démarrage" who="Hélène" due="6 nov." />
+        <M3Task i={4} title="Fiche de démarrage" who="Hélène" due="20 nov." />
       </M3Col>
     </div>
     <Callout cls={b.on(3)} title="La valeur" tone="green" icon="check" size={25} style={{ position: 'absolute', left: 740, top: 900, width: 1060, padding: '10px 22px' }}>
@@ -6017,9 +6251,77 @@ const M3_Board: Page = () => (
   </Frame>
 );
 
+// ─── M3 · Option: your own mini tracking tool (vibecoding, trainer demo) ────
+const M3VRow = ({ task, who, due, state, tone, late }: { task: string; who: string; due: string; state: string; tone: Tone; late?: boolean }) => (
+  <div style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '9px 0', borderBottom: `1.5px solid ${C.rule}`, fontSize: 21, color: late ? T.coral.fg : C.ink }}>
+    <span style={{ flex: 1, fontWeight: 600 }}>{task}</span>
+    <span style={{ width: 92, color: C.soft }}>{who}</span>
+    <span style={{ width: 86, color: late ? T.coral.fg : C.soft }}>{due}</span>
+    <span style={{ width: 128, display: 'flex', justifyContent: 'flex-end' }}>
+      <Tag tone={tone} size={17}>
+        {state}
+      </Tag>
+    </span>
+  </div>
+);
+
+const M3_Vibe: Page = () => (
+  <Frame mod={3} kind="demo" beats={2} label="Atelier 1 · Option · Mini-outil">
+    <Title>Option : créez votre propre mini-outil de suivi</Title>
+    <Lede>Le « vibecoding » : vous décrivez l’outil en français, l’IA écrit le code. Démonstration par le formateur.</Lede>
+    <PromptBox cls={A.left} size={23} style={{ position: 'absolute', left: 120, top: 270, width: 820, ...dl(100) }}>
+      Crée une page web en un seul fichier HTML pour suivre mon projet : un tableau des tâches (tâche, responsable, début, fin, statut), l’avancement en %, les 3 jalons et une vue chronologique. Les tâches en retard en rouge. Ajout, modification, export CSV pour Excel. Voici mes tâches :
+      <div style={{ marginTop: 8, fontFamily: mono, fontSize: 19, color: C.muted }}>[collez le tableau de l’étape 3b]</div>
+    </PromptBox>
+    <div className={A.left} style={{ position: 'absolute', left: 120, top: 560, width: 820, display: 'flex', alignItems: 'center', gap: 18, flexWrap: 'nowrap', ...dl(300) }}>
+      <span style={{ fontSize: 22, color: C.muted, whiteSpace: 'nowrap' }}>Avec</span>
+      <AppChip id="claude" size={22} />
+      <AppChip id="gemini" size={22} />
+      <AppChip id="copilot" size={22} />
+    </div>
+    <div className={A.fade} style={{ position: 'absolute', left: 120, top: 625, width: 820, fontSize: 21, lineHeight: 1.45, color: C.muted, ...dl(400) }}>
+      Claude et Gemini affichent l’outil à côté de la conversation. Avec Copilot, enregistrez le code dans un fichier .html et ouvrez-le dans le navigateur.
+    </div>
+    <div className={b.on(1)} style={{ position: 'absolute', left: 1000, top: 270, width: 800, boxSizing: 'border-box', background: C.card, borderRadius: 18, boxShadow: SHADOW, overflow: 'hidden' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '10px 18px', background: C.panel, borderBottom: `1.5px solid ${C.rule}` }}>
+        <Icon name="code" size={22} color={C.soft} />
+        <span style={{ fontWeight: 700, fontSize: 20, color: C.ink }}>suivi-montreal.html</span>
+        <span style={{ marginLeft: 'auto', fontSize: 18, color: C.muted }}>généré par l’IA</span>
+      </div>
+      <div style={{ padding: '18px 24px 20px' }}>
+        <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between' }}>
+          <span style={{ fontFamily: display, fontWeight: 700, fontSize: 30, color: C.ink }}>Centre sportif de Montréal</span>
+          <span style={{ fontSize: 20, fontWeight: 700, color: C.blue }}>25 % fait</span>
+        </div>
+        <div style={{ marginTop: 10, height: 12, borderRadius: 99, background: C.panel, overflow: 'hidden' }}>
+          <div style={{ width: '25%', height: '100%', background: C.blue }} />
+        </div>
+        <div style={{ marginTop: 12, display: 'flex', gap: 10 }}>
+          <Tag tone="coral" size={17}>◆ Dessins approuvés · 21 déc.</Tag>
+          <Tag tone="coral" size={17}>◆ Verre livré · fin fév.</Tag>
+          <Tag tone="coral" size={17}>◆ Bâtiment fermé · 28 mai</Tag>
+        </div>
+        <div style={{ marginTop: 10 }}>
+          <M3VRow task="Classer le dossier" who="Nadia" due="20 nov." state="Terminé" tone="green" />
+          <M3VRow task="Dessins MR-01" who="Mathieu" due="4 déc." state="En retard" tone="coral" late />
+          <M3VRow task="Commander le verre" who="Mathieu" due="22 déc." state="À faire" tone="grey" />
+          <M3VRow task="Relevés au chantier" who="Patrice" due="19 mars" state="À faire" tone="grey" />
+        </div>
+        <div style={{ marginTop: 14, display: 'flex', gap: 10 }}>
+          <Tag tone="blue" size={17}>+ Ajouter une tâche</Tag>
+          <Tag tone="blue" size={17}>Exporter en CSV</Tag>
+        </div>
+      </div>
+    </div>
+    <Callout cls={b.on(2)} title="Les règles du jeu" tone="yellow" icon="shield" size={24} style={{ position: 'absolute', left: 120, top: 830, width: 1680, padding: '12px 26px' }}>
+      Un prototype personnel : données fictives ou anonymisées, compte Lessard. Avant d’en faire l’outil de l’équipe, validation par vos TI.
+    </Callout>
+  </Frame>
+);
+
 // ─── M3 · Verification checklist ────────────────────────────────────────────
 const M3_Check: Page = () => (
-  <Frame mod={3} kind="exercice" label="Atelier 1 · Vérifier">
+  <Frame mod={3} kind="exercice" label="Atelier 1 · Étape 5 · Vérifier">
     <Title>Grille de contrôle : votre plan est-il prêt ?</Title>
     <Lede>Passez votre plan à la grille. Ce que l’IA ne coche jamais seule : la réalité.</Lede>
     <Checklist cls={A.in} style={{ position: 'absolute', left: 120, top: 270, width: 1680, ...dl(100) }}>
@@ -6063,7 +6365,7 @@ const M3Line = ({ children, warn }: { children: ReactNode; warn?: boolean }) => 
 );
 
 const M3_Traps: Page = () => (
-  <Frame mod={3} kind="exercice" beats={4} label="Atelier 1 · Vérifier">
+  <Frame mod={3} kind="exercice" beats={4} label="Atelier 1 · Étape 5 · Vérifier">
     <Title>Repérez les quatre pièges de ce plan généré</Title>
     <Lede>Il a l’air complet. Cherchez avant de cliquer sur les pastilles.</Lede>
     <AppWin id="copilot" title="Plan proposé (extrait)" cls={A.in} style={{ position: 'absolute', left: 120, top: 270, width: 1020, ...dl(100) }} pad={26}>
@@ -6083,7 +6385,7 @@ const M3_Traps: Page = () => (
         <b style={{ width: 170, flex: 'none' }}>Sem. 23</b> Début de la pose du mur-rideau, mi-avril
       </M3Line>
       <M3Line>
-        <b style={{ width: 170, flex: 'none' }}>Sem. 28</b> Bâtiment fermé, vendredi 14 mai
+        <b style={{ width: 170, flex: 'none' }}>Sem. 28</b> Bâtiment fermé, vendredi 28 mai
       </M3Line>
     </AppWin>
     <M3Pin n={1} x={1110} y={377} />
@@ -6141,7 +6443,7 @@ const M3_Inbox: Page = () => (
       Boréa · Certificat d’assurance à fournir <M1Key tone="green">NADIA</M1Key>
     </Drag>
     <Drag x={970} y={262} w={405} tone="blue" size={22}>
-      Vous · Dessins MR-01 envoyés le 23 nov. <M1Key tone="yellow">RELANCER</M1Key>
+      Vous · Dessins MR-01 envoyés le 7 déc. <M1Key tone="yellow">RELANCER</M1Key>
     </Drag>
     <Drag x={1395} y={262} w={405} tone="blue" size={22}>
       Verrier · Bordereau de livraison 4471 <M1Key tone="grey">CLASSER</M1Key>
@@ -6161,26 +6463,159 @@ const M3_Inbox: Page = () => (
   </Frame>
 );
 
-const M3_Work: Page = () => (
-  <Frame mod={3} kind="atelier" label="Atelier 1 · À vous">
-    <Title>À vous de jouer !</Title>
-    <Lede>Le lancement du projet des Méandres, avec Copilot, puis dans Excel, Planner ou Smartsheet.</Lede>
-    <Timer id="m3-work" minutes={45} label="Atelier 1" cls={A.in} style={{ position: 'absolute', left: 120, top: 290, ...dl(100) }} />
+// ─── M3 · « À vous » after each step: its own timer, then a point d'étape ──
+const M3PointQ = ({ children }: { children: ReactNode }) => (
+  <div style={{ display: 'flex', gap: 12, alignItems: 'baseline', fontSize: 24, lineHeight: 1.4, color: C.ink }}>
+    <span style={{ color: C.coral, fontWeight: 700 }}>?</span>
+    <span>{children}</span>
+  </div>
+);
+
+const M3Go = ({ step, name, title, lede, id, minutes, items, point }: { step: number; name: string; title: string; lede: string; id: string; minutes: number; items: ReactNode; point: ReactNode }) => (
+  <Frame mod={3} kind="atelier" beats={1} label={`Atelier 1 · Étape ${step} · ${name} · À vous`}>
+    <Title>{title}</Title>
+    <Lede>{lede}</Lede>
+    <Timer id={id} minutes={minutes} label={`Étape ${step}`} cls={A.in} style={{ position: 'absolute', left: 120, top: 290, ...dl(100) }} />
     <Checklist cls={A.in} style={{ position: 'absolute', left: 640, top: 290, width: 1160, ...dl(250) }}>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-        <CheckItem id="m3w-1">Fiche de démarrage en une page, avec les points à clarifier</CheckItem>
-        <CheckItem id="m3w-2">Découpage : 6 à 8 étapes, tâches de 1 à 2 semaines</CheckItem>
-        <CheckItem id="m3w-3">Échéancier : 3 jalons datés et le chemin critique</CheckItem>
-        <CheckItem id="m3w-4">5 risques avec une mesure chacun</CheckItem>
-        <CheckItem id="m3w-5">RACI vérifiée : un seul A par ligne</CheckItem>
-        <CheckItem id="m3w-6">Les tâches dans l’outil, grille de contrôle passée</CheckItem>
-        <CheckItem id="m3w-7">La boîte de réception triée, et une relance prête à envoyer</CheckItem>
-      </div>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>{items}</div>
     </Checklist>
     <Callout cls={A.in} title="Coincés ?" tone="blue" icon="chat" size={25} style={{ position: 'absolute', left: 120, top: 760, width: 460, ...dl(400) }}>
       Signalez-le au micro, ou demandez à Copilot de vous poser ses questions.
     </Callout>
+    <div className={b.on(1)} style={{ position: 'absolute', left: 640, top: 700, width: 1160, boxSizing: 'border-box', background: C.card, borderRadius: 16, boxShadow: `${SHADOW_SM}, inset 6px 0 0 ${C.coral}`, padding: '18px 28px' }}>
+      <div style={{ fontFamily: display, fontWeight: 700, fontSize: 28, color: C.ink, marginBottom: 8 }}>Point d’étape · 3 minutes</div>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>{point}</div>
+    </div>
   </Frame>
+);
+
+const M3_Go1: Page = () => (
+  <M3Go
+    step={1}
+    name="Découvrir"
+    title="Étape 1 · À vous : 5 minutes"
+    lede="Copilot Chat, votre compte Lessard, la soumission en pièce jointe."
+    id="m3-s1"
+    minutes={5}
+    items={
+      <>
+        <CheckItem id="m3g1-1">Copilot Chat ouvert, avec le bouclier vert</CheckItem>
+        <CheckItem id="m3g1-2">Soumission_Montreal.pdf jointe à la conversation</CheckItem>
+        <CheckItem id="m3g1-3">« Résume ce dossier pour le chargé de projet… »</CheckItem>
+        <CheckItem id="m3g1-4">« Qu’est-ce qui manque pour lancer le projet ? Pose-moi tes questions. »</CheckItem>
+        <CheckItem id="m3g1-5">Les questions de Copilot notées pour l’étape 2</CheckItem>
+      </>
+    }
+    point={
+      <>
+        <M3PointQ>Tout le monde a-t-il pu joindre le fichier ? Sinon : le résumé à coller, à la fin du dossier d’Éric.</M3PointQ>
+        <M3PointQ>Deux volontaires : la question la plus utile que Copilot vous a renvoyée ?</M3PointQ>
+      </>
+    }
+  />
+);
+
+const M3_Go2: Page = () => (
+  <M3Go
+    step={2}
+    name="Cadrer"
+    title="Étape 2 · À vous : 10 minutes"
+    lede="La fiche de démarrage, à partir du dossier d’Éric et de la soumission."
+    id="m3-s2"
+    minutes={10}
+    items={
+      <>
+        <CheckItem id="m3g2-1">Dossier d’Éric et soumission joints (ou résumé collé)</CheckItem>
+        <CheckItem id="m3g2-2">La demande de la fiche de démarrage, copiée depuis le guide</CheckItem>
+        <CheckItem id="m3g2-3">Exclusions et dates relues, dossier sous les yeux</CheckItem>
+        <CheckItem id="m3g2-4">Les points à clarifier gardés : vos questions pour Éric</CheckItem>
+      </>
+    }
+    point={
+      <>
+        <M3PointQ>Combien d’exclusions votre fiche reprend-elle, sur les cinq du dossier ?</M3PointQ>
+        <M3PointQ>La promesse « dès mars » est-elle signalée comme intenable ?</M3PointQ>
+        <M3PointQ>Deux volontaires : une question pour Éric que l’IA a trouvée.</M3PointQ>
+      </>
+    }
+  />
+);
+
+const M3_Go3: Page = () => (
+  <M3Go
+    step={3}
+    name="Planifier"
+    title="Étape 3 · À vous : 25 minutes"
+    lede="Quatre demandes dans la même conversation, puis le plan dans votre outil."
+    id="m3-s3"
+    minutes={25}
+    items={
+      <>
+        <CheckItem id="m3g3-1">3a · Découpage : 6 à 8 étapes, tâches de 1 à 2 semaines, oublis ajoutés</CheckItem>
+        <CheckItem id="m3g3-2">3b · Échéancier en tableau : 3 jalons, chemin critique, Fêtes respectées</CheckItem>
+        <CheckItem id="m3g3-3">3c · 6 risques, chacun avec une mesure et un responsable</CheckItem>
+        <CheckItem id="m3g3-4">3d · RACI vérifiée : un seul A par ligne</CheckItem>
+        <CheckItem id="m3g3-5">3e · Les tâches dans Excel, Planner, Smartsheet ou votre mini-outil</CheckItem>
+      </>
+    }
+    point={
+      <>
+        <M3PointQ>Quelles dates l’IA a-t-elle supposées ? Lesquelles ne viennent pas du dossier ?</M3PointQ>
+        <M3PointQ>Quelle ligne de votre RACI avait zéro ou deux A ?</M3PointQ>
+        <M3PointQ>Deux volontaires partagent leur échéancier, 1 minute chacun.</M3PointQ>
+      </>
+    }
+  />
+);
+
+const M3_Go4: Page = () => (
+  <M3Go
+    step={4}
+    name="Trier"
+    title="Étape 4 · À vous : 10 minutes"
+    lede="Nous sommes le mercredi 16 décembre. Les huit courriels de Mathieu, d’abord vous, puis Copilot."
+    id="m3-s4"
+    minutes={10}
+    items={
+      <>
+        <CheckItem id="m3g4-1">Votre tri des huit courriels, dans le tableau du guide</CheckItem>
+        <CheckItem id="m3g4-2">Le tri de Copilot, avec la consigne à Nadia</CheckItem>
+        <CheckItem id="m3g4-3">Les écarts notés : qui a raison, et pourquoi ?</CheckItem>
+        <CheckItem id="m3g4-4">La relance pour les dessins MR-01, prête à envoyer</CheckItem>
+      </>
+    }
+    point={
+      <>
+        <M3PointQ>Sur quel courriel Copilot et vous n’êtes-vous pas d’accord ?</M3PointQ>
+        <M3PointQ>Un ou deux volontaires lisent leur relance : enverriez-vous ce texte tel quel ?</M3PointQ>
+      </>
+    }
+  />
+);
+
+const M3_Go5: Page = () => (
+  <M3Go
+    step={5}
+    name="Vérifier"
+    title="Étape 5 · À vous : 5 minutes"
+    lede="Votre plan passe la grille de contrôle. Puis deux ou trois volontaires le présentent."
+    id="m3-s5"
+    minutes={5}
+    items={
+      <>
+        <CheckItem id="m3g5-1">La grille de contrôle appliquée à votre propre plan</CheckItem>
+        <CheckItem id="m3g5-2">Les quatre pièges cherchés dans votre échéancier</CheckItem>
+        <CheckItem id="m3g5-3">Une correction faite, au moins</CheckItem>
+        <CheckItem id="m3g5-4">Votre écran prêt à partager, si vous êtes volontaire</CheckItem>
+      </>
+    }
+    point={
+      <>
+        <M3PointQ>Votre score sur la grille ? Le critère qui vous a coûté le plus de points ?</M3PointQ>
+        <M3PointQ>Qui veut présenter ? Deux ou trois volontaires, 2 minutes chacun, au débriefing.</M3PointQ>
+      </>
+    }
+  />
 );
 
 // ─── M3 · Debrief ───────────────────────────────────────────────────────────
@@ -6454,7 +6889,7 @@ const M4Sec = ({ n, tone, title, children }: { n: number; tone: Tone; title: str
 const M4_Transcript: Page = () => (
   <Frame mod={4} kind="demo" beats={3}>
     <Title>De la transcription au compte rendu</Title>
-    <Lede>Réunion de chantier du mardi 2 mars, sur Teams, 6 personnes, 40 minutes. Extrait de la transcription :</Lede>
+    <Lede>Réunion de chantier du mardi 16 mars, sur Teams, 6 personnes, 40 minutes. Extrait de la transcription :</Lede>
     <div className={A.left} style={{ position: 'absolute', left: 120, top: 270, width: 880, boxSizing: 'border-box', background: C.card, borderRadius: 18, boxShadow: SHADOW, padding: '18px 18px', ...dl(100) }}>
       <M4Say who="Mathieu">Le verre est arrivé, mais il manque 6 unités pour le hall.</M4Say>
       <M4Say who="Boréa">On peut quand même commencer la pose le 22 ?</M4Say>
@@ -6478,15 +6913,15 @@ const M4_Transcript: Page = () => (
     <div className={A.right} style={{ position: 'absolute', left: 1060, top: 270, width: 740, boxSizing: 'border-box', background: C.card, borderRadius: 18, boxShadow: `${SHADOW}, inset 6px 0 0 ${C.violet}`, padding: '22px 28px 26px', ...dl(250) }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
         <Icon name="note" size={32} color={C.violet} />
-        <span style={{ fontFamily: display, fontWeight: 700, fontSize: 32, color: C.ink }}>Compte rendu · 2 mars</span>
+        <span style={{ fontFamily: display, fontWeight: 700, fontSize: 32, color: C.ink }}>Compte rendu · 16 mars</span>
       </div>
       <M4Sec n={1} tone="green" title="Décision">
-        Pose à partir du 22 mars, façade nord d’abord.
+        Pose à partir du 5 avril, façade nord d’abord.
       </M4Sec>
       <M4Sec n={2} tone="blue" title="Actions">
-        <b>Patrice</b> · relevés de la façade nord · 9 mars
+        <b>Patrice</b> · relevés de la façade nord · 23 mars
         <br />
-        <b>Nadia</b> · relancer le verrier (6 unités) · 3 mars
+        <b>Nadia</b> · relancer le verrier (6 unités) · 17 mars
       </M4Sec>
       <M4Sec n={3} tone="yellow" title="Point ouvert">
         Couleur des panneaux d’allège : décision jeudi, avec la Ville.
@@ -6512,7 +6947,7 @@ const M4_CrPrompt: Page = () => (
     <Title>La demande de compte rendu, prête à copier</Title>
     <Lede>À enregistrer dans votre bibliothèque. Les zones jaunes changent à chaque réunion.</Lede>
     <PromptBox cls={A.left} size={27} style={{ position: 'absolute', left: 120, top: 280, width: 1000, ...dl(100) }}>
-      Tu es l’assistant du projet <M4Slot>Méandres</M4Slot>. À partir de la transcription ci-dessous de la réunion de chantier du <M4Slot>2 mars</M4Slot>, rédige le compte rendu en trois parties :
+      Tu es l’assistant du projet <M4Slot>Montréal</M4Slot>. À partir de la transcription ci-dessous de la réunion de chantier du <M4Slot>16 mars</M4Slot>, rédige le compte rendu en trois parties :
       <br />
       1. <b>Décisions</b> prises (seulement celles qui ont été clairement prises) ;
       <br />
@@ -6551,13 +6986,13 @@ const M4_CrErrors: Page = () => (
       <Eyebrow c={T.green.fg} size={21}>
         Décisions
       </Eyebrow>
-      <M4CrLine>• Pose à partir du 22 mars, façade nord d’abord.</M4CrLine>
+      <M4CrLine>• Pose à partir du 5 avril, façade nord d’abord.</M4CrLine>
       <M4CrLine>• Panneaux d’allège : gris anthracite retenu.</M4CrLine>
       <Eyebrow c={T.blue.fg} size={21} style={{ marginTop: 14 }}>
         Actions
       </Eyebrow>
-      <M4CrLine>• Mathieu : refaire les relevés de la façade nord, d’ici le 9 mars.</M4CrLine>
-      <M4CrLine>• Nadia : relancer le verrier d’ici le 15 mars.</M4CrLine>
+      <M4CrLine>• Mathieu : refaire les relevés de la façade nord, d’ici le 23 mars.</M4CrLine>
+      <M4CrLine>• Nadia : relancer le verrier d’ici le 29 mars.</M4CrLine>
       <Eyebrow c={T.yellow.fg} size={21} style={{ marginTop: 14 }}>
         Points ouverts
       </Eyebrow>
@@ -6575,7 +7010,7 @@ const M4_CrErrors: Page = () => (
         C’est Patrice qui refait les relevés, pas Mathieu.
       </M3Exp>
       <M3Exp n={3} title="Une date inventée">
-        Nadia a dit « demain », soit le 3 mars.
+        Nadia a dit « demain », soit le 17 mars.
       </M3Exp>
       <M3Exp n={4} title="Un point ouvert effacé">
         La couleur des panneaux reste à trancher.
@@ -6611,7 +7046,7 @@ const M4_Visit: Page = () => (
     <Lede>Mathieu dicte au téléphone en marchant, prend trois photos, puis donne le tout à Copilot.</Lede>
     <div className={A.left} style={{ position: 'absolute', left: 120, top: 270, width: 760, boxSizing: 'border-box', background: C.card, borderRadius: 18, boxShadow: SHADOW, padding: '20px 26px', ...dl(100) }}>
       <Eyebrow c={C.soft} size={21}>
-        Notes dictées · visite du 30 mars
+        Notes dictées · visite du 13 avril
       </Eyebrow>
       <div style={{ marginTop: 10, fontSize: 22, lineHeight: 1.5, color: C.ink, fontStyle: 'italic' }}>
         « Façade nord, fenêtres posées à 80 %, euh… axe C le solin est pas fini, faut que Patrice repasse. Fenêtre N-12 vitre égratignée, à changer. Porte d’entrée 2, le ferme-porte frotte. Le hall attend toujours les 6 unités. Boréa veut la liste avant vendredi. »
@@ -6625,7 +7060,7 @@ const M4_Visit: Page = () => (
     <div className={A.right} style={{ position: 'absolute', left: 940, top: 270, width: 860, boxSizing: 'border-box', background: C.card, borderRadius: 18, boxShadow: `${SHADOW}, inset 6px 0 0 ${C.violet}`, padding: '20px 28px 22px', ...dl(250) }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
         <Icon name="doc" size={30} color={C.violet} />
-        <span style={{ fontFamily: display, fontWeight: 700, fontSize: 30, color: C.ink }}>Rapport de visite · 30 mars</span>
+        <span style={{ fontFamily: display, fontWeight: 700, fontSize: 30, color: C.ink }}>Rapport de visite · 13 avril</span>
       </div>
       <M4Sec n={1} tone="green" title="Avancement">
         Façade nord : fenêtres posées à 80 %. Hall : en attente de 6 unités scellées.
@@ -6748,7 +7183,7 @@ const M4Card = ({ n, who, what, when, tone }: { n: number; who: string; what: st
           <Icon name="calendar" size={18} /> {when}
         </Tag>
         <Tag tone="violet" size={20}>
-          <Icon name="link" size={18} /> CR 2 mars
+          <Icon name="link" size={18} /> CR 16 mars
         </Tag>
       </div>
     </div>
@@ -6763,19 +7198,19 @@ const M4_ToTasks: Page = () => (
       <Eyebrow c={T.blue.fg} size={21}>
         Actions du compte rendu
       </Eyebrow>
-      <M4Act who="Patrice" what="Relevés de la façade nord" when="9 mars" />
-      <M4Act who="Nadia" what="Relancer le verrier" when="3 mars" />
-      <M4Act who="Mathieu" what="Confirmer la séquence à Boréa" when="4 mars" />
+      <M4Act who="Patrice" what="Relevés de la façade nord" when="23 mars" />
+      <M4Act who="Nadia" what="Relancer le verrier" when="17 mars" />
+      <M4Act who="Mathieu" what="Confirmer la séquence à Boréa" when="18 mars" />
     </div>
     <svg width={120} height={60} style={{ position: 'absolute', left: 770, top: 400, overflow: 'visible' }}>
       <path d="M0 30 H100" stroke={C.blue} strokeWidth={5} strokeDasharray="10 14" className={cx(A.march, b.fade(1))} />
       <path d="M92 16 L110 30 L92 44" fill="none" stroke={C.blue} strokeWidth={5} strokeLinecap="round" className={b.fade(1)} />
     </svg>
-    <AppWin id="planner" title="Méandres · cette semaine" cls={A.right} style={{ position: 'absolute', left: 920, top: 280, width: 880, ...dl(200) }} pad={24}>
+    <AppWin id="planner" title="Montréal · cette semaine" cls={A.right} style={{ position: 'absolute', left: 920, top: 280, width: 880, ...dl(200) }} pad={24}>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-        <M4Card n={1} who="Patrice" what="Relevés de la façade nord" when="9 mars" tone="violet" />
-        <M4Card n={2} who="Nadia" what="Relancer le verrier pour les 6 unités" when="3 mars" tone="green" />
-        <M4Card n={3} who="Mathieu" what="Confirmer la séquence de pose à Boréa" when="4 mars" tone="blue" />
+        <M4Card n={1} who="Patrice" what="Relevés de la façade nord" when="23 mars" tone="violet" />
+        <M4Card n={2} who="Nadia" what="Relancer le verrier pour les 6 unités" when="17 mars" tone="green" />
+        <M4Card n={3} who="Mathieu" what="Confirmer la séquence de pose à Boréa" when="18 mars" tone="blue" />
       </div>
     </AppWin>
     <Callout cls={A.in} title="Comment ?" tone="blue" icon="plug" size={25} style={{ position: 'absolute', left: 120, top: 640, width: 620, ...dl(500) }}>
@@ -6815,7 +7250,7 @@ const M4_Rules: Page = () => (
     <Title>Le suivi automatique : des règles « si… alors »</Title>
     <Lede>Les deux premières sont de l’automatisation, sans IA. Et c’est déjà beaucoup de temps gagné.</Lede>
     <div style={{ position: 'absolute', left: 120, top: 290, width: 1680, display: 'flex', flexDirection: 'column', gap: 26 }}>
-      <M4RuleRow n={1} a="Un courriel arrive" c="il vient de Boréa ou parle des Méandres" x="Classé dans le dossier du projet" />
+      <M4RuleRow n={1} a="Un courriel arrive" c="il vient de Boréa ou parle de Montréal" x="Classé dans le dossier du projet" />
       <M4RuleRow n={2} a="Chaque matin, 8 h" c="un courriel envoyé il y a 5 jours, sans réponse" x="Rappel à Mathieu : relancer ?" />
       <M4RuleRow n={3} a="Un courriel arrive" c="c’est une demande administrative (certificat, formulaire)" x="L’IA prépare le transfert à Nadia, avec la consigne" ai />
     </div>
@@ -6860,10 +7295,10 @@ const M4_Alerts: Page = () => (
           Aucune réponse de l’architecte depuis 9 jours
         </M4Signal>
         <M4Signal n={2} icon="truck">
-          Le verrier ne garantit son créneau que jusqu’au 11 décembre
+          Le verrier ne garantit son créneau que jusqu’au 23 décembre
         </M4Signal>
         <M4Signal n={3} icon="route">
-          L’approbation est sur le chemin critique du 14 mai
+          L’approbation est sur le chemin critique du 28 mai
         </M4Signal>
         <M4Signal n={4} icon="chat">
           Dernier courriel de l’architecte : « on manque de monde avant les Fêtes »
@@ -6990,7 +7425,7 @@ const M4_Report: Page = () => (
     </div>
     <div className={A.right} style={{ position: 'absolute', left: 900, top: 270, width: 900, boxSizing: 'border-box', background: C.card, borderRadius: 18, boxShadow: `${SHADOW}, inset 0 7px 0 ${C.yellow}`, padding: '26px 34px', ...dl(200) }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <span style={{ fontFamily: display, fontWeight: 700, fontSize: 34, color: C.ink }}>Méandres · semaine 14</span>
+        <span style={{ fontFamily: display, fontWeight: 700, fontSize: 34, color: C.ink }}>Montréal · semaine 14</span>
         <Tag tone="yellow" size={22}>
           MÉTÉO JAUNE
         </Tag>
@@ -7315,7 +7750,7 @@ const M5_Errors: Page = () => (
       <M5Case n={2} tone="violet" icon="scale" year="New York · 2023" title="Les jurisprudences inventées" lesson="Toute source se vérifie à la source.">
         Des avocats déposent un mémoire avec six décisions inventées par ChatGPT. Le juge les sanctionne d’une amende.
       </M5Case>
-      <M5Case n={3} tone="blue" icon="chart" year="Méandres · semaine 14" title="Le rapport de Mathieu" lesson="Un chiffre faux peut fausser une décision.">
+      <M5Case n={3} tone="blue" icon="chart" year="Montréal · semaine 14" title="Le rapport de Mathieu" lesson="Un chiffre faux peut fausser une décision.">
         L’IA additionne mal deux avis de modification : 6 000 $ « disponibles » qui n’existent pas. Hélène approuve une dépense.
       </M5Case>
     </div>
@@ -7400,7 +7835,7 @@ const M5_Traffic: Page = () => (
       Le cellulaire personnel d’un propriétaire <M1Key tone="coral">ROUGE</M1Key>
     </Drag>
     <Drag x={970} y={262} w={405} tone="blue" size={22}>
-      Le prix de la soumission des Méandres <M1Key tone="yellow">JAUNE</M1Key>
+      Le prix de la soumission de Montréal <M1Key tone="yellow">JAUNE</M1Key>
     </Drag>
     <Drag x={1395} y={262} w={405} tone="blue" size={22}>
       Une procédure générique de pose de fenêtres <M1Key tone="green">VERT</M1Key>
@@ -7708,7 +8143,7 @@ const M5_Qcm1: Page = () => (
     mod={5}
     n={6}
     title="La soumission"
-    q="Pour aller vite, Éric colle la soumission des Méandres (prix, conditions, nom du client) dans son ChatGPT personnel pour la résumer. Quel est le problème principal ?"
+    q="Pour aller vite, Éric colle la soumission de Montréal (prix, conditions, nom du client) dans son ChatGPT personnel pour la résumer. Quel est le problème principal ?"
     explain="Les prix et les conditions d’un contrat sont confidentiels, pour Lessard comme pour le client. Un compte personnel n’offre pas la protection des données d’entreprise. La même demande, sans risque : Copilot avec le compte Lessard."
   >
     <Opt why="Piège ! La longueur n’est pas le sujet : l’outil la lirait sans difficulté.">La soumission est trop longue pour l’outil</Opt>
@@ -7845,7 +8280,7 @@ const M6_Projects: Page = () => (
       <M6Proj d={100} icon="star" tone="blue" title="Votre propre projet" facts="Recommandé · sans client, prix ni adresse">
         Un de vos projets en cours : c’est celui qui vous servira lundi matin.
       </M6Proj>
-      <M6Proj d={200} icon="facade" tone="teal" title="La pose du hall des Méandres" facts="Installation · 8 semaines · Mathieu">
+      <M6Proj d={200} icon="facade" tone="teal" title="La pose du hall de Montréal" facts="Installation · 8 semaines · Mathieu">
         Le mur-rideau et la verrière du hall, de la livraison du verre à la fin de la pose.
       </M6Proj>
       <M6Proj d={300} icon="helmet" tone="coral" title="Les déficiences de fin de projet" facts="Fermeture · 4 semaines · Patrice">
@@ -8399,7 +8834,11 @@ export const meta: SlideMeta = {
   title: "IA appliquée à la gestion de projet — Formation IA124 (2 jours)",
   createdAt: '2026-10-23T17:27:35.028Z',
   theme: 'technologia',
+  labs: labsPack,
 };
+
+// Module → index of its opening page (written by scripts/deck-features.mjs).
+const MOD_START: Record<number, number> = {0:0,1:9,2:29,3:48,4:74,5:92,6:110,9:121};
 
 export default [
   GP_Cover,
@@ -8455,16 +8894,21 @@ export default [
   M3_File,
   M3_Outlook,
   M3_Chat,
+  M3_Go1,
   M3_Charter,
+  M3_Go2,
   M3_Wbs,
   M3_Gantt,
   M3_Risks,
   M3_Raci,
   M3_Board,
+  M3_Vibe,
+  M3_Go3,
+  M3_Inbox,
+  M3_Go4,
   M3_Check,
   M3_Traps,
-  M3_Inbox,
-  M3_Work,
+  M3_Go5,
   M3_Debrief,
   J1_Wrap,
   J1_Exit,
@@ -8587,7 +9031,7 @@ TRANSITION — « Voici comment ces deux jours s'organisent. »`,
 
 OBJECTIF — Donner de la visibilité sur le déroulement.
 
-DIRE — « Jour 1 : comprendre et planifier. Module 1, l'IA expliquée simplement. Module 2, l'IA dans la gestion de projet : vos cas d'usage et Copilot au quotidien. Puis l'atelier 1 : vous lancez le projet des Méandres avec l'IA et vous triez sa boîte de réception. »
+DIRE — « Jour 1 : comprendre et planifier. Module 1, l'IA expliquée simplement. Module 2, l'IA dans la gestion de projet : vos cas d'usage et Copilot au quotidien. Puis l'atelier 1 : vous lancez le projet de Montréal avec l'IA et vous triez sa boîte de réception. »
 
 « Jour 2 : automatiser et adopter. Module 4, réunions de chantier, visites, relances et suivi. Module 5, limites, confidentialité et adoption. Puis l'atelier 2 : un mini-projet complet, si possible sur un de vos vrais dossiers, anonymisé. »
 
@@ -8607,16 +9051,16 @@ DIRE — « Vous verrez des étiquettes en haut des pages. »
 LES TROIS RÈGLES —
 1. Questions bienvenues à tout moment, au micro ou par écrit.
 2. « Aucune donnée confidentielle dans les outils pendant la formation : pas de nom de client, pas de prix, pas d'adresse. » On y reviendra au module 5.
-3. Fil rouge : le Centre sportif des Méandres, présenté juste après.
+3. Fil rouge : le Centre sportif de Montréal, présenté juste après.
 
 CLASSE VIRTUELLE — Caméra si possible, micro coupé hors échanges. Idéal : deux écrans, ou la formation dans une fenêtre et Copilot dans l'autre.
 
-TRANSITION — « Faisons connaissance avec le projet des Méandres. »`,
+TRANSITION — « Faisons connaissance avec le projet de Montréal. »`,
   `⏱ 3 min · FIL ROUGE
 
 OBJECTIF — Ancrer la formation dans un projet qui ressemble aux leurs, réutilisé dans chaque module et dans les deux ateliers.
 
-DIRE — « Le Centre sportif des Méandres est un projet fictif, mais il devrait vous sembler familier : un bâtiment institutionnel pour une ville, un entrepreneur général, un architecte, et votre lot, l'enveloppe en aluminium et verre. Un mur-rideau de 420 m² dans le hall, 46 fenêtres, 6 portes d'entrée et une verrière. »
+DIRE — « Le Centre sportif de Montréal est un projet fictif, mais il devrait vous sembler familier : un bâtiment institutionnel pour une ville, un entrepreneur général, un architecte, et votre lot, l'enveloppe en aluminium et verre. Un mur-rideau de 420 m² dans le hall, 46 fenêtres, 6 portes d'entrée et une verrière. »
 
 « Les noms sont inventés : Construction Boréa, Atelier Mercier, Ville de Rivière-Claire. Aucun vrai client n'apparaît dans la formation. »
 
@@ -8634,7 +9078,7 @@ TRANSITION — « Regardons le dossier que Mathieu vient de recevoir. »`,
 
 OBJECTIF — Poser les données du projet et la question de la formation.
 
-DIRE — « 27 semaines avant le bâtiment fermé, le vendredi 14 mai : c'est la date à laquelle l'EG veut l'enveloppe étanche pour lancer les finitions intérieures. 1,2 million de dollars de contrat. 8 semaines de délai pour le verre, une fois la commande passée, donc une commande qui dépend de l'approbation des dessins d'atelier. Et 13 projets suivis par Mathieu en même temps. »
+DIRE — « 27 semaines avant le bâtiment fermé, le vendredi 28 mai : c'est la date à laquelle l'EG veut l'enveloppe étanche pour lancer les finitions intérieures. 1,2 million de dollars de contrat. 8 semaines de délai pour le verre, une fois la commande passée, donc une commande qui dépend de l'approbation des dessins d'atelier. Et 13 projets suivis par Mathieu en même temps. »
 
 « Voici ce qui inquiète Mathieu. » Lire les quatre irritants : l'échéancier en cascade, le volume de courriels, les comptes rendus de réunion et de visite, les relances. « Ces quatre irritants viennent du questionnaire que vous avez rempli, et du cadrage avec votre direction. Ils correspondent aux quatre usages qu'on verra au module 2 : planifier, suivre, faire rapport, communiquer. »
 
@@ -8811,7 +9255,7 @@ DIRE — « Le verrier écrit à Mathieu : "Les unités scellées auront deux se
 → beat 1 : « L'IA comprend : quel projet est touché, quel retard, quel impact sur la pose du mur-rideau. »
 → beat 2 : « L'automatisation applique une règle : si une livraison bouge de plus d'une semaine, alerte à Mathieu et à Patrice. »
 → beat 3 : « Le robot logiciel recopie la nouvelle date dans le registre des livraisons, écran par écran. »
-→ beat 4 : « Et qui décide ? Aucun des trois. Mathieu revoit l'échéancier avec l'EG ; Hélène arbitre si le bâtiment fermé du 14 mai est menacé. »
+→ beat 4 : « Et qui décide ? Aucun des trois. Mathieu revoit l'échéancier avec l'EG ; Hélène arbitre si le bâtiment fermé du 28 mai est menacé. »
 
 TRANSITION — « Résumons les différences critère par critère. »`,
   `⏱ 3 min · TABLEAU COMPARATIF (5 clics)
@@ -8828,7 +9272,7 @@ DIRE — Une ligne par clic.
 TRANSITION — « À vous de jouer. »`,
   `⏱ 6 min · EXERCICE GLISSER-DÉPOSER (1 clic pour le corrigé)
 
-OBJECTIF — Appliquer la distinction sur des tâches du projet des Méandres.
+OBJECTIF — Appliquer la distinction sur des tâches du projet de Montréal.
 
 ANIMATION — Pour chaque étiquette, demandez la colonne à voix haute (« auto », « robot » ou « IA ») et glissez-la selon la majorité. Double-cliquer une étiquette la remet à sa place.
 → beat 1 : le corrigé apparaît sur chaque étiquette.
@@ -8958,7 +9402,7 @@ TRANSITION — « Quatre usages concrets, un par page. Premier : planifier. »`,
 OBJECTIF — Montrer une demande de planification réaliste et sa réponse.
 
 DIRE — « À gauche, ce que l'IA fait bien au lancement d'un projet : résumer le dossier des ventes, ordonner les étapes, repérer les délais critiques, lister les risques. »
-→ beat 1 : « La demande de Mathieu. Il dit qui il est, colle la soumission et les exclusions, et donne la date qui compte : le bâtiment fermé du 14 mai. »
+→ beat 1 : « La demande de Mathieu. Il dit qui il est, colle la soumission et les exclusions, et donne la date qui compte : le bâtiment fermé du 28 mai. »
 → beat 2 : « La réponse, en quelques secondes : six étapes cohérentes, et la bonne dépendance : le verre se commande après l'approbation des dessins. Est-ce parfait ? Non. Mais Mathieu ne part plus d'une page blanche. »
 
 QUESTION — « Que manque-t-il dans ce découpage ? » Réponses possibles : les relevés après la structure, la mobilisation de l'équipe de pose, la protection des ouvrages, les essais d'étanchéité, les documents de fin de projet exigés par l'EG. « Bravo : c'est exactement votre valeur ajoutée. »
@@ -8996,7 +9440,7 @@ TRANSITION — « Quatrième usage : les relances. »`,
 
 OBJECTIF — Répondre au besoin du questionnaire : « faire des suivis auprès des clients ».
 
-DIRE — « Les dessins d'atelier du mur-rideau attendent l'approbation de l'architecte depuis le 23 novembre. Chaque jour de retard pousse la commande du verre. »
+DIRE — « Les dessins d'atelier du mur-rideau attendent l'approbation de l'architecte depuis le 7 décembre. Chaque jour de retard pousse la commande du verre. »
 → beat 1 : « Une seule demande pour trois messages : une relance courtoise, une relance ferme à envoyer dans cinq jours, et un courriel à Boréa pour l'informer du risque. Ici avec Claude, que certains d'entre vous ont. »
 → beat 2 : « Trois tons, trois publics. La relance ferme rappelle le délai du verre : c'est l'argument qui fait bouger. »
 
@@ -9151,12 +9595,12 @@ DIRE — Relisez les cinq points :
 
 À VOTRE POSTE — Lisez la carte bleue.
 
-TRANSITION — « Assez parlé : place à l'atelier 1. Vous allez lancer le projet des Méandres. »`,
+TRANSITION — « Assez parlé : place à l'atelier 1. Vous allez lancer le projet de Montréal. »`,
   `⏱ 1 min · DÉBUT DE L'ATELIER 1 (≈ 13 h 45)
 
 OBJECTIF — Lancer l'atelier avec énergie.
 
-DIRE — « Atelier 1 : lancer un projet avec l'IA. Vous allez faire ce que Mathieu doit faire cette semaine : recevoir le dossier des ventes, en tirer le plan du projet des Méandres, et reprendre en main sa boîte de réception. Avec l'IA, et en vérifiant tout. »
+DIRE — « Atelier 1 : lancer un projet avec l'IA. Vous allez faire ce que Mathieu doit faire cette semaine : recevoir le dossier des ventes, en tirer le plan du projet de Montréal, et reprendre en main sa boîte de réception. Avec l'IA, et en vérifiant tout. »
 
 « D'abord une découverte guidée : Copilot dans Outlook, puis Copilot Chat avec un document joint. Puis on construit pas à pas : fiche de démarrage, découpage, échéancier, risques, RACI. On trie une boîte de réception. Et on termine par la partie la plus importante : vérifier ce que l'IA a raté. »
 
@@ -9173,7 +9617,9 @@ DIRE — « Cinq étapes : 15 minutes de découverte, 10 pour la fiche de démar
 
 « Les outils : Copilot avec votre compte Lessard. Ceux qui ont Claude peuvent faire la même demande dans les deux et comparer. Pour les tâches : Excel, Planner ou Smartsheet, selon vos habitudes. »
 
-PARCOURS ADJOINTE — Les adjointes suivent le même dossier, mais commencent par l'étape 4 (la boîte de réception), puis préparent la liste des suivis à faire et le plan de classement du dossier. Elles font ensuite les étapes 1 à 3 si le temps le permet.
+PARCOURS ADJOINTE — Les adjointes suivent le même dossier, mais commencent par l'étape 4 (la boîte de réception), puis préparent la liste des suivis à faire et le plan de classement du dossier. Elles font ensuite les étapes 2 et 3 si le temps le permet. (Même numérotation que le guide du participant.)
+
+LOGISTIQUE — Déposez dans le Chat le paquet de l'atelier (IA124-Lessard-Atelier1.zip, ou les fichiers un par un) : le guide du participant, le dossier transmis par Éric, la soumission, les huit courriels de Mathieu et le modèle Excel de suivi. Les participants n'ont pas le deck : tout ce dont ils ont besoin est dans le guide. Vérifiez que chacun a pu ouvrir le guide avant de continuer.
 
 TRANSITION — « Vos données de départ : le dossier transmis par Éric. »`,
   `⏱ 2 min · LE DOSSIER TRANSMIS PAR ÉRIC
@@ -9182,10 +9628,10 @@ OBJECTIF — Fournir le contexte à coller dans les demandes.
 
 DIRE — « Voici tout ce que l'IA doit savoir : l'objet du contrat, la date de départ, l'échéance, l'équipe, les délais, les contraintes, et ce qui est déjà connu. »
 
-INSISTER — « Ce dossier, c'est l'ingrédient "contexte". Plus il est complet, moins l'IA invente. Notez trois pièges cachés : les 10 jours ouvrables d'approbation, la fermeture des Fêtes, et la promesse d'Éric, "dès mars", alors que la structure ne sera prête que vers le 1er mars. On verra si l'IA en tient compte. »
+INSISTER — « Ce dossier, c'est l'ingrédient "contexte". Plus il est complet, moins l'IA invente. Notez trois pièges cachés : les 10 jours ouvrables d'approbation, la fermeture des Fêtes, et la promesse d'Éric, "dès mars", alors que la structure ne sera prête que vers le 15 mars. On verra si l'IA en tient compte. »
 
-LOGISTIQUE — Collez ce texte dans le Chat pour que chacun puisse le copier :
-« DOSSIER DU PROJET — Centre sportif des Méandres (fictif). Objet : lot enveloppe en aluminium et verre, mur-rideau du hall (420 m²), 46 fenêtres, 6 portes d'entrée, 1 verrière. Départ : lundi 2 novembre. Contrat de 1,2 M$ avec Construction Boréa (entrepreneur général). Architecte : Atelier Mercier. Échéance : bâtiment fermé le vendredi 14 mai. Structure d'acier terminée vers le 1er mars. Équipe : Mathieu (chargé de projet), Hélène (directrice de projets), Nadia (adjointe), Éric (ventes), Patrice (contremaître d'installation). Délais : dessins d'atelier 3 semaines, puis 10 jours ouvrables d'approbation par l'architecte ; verre 8 semaines après la commande. Contraintes : usine et chantier fermés 2 semaines aux Fêtes ; relevés au chantier une fois la structure terminée. Exclusions : calfeutrage intérieur, stores. Déjà connu : Éric a promis à Boréa une pose du hall "dès mars". »
+LOGISTIQUE — Le dossier complet est dans Atelier1-Dossier-transmis-par-Eric.pdf (courriel d'Éric, fiche de transfert, calendrier, intervenants) et Soumission_Montreal.pdf, que les participants peuvent joindre à Copilot Chat. Pour ceux qui préfèrent coller du texte, collez aussi ce résumé dans le Chat :
+« DOSSIER DU PROJET — Centre sportif de Montréal (fictif). Objet : lot enveloppe en aluminium et verre, mur-rideau du hall (420 m²), 46 fenêtres, 6 portes d'entrée, 1 verrière. Départ : lundi 16 novembre. Contrat de 1,2 M$ avec Construction Boréa (entrepreneur général). Architecte : Atelier Mercier. Échéance : bâtiment fermé le vendredi 28 mai. Structure d'acier terminée vers le 15 mars. Équipe : Mathieu (chargé de projet), Hélène (directrice de projets), Nadia (adjointe), Éric (ventes), Patrice (contremaître d'installation). Délais : dessins d'atelier 3 semaines, puis 10 jours ouvrables d'approbation par l'architecte ; verre 8 semaines après la commande. Contraintes : usine et chantier fermés 2 semaines aux Fêtes ; relevés au chantier une fois la structure terminée. Exclusions : calfeutrage intérieur, stores. Déjà connu : Éric a promis à Boréa une pose du hall "dès mars". »
 
 TRANSITION — « Découvrons Copilot dans Outlook. »`,
   `⏱ 6 min · DÉMO COPILOT DANS OUTLOOK (4 clics)
@@ -9213,10 +9659,21 @@ DIRE — « Copilot Chat, avec votre compte Lessard. On joint la soumission et o
 → beat 3 : « Le bouclier vert : vous êtes connecté au compte Lessard. Vos données ne servent pas à entraîner le modèle. Pas de bouclier, pas de dossier client. »
 → beat 4 : « Pour ceux qui ont Claude : un "projet" garde les documents et vos consignes d'une conversation à l'autre. Pratique pour un dossier qui dure six mois. »
 
-CONSIGNE — Laissez 5 minutes d'exploration : chacun ouvre Copilot Chat et colle le dossier depuis le Chat.
+CONSIGNE — Les 5 minutes d'exploration se font sur la page suivante, avec son minuteur.
 
-TRANSITION — « On construit le lancement. Étape 1 : la fiche de démarrage. »`,
-  `⏱ 3 min de démonstration + 10 min en autonomie · FICHE DE DÉMARRAGE (5 clics)
+TRANSITION — « À vous : 5 minutes. »`,
+  `⏱ 5 min + 3 min de point · ÉTAPE 1 · À VOUS (minuteur m3-s1, 1 clic pour le point d'étape)
+
+OBJECTIF — Chacun a Copilot Chat ouvert et a interrogé la soumission avant de construire.
+
+ANIMATION — Démarrez le minuteur. Micro coupé, chacun sur son poste, section 5 du guide.
+
+À LA FIN — Cliquez : le point d'étape apparaît. Faites un tour rapide : « Qui n'a pas pu joindre le fichier ? » Ceux-là colleront le résumé (dernière page du dossier d'Éric). Puis deux volontaires lisent la question la plus utile que Copilot leur a renvoyée.
+
+AIDE — Quelqu'un est bloqué : invitez-le à partager son écran 2 minutes, ou suggérez « Demandez à Copilot de vous poser les questions qui lui manquent. »
+
+TRANSITION — « Étape 2 du guide : la fiche de démarrage. »`,
+  `⏱ 3 min de démonstration · FICHE DE DÉMARRAGE (5 clics)
 
 OBJECTIF — Produire la fiche de démarrage et apprendre le réflexe « signale ce qui manque ».
 
@@ -9225,13 +9682,24 @@ DIRE — « À gauche, la demande. Remarquez la dernière phrase : "Signale ce q
 → beat 2 : « Les dates clés. »
 → beat 3 : « Les intervenants. »
 → beat 4 : « Les engagements pris envers le client. »
-→ beat 5 : « Et voilà la contradiction : une pose "dès mars" promise, alors que la structure n'est prête que vers le 1er mars et qu'il faut d'abord faire les relevés. C'est à Éric et à Mathieu de clarifier, pas à l'IA de trancher. »
+→ beat 5 : « Et voilà la contradiction : une pose "dès mars" promise, alors que la structure n'est prête que vers le 15 mars et qu'il faut d'abord faire les relevés. C'est à Éric et à Mathieu de clarifier, pas à l'IA de trancher. »
 
-CONSIGNE — Chacun colle le dossier, lance la demande et note les questions que l'IA renvoie.
+CONSIGNE — Le travail se fait sur la page suivante (minuteur de 10 minutes).
 
 LIEN MÉTIER — « Le passage de la vente au projet, c'est là que se perdent les promesses. Une fiche comme celle-ci, relue par Éric, évite bien des surprises. »
 
-TRANSITION — « Étape 2 : le découpage. »`,
+TRANSITION — « À vous : 10 minutes. »`,
+  `⏱ 10 min + 3 min de point · ÉTAPE 2 · À VOUS (minuteur m3-s2, 1 clic pour le point d'étape)
+
+OBJECTIF — Chacun a sa fiche de démarrage et ses questions pour Éric.
+
+ANIMATION — Démarrez le minuteur. Section 6 du guide : la demande est à copier.
+
+À LA FIN — Cliquez pour le point d'étape. Demandez un chiffre au micro : combien d'exclusions sur cinq ? (calfeutrage intérieur, stores, finitions intérieures, raccordement des portes automatiques, permis). Puis : « La promesse "dès mars" est-elle signalée ? » Deux volontaires lisent une question pour Éric. Le corrigé détaillé est dans votre PDF formateur.
+
+AIDE — Quelqu'un est bloqué : invitez-le à partager son écran 2 minutes, ou suggérez « Demandez à Copilot de vous poser les questions qui lui manquent. »
+
+TRANSITION — « Étape 3 : planifier. D'abord, 3a, le découpage. »`,
   `⏱ 3 min · DÉCOUPAGE (3 clics)
 
 OBJECTIF — Montrer un découpage généré et le compléter.
@@ -9243,21 +9711,21 @@ DIRE — « La demande : découpe le lot en étapes, puis en tâches de 1 à 2 s
 
 QUESTION — « Voyez-vous d'autres oublis ? » Pistes : essais d'étanchéité, protection des ouvrages après la pose, échantillons et maquette à faire approuver, documents de fin de projet exigés par l'EG, mobilisation de la grue.
 
-TRANSITION — « Étape 3 : l'échéancier. »`,
+TRANSITION — « 3b : l'échéancier. »`,
   `⏱ 4 min · ÉCHÉANCIER (3 clics)
 
 OBJECTIF — Lire un diagramme de Gantt et le chemin critique.
 
-DIRE — « 28 semaines, du 2 novembre au 14 mai. En hachuré, les Fêtes : usine et chantier fermés. »
-→ beat 1 : « Les barres apparaissent : transfert, dessins d'atelier, approbation, verre sur 8 semaines plus les Fêtes, fabrication, relevés en mars, installation jusqu'au 14 mai. »
-→ beat 2 : « Trois jalons : dessins approuvés début décembre, verre livré mi-février, bâtiment fermé le 14 mai. »
+DIRE — « 28 semaines, du 16 novembre au 28 mai. En hachuré, les Fêtes : usine et chantier fermés. »
+→ beat 1 : « Les barres apparaissent : transfert, dessins d'atelier, approbation, verre sur 8 semaines plus les Fêtes, fabrication, relevés en mars, installation jusqu'au 28 mai. »
+→ beat 2 : « Trois jalons : dessins approuvés juste avant les Fêtes, verre livré fin février, bâtiment fermé le 28 mai. »
 → beat 3 : « Le chemin critique, encadré en bleu : dessins, approbation, verre, relevés, pose. Un jour de retard ici, c'est un jour de retard au bâtiment fermé. »
 
 À SOULIGNER — « Ici, l'IA a respecté les Fêtes parce que le dossier les mentionnait. Sans cette ligne dans le contexte, elle les aurait ignorées. On le verra dans les pièges. »
 
 ASTUCE OUTIL — Smartsheet, Planner (vue chronologie) et Excel (avec un modèle de diagramme de Gantt) affichent ce type de vue dès que les tâches ont des dates.
 
-TRANSITION — « Étape 4 du plan : les risques. »`,
+TRANSITION — « 3c : les risques. »`,
   `⏱ 4 min · RISQUES (6 clics)
 
 OBJECTIF — Construire un registre des risques avec l'IA.
@@ -9272,7 +9740,7 @@ DIRE — « La demande : six risques, probabilité, impact, une mesure chacun. �
 
 INSISTER — L'IA est excellente pour proposer des risques auxquels on n'a pas pensé. Mais les notes de probabilité et d'impact sont un jugement : c'est votre expérience qui les fixe.
 
-TRANSITION — « Étape 5 : qui fait quoi. »`,
+TRANSITION — « 3d : qui fait quoi. »`,
   `⏱ 4 min · RACI (2 clics)
 
 OBJECTIF — Rappeler la RACI et montrer ses erreurs typiques quand l'IA la génère.
@@ -9285,7 +9753,7 @@ DIRE — « R réalise, A approuve, C est consulté, I est informé. Une règle 
 
 ADJOINTES — Faites remarquer la ligne « Classement et suivis » : Nadia réalise, Mathieu approuve. « C'est ce qu'on formalisera demain avec les règles de transfert. »
 
-TRANSITION — « Les tâches dans l'outil. »`,
+TRANSITION — « 3e : les tâches dans l'outil. »`,
   `⏱ 3 min · DANS L'OUTIL (3 clics)
 
 OBJECTIF — Montrer le passage du texte aux tâches suivables.
@@ -9297,12 +9765,74 @@ DIRE — « Un plan qui reste dans une conversation ne se suit pas. À gauche, l
 
 ASTUCE — Demandez à Copilot : « Donne-moi ce plan en tableau avec les colonnes Tâche, Responsable, Début, Fin » ; il se colle tel quel dans Excel, puis s'importe dans Smartsheet.
 
-TRANSITION — « Avant de présenter : la grille de contrôle. »`,
+TRANSITION — « Et une autre option : construire votre propre outil de suivi, sans savoir programmer. »`,
+  `⏱ 6 min · DÉMO FORMATEUR : UN MINI-OUTIL DE SUIVI EN VIBECODING (2 clics)
+
+OBJECTIF — Montrer qu'au-delà d'Excel, Planner ou Smartsheet, on peut faire générer par l'IA un petit outil sur mesure. Démonstration par vous ; les participants l'essaient en option, à la fin de leur atelier.
+
+DIRE — « Le vibecoding : vous décrivez en français l'outil que vous voulez, l'IA écrit le code. Ici, une page web d'un seul fichier pour suivre le projet de Montréal : les tâches, les responsables, les dates, l'avancement, les jalons. »
+→ beat 1 : « Voici ce que ça donne. Les tâches en retard en rouge, l'avancement en haut, les jalons, et un export CSV pour revenir dans Excel. »
+→ beat 2 : « Les règles du jeu : c'est un prototype personnel. Données fictives ou anonymisées, compte Lessard. Si l'outil vous plaît au point d'en faire l'outil de l'équipe, on passe par vos TI. »
+
+DÉMO EN DIRECT (préparez-la avant, gardez une version qui marche au cas où) —
+1. Claude (Artifacts) ou Gemini (Canvas) : collez la demande du guide de l'atelier, puis le tableau des tâches de l'étape 3b. L'outil s'affiche à côté de la conversation.
+2. Améliorez-le en une phrase : « Ajoute un filtre par responsable » ou « Ajoute une colonne Lot ». Montrez qu'on itère comme avec un collègue.
+3. Exportez le CSV et ouvrez-le dans Excel.
+4. Avec Copilot : il écrit le même code ; enregistrez-le dans un fichier suivi-montreal.html et ouvrez-le dans Edge. L'aperçu intégré dépend de votre version de Copilot : vérifiez avant la séance.
+
+INSISTER — « L'IA écrit le code, mais vous restez responsable de ce que l'outil affiche : vérifiez les dates et les calculs comme pour le plan. Et un fichier sur votre poste n'est pas un outil d'équipe : pas de sauvegarde, pas de partage, pas de droits d'accès. »
+
+CONSIGNE — Option pour les plus rapides, après les sept points du travail individuel. La demande complète est dans le guide de l'atelier (section « Pour aller plus loin »).
+
+TRANSITION — « À vous : 25 minutes pour planifier. »`,
+  `⏱ 25 min + 3 min de point · ÉTAPE 3 · À VOUS (minuteur m3-s3, 1 clic pour le point d'étape)
+
+OBJECTIF — Chacun a un plan daté dans un outil de suivi : découpage, échéancier, risques, RACI.
+
+ANIMATION — Démarrez le minuteur. Section 7 du guide (3a à 3e). À mi-parcours (≈ 12 min), un point rapide au micro : « Où en êtes-vous : 3a, 3b, 3c, 3d ou 3e ? » La pause de 14 h 30 peut être prise juste après cette étape.
+
+PRIORITÉ si le temps manque — l'échéancier en tableau (3b) et son transfert dans l'outil (3e). Le mini-outil reste une option pour les plus rapides.
+
+À LA FIN — Cliquez pour le point d'étape. « Quelles dates l'IA a-t-elle supposées ? » « Quelle ligne de votre RACI avait zéro ou deux A ? » Deux volontaires partagent leur échéancier, 1 minute chacun.
+
+AIDE — Quelqu'un est bloqué : invitez-le à partager son écran 2 minutes, ou suggérez « Demandez à Copilot de vous poser les questions qui lui manquent. »
+
+TRANSITION — « Étape 4 : la boîte de réception. »`,
+  `⏱ 6 min · EXERCICE : LA BOÎTE DE RÉCEPTION (glisser-déposer, 1 clic pour le corrigé)
+
+OBJECTIF — Répondre au besoin exprimé par Valérie au cadrage : trier, prioriser, relancer, transférer aux adjointes.
+
+ANIMATION — Pour chaque courriel, demandez une case à voix haute (« traiter », « Nadia », « relancer », « classer ») et glissez-le selon la majorité. Double-cliquer une étiquette la remet à sa place.
+→ beat 1 : le corrigé apparaît sur chaque étiquette.
+
+CORRIGÉ —
+• À traiter : la date de pose demandée par Boréa, l'écart de 40 mm signalé par Patrice.
+• À Nadia : le certificat d'assurance, le formulaire d'accès au chantier.
+• À relancer : les dessins MR-01 envoyés sans retour, le prix des panneaux d'allège demandé.
+• À classer : le bordereau de livraison, la nouvelle liste des contacts.
+
+DÉBAT — Les adjointes classeront peut-être le bordereau « À Nadia » : très bien, si c'est elle qui le saisit. « La règle de transfert dépend de votre équipe : c'est justement ce qu'on écrira demain. »
+
+PUIS — Sur la page suivante (minuteur de 10 minutes) : les huit courriels sont dans Atelier1-Courriels-boite-de-Mathieu.pdf (une page par courriel). Pour ceux qui préfèrent coller du texte, collez aussi dans le Chat les huit courriels ci-dessous. Chacun les donne à Copilot avec la demande du module 2 (« Classe-les en quatre groupes… »), compare avec le corrigé, puis demande la relance pour les dessins MR-01.
+« 1. Boréa (chargé de projet EG) : Bonjour Mathieu, pouvez-vous nous confirmer la date de début de pose du mur-rideau du hall ? Nous bâtissons l'échéancier des finitions. 2. Boréa : Il nous manque votre certificat d'assurance à jour pour le dossier du chantier. 3. Vous, le 7 décembre : Veuillez trouver ci-joints les dessins d'atelier MR-01 pour approbation. (aucune réponse) 4. Verrier : Bordereau de livraison 4471, ci-joint. 5. Ville de Rivière-Claire : Formulaire d'accès au chantier à remplir pour chaque travailleur avant le 15. 6. Patrice : Relevé fait à l'axe C, on a 40 mm de plus que les plans. On fait quoi ? 7. Boréa : Voici la nouvelle liste des contacts du chantier. 8. Vous, à un fournisseur, il y a 10 jours : Pouvez-vous nous transmettre votre prix pour les panneaux d'allège ? (aucune réponse) »
+
+TRANSITION — « À vous : 10 minutes. »`,
+  `⏱ 10 min + 3 min de point · ÉTAPE 4 · À VOUS (minuteur m3-s4, 1 clic pour le point d'étape)
+
+OBJECTIF — La boîte de réception triée, et une relance prête.
+
+ANIMATION — Démarrez le minuteur. Section 8 du guide : d'abord leur propre tri dans le tableau, puis celui de Copilot avec le PDF des courriels, puis la relance pour MR-01.
+
+À LA FIN — Cliquez pour le point d'étape. « Sur quel courriel n'êtes-vous pas d'accord avec Copilot ? » Rappelez le corrigé de la page précédente si besoin. Un ou deux volontaires lisent leur relance : « L'enverriez-vous telle quelle ? »
+
+AIDE — Quelqu'un est bloqué : invitez-le à partager son écran 2 minutes, ou suggérez « Demandez à Copilot de vous poser les questions qui lui manquent. »
+
+TRANSITION — « Étape 5 : avant de présenter, la grille de contrôle. »`,
   `⏱ 3 min · GRILLE DE CONTRÔLE (interactive)
 
 OBJECTIF — Donner une grille de vérification réutilisable.
 
-ANIMATION — Lisez chaque critère. Chacun l'applique à son propre plan pendant le travail. Au débriefing, cochez la grille à l'écran pour un participant qui partage son écran (certains critères comptent double, ×2).
+ANIMATION — Lisez chaque critère. Chacun l'applique à son propre plan à l'étape 5, sur la page « À vous » qui suit les pièges. Au débriefing, cochez la grille à l'écran pour un participant qui partage son écran (certains critères comptent double, ×2).
 
 DIRE — « Les trois critères qui comptent double : des délais validés par quelqu'un qui sait, un seul responsable par tâche, et aucun fait inventé. »
 
@@ -9321,42 +9851,16 @@ ANIMATION — Laissez 1 minute pour chercher, chacun pour soi. Puis demandez les
 
 MÉTHODE — « Confrontez chaque ligne au dossier et au calendrier. Et demandez à l'IA : quelles dates as-tu supposées ? Elle vous le dira souvent. »
 
-TRANSITION — « Dernière étape avant le travail : la boîte de réception. »`,
-  `⏱ 6 min · EXERCICE : LA BOÎTE DE RÉCEPTION (glisser-déposer, 1 clic pour le corrigé)
+TRANSITION — « À vous : 5 minutes pour passer votre plan à la grille. »`,
+  `⏱ 5 min + 3 min de point · ÉTAPE 5 · À VOUS (minuteur m3-s5, 1 clic pour le point d'étape)
 
-OBJECTIF — Répondre au besoin exprimé par Valérie au cadrage : trier, prioriser, relancer, transférer aux adjointes.
+OBJECTIF — Chacun corrige son propre plan avec la grille, avant le débriefing.
 
-ANIMATION — Pour chaque courriel, demandez une case à voix haute (« traiter », « Nadia », « relancer », « classer ») et glissez-le selon la majorité. Double-cliquer une étiquette la remet à sa place.
-→ beat 1 : le corrigé apparaît sur chaque étiquette.
+ANIMATION — Démarrez le minuteur. Section 9 du guide : la grille de contrôle, et les quatre pièges cherchés dans leur propre échéancier.
 
-CORRIGÉ —
-• À traiter : la date de pose demandée par Boréa, l'écart de 40 mm signalé par Patrice.
-• À Nadia : le certificat d'assurance, le formulaire d'accès au chantier.
-• À relancer : les dessins MR-01 envoyés sans retour, le prix des panneaux d'allège demandé.
-• À classer : le bordereau de livraison, la nouvelle liste des contacts.
-
-DÉBAT — Les adjointes classeront peut-être le bordereau « À Nadia » : très bien, si c'est elle qui le saisit. « La règle de transfert dépend de votre équipe : c'est justement ce qu'on écrira demain. »
-
-PUIS — Collez dans le Chat les huit courriels ci-dessous. Chacun les donne à Copilot avec la demande du module 2 (« Classe-les en quatre groupes… »), compare avec le corrigé, puis demande la relance pour les dessins MR-01.
-« 1. Boréa (chargé de projet EG) : Bonjour Mathieu, pouvez-vous nous confirmer la date de début de pose du mur-rideau du hall ? Nous bâtissons l'échéancier des finitions. 2. Boréa : Il nous manque votre certificat d'assurance à jour pour le dossier du chantier. 3. Vous, le 23 novembre : Veuillez trouver ci-joints les dessins d'atelier MR-01 pour approbation. (aucune réponse) 4. Verrier : Bordereau de livraison 4471, ci-joint. 5. Ville de Rivière-Claire : Formulaire d'accès au chantier à remplir pour chaque travailleur avant le 15. 6. Patrice : Relevé fait à l'axe C, on a 40 mm de plus que les plans. On fait quoi ? 7. Boréa : Voici la nouvelle liste des contacts du chantier. 8. Vous, à un fournisseur, il y a 10 jours : Pouvez-vous nous transmettre votre prix pour les panneaux d'allège ? (aucune réponse) »
-
-TRANSITION — « À vous ! »`,
-  `⏱ 45 min · TRAVAIL INDIVIDUEL
-
-OBJECTIF — Lancer le projet des Méandres : la fiche, le plan dans un outil de suivi, la boîte de réception triée, une relance.
-
-ANIMATION — Démarrez le minuteur (il continue si vous changez de page). Les participants travaillent seuls, micro coupé. Vous ne voyez pas leurs écrans : faites un point d'étape toutes les 15 minutes (« Où en êtes-vous : étape 1, 2, 3 ou 4 ? »). La pause de 14 h 30 peut être prise pendant l'atelier, selon le rythme.
-
-QUESTIONS À POSER (à la personne qui partage son écran) —
-• « Montrez-moi votre demande. Où est le contexte ? »
-• « Quelles dates l'IA a-t-elle supposées ? »
-• « Qui est le A de cette ligne ? »
+À LA FIN — Cliquez pour le point d'étape : un score par personne au micro (rapide), puis « Qui veut présenter ? ». Notez deux ou trois volontaires pour le débriefing.
 
 AIDE — Quelqu'un est bloqué : invitez-le à partager son écran 2 minutes, ou suggérez « Demandez à Copilot de vous poser les questions qui lui manquent. »
-
-POUR ALLER PLUS LOIN (utilisateurs avancés) — Comparer Copilot et Claude sur la même demande ; demander à Copilot un tableau prêt pour l'import dans Smartsheet ; demander la relance en anglais pour un fournisseur.
-
-SIGNAL — À 5 minutes de la fin, demandez à chacun de passer son plan à la grille de contrôle.
 
 TRANSITION — « Temps écoulé ! Débriefing. »`,
   `⏱ 15 min · DÉBRIEFING
@@ -9454,9 +9958,9 @@ TRANSITION — « Voyons comment l'IA passe d'une transcription à un compte ren
 
 OBJECTIF — Visualiser l'extraction : décisions, actions, points ouverts.
 
-DIRE — « À gauche, un extrait de la transcription de la réunion de chantier du 2 mars, sur Teams. Des phrases spontanées, dans le désordre. »
+DIRE — « À gauche, un extrait de la transcription de la réunion de chantier du 16 mars, sur Teams. Des phrases spontanées, dans le désordre. »
 → beat 1 : « L'IA repère la décision, en vert : on commence la pose le 22 par la façade nord. »
-→ beat 2 : « Les actions, en bleu : Patrice refait les relevés d'ici le 9 ; Nadia relance le verrier demain, donc le 3 mars. »
+→ beat 2 : « Les actions, en bleu : Patrice refait les relevés d'ici le 9 ; Nadia relance le verrier demain, donc le 17 mars. »
 → beat 3 : « Les points ouverts, en jaune : la couleur des panneaux d'allège. Décision jeudi, avec la Ville. »
 
 INSISTER — « Remarquez : "on en reparle jeudi" n'est pas une décision. Une bonne extraction distingue ce qui est décidé de ce qui est discuté. Dans une réclamation, cette nuance vaut cher. »
@@ -9486,7 +9990,7 @@ OBJECTIF — Entraîner l'œil à repérer les erreurs typiques d'un compte rend
 ANIMATION — Laissez 2 minutes : chacun compare, pour soi, avec la transcription de la page précédente (revenez-y si besoin). Faites annoncer les erreurs au micro, puis un clic par erreur.
 → beat 1 : Fausse décision : la couleur des panneaux n'a pas été retenue, on en a seulement discuté.
 → beat 2 : Mauvaise personne : c'est Patrice qui refait les relevés.
-→ beat 3 : Date inventée : Nadia a dit « demain », donc le 3 mars, pas le 15.
+→ beat 3 : Date inventée : Nadia a dit « demain », donc le 17 mars, pas le 15.
 → beat 4 : Point ouvert effacé : la couleur des panneaux reste à trancher.
 
 MESSAGE CLÉ — « Ce sont exactement les quatre erreurs à vérifier : décisions, responsables, dates, points ouverts. Deux minutes de relecture. »
@@ -9558,7 +10062,7 @@ TRANSITION — « Les tâches et les courriels peuvent maintenant se suivre pres
 OBJECTIF — Montrer l'automatisation simple du tri et des relances, avant même l'IA.
 
 DIRE — « Une règle a trois parties : quand, si, alors. »
-→ beat 1 : « Quand un courriel arrive, s'il vient de Boréa ou parle des Méandres, alors il est classé dans le dossier du projet. C'est une simple règle Outlook, sans IA, sans licence. Faites-en une par gros projet. »
+→ beat 1 : « Quand un courriel arrive, s'il vient de Boréa ou parle de Montréal, alors il est classé dans le dossier du projet. C'est une simple règle Outlook, sans IA, sans licence. Faites-en une par gros projet. »
 → beat 2 : « Chaque matin à 8 h, si un courriel envoyé il y a 5 jours n'a pas de réponse, alors rappel à Mathieu : relancer ? Avec Power Automate, ou simplement un indicateur de suivi Outlook. »
 → beat 3 : « Quand un courriel arrive, si c'est une demande administrative, alors l'IA prépare le transfert à Nadia, avec la consigne. Ici on combine règle et IA, et c'est Mathieu qui clique "envoyer". »
 
@@ -9574,8 +10078,8 @@ OBJECTIF — Distinguer constat (règle) et anticipation (IA).
 DIRE — « À gauche, l'alerte par règle : l'approbation des dessins est en retard de 4 jours. Utile, mais le retard est déjà là. »
 « À droite, l'alerte intelligente : l'IA croise des signaux faibles. »
 → beat 1 : « Aucune réponse de l'architecte depuis 9 jours. »
-→ beat 2 : « Le verrier ne garantit son créneau de production que jusqu'au 11 décembre. »
-→ beat 3 : « L'approbation est sur le chemin critique du 14 mai. »
+→ beat 2 : « Le verrier ne garantit son créneau de production que jusqu'au 23 décembre. »
+→ beat 3 : « L'approbation est sur le chemin critique du 28 mai. »
 → beat 4 : « Et le dernier courriel de l'architecte : "on manque de monde avant les Fêtes". Une règle ne lit pas le ton ; l'IA, si. »
 → beat 5 : « Conclusion : risque que la commande du verre passe après les Fêtes. Suggestion : appeler l'architecte aujourd'hui. Avant que le retard n'arrive. »
 
@@ -9992,7 +10496,7 @@ TRANSITION — « Il est temps de conclure ces deux jours. »`,
 
 OBJECTIF — Remettre en perspective le chemin parcouru.
 
-DIRE — « Deux jours, six modules. Hier matin, on a compris ce qu'est l'IA : elle apprend d'exemples et prédit le mot probable, pas le vrai. On l'a appliquée à vos projets, avec cinq ingrédients pour bien demander. On a lancé le projet des Méandres, appris à vérifier le plan, et trié une boîte de réception. Ce matin, on a accéléré les comptes rendus, les visites de chantier, les relances et les transferts aux adjointes, on a parlé des biais, des erreurs, des données et de l'adoption en équipe. Et cet après-midi, vous avez tout mis en pratique. »
+DIRE — « Deux jours, six modules. Hier matin, on a compris ce qu'est l'IA : elle apprend d'exemples et prédit le mot probable, pas le vrai. On l'a appliquée à vos projets, avec cinq ingrédients pour bien demander. On a lancé le projet de Montréal, appris à vérifier le plan, et trié une boîte de réception. Ce matin, on a accéléré les comptes rendus, les visites de chantier, les relances et les transferts aux adjointes, on a parlé des biais, des erreurs, des données et de l'adoption en équipe. Et cet après-midi, vous avez tout mis en pratique. »
 
 QUESTION — « Quel module vous servira le plus lundi ? »
 
@@ -10038,3 +10542,20 @@ DIRE — « Merci pour votre participation, vos questions et vos présentations.
 
 CLÔTURE — « Bon retour, et bons projets ! »`,
 ];
+
+// @@TIMERS-BEGIN
+// Minuteurs de la deck — généré par scripts/timers-manifest.mjs (page = index 0-based).
+export const timers = [
+  { id: "tour", label: "Tour de table", page: 2, minutes: 15 },
+  { id: "m3-s1", label: "Étape 1", page: 53, minutes: 5 },
+  { id: "m3-s2", label: "Étape 2", page: 55, minutes: 10 },
+  { id: "m3-s3", label: "Étape 3", page: 62, minutes: 25 },
+  { id: "m3-s4", label: "Étape 4", page: 64, minutes: 10 },
+  { id: "m3-s5", label: "Étape 5", page: 67, minutes: 5 },
+  { id: "m6-plan", label: "Étape 1", page: 113, minutes: 30 },
+  { id: "m6-track", label: "Étape 2", page: 115, minutes: 25 },
+  { id: "m6-comm", label: "Étape 3", page: 116, minutes: 20 },
+  { id: "m6-pitch", label: "Présentation", page: 117, minutes: 3 },
+  { id: "m6-work", label: "Atelier 2", page: 118, minutes: 75 },
+];
+// @@TIMERS-END

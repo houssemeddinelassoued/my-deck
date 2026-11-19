@@ -173,7 +173,7 @@ export const __notes = [
 
 OBJECTIF — Remettre en perspective le chemin parcouru.
 
-DIRE — « Deux jours, six modules. Hier matin, on a compris ce qu'est l'IA : elle apprend d'exemples et prédit le mot probable, pas le vrai. On l'a appliquée à vos projets, avec cinq ingrédients pour bien demander. On a lancé le projet des Méandres, appris à vérifier le plan, et trié une boîte de réception. Ce matin, on a accéléré les comptes rendus, les visites de chantier, les relances et les transferts aux adjointes, on a parlé des biais, des erreurs, des données et de l'adoption en équipe. Et cet après-midi, vous avez tout mis en pratique. »
+DIRE — « Deux jours, six modules. Hier matin, on a compris ce qu'est l'IA : elle apprend d'exemples et prédit le mot probable, pas le vrai. On l'a appliquée à vos projets, avec cinq ingrédients pour bien demander. On a lancé le projet de Montréal, appris à vérifier le plan, et trié une boîte de réception. Ce matin, on a accéléré les comptes rendus, les visites de chantier, les relances et les transferts aux adjointes, on a parlé des biais, des erreurs, des données et de l'adoption en équipe. Et cet après-midi, vous avez tout mis en pratique. »
 
 QUESTION — « Quel module vous servira le plus lundi ? »
 

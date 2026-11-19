@@ -22,14 +22,62 @@ import {
   useState,
 } from 'react';
 import formateur from '@assets/houssem-formateur.png';
+import logoNationalQuantum from '@assets/national-quantum/logo-national-quantum.png';
 
 export const design: DesignSystem = {
-  palette: { bg: '#F6F8FC', text: '#101828', accent: '#0A62D0' },
+  palette: {
+    bg: '#F6F8FC',
+    text: '#101828',
+    accent: '#0A62D0',
+    soft: '#3B4558',
+    muted: '#6B7690',
+    faint: '#A9B3C6',
+    rule: '#DDE3EE',
+    panel: '#EBEFF7',
+    card: '#FFFFFF',
+    navy: '#0B1F5C',
+    electric: '#1E22E8',
+    teal: '#0E9AAE',
+    green: '#0E9F6E',
+    yellow: '#F2A20C',
+    amber: '#D98A00',
+    coral: '#E04848',
+    violet: '#7442E0',
+    plum: '#7A2FA6',
+    pink: '#C2369E',
+  },
+  logos: {
+    provider: true,
+    nationalQuantum: false,
+  },
+  labels: {
+    soft: 'Texte doux',
+    muted: 'Texte discret',
+    faint: 'Texte estompé',
+    rule: 'Filets',
+    panel: 'Panneaux',
+    card: 'Cartes',
+    navy: 'Fond sombre',
+    electric: 'Accent vif',
+    teal: 'Sarcelle (info)',
+    green: 'Vert (succès)',
+    yellow: 'Jaune (attention)',
+    amber: 'Ambre',
+    coral: 'Corail (alerte)',
+    violet: 'Violet',
+    plum: 'Prune',
+    pink: 'Rose',
+    'logos.provider': 'Logo du deck',
+    'logos.nationalQuantum': 'National Quantum',
+  },
   fonts: {
     display: '"Montserrat", "Segoe UI", system-ui, sans-serif',
     body: '"Open Sans", "Segoe UI", system-ui, -apple-system, sans-serif',
   },
-  typeScale: { hero: 112, body: 28 },
+  typeScale: {
+    hero: 112,
+    body: 28,
+  },
   radius: 18,
 };
 
@@ -107,37 +155,44 @@ const DAY1 = [1, 2, 3];
 const DAY2 = [4, 5, 6, 7];
 
 // ─── Palette (navy + electric blue, violet accent, light ground) ────────────
+// @@deck-features v1 — palette driven by the design tokens (Design panel, key D).
+// tv('blue', '#0A62D0') → var(--osd-blue, #0A62D0); tints and gradients use
+// color-mix, so changing one token recolours its whole family.
+const tv = (key: string, fallback: string) =>
+  `var(--osd-${key.replace(/([a-z0-9])([A-Z])/g, '$1-$2').toLowerCase()}, ${fallback})`;
+const mix = (c: string, pct: number, other = 'white') => `color-mix(in srgb, ${c} ${pct}%, ${other})`;
+
 const C = {
-  ink: '#101828',
-  soft: '#3B4558',
-  muted: '#6B7690',
-  faint: '#A9B3C6',
-  rule: '#DDE3EE',
-  panel: '#EBEFF7',
-  card: '#FFFFFF',
-  navy: '#0B1F5C',
-  electric: '#1E22E8',
-  blue: '#0A62D0',
-  teal: '#0E9AAE',
-  green: '#0E9F6E',
-  yellow: '#F2A20C',
-  amber: '#D98A00',
-  coral: '#E04848',
-  violet: '#7442E0',
-  plum: '#7A2FA6',
-  pink: '#C2369E',
+  ink: tv('text', '#101828'),
+  soft: tv('soft', '#3B4558'),
+  muted: tv('muted', '#6B7690'),
+  faint: tv('faint', '#A9B3C6'),
+  rule: tv('rule', '#DDE3EE'),
+  panel: tv('panel', '#EBEFF7'),
+  card: tv('card', '#FFFFFF'),
+  navy: tv('navy', '#0B1F5C'),
+  electric: tv('electric', '#1E22E8'),
+  blue: tv('accent', '#0A62D0'),
+  teal: tv('teal', '#0E9AAE'),
+  green: tv('green', '#0E9F6E'),
+  yellow: tv('yellow', '#F2A20C'),
+  amber: tv('amber', '#D98A00'),
+  coral: tv('coral', '#E04848'),
+  violet: tv('violet', '#7442E0'),
+  plum: tv('plum', '#7A2FA6'),
+  pink: tv('pink', '#C2369E'),
 };
 
 const T = {
-  blue: { bg: '#E6F0FC', bd: '#97BFF0', fg: '#0A55B5' },
-  navy: { bg: '#E7EBF5', bd: '#9EABCF', fg: '#0B1F5C' },
-  teal: { bg: '#E1F5F7', bd: '#86D0DA', fg: '#0B7686' },
-  green: { bg: '#E2F6EE', bd: '#8ED3B6', fg: '#0A7A55' },
-  yellow: { bg: '#FEF3DC', bd: '#F3C566', fg: '#8A5A00' },
-  coral: { bg: '#FDE8E8', bd: '#F0A3A3', fg: '#B42F2F' },
-  violet: { bg: '#EFE9FC', bd: '#BFA8F2', fg: '#5A2FC2' },
-  pink: { bg: '#FBE8F5', bd: '#E9A6D5', fg: '#9C2380' },
-  grey: { bg: '#EEF1F6', bd: '#CDD4E0', fg: '#3B4558' },
+  blue: { bg: mix(C.blue, 10), bd: mix(C.blue, 42), fg: mix(C.blue, 87, 'black') },
+  navy: { bg: mix(C.navy, 9), bd: mix(C.navy, 37), fg: C.navy },
+  teal: { bg: mix(C.teal, 12), bd: mix(C.teal, 49), fg: mix(C.teal, 77, 'black') },
+  green: { bg: mix(C.green, 12), bd: mix(C.green, 48), fg: mix(C.green, 77, 'black') },
+  yellow: { bg: mix(C.yellow, 14), bd: mix(C.yellow, 63), fg: mix(C.yellow, 56, 'black') },
+  coral: { bg: mix(C.coral, 12), bd: mix(C.coral, 50), fg: mix(C.coral, 78, 'black') },
+  violet: { bg: mix(C.violet, 12), bd: mix(C.violet, 46), fg: mix(C.violet, 84, 'black') },
+  pink: { bg: mix(C.pink, 11), bd: mix(C.pink, 44), fg: mix(C.pink, 80, 'black') },
+  grey: { bg: mix(C.muted, 10), bd: mix(C.muted, 32), fg: C.soft },
 };
 type Tone = keyof typeof T;
 
@@ -155,11 +210,11 @@ const STRONG: Record<Tone, string> = {
 };
 
 const G = {
-  blue: 'linear-gradient(120deg, #0A62D0 0%, #1E22E8 100%)',
-  navy: 'linear-gradient(160deg, #0B1F5C 0%, #142C7A 100%)',
-  violet: 'linear-gradient(120deg, #7442E0 0%, #C2369E 100%)',
-  green: 'linear-gradient(120deg, #0E9F6E 0%, #0E9AAE 100%)',
-  brand: 'linear-gradient(90deg, #0B1F5C 0%, #1E22E8 55%, #7442E0 100%)',
+  blue: `linear-gradient(120deg, ${C.blue} 0%, ${C.electric} 100%)`,
+  navy: `linear-gradient(160deg, ${C.navy} 0%, #142C7A 100%)`,
+  violet: `linear-gradient(120deg, ${C.violet} 0%, ${C.pink} 100%)`,
+  green: `linear-gradient(120deg, ${C.green} 0%, ${C.teal} 100%)`,
+  brand: `linear-gradient(90deg, ${C.navy} 0%, ${C.electric} 55%, ${C.violet} 100%)`,
 };
 
 const display = 'var(--osd-font-display)';
@@ -593,6 +648,7 @@ const ICONS = {
     </>
   ),
   plus: <path d="M12 5v14M5 12h14" />,
+  minus: <path d="M5 12h14" />,
   arrow: <path d="M4.5 12h15M13.5 6l6 6-6 6" />,
   scale: (
     <>
@@ -1019,9 +1075,30 @@ const ORDER = [0, 1, 2, 3, 4, 5, 6, 7, 11];
 const ProgSq = ({ n, mod, text }: { n: number; mod: number; text?: string }) => {
   const now = n === mod;
   const past = mod !== 0 && ORDER.indexOf(mod) > ORDER.indexOf(n);
+  // Click = jump to the module's opening page (MOD_START, appended by the build);
+  // only the live page reacts. data-inspector-ui: the editor inspector lets the click through.
+  const live = useIsActivePage();
+  const target = MOD_START[n];
+  const tip = `${text ?? `Module ${n}`} · ${MOD_TITLES[n] ?? ''}`;
+  const go = (e: { stopPropagation: () => void; preventDefault: () => void }) => {
+    e.stopPropagation();
+    e.preventDefault();
+    if (!live || target === undefined || typeof window === 'undefined') return;
+    window.dispatchEvent(new CustomEvent('open-slide:goto', { detail: { index: target } }));
+  };
   return (
     <span
+      role="button"
+      tabIndex={-1}
+      className={k('chip')}
+      data-inspector-ui=""
+      data-tip={tip}
+      aria-label={tip}
+      onClick={go}
+      onPointerDown={(e) => e.stopPropagation()}
       style={{
+        position: 'relative',
+        cursor: live && target !== undefined ? 'pointer' : 'default',
         minWidth: 34,
         height: 30,
         padding: '0 6px',
@@ -1033,7 +1110,7 @@ const ProgSq = ({ n, mod, text }: { n: number; mod: number; text?: string }) => 
         fontFamily: display,
         fontWeight: 700,
         fontSize: 15,
-        background: now ? C.electric : past ? '#DCE3FB' : 'transparent',
+        background: now ? C.electric : past ? mix(C.electric, 14) : 'transparent',
         color: now ? '#fff' : past ? C.electric : C.faint,
         boxShadow: now || past ? 'none' : `inset 0 0 0 2px ${C.rule}`,
       }}
@@ -1042,6 +1119,20 @@ const ProgSq = ({ n, mod, text }: { n: number; mod: number; text?: string }) => 
     </span>
   );
 };
+
+CSS.push(`
+.${P}-chip{transition:transform .15s ease, filter .15s ease}
+.${P}-live .${P}-chip:hover{transform:translateY(-2px);filter:brightness(1.06)}
+.${P}-chip::after{content:attr(data-tip);position:absolute;top:calc(100% + 12px);right:0;z-index:50;
+  padding:10px 16px;border-radius:10px;background:${C.navy};color:#fff;white-space:nowrap;
+  font:600 19px/1.2 var(--osd-font-body);letter-spacing:0;text-transform:none;box-shadow:0 14px 30px -12px rgba(0,0,0,.45);
+  opacity:0;transform:translateY(-4px);pointer-events:none;transition:opacity .15s ease, transform .15s ease}
+.${P}-chip::before{content:'';position:absolute;top:calc(100% + 4px);right:12px;z-index:50;
+  border:8px solid transparent;border-bottom-color:${C.navy};border-top:0;
+  opacity:0;pointer-events:none;transition:opacity .15s ease}
+.${P}-live .${P}-chip:hover::after{opacity:1;transform:none}
+.${P}-live .${P}-chip:hover::before{opacity:1}
+`);
 
 const ProgLabel = ({ children }: { children: ReactNode }) => (
   <span style={{ fontFamily: display, fontWeight: 700, fontSize: 15, letterSpacing: '0.12em', color: C.muted, margin: '0 6px 0 4px' }}>{children}</span>
@@ -1100,6 +1191,32 @@ const Header = ({ mod, label, kind }: { mod: number; label?: string; kind?: Kind
   </div>
 );
 
+// Footer logos — each toggled in the Design panel (design.logos), live via
+// --osd-logo-<key>: flex | none. All off → the strip and its rules disappear.
+// @@client-logo: the build swaps the next line for an import when
+// slides/<id>/assets/logos/logo-client.(png|svg|jpg|webp) exists.
+const CLIENT_LOGO: string | null = null;
+const FOOTER_LOGOS: { key: string; node: ReactNode }[] = [
+  ...(CLIENT_LOGO
+    ? [{ key: 'client', node: <img src={CLIENT_LOGO} alt="Client" style={{ height: 36, width: 'auto', display: 'block' }} /> }]
+    : []),
+  { key: 'provider', node: <FlowMark h={22} /> },
+  {
+    key: 'national-quantum',
+    node: <img src={logoNationalQuantum} alt="National Quantum" style={{ height: 28, width: 'auto', display: 'block' }} />,
+  },
+];
+const FooterLogos = () => (
+  <>
+    {FOOTER_LOGOS.map((l) => (
+      <span key={l.key} style={{ display: `var(--osd-logo-${l.key}, flex)`, alignItems: 'center', gap: 18 }}>
+        {l.node}
+        <span style={{ width: 1.5, height: 24, background: C.rule }} />
+      </span>
+    ))}
+  </>
+);
+
 const Footer = ({ left = 120, short = false }: { left?: number; short?: boolean }) => {
   const { current, total } = useSlidePageNumber();
   return (
@@ -1116,8 +1233,7 @@ const Footer = ({ left = 120, short = false }: { left?: number; short?: boolean 
       }}
     >
       <div style={{ display: 'flex', alignItems: 'center', gap: 18 }}>
-        <FlowMark h={22} />
-        <span style={{ width: 1.5, height: 24, background: C.rule }} />
+        <FooterLogos />
         <span style={{ fontSize: 19, fontWeight: 700, color: C.navy, whiteSpace: 'nowrap' }}>{AUTHOR}</span>
         {short ? null : <span style={{ width: 1.5, height: 24, background: C.rule }} />}
         {short ? null : <span style={{ fontSize: 19, color: C.muted, whiteSpace: 'nowrap' }}>{COURSE}</span>}
@@ -2339,9 +2455,21 @@ const Drag = ({
 };
 
 // ─── Workshop timer (keeps running when you navigate away and back) ─────────
-type TimerRec = { total: number; left: number; t0: number | null };
+type TimerRec = { total: number; left: number; t0: number | null; base: number };
 const TIMERS = new Map<string, TimerRec>();
 const timerLeft = (r: TimerRec) => (r.t0 === null ? r.left : Math.max(0, r.left - (Date.now() - r.t0) / 1000));
+// Durations re-set from the presenter view (« Minuteurs ») live in localStorage,
+// per deck; other windows hear the storage event, this window the custom one.
+const OVERRIDES_KEY = `osd-timers:${SLIDE_ID}`;
+const OVERRIDES_EVENT = 'osd-timers';
+const readOverride = (id: string): number | null => {
+  try {
+    const n = JSON.parse(window.localStorage.getItem(OVERRIDES_KEY) ?? 'null')?.[id];
+    return typeof n === 'number' && n > 0 ? n : null;
+  } catch {
+    return null;
+  }
+};
 
 const Timer = ({
   id,
@@ -2361,11 +2489,29 @@ const Timer = ({
   const key = `${SLIDE_ID}:${id}`;
   let rec = TIMERS.get(key);
   if (!rec) {
-    rec = { total: minutes * 60, left: minutes * 60, t0: null };
+    rec = { total: minutes * 60, left: minutes * 60, t0: null, base: minutes };
     TIMERS.set(key, rec);
   }
   const r = rec;
   const [, tick] = useState(0);
+  const [override, setOverride] = useState<number | null>(() => readOverride(id));
+  useEffect(() => {
+    const sync = () => setOverride(readOverride(id));
+    window.addEventListener('storage', sync);
+    window.addEventListener(OVERRIDES_EVENT, sync);
+    return () => {
+      window.removeEventListener('storage', sync);
+      window.removeEventListener(OVERRIDES_EVENT, sync);
+    };
+  }, [id]);
+  const mins = override ?? minutes;
+  if (r.base !== mins) {
+    // Re-timed from the presenter view: shift the duration, keep what has elapsed.
+    const d = (mins - r.base) * 60;
+    r.total = Math.max(0, r.total + d);
+    r.left = Math.max(0, r.left + d);
+    r.base = mins;
+  }
   const running = r.t0 !== null;
   useEffect(() => {
     if (!running) return;
@@ -2390,8 +2536,9 @@ const Timer = ({
     refresh();
   };
   const reset = () => {
-    r.total = minutes * 60;
-    r.left = minutes * 60;
+    r.total = mins * 60;
+    r.left = mins * 60;
+    r.base = mins;
     r.t0 = null;
     refresh();
   };
@@ -2399,6 +2546,12 @@ const Timer = ({
     r.left = timerLeft(r) + 60;
     if (r.t0 !== null) r.t0 = Date.now();
     r.total = Math.max(r.total, r.left);
+    refresh();
+  };
+  const subMin = () => {
+    r.left = Math.max(0, timerLeft(r) - 60);
+    if (r.t0 !== null) r.t0 = Date.now();
+    r.total = Math.max(r.left, r.total - 60);
     refresh();
   };
   const secs = Math.ceil(left);
@@ -2439,27 +2592,33 @@ const Timer = ({
       {pad(Math.floor(secs / 60))}:{pad(secs % 60)}
     </div>
   );
+  // Icon-only buttons: Btn pads for text, so give them a square padding; the row wraps rather than leaving the card.
+  const sq: CSSProperties = { padding: compact ? 9 : 12 };
   const buttons = compact ? (
-    <div style={{ display: 'flex', gap: 10, marginLeft: 'auto' }}>
-      {running ? <Btn icon="pause" onClick={pause} size={21} /> : <Btn icon="play" onClick={start} size={21} disabled={secs === 0} />}
-      <Btn icon="plus" ghost onClick={addMin} size={21} />
-      <Btn icon="reset" ghost tone="grey" onClick={reset} size={21} />
+    <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'flex-end', gap: 8, marginLeft: 'auto' }}>
+      {running ? <Btn icon="pause" onClick={pause} size={19} style={sq} /> : <Btn icon="play" onClick={start} size={19} disabled={secs === 0} style={sq} />}
+      <Btn icon="minus" ghost onClick={subMin} size={19} style={sq} />
+      <Btn icon="plus" ghost onClick={addMin} size={19} style={sq} />
+      <Btn icon="reset" ghost tone="grey" onClick={reset} size={19} style={sq} />
     </div>
   ) : (
-    <div style={{ display: 'flex', gap: 12 }}>
+    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
       {running ? (
-        <Btn icon="pause" onClick={pause} size={22}>
+        <Btn icon="pause" onClick={pause} size={19}>
           Pause
         </Btn>
       ) : (
-        <Btn icon="play" onClick={start} size={22} disabled={secs === 0}>
+        <Btn icon="play" onClick={start} size={19} disabled={secs === 0}>
           Démarrer
         </Btn>
       )}
-      <Btn icon="plus" ghost onClick={addMin} size={22}>
-        1 min
+      <Btn ghost onClick={subMin} size={19}>
+        −1 min
       </Btn>
-      <Btn icon="reset" ghost tone="grey" onClick={reset} size={22} />
+      <Btn ghost onClick={addMin} size={19}>
+        +1 min
+      </Btn>
+      <Btn icon="reset" ghost tone="grey" onClick={reset} size={19} style={sq} />
     </div>
   );
   const card: CSSProperties = {
@@ -2471,7 +2630,13 @@ const Timer = ({
   if (compact) {
     // One row, ~140 px tall: ring · label + time · buttons.
     return (
-      <div className={cls} style={{ ...card, display: 'flex', alignItems: 'center', gap: 20, padding: '14px 22px', ...style }}>
+      <div
+        className={cls}
+        data-osd-timer={id}
+        data-osd-timer-minutes={minutes}
+        data-osd-timer-label={label}
+        style={{ ...card, display: 'flex', alignItems: 'center', gap: 20, padding: '14px 22px', ...style }}
+      >
         {clock(false)}
         <div style={{ minWidth: 150 }}>
           <Eyebrow c={secs === 0 ? C.coral : C.muted} size={18}>
@@ -2484,7 +2649,13 @@ const Timer = ({
     );
   }
   return (
-    <div className={cls} style={{ ...card, width: 440, padding: '24px 28px', display: 'flex', flexDirection: 'column', gap: 18, ...style }}>
+    <div
+      className={cls}
+      data-osd-timer={id}
+      data-osd-timer-minutes={minutes}
+      data-osd-timer-label={label}
+      style={{ ...card, width: 'max-content', minWidth: 480, padding: '24px 28px', display: 'flex', flexDirection: 'column', gap: 18, ...style }}
+    >
       <div style={{ display: 'flex', alignItems: 'center', gap: 24 }}>
         {clock(true)}
         <div>
@@ -8155,6 +8326,9 @@ export const meta: SlideMeta = {
   createdAt: '2026-10-12T20:10:00.000Z',
 };
 
+// Module → index of its opening page (written by scripts/deck-features.mjs).
+const MOD_START: Record<number, number> = {0:0,1:8,2:21,3:35,4:50,5:63,6:76,7:89,11:99};
+
 export default [
   O_Cover,
   O_Welcome,
@@ -9115,3 +9289,17 @@ DIRE — « Merci pour votre énergie et votre participation. Si vous ne retenez
 
 ANIMATION — Distribuer ou afficher le lien du questionnaire d’évaluation. Rappeler de sauvegarder le document de prompts.`,
 ];
+
+// @@TIMERS-BEGIN
+// Minuteurs de la deck — généré par scripts/timers-manifest.mjs (page = index 0-based).
+export const timers = [
+  { id: "setup", label: "Check-up", page: 7, minutes: 3 },
+  { id: "atelier-1", label: "Atelier 1", page: 31, minutes: 15 },
+  { id: "atelier-2", label: "Atelier 2", page: 46, minutes: 20 },
+  { id: "atelier-3", label: "Atelier 3", page: 59, minutes: 20 },
+  { id: "atelier-4", label: "Atelier 4", page: 73, minutes: 15 },
+  { id: "atelier-5", label: "Atelier 5", page: 86, minutes: 15 },
+  { id: "atelier-6", label: "Atelier 6", page: 97, minutes: 20 },
+  { id: "restitution", label: "Temps de parole", page: 98, minutes: 2 },
+];
+// @@TIMERS-END

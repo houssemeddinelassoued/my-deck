@@ -12,7 +12,7 @@ const M4_Divider: Page = () => (
     }
     sub="Repérer les anti-patterns du code généré, restructurer avec SOLID, optimiser en mesurant, moderniser le legacy."
     dur="13:35 – 14:40 · TP inclus"
-    labs={<Tag tone="green" size={19}>TP 4 · refactoring avec votre agent</Tag>}
+    labs={<Tag tone="green" size={19}>TP 3 · refactoring avec votre agent</Tag>}
   >
     <SecItem n={1}>Les anti-patterns du code généré</SecItem>
     <SecItem n={2}>Refactoring avancé : SOLID</SecItem>
@@ -142,11 +142,11 @@ const M4_Perf: Page = () => (
     <div className={A.in} style={{ position: 'absolute', left: 1040, top: 262, width: 760, background: C.card, borderRadius: 20, boxShadow: SHADOW, padding: '26px 30px', ...dl(200) }}>
       <PanelTitle icon="gauge">Benchmark · 200 salles × 10 000 réservations</PanelTitle>
       <div style={{ marginTop: 10, display: 'flex', flexDirection: 'column', gap: 24 }}>
-        <M4Bar label="Généré au TP 2 · boucles imbriquées" ms="1 840 ms" w={100} tone="coral" cls={A.grow} />
+        <M4Bar label="Généré au TP 1 · boucles imbriquées" ms="1 840 ms" w={100} tone="coral" cls={A.grow} />
         <M4Bar label="Index par salle + tri" ms="14 ms" w={2} tone="green" cls={b.grow(1)} />
         <M4Bar label="Requête SQL bornée + index" ms="3 ms" w={1} tone="teal" cls={b.grow(2)} />
       </div>
-      <div style={{ marginTop: 22, fontSize: 19, color: C.muted }}>Ordres de grandeur illustratifs : mesurez sur votre machine au TP 4.</div>
+      <div style={{ marginTop: 22, fontSize: 19, color: C.muted }}>Ordres de grandeur illustratifs : mesurez sur votre machine au TP 3.</div>
     </div>
   </Frame>
 );
@@ -288,7 +288,7 @@ const ANA_INFO: Record<AnaField, { t: string; tone: Tone; icon: IconName; text: 
   name: { t: 'name · le nom', tone: 'navy', icon: 'user', text: 'Le nom affiché dans la liste des rôles du Chat, et celui qu’un autre agent utilise pour le solliciter. Sans lui, le nom du fichier.', tip: 'Court et unique : « Refactoreur », pas « Agent 2 ».' },
   desc: { t: 'description · quand l’utiliser', tone: 'blue', icon: 'note', text: 'Obligatoire pour le harnais Copilot. Elle dit ce que fait l’agent et quand le choisir : c’est elle qui décide de la délégation.', tip: 'Dites aussi ce qu’il ne fait jamais.' },
   tools: { t: 'tools · ce qu’il a le droit de faire', tone: 'coral', icon: 'tool', text: 'La liste des outils : sans « edit », il ne peut pas modifier de fichier ; sans « execute », pas de terminal. Cliquez les outils pour voir le risque.', tip: 'Le minimum nécessaire, jamais « * » par confort.' },
-  skills: { t: 'skills · ses savoir-faire', tone: 'violet', icon: 'book', text: 'Les skills chargées dans son contexte : ici la méthode de refactoring, écrite une fois, réutilisable par d’autres agents.', tip: 'Une skill = un dossier .github/skills/<nom>/, comme au TP 3.' },
+  skills: { t: 'skills · ses savoir-faire', tone: 'violet', icon: 'book', text: 'Les skills chargées dans son contexte : ici la méthode de refactoring, écrite une fois, réutilisable par d’autres agents.', tip: 'Une skill = un dossier .github/skills/<nom>/, comme au TP 2.' },
   model: { t: 'model · facultatif', tone: 'green', icon: 'cpu', text: 'Un modèle, ou une liste par ordre de préférence. Sans ce champ : le modèle choisi dans le sélecteur.', tip: 'Les champs handoffs et agents des anciens tutoriels sont ignorés par le harnais Copilot.' },
   body: { t: 'Le corps · son rôle et ses règles', tone: 'pink', icon: 'chat', text: 'Les consignes en Markdown, ajoutées à chaque demande faite à cet agent, en plus de copilot-instructions.md : sa mission, sa méthode, ses interdits.', tip: 'Des règles vérifiables, pas des vœux pieux.' },
 };
@@ -408,7 +408,7 @@ const AGENTS6: AgDef[] = [
     file: 'architecte.agent.md',
     icon: 'layers',
     tone: 'teal',
-    tp: 'TP 6',
+    tp: 'TP 5',
     desc: 'Découpe une demande en lots vérifiables. Ne code jamais.',
     tools: ['read', 'search'],
     extra: [],
@@ -422,35 +422,35 @@ const AGENTS6: AgDef[] = [
     file: 'testeur.agent.md',
     icon: 'flask',
     tone: 'pink',
-    tp: 'TP 6',
+    tp: 'TP 5',
     desc: 'Écrit les tests d’un lot à partir de la matrice validée.',
     tools: ['read', 'search', 'edit', 'execute'],
     extra: [<><Ck>skills</Ck>: [<Cs>'matrice-de-tests'</Cs>]</>],
     body: ['Tu es le Testeur de SalleLibre.', '- Matrice validée d’abord, puis les tests.', '- Un nouveau test doit d’abord être ROUGE.', '- Tu ne modifies que tests/, jamais src/.', '- Tu ne supprimes ni n’affaiblis un test.'],
     mission: 'Prouver le comportement attendu avant qu’il existe : des tests rouges, puis verts.',
     never: 'Toucher au code de production, sauter ou affaiblir un test.',
-    call: 'Votre skill du TP 3, devenue un rôle à part entière.',
+    call: 'Votre skill du TP 2, devenue un rôle à part entière.',
   },
   {
     tab: 'Refactoreur',
     file: 'refactoreur.agent.md',
     icon: 'wand',
     tone: 'violet',
-    tp: 'TP 4',
+    tp: 'TP 3',
     desc: 'Refactore par petits pas sûrs, sans changer le comportement.',
     tools: ['read', 'search', 'edit', 'execute'],
     extra: [<><Ck>skills</Ck>: [<Cs>'refactoring-sur'</Cs>]</>],
     body: ['Tu es le Refactoreur de SalleLibre.', '- Tests avant et après chaque geste.', '- Un refactoring à la fois ; rouge : annule.', '- Aucune correction de bug au passage.', '- Ne modifie jamais tests/.'],
     mission: 'Améliorer la structure (SOLID, performance) avec la preuve que rien n’a bougé.',
     never: 'Modifier un test, corriger un bug en douce, livrer un diff géant.',
-    call: 'Choisi dans la liste des rôles pendant le TP 4.',
+    call: 'Choisi dans la liste des rôles pendant le TP 3.',
   },
   {
     tab: 'Auditeur',
     file: 'auditeur.agent.md',
     icon: 'shield',
     tone: 'coral',
-    tp: 'TP 5',
+    tp: 'TP 4',
     desc: 'Audite un diff selon OWASP Top 10 : 2025. Lecture seule.',
     tools: ['read', 'search'],
     extra: [<><Ck>user-invocable</Ck>: <Cn>false</Cn> <Cc>{'# sous-agent seulement'}</Cc></>],
@@ -464,7 +464,7 @@ const AGENTS6: AgDef[] = [
     file: 'documentaliste.agent.md',
     icon: 'doc',
     tone: 'green',
-    tp: 'TP 6',
+    tp: 'TP 5',
     desc: 'Met à jour OpenAPI et README à partir du code.',
     tools: ['read', 'search', 'edit'],
     extra: [<Cc>{'# model : un modèle rapide suffit'}</Cc>],
@@ -478,7 +478,7 @@ const AGENTS6: AgDef[] = [
     file: 'chef-orchestre.agent.md',
     icon: 'route',
     tone: 'navy',
-    tp: 'TP 6',
+    tp: 'TP 5',
     desc: 'Mène une feature de bout en bout en déléguant.',
     tools: ['agent', 'read', 'search', 'edit', 'execute', 'todo'],
     extra: [],
@@ -657,11 +657,11 @@ const M4_Qcm: Page = () => (
   </QcmPage>
 );
 
-// ─── TP 4 ───────────────────────────────────────────────────────────────────
+// ─── TP 3 ───────────────────────────────────────────────────────────────────
 const M4_TP: Page = () => (
   <LabPage
     mod={4}
-    n="4"
+    n="3"
     title="Refactoring en profondeur"
     defi="refacto"
     who="Individuel"
@@ -683,10 +683,10 @@ const M4_TP: Page = () => (
     objective={<>Optimiser le code du matin (SOLID, patterns, performance) avec <strong>votre</strong> agent Refactoreur, sans changer le comportement.</>}
     crit={
       <>
-        <CheckItem id="tp4-1" size={21}>Rapport d’anti-patterns en rôle Ask, priorisé</CheckItem>
-        <CheckItem id="tp4-2" size={21}>Refactoreur : 4 outils au plus, règles vérifiables</CheckItem>
-        <CheckItem id="tp4-3" size={21}>Trois refactorings, un commit chacun, tests intouchés</CheckItem>
-        <CheckItem id="tp4-4" size={21}>Benchmark avant / après de la recherche</CheckItem>
+        <CheckItem id="tp3-1" size={21}>Rapport d’anti-patterns en rôle Ask, priorisé</CheckItem>
+        <CheckItem id="tp3-2" size={21}>Refactoreur : 4 outils au plus, règles vérifiables</CheckItem>
+        <CheckItem id="tp3-3" size={21}>Trois refactorings, un commit chacun, tests intouchés</CheckItem>
+        <CheckItem id="tp3-4" size={21}>Benchmark avant / après de la recherche</CheckItem>
       </>
     }
   >
@@ -710,7 +710,7 @@ export const __notes = [
 
 OBJECTIF — Annoncer le module 4 du programme : optimisation et refactoring avancé.
 
-DIRE — « Module 4. Copilot produit du code qui marche ; il ne produit pas spontanément du code qui dure. On va identifier les anti-patterns du code généré, refactorer avec SOLID, optimiser les performances en mesurant, moderniser du legacy, comparer plusieurs implémentations. Puis on industrialise : un agent personnalisé, un rôle écrit une fois avec ses outils et ses interdits. TP 4 : un refactoring en profondeur de votre code du matin, avec votre propre agent Refactoreur. »
+DIRE — « Module 4. Copilot produit du code qui marche ; il ne produit pas spontanément du code qui dure. On va identifier les anti-patterns du code généré, refactorer avec SOLID, optimiser les performances en mesurant, moderniser du legacy, comparer plusieurs implémentations. Puis on industrialise : un agent personnalisé, un rôle écrit une fois avec ses outils et ses interdits. TP 3 : un refactoring en profondeur de votre code du matin, avec votre propre agent Refactoreur. »
 
 TRANSITION — « Commençons par un exercice d’œil. »`,
   `⏱ 5 min · ANTI-PATTERNS (exercice, 6 temps)
@@ -731,7 +731,7 @@ TRANSITION — « Le défaut numéro trois, c’était la performance. »`,
 
 OBJECTIF — Optimisation des performances : génération d’algorithmes efficaces.
 
-DIRE — « Copilot écrit l’algorithme le plus évident. Il sait faire mieux si on lui donne la mesure et la cible : le profil, la complexité visée, la contrainte de signature, les tests inchangés, et un benchmark reproductible. Le code du TP 2 : près de deux secondes. » → clic. « Index par salle et tri : quelques millisecondes. » → clic. « Une requête bornée avec index côté base : encore mieux, mais il faut alors des tests d’intégration. Les chiffres sont des ordres de grandeur : vous mesurerez les vôtres. Et lisibilité contre performance, c’est un choix, pas un réflexe. »
+DIRE — « Copilot écrit l’algorithme le plus évident. Il sait faire mieux si on lui donne la mesure et la cible : le profil, la complexité visée, la contrainte de signature, les tests inchangés, et un benchmark reproductible. Le code du TP 1 : près de deux secondes. » → clic. « Index par salle et tri : quelques millisecondes. » → clic. « Une requête bornée avec index côté base : encore mieux, mais il faut alors des tests d’intégration. Les chiffres sont des ordres de grandeur : vous mesurerez les vôtres. Et lisibilité contre performance, c’est un choix, pas un réflexe. »
 
 TRANSITION — « Optimiser du code neuf, c’est facile. Moderniser du vieux code, beaucoup moins. »`,
   `⏱ 4 min · LEGACY (4 temps)
@@ -757,7 +757,7 @@ OBJECTIF — Lire et écrire un fichier .agent.md : nom, description, outils, sk
 DIRE — « Un agent personnalisé, c’est un fichier Markdown dans .github/agents. Le nom : celui que vous voyez dans la liste des rôles, et celui qu’un autre agent utilisera pour le solliciter. »
 → beat 1 « La description : obligatoire pour le harnais Copilot. Elle dit quand choisir cet agent, et c’est elle qui décide de la délégation. »
 → beat 2 « Les outils : ce qu’il a le droit de faire. Sans edit, il ne modifie rien ; sans execute, pas de terminal. » Cliquer web : « Terminal plus Internet : une page piégée peut lui dicter une commande. » Re-cliquer pour retirer.
-→ beat 3 « Les skills : ses savoir-faire. Exactement le format de votre skill du TP 3. »
+→ beat 3 « Les skills : ses savoir-faire. Exactement le format de votre skill du TP 2. »
 → beat 4 « Le modèle : facultatif. Et attention aux anciens tutoriels : handoffs et agents sont des champs de l’ancien harnais Local, ignorés par le harnais Copilot. »
 → beat 5 « Le corps : la mission, la méthode, les interdits. Des règles vérifiables : « lance les tests avant et après », pas « sois rigoureux ». »
 
@@ -769,11 +769,11 @@ TRANSITION — « Un agent seul, c’est utile. Une équipe d’agents, c’est 
 OBJECTIF — Montrer des exemples complets d’agents, leurs droits et leurs interdits, et préparer l’orchestration du module 6.
 
 DIRE — « L’Architecte : lecture seule. Il découpe une demande en lots de un à trois fichiers, chacun avec son test. Il ne peut rien casser. »
-→ beat 1 « Le Testeur : il reprend votre skill du TP 3. Sa règle d’or : un nouveau test doit d’abord être rouge, et il ne touche jamais src. »
-→ beat 2 « Le Refactoreur : celui que vous écrivez au TP 4. »
-→ beat 3 « L’Auditeur : lecture seule, et user-invocable à false : il n’apparaît pas dans la liste, on le sollicite comme sous-agent. Intérêt : un contexte neuf, il n’a pas écrit le code qu’il relit. Vous l’utiliserez au TP 5. »
+→ beat 1 « Le Testeur : il reprend votre skill du TP 2. Sa règle d’or : un nouveau test doit d’abord être rouge, et il ne touche jamais src. »
+→ beat 2 « Le Refactoreur : celui que vous écrivez au TP 3. »
+→ beat 3 « L’Auditeur : lecture seule, et user-invocable à false : il n’apparaît pas dans la liste, on le sollicite comme sous-agent. Intérêt : un contexte neuf, il n’a pas écrit le code qu’il relit. Vous l’utiliserez au TP 4. »
 → beat 4 « Le Documentaliste : edit, mais seulement sur la doc ; un modèle rapide suffit. »
-→ beat 5 « Et le chef d’orchestre : il a l’outil agent, il délègue aux autres par leur nom exact, et il s’arrête pour vous demander de valider le plan. On le détaille au module 6, c’est votre TP 6. Regardez les outils : moins un agent en a, plus on peut lui faire confiance. »
+→ beat 5 « Et le chef d’orchestre : il a l’outil agent, il délègue aux autres par leur nom exact, et il s’arrête pour vous demander de valider le plan. On le détaille au module 6, c’est votre TP 5. Regardez les outils : moins un agent en a, plus on peut lui faire confiance. »
 
 ANIMATION — Les onglets sont cliquables : revenir sur l’onglet demandé par un participant.
 
@@ -799,8 +799,8 @@ DIRE — « Le réflexe : un diff que vous ne pouvez pas relire se rejette. Les 
 
 ANIMATION — Vote à voix haute, clic sur la réponse majoritaire, → bonne réponse, → l’essentiel.
 
-TRANSITION — « TP 4. »`,
-  `⏱ 25 min (minuteur) · TP 4
+TRANSITION — « TP 3. »`,
+  `⏱ 25 min (minuteur) · TP 3
 
 OBJECTIF — Atelier du programme : refactoring en profondeur, optimiser le code généré le matin en appliquant SOLID et les patterns vus.
 

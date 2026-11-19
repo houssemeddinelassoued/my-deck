@@ -1,0 +1,218 @@
+<!doctype html><html lang="fr"><head><meta charset="utf-8"><title>Dossier transmis par Éric</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Barlow+Condensed:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+@page { size: A4; margin: 16mm 16mm 18mm; }
+* { box-sizing: border-box; }
+:root { --ink:#2B2F33; --soft:#4B545B; --muted:#77818A; --faint:#AFB8C0; --rule:#DCE3E8; --panel:#EAF0F4;
+  --blue:#1F78C1; --teal:#22A6B3; --green:#3A9F45; --yellow:#FFD000; --amber:#E8A600; --coral:#E0573D; --violet:#6B57C9; }
+html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+body { margin:0; font-family: Barlow, Arial, sans-serif; font-size: 10.5pt; line-height: 1.45; color: var(--ink); }
+h1, h2, h3, .disp { font-family: 'Barlow Condensed', 'Arial Narrow', Arial, sans-serif; }
+h1 { font-size: 30pt; line-height: 1.05; margin: 0 0 8pt; }
+h2 { font-size: 19pt; line-height: 1.1; margin: 0 0 10pt; display:flex; align-items:center; gap:10pt; }
+h2 .n { flex:none; width: 26pt; height: 26pt; border-radius: 7pt; background: var(--yellow); color: var(--ink); display:inline-flex; align-items:center; justify-content:center; font-size: 15pt; }
+h3 { font-size: 13.5pt; margin: 14pt 0 5pt; color: var(--blue); break-after: avoid; }
+h2 { break-after: avoid; }
+p { margin: 0 0 7pt; }
+ul, ol { margin: 0 0 8pt; padding-left: 16pt; } li { margin: 2pt 0; }
+.np { break-before: page; }
+.keep { break-inside: avoid; }
+.eyebrow { font-family: 'Barlow Condensed', Arial, sans-serif; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; font-size: 9.5pt; color: var(--blue); }
+.muted { color: var(--muted); } .small { font-size: 9pt; }
+.lede { font-size: 12pt; color: var(--soft); margin-bottom: 12pt; }
+.box { border-radius: 8pt; padding: 9pt 12pt; margin: 8pt 0 10pt; break-inside: avoid; }
+.box > b:first-child, .box .t { display:block; font-family:'Barlow Condensed', Arial, sans-serif; font-weight:700; font-size: 10pt; letter-spacing:.1em; text-transform: uppercase; margin-bottom: 3pt; }
+.tip { background: #E3EFF9; } .tip .t { color: var(--blue); }
+.warn { background: #FBE3DD; } .warn .t { color: #B23A22; }
+.ok { background: #E3F2E5; } .ok .t { color: #2A7A33; }
+.note { background: #FFF6CC; } .note .t { color: #8A6A00; }
+.prompt { background: #fff; border: 1.2pt solid var(--rule); border-left: 4pt solid var(--blue); border-radius: 6pt; padding: 8pt 12pt; margin: 6pt 0 10pt; break-inside: avoid; }
+.prompt .t { color: var(--blue); font-family:'Barlow Condensed', Arial, sans-serif; font-weight:700; font-size:9.5pt; letter-spacing:.1em; text-transform:uppercase; margin-bottom: 3pt; display:block; }
+.prompt .slot { font-family: 'JetBrains Mono', Consolas, monospace; font-size: 9pt; color: var(--muted); }
+table { width: 100%; border-collapse: collapse; margin: 6pt 0 10pt; break-inside: avoid; }
+th { background: var(--blue); color: #fff; text-align: left; font-weight: 600; font-size: 9.5pt; padding: 5pt 7pt; }
+td { border-bottom: 1pt solid var(--rule); padding: 5pt 7pt; vertical-align: top; }
+tr.alt td { background: #F6F9FB; }
+td.blank { height: 22pt; }
+.k { font-weight: 700; color: var(--blue); white-space: nowrap; }
+.check { list-style: none; padding-left: 0; } .check li { padding-left: 20pt; position: relative; margin: 4pt 0; }
+.check li::before { content: ''; position: absolute; left: 0; top: 2pt; width: 11pt; height: 11pt; border: 1.3pt solid var(--soft); border-radius: 2.5pt; }
+.x2 { display:inline-block; font-size: 8pt; font-weight:700; color:#fff; background: var(--coral); border-radius: 3pt; padding: 0 4pt; margin-left: 4pt; }
+.grid2 { display:grid; grid-template-columns: 1fr 1fr; gap: 10pt; }
+.card { border: 1pt solid var(--rule); border-radius: 8pt; padding: 8pt 10pt; break-inside: avoid; }
+.card h4 { margin: 0 0 3pt; font-family:'Barlow Condensed', Arial, sans-serif; font-size: 12pt; }
+.tag { display:inline-block; font-size: 8.5pt; font-weight: 600; padding: 0 6pt; border-radius: 99pt; background: var(--panel); color: var(--soft); }
+.fict { font-size: 8.5pt; color: var(--muted); border: 1pt dashed var(--faint); border-radius: 4pt; padding: 2pt 6pt; display: inline-block; }
+code { font-family: 'JetBrains Mono', Consolas, monospace; font-size: 8.8pt; background: var(--panel); padding: 0 3pt; border-radius: 3pt; }
+
+.dochead { display:flex; justify-content:space-between; align-items:flex-end; border-bottom: 2pt solid var(--ink); padding-bottom: 6pt; margin-bottom: 12pt; }
+.dochead .who { font-family:'Barlow Condensed', Arial, sans-serif; font-weight:700; font-size: 11pt; letter-spacing:.06em; text-transform: uppercase; color: var(--soft); }
+.dochead .ref { font-size: 9pt; color: var(--muted); text-align:right; }
+.mail { border: 1pt solid var(--rule); border-radius: 6pt; overflow: hidden; }
+.mail .hd { background: #F6F9FB; border-bottom: 1pt solid var(--rule); padding: 8pt 12pt; }
+.mail .hd table { margin: 0; } .mail .hd td { border: 0; padding: 1.5pt 0; } .mail .hd td:first-child { width: 18mm; color: var(--muted); }
+.mail .subj { font-family:'Barlow Condensed', Arial, sans-serif; font-weight:700; font-size: 15pt; margin: 2pt 0 4pt; }
+.mail .bd { padding: 12pt 14pt; font-size: 10.5pt; }
+.att { display:inline-block; border:1pt solid var(--rule); border-radius: 4pt; padding: 1pt 6pt; font-size: 9pt; margin-right: 4pt; background:#fff; }
+.form td:first-child { width: 34%; color: var(--soft); font-weight: 600; }
+table.form { break-inside: auto; } table.form tr { break-inside: avoid; }
+.fiche h2 { margin-bottom: 6pt; } .fiche td, .fiche th { padding: 3.2pt 7pt; font-size: 9.6pt; line-height: 1.35; }
+.sign { margin-top: 10pt; color: var(--soft); }
+.hand { font-style: italic; color: #1F4E8A; }
+</style></head><body>
+<section>
+  <div class="dochead"><div><div class="who">Groupe Lessard · Ventes → Projets</div></div><div class="ref">Dossier de transfert · P-2611-04<br><span class="fict">Cas fictif de formation · IA124</span></div></div>
+  <div class="eyebrow">Atelier 1 · Données de départ</div>
+  <h1>Dossier transmis par Éric</h1>
+  <p class="lede">Centre sportif de Montréal · Lot enveloppe en aluminium et verre · Transmis au chargé de projet le lundi 16 novembre 2026.</p>
+  <table>
+    <tr><th style="width:10%">Page</th><th>Contenu</th></tr>
+    <tr><td>2</td><td>Le courriel de transfert d’Éric à Mathieu</td></tr>
+    <tr class="alt"><td>3</td><td>La fiche de transfert ventes → projet</td></tr>
+    <tr><td>4</td><td>Le calendrier : dates imposées et délais</td></tr>
+    <tr class="alt"><td>5</td><td>Les intervenants et leurs coordonnées</td></tr>
+    <tr><td>6</td><td>Les notes d’Éric : rencontre avec Boréa du 3 novembre</td></tr>
+    <tr class="alt"><td>7</td><td>Le résumé à coller dans Copilot (si le PDF n’est pas lu)</td></tr>
+  </table>
+  <p>La soumission signée est dans un fichier à part : <b>Soumission_Montreal.pdf</b>.</p>
+  <div class="box warn"><span class="t">Rappel</span>Ce dossier est fictif, créé pour la formation. Sur un vrai dossier client : votre compte Lessard uniquement, jamais un compte personnel.</div>
+</section>
+
+<section class="np">
+  <div class="dochead"><div><div class="who">Courriel · Boîte de réception de Mathieu</div></div><div class="ref">Page 2<br><span class="fict">Cas fictif de formation · IA124</span></div></div>
+  <div class="mail">
+    <div class="hd">
+  <div class="subj">Transfert · Centre sportif de Montréal (Boréa) · c’est à toi !</div>
+  <table>
+    <tr><td>De</td><td>Éric · Représentant des ventes, Groupe Lessard</td></tr>
+    <tr><td>À</td><td>Mathieu · Chargé de projet</td></tr>
+    <tr><td>Cc</td><td>Hélène · Directrice de projets</td></tr>
+    <tr><td>Date</td><td>Lundi 16 novembre 2026, 8 h 12</td></tr>
+    <tr><td>Pièces j.</td><td><span class="att">📎 Soumission_Montreal.pdf</span><span class="att">📎 Fiche_transfert_P-2611-04.pdf</span><span class="att">📎 Notes_rencontre_Borea_3nov.docx</span></td></tr>
+  </table></div>
+    <div class="bd">
+      <p>Salut Mathieu,</p>
+      <p>Bonne nouvelle : le contrat du Centre sportif de Montréal est signé avec Construction Boréa (signature le 6 novembre). C’est le lot enveloppe au complet : le mur-rideau du hall, les 46 fenêtres, les 6 portes d’entrée et la verrière. 1,2 M$. Je te transfère le dossier, c’est toi qui le pilotes à partir d’aujourd’hui.</p>
+      <p>Tu trouveras ci-joint la soumission, la fiche de transfert et mes notes de la rencontre avec Boréa du 3 novembre.</p>
+      <p>Quelques points à savoir :</p>
+      <ul>
+        <li>Leur date qui compte, c’est le <b>bâtiment fermé le vendredi 28 mai</b>. Ils veulent lancer les finitions intérieures tout de suite après.</li>
+        <li>J’ai dit à Simon (le chargé de projet de Boréa) qu’on pourrait <b>commencer la pose du hall dès mars</b>. Ils comptent un peu là-dessus pour leur échéancier.</li>
+        <li>Ils nous ont demandé si on pouvait aussi faire le calfeutrage intérieur et les stores. Je leur ai dit que ce n’était pas dans notre prix, qu’on pourrait en reparler.</li>
+        <li>Pour l’architecte, c’est Marc-André Leduc chez Atelier Mercier. Il est rigoureux, mais pas toujours rapide.</li>
+      </ul>
+      <p>Hélène est au courant. Je suis en déplacement mardi et mercredi, mais joignable sur mon cellulaire si tu as des questions.</p>
+      <p>Bon projet !</p>
+      <p class="sign">Éric<br><span class="small muted">Représentant des ventes · Groupe Lessard · 514-555-0142</span></p>
+    </div>
+  </div>
+</section>
+
+<section class="np fiche">
+  <div class="dochead"><div><div class="who">Fiche de transfert · Ventes → Projets</div></div><div class="ref">Page 3 · Remplie par Éric le 13 novembre 2026<br><span class="fict">Cas fictif de formation · IA124</span></div></div>
+  <h2>Fiche de transfert ventes → projet</h2>
+  <table class="form">
+    <tr><th colspan="2">Identification</th></tr>
+    <tr><td>N° de projet</td><td>P-2611-04</td></tr>
+    <tr><td>Projet</td><td>Centre sportif de Montréal · lot enveloppe en aluminium et verre</td></tr>
+    <tr><td>Propriétaire</td><td>Ville de Rivière-Claire</td></tr>
+    <tr><td>Client (entrepreneur général)</td><td>Construction Boréa · Simon Tremblay, chargé de projet</td></tr>
+    <tr><td>Architecte</td><td>Atelier Mercier architectes · Marc-André Leduc</td></tr>
+    <tr><td>Soumission</td><td>S-26-0412 du 2 octobre 2026 (voir Soumission_Montreal.pdf)</td></tr>
+    <tr><td>Contrat</td><td>Signé le 6 novembre 2026 · 1 200 000 $ avant taxes · retenue contractuelle de 10 %</td></tr>
+    <tr><th colspan="2">Périmètre</th></tr>
+    <tr><td>Inclus</td><td>Mur-rideau du hall (420 m²) · 46 fenêtres (types F1, F2, F3) · 6 portes d’entrée, dont 2 automatiques · 1 verrière (64 m²) · panneaux d’allège et solins · dessins d’atelier signés et scellés · installation</td></tr>
+    <tr><td>Exclus</td><td>Calfeutrage intérieur · stores · finitions intérieures · raccordement électrique des portes automatiques · permis</td></tr>
+    <tr><th colspan="2">Dates et délais</th></tr>
+    <tr><td>Départ du projet</td><td>Lundi 16 novembre 2026</td></tr>
+    <tr><td>Échéance contractuelle</td><td>Bâtiment fermé le vendredi 28 mai 2027</td></tr>
+    <tr><td>Structure d’acier (par l’EG)</td><td>Terminée vers le 15 mars 2027 (selon Boréa)</td></tr>
+    <tr><td>Délais de Lessard (soumission)</td><td>Dessins d’atelier : 3 semaines · approbation par l’architecte : 10 jours ouvrables (devis) · verre : 8 semaines après la commande ferme · fabrication : 6 semaines</td></tr>
+    <tr><td>Calendrier</td><td>Usine et chantier fermés aux Fêtes : du lundi 21 décembre 2026 au vendredi 1er janvier 2027</td></tr>
+    <tr><th colspan="2">Engagements et points ouverts</th></tr>
+    <tr><td>Engagements verbaux</td><td class="hand">Pose du hall dès mars (dit à Simon, Boréa, le 3 nov.)</td></tr>
+    <tr><td>Demandes du client hors contrat</td><td class="hand">Calfeutrage intérieur et stores : « on en reparlera »</td></tr>
+    <tr><td>Risques connus</td><td class="hand">Architecte lent à répondre. Grue partagée avec les autres corps de métier.</td></tr>
+    <tr><td>Remarques</td><td class="hand">Client important pour nous, d’autres projets de la Ville à venir.</td></tr>
+  </table>
+</section>
+
+<section class="np">
+  <div class="dochead"><div><div class="who">Calendrier · Dates imposées et délais</div></div><div class="ref">Page 4<br><span class="fict">Cas fictif de formation · IA124</span></div></div>
+  <h2>Le calendrier : ce qui est imposé</h2>
+  <p class="lede">Les dates que Lessard ne choisit pas, et les délais de la soumission. Les dates intermédiaires sont à établir par le chargé de projet.</p>
+  <table>
+    <tr><th style="width:28%">Date</th><th>Événement</th><th style="width:22%">Source</th></tr>
+    <tr><td>Ven. 6 nov. 2026</td><td>Signature du contrat</td><td>Contrat</td></tr>
+    <tr class="alt"><td>Lun. 16 nov. 2026</td><td>Départ du projet chez Lessard (transfert des ventes)</td><td>Fiche de transfert</td></tr>
+    <tr><td>Lun. 21 déc. 2026 → ven. 1er janv. 2027</td><td>Fermeture des Fêtes : usine Lessard et chantier fermés. Retour le lundi 4 janvier.</td><td>Calendrier Lessard et Boréa</td></tr>
+    <tr class="alt"><td>Vers le lun. 15 mars 2027</td><td>Structure d’acier terminée : les relevés au chantier peuvent commencer</td><td>Boréa (estimation)</td></tr>
+    <tr><td>Ven. 28 mai 2027</td><td><b>Bâtiment fermé</b> : enveloppe étanche, échéance contractuelle du lot</td><td>Contrat</td></tr>
+  </table>
+  <h3>Les délais à respecter</h3>
+  <table>
+    <tr><th style="width:36%">Activité</th><th style="width:22%">Délai</th><th>Condition</th></tr>
+    <tr><td>Dessins d’atelier</td><td>3 semaines</td><td>À partir du départ du projet</td></tr>
+    <tr class="alt"><td>Approbation par l’architecte</td><td>10 jours ouvrables</td><td>Après la soumission des dessins (devis, section 01 33 00)</td></tr>
+    <tr><td>Verre (unités scellées)</td><td>8 semaines</td><td>Après la commande ferme, qui suit l’approbation des dessins</td></tr>
+    <tr class="alt"><td>Fabrication des cadres</td><td>6 semaines</td><td>En usine, en parallèle du verre</td></tr>
+    <tr><td>Relevés au chantier</td><td>2 semaines</td><td>Une fois la structure terminée</td></tr>
+    <tr class="alt"><td>Installation</td><td>8 semaines</td><td>Après les relevés et la livraison du verre, selon l’accès à la grue</td></tr>
+  </table>
+  <div class="box note"><span class="t">À garder en tête</span>Les jours fériés et la fermeture des Fêtes ne sont pas des jours ouvrables. Les délais du verrier sont confirmés à la commande, pas avant.</div>
+</section>
+
+<section class="np">
+  <div class="dochead"><div><div class="who">Intervenants · Coordonnées</div></div><div class="ref">Page 5<br><span class="fict">Cas fictif de formation · IA124</span></div></div>
+  <h2>Les intervenants</h2>
+  <h3>Groupe Lessard</h3>
+  <table>
+    <tr><th style="width:22%">Personne</th><th style="width:34%">Rôle</th><th>Coordonnées</th></tr>
+    <tr><td>Mathieu</td><td>Chargé de projet</td><td>514-555-0131</td></tr>
+    <tr class="alt"><td>Hélène</td><td>Directrice de projets</td><td>514-555-0120</td></tr>
+    <tr><td>Nadia</td><td>Adjointe chargée de projet</td><td>514-555-0133</td></tr>
+    <tr class="alt"><td>Éric</td><td>Représentant des ventes</td><td>514-555-0142</td></tr>
+    <tr><td>Patrice</td><td>Contremaître d’installation</td><td>514-555-0156</td></tr>
+  </table>
+  <h3>À l’externe</h3>
+  <table>
+    <tr><th style="width:26%">Organisation</th><th style="width:30%">Personne · rôle</th><th>Coordonnées</th></tr>
+    <tr><td>Construction Boréa (EG)</td><td>Simon Tremblay · chargé de projet</td><td>s.tremblay@borea-construction.exemple · 514-555-0171</td></tr>
+    <tr class="alt"><td>Construction Boréa</td><td>Julie Bergeron · adjointe administrative</td><td>j.bergeron@borea-construction.exemple · 514-555-0172</td></tr>
+    <tr><td>Construction Boréa</td><td>Luc Paquette · surintendant de chantier</td><td>514-555-0175</td></tr>
+    <tr class="alt"><td>Atelier Mercier architectes</td><td>Marc-André Leduc · architecte</td><td>ma.leduc@ateliermercier.exemple · 514-555-0188</td></tr>
+    <tr><td>Ville de Rivière-Claire</td><td>Isabelle Côté · gestionnaire de projet, Service des immeubles</td><td>i.cote@riviere-claire.exemple · 514-555-0190</td></tr>
+    <tr class="alt"><td>Vitrerie Laurentienne</td><td>Martin Dubé · service à la clientèle</td><td>commandes@vitrerie-laurentienne.exemple · 514-555-0164</td></tr>
+    <tr><td>Panneaux Nordik</td><td>Kevin Ouellet · estimateur</td><td>k.ouellet@panneaux-nordik.exemple · 514-555-0167</td></tr>
+  </table>
+  <p class="small muted">Noms, adresses et numéros fictifs (indicatif 555).</p>
+</section>
+
+<section class="np">
+  <div class="dochead"><div><div class="who">Notes d’Éric · Rencontre avec Construction Boréa</div></div><div class="ref">Page 6 · Mardi 3 novembre 2026<br><span class="fict">Cas fictif de formation · IA124</span></div></div>
+  <h2>Notes de la rencontre avec Boréa</h2>
+  <p class="small muted">Présents : Simon Tremblay et Luc Paquette (Boréa), Éric (Lessard). Notes prises par Éric, non relues.</p>
+  <ul>
+    <li>Boréa veut nos dessins d’atelier « le plus vite possible » : l’architecte leur a dit qu’il serait chargé en décembre.</li>
+    <li>Structure d’acier : montage à partir de janvier, terminée « vers la mi-mars si l’hiver est correct ».</li>
+    <li>Date clé pour Boréa : bâtiment fermé le 28 mai, sinon décalage des finitions et de l’ouverture prévue par la Ville.</li>
+    <li>Simon demande si on peut commencer le hall en mars. <span class="hand">Je lui ai dit oui, dès mars.</span></li>
+    <li>Grue : une seule grue au chantier, partagée. Réserver nos créneaux au moins deux semaines d’avance auprès de Luc.</li>
+    <li>Accès au chantier : chaque travailleur doit remplir le formulaire de la Ville avant sa première présence.</li>
+    <li>Assurance : Boréa veut notre certificat d’assurance responsabilité à jour avant la mobilisation.</li>
+    <li>Ils demandent des échantillons de verre pour l’architecte (deux types de vitrage).</li>
+    <li>Calfeutrage intérieur et stores : Boréa cherche quelqu’un. <span class="hand">Pas dans notre prix. À voir.</span></li>
+    <li>Réunions de chantier : aux deux semaines, le mardi matin, à partir de janvier.</li>
+  </ul>
+</section>
+
+<section class="np">
+  <div class="dochead"><div><div class="who">Résumé à coller</div></div><div class="ref">Page 7<br><span class="fict">Cas fictif de formation · IA124</span></div></div>
+  <h2>Le résumé à coller dans Copilot</h2>
+  <p class="lede">Si Copilot ne lit pas ce PDF, sélectionnez le texte de l’encadré ci-dessous, copiez-le et collez-le dans la conversation.</p>
+  <div class="prompt" style="font-size:10pt">
+  DOSSIER DU PROJET — Centre sportif de Montréal (fictif). Objet : lot enveloppe en aluminium et verre, mur-rideau du hall (420 m²), 46 fenêtres, 6 portes d’entrée, 1 verrière (64 m²), panneaux d’allège et solins. Départ : lundi 16 novembre 2026. Contrat de 1,2 M$ avec Construction Boréa (entrepreneur général), signé le 6 novembre. Propriétaire : Ville de Rivière-Claire. Architecte : Atelier Mercier. Échéance : bâtiment fermé le vendredi 28 mai 2027. Structure d’acier terminée vers le 15 mars 2027 (estimation de Boréa). Équipe Lessard : Mathieu (chargé de projet), Hélène (directrice de projets), Nadia (adjointe), Éric (ventes), Patrice (contremaître d’installation). Délais : dessins d’atelier 3 semaines, puis 10 jours ouvrables d’approbation par l’architecte ; verre 8 semaines après la commande ferme ; fabrication 6 semaines ; relevés 2 semaines une fois la structure terminée ; installation 8 semaines. Contraintes : usine et chantier fermés aux Fêtes, du 21 décembre 2026 au 1er janvier 2027 ; une seule grue partagée, à réserver deux semaines d’avance ; formulaire d’accès de la Ville pour chaque travailleur ; certificat d’assurance à jour avant la mobilisation. Exclusions : calfeutrage intérieur, stores, finitions intérieures, raccordement électrique des portes automatiques, permis. Déjà connu : Éric a promis à Boréa une pose du hall « dès mars » (verbalement, le 3 novembre) ; Boréa demande aussi le calfeutrage intérieur et les stores, hors contrat.
+  </div>
+</section>
+</body></html>

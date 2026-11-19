@@ -10,7 +10,7 @@
 |---|---|---|
 | **Charte Docaposte Institute** | `.dap-build`, `.cop-build`, `.cpd-build`, `.po-build` | Thème `docaposte-institute` ; copie directe entre ces kits, en vérifiant les composants |
 | **Charte « inspirée de », sans nom ni logo** | `.iaa-build`, `.iad-build`, `.rh-build`, `.mkt-build`, `.o20-build`, `.irc-build`, `.sit-build` | Ne jamais y introduire le nom Docaposte ni sa marque à trois barres |
-| **Technologia** | `.ia134-build`, `.gp-build`, `.ia132-build` | Thème `technologia` |
+| **Technologia** | `.ia134-build`, `.gp-build`, `.ia132-build`, `.eth-build` | Thème `technologia` (`.eth-build` : une seule journée, 8 modules) |
 | **Decks autonomes** | `slides/ai-history-*`, `llm-explique`, `ml-explique`, `fenetre-de-contexte` | Pages à recopier depuis leur `index.tsx`, avec leurs notes |
 
 D'une famille à l'autre, on porte les composants manquants dans le nouveau kit, puis on vérifie par le build et les captures.
@@ -47,6 +47,10 @@ D'une famille à l'autre, on porte les composants manquants dans le nouveau kit,
 | Défauts, données sensibles (feu tricolore), anonymiser, injection, cadre | `.sit-build/40-m4.tsx` | ≈ 1 h | Support IT, tous |
 | Erreurs, données, RGPD, propriété intellectuelle, injection, gouvernance, quand ne pas utiliser l'IA | `.iaa-build/91-m9.tsx` | ≈ 50 min | Métiers, automatisation |
 | Limites et précautions ; cybersécurité et IA | `.dap-build/j1-30-m3is.tsx`, `j2-10-m5.tsx` | à mesurer | Développeurs |
+| Enjeux éthiques : biais (Amazon), quatre sources de biais (Gender Shades, Obermeyer 2019), lettre « boîte noire » / explicable (interrupteur), vie privée, feu tricolore | `.eth-build/40-m4.tsx` | ≈ 30 min | Tous publics, Technologia |
+| Loi 25 et IA responsable : calendrier 2022-2024, six obligations avec articles, article 12.1, EFVP, Déclaration de Montréal, six principes, règlement européen (report omnibus 2026), C-36, classement par niveau de risque | `.eth-build/50-m5.tsx` | ≈ 40 min | Tous publics, Québec. **Périssable** : `M5_World` |
+| Étude de cas : allocations de garde aux Pays-Bas (analyse individuelle par principes, rôles, débat avec volontaires, suite et leçons) | `.eth-build/60-a2.tsx` | ≈ 40 min | Atelier éthique |
+| Gouvernance : Air Canada (Moffatt), six rôles, cinq points de contrôle, charte en cinq rubriques + exemple, atelier mini-charte | `.eth-build/70-m7.tsx`, `80-a3.tsx` | ≈ 25 min + 45 min | Gestionnaires, décideurs |
 
 ## 4. Vérifier le code généré
 

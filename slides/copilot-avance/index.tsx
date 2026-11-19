@@ -23,14 +23,62 @@ import {
 } from 'react';
 import formateur from '@assets/houssem-formateur.png';
 import labsPack from './assets/guide-copilot-avance.pdf?url';
+import logoNationalQuantum from '@assets/national-quantum/logo-national-quantum.png';
 
 export const design: DesignSystem = {
-  palette: { bg: '#F6F8FC', text: '#101828', accent: '#0A62D0' },
+  palette: {
+    bg: '#F6F8FC',
+    text: '#101828',
+    accent: '#0A62D0',
+    soft: '#3B4558',
+    muted: '#6B7690',
+    faint: '#A9B3C6',
+    rule: '#DDE3EE',
+    panel: '#EBEFF7',
+    card: '#FFFFFF',
+    navy: '#0B1F5C',
+    electric: '#1E22E8',
+    teal: '#0E9AAE',
+    green: '#0E9F6E',
+    yellow: '#F2A20C',
+    amber: '#D98A00',
+    coral: '#E04848',
+    violet: '#7442E0',
+    plum: '#7A2FA6',
+    pink: '#C2369E',
+  },
+  logos: {
+    provider: true,
+    nationalQuantum: false,
+  },
+  labels: {
+    soft: 'Texte doux',
+    muted: 'Texte discret',
+    faint: 'Texte estompé',
+    rule: 'Filets',
+    panel: 'Panneaux',
+    card: 'Cartes',
+    navy: 'Fond sombre',
+    electric: 'Accent vif',
+    teal: 'Sarcelle (info)',
+    green: 'Vert (succès)',
+    yellow: 'Jaune (attention)',
+    amber: 'Ambre',
+    coral: 'Corail (alerte)',
+    violet: 'Violet',
+    plum: 'Prune',
+    pink: 'Rose',
+    'logos.provider': 'Docaposte Institute · mon client',
+    'logos.nationalQuantum': 'National Quantum',
+  },
   fonts: {
     display: '"Montserrat", "Segoe UI", system-ui, sans-serif',
     body: '"Open Sans", "Segoe UI", system-ui, -apple-system, sans-serif',
   },
-  typeScale: { hero: 112, body: 28 },
+  typeScale: {
+    hero: 112,
+    body: 28,
+  },
   radius: 18,
 };
 
@@ -107,37 +155,44 @@ const MOD_TITLES: Record<number, string> = {
 };
 
 // ─── Palette (Docaposte: navy + electric blue, violet accent, light ground) ─
+// @@deck-features v1 — palette driven by the design tokens (Design panel, key D).
+// tv('blue', '#0A62D0') → var(--osd-blue, #0A62D0); tints and gradients use
+// color-mix, so changing one token recolours its whole family.
+const tv = (key: string, fallback: string) =>
+  `var(--osd-${key.replace(/([a-z0-9])([A-Z])/g, '$1-$2').toLowerCase()}, ${fallback})`;
+const mix = (c: string, pct: number, other = 'white') => `color-mix(in srgb, ${c} ${pct}%, ${other})`;
+
 const C = {
-  ink: '#101828',
-  soft: '#3B4558',
-  muted: '#6B7690',
-  faint: '#A9B3C6',
-  rule: '#DDE3EE',
-  panel: '#EBEFF7',
-  card: '#FFFFFF',
-  navy: '#0B1F5C',
-  electric: '#1E22E8',
-  blue: '#0A62D0',
-  teal: '#0E9AAE',
-  green: '#0E9F6E',
-  yellow: '#F2A20C',
-  amber: '#D98A00',
-  coral: '#E04848',
-  violet: '#7442E0',
-  plum: '#7A2FA6',
-  pink: '#C2369E',
+  ink: tv('text', '#101828'),
+  soft: tv('soft', '#3B4558'),
+  muted: tv('muted', '#6B7690'),
+  faint: tv('faint', '#A9B3C6'),
+  rule: tv('rule', '#DDE3EE'),
+  panel: tv('panel', '#EBEFF7'),
+  card: tv('card', '#FFFFFF'),
+  navy: tv('navy', '#0B1F5C'),
+  electric: tv('electric', '#1E22E8'),
+  blue: tv('accent', '#0A62D0'),
+  teal: tv('teal', '#0E9AAE'),
+  green: tv('green', '#0E9F6E'),
+  yellow: tv('yellow', '#F2A20C'),
+  amber: tv('amber', '#D98A00'),
+  coral: tv('coral', '#E04848'),
+  violet: tv('violet', '#7442E0'),
+  plum: tv('plum', '#7A2FA6'),
+  pink: tv('pink', '#C2369E'),
 };
 
 const T = {
-  blue: { bg: '#E6F0FC', bd: '#97BFF0', fg: '#0A55B5' },
-  navy: { bg: '#E7EBF5', bd: '#9EABCF', fg: '#0B1F5C' },
-  teal: { bg: '#E1F5F7', bd: '#86D0DA', fg: '#0B7686' },
-  green: { bg: '#E2F6EE', bd: '#8ED3B6', fg: '#0A7A55' },
-  yellow: { bg: '#FEF3DC', bd: '#F3C566', fg: '#8A5A00' },
-  coral: { bg: '#FDE8E8', bd: '#F0A3A3', fg: '#B42F2F' },
-  violet: { bg: '#EFE9FC', bd: '#BFA8F2', fg: '#5A2FC2' },
-  pink: { bg: '#FBE8F5', bd: '#E9A6D5', fg: '#9C2380' },
-  grey: { bg: '#EEF1F6', bd: '#CDD4E0', fg: '#3B4558' },
+  blue: { bg: mix(C.blue, 10), bd: mix(C.blue, 42), fg: mix(C.blue, 87, 'black') },
+  navy: { bg: mix(C.navy, 9), bd: mix(C.navy, 37), fg: C.navy },
+  teal: { bg: mix(C.teal, 12), bd: mix(C.teal, 49), fg: mix(C.teal, 77, 'black') },
+  green: { bg: mix(C.green, 12), bd: mix(C.green, 48), fg: mix(C.green, 77, 'black') },
+  yellow: { bg: mix(C.yellow, 14), bd: mix(C.yellow, 63), fg: mix(C.yellow, 56, 'black') },
+  coral: { bg: mix(C.coral, 12), bd: mix(C.coral, 50), fg: mix(C.coral, 78, 'black') },
+  violet: { bg: mix(C.violet, 12), bd: mix(C.violet, 46), fg: mix(C.violet, 84, 'black') },
+  pink: { bg: mix(C.pink, 11), bd: mix(C.pink, 44), fg: mix(C.pink, 80, 'black') },
+  grey: { bg: mix(C.muted, 10), bd: mix(C.muted, 32), fg: C.soft },
 };
 type Tone = keyof typeof T;
 
@@ -155,11 +210,11 @@ const STRONG: Record<Tone, string> = {
 };
 
 const G = {
-  blue: 'linear-gradient(120deg, #0A62D0 0%, #1E22E8 100%)',
-  navy: 'linear-gradient(160deg, #0B1F5C 0%, #142C7A 100%)',
-  violet: 'linear-gradient(120deg, #7442E0 0%, #C2369E 100%)',
-  green: 'linear-gradient(120deg, #0E9F6E 0%, #0E9AAE 100%)',
-  brand: 'linear-gradient(90deg, #0B1F5C 0%, #1E22E8 55%, #7442E0 100%)',
+  blue: `linear-gradient(120deg, ${C.blue} 0%, ${C.electric} 100%)`,
+  navy: `linear-gradient(160deg, ${C.navy} 0%, #142C7A 100%)`,
+  violet: `linear-gradient(120deg, ${C.violet} 0%, ${C.pink} 100%)`,
+  green: `linear-gradient(120deg, ${C.green} 0%, ${C.teal} 100%)`,
+  brand: `linear-gradient(90deg, ${C.navy} 0%, ${C.electric} 55%, ${C.violet} 100%)`,
 };
 
 const display = 'var(--osd-font-display)';
@@ -593,6 +648,7 @@ const ICONS = {
     </>
   ),
   plus: <path d="M12 5v14M5 12h14" />,
+  minus: <path d="M5 12h14" />,
   arrow: <path d="M4.5 12h15M13.5 6l6 6-6 6" />,
   scale: (
     <>
@@ -977,9 +1033,30 @@ const ProgSq = ({ n, mod, text }: { n: number; mod: number; text?: string }) => 
   const order = [0, 1, 2, 3, 8, 4, 5, 6, 7];
   const now = n === mod;
   const past = mod !== 0 && order.indexOf(mod) > order.indexOf(n);
+  // Click = jump to the module's opening page (MOD_START, appended by the build);
+  // only the live page reacts. data-inspector-ui: the editor inspector lets the click through.
+  const live = useIsActivePage();
+  const target = MOD_START[n];
+  const tip = `${text ?? `Module ${n}`} · ${MOD_TITLES[n] ?? ''}`;
+  const go = (e: { stopPropagation: () => void; preventDefault: () => void }) => {
+    e.stopPropagation();
+    e.preventDefault();
+    if (!live || target === undefined || typeof window === 'undefined') return;
+    window.dispatchEvent(new CustomEvent('open-slide:goto', { detail: { index: target } }));
+  };
   return (
     <span
+      role="button"
+      tabIndex={-1}
+      className={k('chip')}
+      data-inspector-ui=""
+      data-tip={tip}
+      aria-label={tip}
+      onClick={go}
+      onPointerDown={(e) => e.stopPropagation()}
       style={{
+        position: 'relative',
+        cursor: live && target !== undefined ? 'pointer' : 'default',
         minWidth: 34,
         height: 30,
         padding: '0 6px',
@@ -991,7 +1068,7 @@ const ProgSq = ({ n, mod, text }: { n: number; mod: number; text?: string }) => 
         fontFamily: display,
         fontWeight: 700,
         fontSize: 15,
-        background: now ? C.electric : past ? '#DCE3FB' : 'transparent',
+        background: now ? C.electric : past ? mix(C.electric, 14) : 'transparent',
         color: now ? '#fff' : past ? C.electric : C.faint,
         boxShadow: now || past ? 'none' : `inset 0 0 0 2px ${C.rule}`,
       }}
@@ -1000,6 +1077,20 @@ const ProgSq = ({ n, mod, text }: { n: number; mod: number; text?: string }) => 
     </span>
   );
 };
+
+CSS.push(`
+.${P}-chip{transition:transform .15s ease, filter .15s ease}
+.${P}-live .${P}-chip:hover{transform:translateY(-2px);filter:brightness(1.06)}
+.${P}-chip::after{content:attr(data-tip);position:absolute;top:calc(100% + 12px);right:0;z-index:50;
+  padding:10px 16px;border-radius:10px;background:${C.navy};color:#fff;white-space:nowrap;
+  font:600 19px/1.2 var(--osd-font-body);letter-spacing:0;text-transform:none;box-shadow:0 14px 30px -12px rgba(0,0,0,.45);
+  opacity:0;transform:translateY(-4px);pointer-events:none;transition:opacity .15s ease, transform .15s ease}
+.${P}-chip::before{content:'';position:absolute;top:calc(100% + 4px);right:12px;z-index:50;
+  border:8px solid transparent;border-bottom-color:${C.navy};border-top:0;
+  opacity:0;pointer-events:none;transition:opacity .15s ease}
+.${P}-live .${P}-chip:hover::after{opacity:1;transform:none}
+.${P}-live .${P}-chip:hover::before{opacity:1}
+`);
 
 const ProgLabel = ({ children }: { children: ReactNode }) => (
   <span style={{ fontFamily: display, fontWeight: 700, fontSize: 15, letterSpacing: '0.12em', color: C.muted, margin: '0 6px 0 4px' }}>{children}</span>
@@ -1057,6 +1148,32 @@ const Header = ({ mod, label, kind }: { mod: number; label?: string; kind?: Kind
   </div>
 );
 
+// Footer logos — each toggled in the Design panel (design.logos), live via
+// --osd-logo-<key>: flex | none. All off → the strip and its rules disappear.
+// @@client-logo: the build swaps the next line for an import when
+// slides/<id>/assets/logos/logo-client.(png|svg|jpg|webp) exists.
+const CLIENT_LOGO: string | null = null;
+const FOOTER_LOGOS: { key: string; node: ReactNode }[] = [
+  ...(CLIENT_LOGO
+    ? [{ key: 'client', node: <img src={CLIENT_LOGO} alt="Client" style={{ height: 36, width: 'auto', display: 'block' }} /> }]
+    : []),
+  { key: 'provider', node: <DapLogo size={19} /> },
+  {
+    key: 'national-quantum',
+    node: <img src={logoNationalQuantum} alt="National Quantum" style={{ height: 28, width: 'auto', display: 'block' }} />,
+  },
+];
+const FooterLogos = () => (
+  <>
+    {FOOTER_LOGOS.map((l) => (
+      <span key={l.key} style={{ display: `var(--osd-logo-${l.key}, flex)`, alignItems: 'center', gap: 18 }}>
+        {l.node}
+        <span style={{ width: 1.5, height: 24, background: C.rule }} />
+      </span>
+    ))}
+  </>
+);
+
 const Footer = ({ left = 120, short = false }: { left?: number; short?: boolean }) => {
   const { current, total } = useSlidePageNumber();
   return (
@@ -1073,8 +1190,7 @@ const Footer = ({ left = 120, short = false }: { left?: number; short?: boolean 
       }}
     >
       <div style={{ display: 'flex', alignItems: 'center', gap: 18 }}>
-        <DapLogo size={19} />
-        <span style={{ width: 1.5, height: 24, background: C.rule }} />
+        <FooterLogos />
         <span style={{ fontSize: 19, fontWeight: 700, color: C.navy, whiteSpace: 'nowrap' }}>{AUTHOR}</span>
         {short ? null : <span style={{ width: 1.5, height: 24, background: C.rule }} />}
         {short ? null : <span style={{ fontSize: 19, color: C.muted, whiteSpace: 'nowrap' }}>{COURSE}</span>}
@@ -2296,9 +2412,21 @@ const Drag = ({
 };
 
 // ─── Workshop timer (keeps running when you navigate away and back) ─────────
-type TimerRec = { total: number; left: number; t0: number | null };
+type TimerRec = { total: number; left: number; t0: number | null; base: number };
 const TIMERS = new Map<string, TimerRec>();
 const timerLeft = (r: TimerRec) => (r.t0 === null ? r.left : Math.max(0, r.left - (Date.now() - r.t0) / 1000));
+// Durations re-set from the presenter view (« Minuteurs ») live in localStorage,
+// per deck; other windows hear the storage event, this window the custom one.
+const OVERRIDES_KEY = `osd-timers:${SLIDE_ID}`;
+const OVERRIDES_EVENT = 'osd-timers';
+const readOverride = (id: string): number | null => {
+  try {
+    const n = JSON.parse(window.localStorage.getItem(OVERRIDES_KEY) ?? 'null')?.[id];
+    return typeof n === 'number' && n > 0 ? n : null;
+  } catch {
+    return null;
+  }
+};
 
 const Timer = ({
   id,
@@ -2318,11 +2446,29 @@ const Timer = ({
   const key = `${SLIDE_ID}:${id}`;
   let rec = TIMERS.get(key);
   if (!rec) {
-    rec = { total: minutes * 60, left: minutes * 60, t0: null };
+    rec = { total: minutes * 60, left: minutes * 60, t0: null, base: minutes };
     TIMERS.set(key, rec);
   }
   const r = rec;
   const [, tick] = useState(0);
+  const [override, setOverride] = useState<number | null>(() => readOverride(id));
+  useEffect(() => {
+    const sync = () => setOverride(readOverride(id));
+    window.addEventListener('storage', sync);
+    window.addEventListener(OVERRIDES_EVENT, sync);
+    return () => {
+      window.removeEventListener('storage', sync);
+      window.removeEventListener(OVERRIDES_EVENT, sync);
+    };
+  }, [id]);
+  const mins = override ?? minutes;
+  if (r.base !== mins) {
+    // Re-timed from the presenter view: shift the duration, keep what has elapsed.
+    const d = (mins - r.base) * 60;
+    r.total = Math.max(0, r.total + d);
+    r.left = Math.max(0, r.left + d);
+    r.base = mins;
+  }
   const running = r.t0 !== null;
   useEffect(() => {
     if (!running) return;
@@ -2347,8 +2493,9 @@ const Timer = ({
     refresh();
   };
   const reset = () => {
-    r.total = minutes * 60;
-    r.left = minutes * 60;
+    r.total = mins * 60;
+    r.left = mins * 60;
+    r.base = mins;
     r.t0 = null;
     refresh();
   };
@@ -2356,6 +2503,12 @@ const Timer = ({
     r.left = timerLeft(r) + 60;
     if (r.t0 !== null) r.t0 = Date.now();
     r.total = Math.max(r.total, r.left);
+    refresh();
+  };
+  const subMin = () => {
+    r.left = Math.max(0, timerLeft(r) - 60);
+    if (r.t0 !== null) r.t0 = Date.now();
+    r.total = Math.max(r.left, r.total - 60);
     refresh();
   };
   const secs = Math.ceil(left);
@@ -2396,27 +2549,34 @@ const Timer = ({
       {pad(Math.floor(secs / 60))}:{pad(secs % 60)}
     </div>
   );
+  // Icon-only buttons: Btn pads for text, so give them a square padding; the row wraps rather than leaving the card.
+  const sq: CSSProperties = { padding: compact ? 9 : 12 };
+  // Icon-only buttons: Btn pads for text, so give them a square padding; the row wraps rather than leaving the card.
   const buttons = compact ? (
-    <div style={{ display: 'flex', gap: 10, marginLeft: 'auto' }}>
-      {running ? <Btn icon="pause" onClick={pause} size={21} /> : <Btn icon="play" onClick={start} size={21} disabled={secs === 0} />}
-      <Btn icon="plus" ghost onClick={addMin} size={21} />
-      <Btn icon="reset" ghost tone="grey" onClick={reset} size={21} />
+    <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'flex-end', gap: 8, marginLeft: 'auto' }}>
+      {running ? <Btn icon="pause" onClick={pause} size={19} style={sq} /> : <Btn icon="play" onClick={start} size={19} disabled={secs === 0} style={sq} />}
+      <Btn icon="minus" ghost onClick={subMin} size={19} style={sq} />
+      <Btn icon="plus" ghost onClick={addMin} size={19} style={sq} />
+      <Btn icon="reset" ghost tone="grey" onClick={reset} size={19} style={sq} />
     </div>
   ) : (
-    <div style={{ display: 'flex', gap: 12 }}>
+    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
       {running ? (
-        <Btn icon="pause" onClick={pause} size={22}>
+        <Btn icon="pause" onClick={pause} size={19}>
           Pause
         </Btn>
       ) : (
-        <Btn icon="play" onClick={start} size={22} disabled={secs === 0}>
+        <Btn icon="play" onClick={start} size={19} disabled={secs === 0}>
           Démarrer
         </Btn>
       )}
-      <Btn icon="plus" ghost onClick={addMin} size={22}>
-        1 min
+      <Btn ghost onClick={subMin} size={19}>
+        −1 min
       </Btn>
-      <Btn icon="reset" ghost tone="grey" onClick={reset} size={22} />
+      <Btn ghost onClick={addMin} size={19}>
+        +1 min
+      </Btn>
+      <Btn icon="reset" ghost tone="grey" onClick={reset} size={19} style={sq} />
     </div>
   );
   const card: CSSProperties = {
@@ -2428,7 +2588,13 @@ const Timer = ({
   if (compact) {
     // One row, ~140 px tall: ring · label + time · buttons.
     return (
-      <div className={cls} style={{ ...card, display: 'flex', alignItems: 'center', gap: 20, padding: '14px 22px', ...style }}>
+      <div
+        className={cls}
+        data-osd-timer={id}
+        data-osd-timer-minutes={minutes}
+        data-osd-timer-label={label}
+        style={{ ...card, display: 'flex', alignItems: 'center', gap: 20, padding: '14px 22px', ...style }}
+      >
         {clock(false)}
         <div style={{ minWidth: 150 }}>
           <Eyebrow c={secs === 0 ? C.coral : C.muted} size={18}>
@@ -2441,7 +2607,13 @@ const Timer = ({
     );
   }
   return (
-    <div className={cls} style={{ ...card, width: 440, padding: '24px 28px', display: 'flex', flexDirection: 'column', gap: 18, ...style }}>
+    <div
+      className={cls}
+      data-osd-timer={id}
+      data-osd-timer-minutes={minutes}
+      data-osd-timer-label={label}
+      style={{ ...card, width: 'max-content', minWidth: 480, padding: '24px 28px', display: 'flex', flexDirection: 'column', gap: 18, ...style }}
+    >
       <div style={{ display: 'flex', alignItems: 'center', gap: 24 }}>
         {clock(true)}
         <div>
@@ -3510,7 +3682,7 @@ const O_Welcome: Page = () => (
       <div style={{ marginTop: 8, fontSize: 22, color: C.soft, lineHeight: 1.4 }}>Votre formateur pour la journée</div>
     </div>
     <div style={{ position: 'absolute', left: 520, top: 300, width: 1280, display: 'flex', gap: 26 }}>
-      <OPromise value={<CountUp to={7} suffix=" h" />} label="de formation intensive : 60 % d’apports et de démos, 40 % de pratique" tone="blue" d={150} />
+      <OPromise value={<CountUp to={7} suffix=" h" />} label="de formation intensive : deux tiers d’apports et de démos, un tiers de pratique" tone="blue" d={150} />
       <OPromise value={<CountUp to={6} />} label="TP individuels enchaînés sur le même projet, du prompt à l’orchestration d’agents" tone="green" d={280} />
       <OPromise value={<CountUp to={1} />} label="feature complète (code, tests, doc, sécurité) livrée par vos agents, sous votre contrôle" tone="violet" d={410} />
     </div>
@@ -3611,7 +3783,7 @@ const O_Objectifs: Page = () => (
       <Eyebrow c={C.navy}>Équilibre de la journée</Eyebrow>
       <div style={{ marginTop: 22, display: 'flex', flexDirection: 'column', gap: 22 }}>
         <OBar label="Apports, démos, cas réels" value="60 %" pct={60} bg={G.blue} c={C.blue} d={600} />
-        <OBar label="TP et mises en situation" value="40 %" pct={40} bg={G.green} c={C.green} d={750} />
+        <OBar label="TP et mises en situation" value="31 %" pct={31} bg={G.green} c={C.green} d={750} />
       </div>
       <div style={{ marginTop: 28, fontSize: 22, lineHeight: 1.45, color: C.muted }}>
         Évaluation continue : questions orales, QCM à chaque module, TP, présentation finale par des volontaires. Fil technique de la journée : instructions, skills, agents personnalisés, orchestration.
@@ -3654,16 +3826,16 @@ const O_Programme: Page = () => (
     <div style={{ position: 'absolute', left: 120, top: 190, width: 1680, display: 'flex', gap: 60 }}>
       <OHalf icon="chat" tone="blue" title="Matinée" sub="Prompt engineering et génération avancée" d={0}>
         <OSlot t="9:00" title={`Ouverture · fil rouge ${PROJECT}`} tone="grey" d={150} />
-        <OSlot t="9:15" mod="M1" title="Prompt engineering avancé" sub="Contexte, session et harnais, prompts structurés · TP 1" tone="blue" d={250} />
-        <OSlot t="10:10" title="Pause" tone="yellow" d={330} />
-        <OSlot t="10:25" mod="M2" title="Modules & architectures" sub="API REST, patterns, fichiers qui guident Copilot · TP 2" tone="teal" d={400} />
-        <OSlot t="11:35" mod="M3" title="Automatiser les tests" sub="Matrice, mocks, intégration, skill de test · TP 3" tone="pink" d={500} />
+        <OSlot t="9:15" mod="M1" title="Prompt engineering avancé" sub="Contexte, session et harnais, prompts structurés, comparer et mesurer" tone="blue" d={250} />
+        <OSlot t="9:50" title="Pause" tone="yellow" d={330} />
+        <OSlot t="10:05" mod="M2" title="Modules & architectures" sub="API REST, patterns, fichiers qui guident Copilot · TP 1" tone="teal" d={400} />
+        <OSlot t="11:15" mod="M3" title="Automatiser les tests" sub="Matrice, mocks, intégration, skill de test · TP 2" tone="pink" d={500} />
       </OHalf>
       <OHalf icon="shieldCheck" tone="violet" title="Après-midi" sub="Agents, sécurité et orchestration en équipe" d={200}>
         <OSlot t="13:30" title="Reprise · quiz flash de la matinée" tone="grey" d={450} />
-        <OSlot t="13:35" mod="M4" title="Optimisation & refactoring" sub="SOLID, performance, legacy, agents personnalisés · TP 4" tone="violet" d={550} />
-        <OSlot t="14:40" mod="M5" title="Sécurité & audit" sub="OWASP, failles du code généré, agent auditeur · TP 5" tone="coral" d={650} />
-        <OSlot t="15:40" mod="M6" title="Copilot en équipe" sub="PR, CI/CD, orchestration d’agents, charte · TP 6" tone="green" d={750} />
+        <OSlot t="13:35" mod="M4" title="Optimisation & refactoring" sub="SOLID, performance, legacy, agents personnalisés · TP 3" tone="violet" d={550} />
+        <OSlot t="14:40" mod="M5" title="Sécurité & audit" sub="OWASP, failles du code généré, agent auditeur · TP 4" tone="coral" d={650} />
+        <OSlot t="15:40" mod="M6" title="Copilot en équipe" sub="PR, CI/CD, orchestration d’agents, charte · TP 5" tone="green" d={750} />
         <OSlot t="16:40" title="Présentations · synthèse · évaluation" tone="navy" d={850} />
       </OHalf>
     </div>
@@ -3779,8 +3951,7 @@ const M1_Divider: Page = () => (
       </>
     }
     sub="Comprendre ce que Copilot voit, structurer la demande, décomposer, mesurer et itérer."
-    dur="9:15 – 10:10 · TP inclus"
-    labs={<Tag tone="green" size={19}>TP 1 · réécrire et mesurer</Tag>}
+    dur="9:15 – 9:50"
   >
     <SecItem n={1}>Comment Copilot interprète le contexte</SecItem>
     <SecItem n={2}>Session, harnais, rôle, modèle</SecItem>
@@ -4126,7 +4297,7 @@ const M1_Compare: Page = () => (
       </Card>
     </div>
     <div className={A.fade} style={{ position: 'absolute', left: 120, top: 905, fontSize: 21, color: C.muted, ...dl(600) }}>
-      Exemple de mesure sur overlaps() · chiffres illustratifs : vous produirez les vôtres au TP 1.
+      Exemple de mesure sur overlaps() · chiffres illustratifs, pour la méthode.
     </div>
   </Frame>
 );
@@ -4229,7 +4400,7 @@ const M1_Session: Page = () => (
     </div>
     <div className={b.on(1)} style={{ position: 'absolute', left: 1220, top: 560, width: 580 }}>
       <Callout tone="green" icon="checkCircle" title="Nos réglages pour la journée" size={23}>
-        Session <strong>Copilot</strong>, permissions <strong>manuelles</strong>. Modèle <strong>fixé</strong> pendant les mesures du TP 1, Auto ensuite. Le rôle change selon le TP.
+        Session <strong>Copilot</strong>, permissions <strong>manuelles</strong>. Modèle <strong>fixé</strong> quand on compare deux prompts, Auto ensuite. Le rôle change selon le TP.
       </Callout>
     </div>
     <Hint cls={A.fade} style={{ position: 'absolute', left: 120, top: 860, ...dl(700) }}>
@@ -4262,53 +4433,6 @@ const M1_Qcm: Page = () => (
   </QcmPage>
 );
 
-// ─── TP 1 ───────────────────────────────────────────────────────────────────
-const M1_TP: Page = () => (
-  <LabPage
-    mod={1}
-    n="1"
-    title="Réécrire des prompts basiques et mesurer"
-    defi="ameliorer"
-    who="Individuel"
-    minutes={20}
-    feats={
-      <Tag tone="navy" size={19}>
-        <Icon name="cpu" size={20} /> Session Copilot · modèle fixé
-      </Tag>
-    }
-    where={
-      <>
-        <PathChip>prompts/tp1-mesures.md</PathChip> grille V1 / V2
-        <br />
-        <PathChip>src/domain/overlap.*</PathChip> + tests
-        <br />
-        <PathChip>prompts/meilleur-prompt.md</PathChip> → skill au TP 2
-      </>
-    }
-    objective={
-      <>
-        Prouver, chiffres à l’appui, qu’un prompt structuré produit un meilleur code qu’un prompt basique sur trois tâches de {PROJECT}.
-      </>
-    }
-    crit={
-      <>
-        <CheckItem id="tp1-1" size={22}>Session Copilot, rôle Agent, un seul modèle pour toutes les mesures</CheckItem>
-        <CheckItem id="tp1-2" size={22}>Trois prompts réécrits avec les cinq composants</CheckItem>
-        <CheckItem id="tp1-3" size={22}>Chaque version lancée 2 fois en session neuve, grille remplie</CheckItem>
-        <CheckItem id="tp1-4" size={22}>Le meilleur prompt conservé pour le TP 2</CheckItem>
-      </>
-    }
-  >
-    Les trois prompts de départ :
-    <div style={{ marginTop: 10, display: 'flex', flexDirection: 'column', gap: 8, fontFamily: mono, fontSize: 21, color: C.ink }}>
-      <span>P1 · « fais une fonction qui vérifie si deux réservations se chevauchent »</span>
-      <span>P2 · « génère les modèles de données de l’appli »</span>
-      <span>P3 · « écris la fonction qui trouve les salles libres »</span>
-    </div>
-    <TpBonus>Relancez votre meilleur prompt avec un autre modèle : la grille bouge-t-elle plus d’un modèle à l’autre que d’un prompt à l’autre ?</TpBonus>
-  </LabPage>
-);
-
 // ═══ 20-m2 ═════════════════════════════════════════════════════════════
 
 // ─── Module 2 · Modules & architectures ─────────────────────────────────────
@@ -4324,8 +4448,8 @@ const M2_Divider: Page = () => (
       </>
     }
     sub="De l’arborescence à l’API REST complète, guidée par vos fichiers d’instructions : structure, patterns, dépendances."
-    dur="10:25 – 11:35 · TP inclus"
-    labs={<Tag tone="green" size={19}>TP 2 · API REST complète</Tag>}
+    dur="10:05 – 11:15 · TP inclus"
+    labs={<Tag tone="green" size={19}>TP 1 · API REST complète</Tag>}
   >
     <SecItem n={1}>Générer une structure de projet complète</SecItem>
     <SecItem n={2}>Une API REST de bout en bout</SecItem>
@@ -4605,12 +4729,12 @@ const M2_Panorama: Page = () => (
     <Title>Les fichiers qui guident Copilot : lequel pour quel besoin ?</Title>
     <Lede>Des fichiers Markdown versionnés avec le code. Le harnais Copilot les lit à la même place dans VS Code, le CLI et l’app.</Lede>
     <div style={{ position: 'absolute', left: 120, top: 262, width: 1680, display: 'flex', flexDirection: 'column', gap: 12 }}>
-      <M2FRow path=".github/copilot-instructions.md" what="Les règles de la maison" when="à chaque requête" tone="navy" day="TP 2" d={100} />
-      <M2FRow path="AGENTS.md" what="La même chose, format partagé entre outils" when="à chaque requête" tone="navy" day="TP 2" d={160} />
-      <M2FRow path=".github/instructions/*.instructions.md" what="Des règles pour certains fichiers" when="si applyTo correspond" tone="blue" day="TP 3 · 5" d={220} />
+      <M2FRow path=".github/copilot-instructions.md" what="Les règles de la maison" when="à chaque requête" tone="navy" day="TP 1" d={100} />
+      <M2FRow path="AGENTS.md" what="La même chose, format partagé entre outils" when="à chaque requête" tone="navy" day="TP 1" d={160} />
+      <M2FRow path=".github/instructions/*.instructions.md" what="Des règles pour certains fichiers" when="si applyTo correspond" tone="blue" day="TP 2 · 4" d={220} />
       <M2FRow path="~/.copilot/copilot-instructions.md" what="Vos préférences personnelles" when="dans tous vos projets" tone="teal" day="Option" d={280} />
-      <M2FRow path=".github/skills/<nom>/SKILL.md" what="Une méthode réutilisable, avec ses fichiers" when="à la demande" tone="violet" day="TP 3" d={340} />
-      <M2FRow path=".github/agents/<nom>.agent.md" what="Un rôle : consignes, outils, modèle" when="quand vous le choisissez" tone="violet" day="TP 4 · 6" d={400} />
+      <M2FRow path=".github/skills/<nom>/SKILL.md" what="Une méthode réutilisable, avec ses fichiers" when="à la demande" tone="violet" day="TP 2" d={340} />
+      <M2FRow path=".github/agents/<nom>.agent.md" what="Un rôle : consignes, outils, modèle" when="quand vous le choisissez" tone="violet" day="TP 3 · 5" d={400} />
       <M2FRow path=".vscode/mcp.json" what="Des outils de plus pour l’agent" when="quand il en a besoin" tone="pink" day="Mention" d={460} />
     </div>
     <Hint cls={A.fade} style={{ position: 'absolute', left: 120, top: 880, ...dl(700) }}>
@@ -4708,10 +4832,10 @@ const M2_ApplyTo: Page = () => (
         Exemples de motifs
       </Eyebrow>
       <M2Glob glob="tests/**" file="tests" d={200}>
-        conventions de test (TP 3)
+        conventions de test (TP 2)
       </M2Glob>
       <M2Glob glob="src/api/**" file="sécurité" d={300}>
-        contrôle d’accès, DTO, secrets (TP 5)
+        contrôle d’accès, DTO, secrets (TP 4)
       </M2Glob>
       <M2Glob glob="src/legacy/**" file="code hérité" d={400}>
         « ne corrige rien pendant un refactoring »
@@ -4808,7 +4932,7 @@ const M2_PromptSkill: Page = () => (
       </CodeDark>
     </div>
     <Hint cls={A.fade} style={{ position: 'absolute', left: 120, top: 905, ...dl(600) }}>
-      Vos .prompt.md d’hier se convertissent en skills. Votre première skill : au TP 3.
+      Vos .prompt.md d’hier se convertissent en skills. Votre première skill : au TP 2.
     </Hint>
   </Frame>
 );
@@ -4882,7 +5006,7 @@ const M2_Qcm: Page = () => (
   </QcmPage>
 );
 
-// ─── TP 2 ───────────────────────────────────────────────────────────────────
+// ─── TP 1 ───────────────────────────────────────────────────────────────────
 const M2Step = ({ n, children }: { n: number; children: ReactNode }) => (
   <div style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
     <Num n={n} tone="blue" size={32} style={{ marginTop: 2 }} />
@@ -4893,7 +5017,7 @@ const M2Step = ({ n, children }: { n: number; children: ReactNode }) => (
 const M2_TP: Page = () => (
   <LabPage
     mod={2}
-    n="2"
+    n="1"
     title="Générer une API REST complète"
     defi="generer"
     who="Individuel"
@@ -4919,20 +5043,20 @@ const M2_TP: Page = () => (
     }
     crit={
       <>
-        <CheckItem id="tp2-1" size={21}>Plan validé avant toute ligne de code</CheckItem>
-        <CheckItem id="tp2-2" size={21}>Instructions citées dans les Références</CheckItem>
-        <CheckItem id="tp2-3" size={21}>409 sur chevauchement, 401 sans jeton, 403 sans rôle</CheckItem>
-        <CheckItem id="tp2-4" size={21}>Doc OpenAPI accessible et à jour</CheckItem>
+        <CheckItem id="tp1-1" size={21}>Plan validé avant toute ligne de code</CheckItem>
+        <CheckItem id="tp1-2" size={21}>Instructions citées dans les Références</CheckItem>
+        <CheckItem id="tp1-3" size={21}>409 sur chevauchement, 401 sans jeton, 403 sans rôle</CheckItem>
+        <CheckItem id="tp1-4" size={21}>Doc OpenAPI accessible et à jour</CheckItem>
       </>
     }
   >
     <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
       <M2Step n={1}>Rôle Plan : arborescence et interfaces, validées dans PLAN.md.</M2Step>
       <M2Step n={2}>Écrivez copilot-instructions.md : stack, couches, erreurs → codes HTTP, dépendances.</M2Step>
-      <M2Step n={3}>Rôle Agent, lot par lot : domaine (overlaps du TP 1), repositories, services.</M2Step>
+      <M2Step n={3}>Rôle Agent, lot par lot : domaine (d’abord la règle de chevauchement), repositories, services.</M2Step>
       <M2Step n={4}>Routes, validation, auth, puis OpenAPI. Une règle ignorée ? Corrigez le fichier, pas le prompt.</M2Step>
     </div>
-    <TpBonus>Transformez votre meilleur prompt du TP 1 en skill /chevauchement (disable-model-invocation: true), puis rejouez-la.</TpBonus>
+    <TpBonus>Écrivez un prompt pour la règle de chevauchement, transformez-le en skill /chevauchement (disable-model-invocation: true), puis rejouez-la.</TpBonus>
   </LabPage>
 );
 
@@ -4951,8 +5075,8 @@ const M3_Divider: Page = () => (
       </>
     }
     sub="Une stratégie d’abord, des tests ensuite : unitaires, mocks, intégration, couverture… et votre méthode de test écrite une fois, dans une skill."
-    dur="11:35 – 12:30 · TP inclus"
-    labs={<Tag tone="green" size={19}>TP 3 · suite de tests complète</Tag>}
+    dur="11:15 – 12:30 · TP inclus"
+    labs={<Tag tone="green" size={19}>TP 2 · suite de tests complète</Tag>}
   >
     <SecItem n={1}>Stratégie : couverture, cas limites, cas négatifs</SecItem>
     <SecItem n={2}>Tests unitaires paramétrés</SecItem>
@@ -5335,11 +5459,11 @@ const M3_Qcm: Page = () => (
   </QcmPage>
 );
 
-// ─── TP 3 ───────────────────────────────────────────────────────────────────
+// ─── TP 2 ───────────────────────────────────────────────────────────────────
 const M3_TP: Page = () => (
   <LabPage
     mod={3}
-    n="3"
+    n="2"
     title="Une suite de tests complète"
     defi="tests"
     who="Individuel"
@@ -5358,13 +5482,13 @@ const M3_TP: Page = () => (
         <PathChip>tests/CASES.md</PathChip> <PathChip>tests/**</PathChip> couverture
       </>
     }
-    objective={<>Écrire votre méthode de test une fois, dans une skill, puis l’appliquer à l’API du TP 2 : matrice, unitaires paramétrés, doubles, intégration, couverture.</>}
+    objective={<>Écrire votre méthode de test une fois, dans une skill, puis l’appliquer à l’API du TP 1 : matrice, unitaires paramétrés, doubles, intégration, couverture.</>}
     crit={
       <>
-        <CheckItem id="tp3-1" size={21}>La skill se charge seule (Références)</CheckItem>
-        <CheckItem id="tp3-2" size={21}>Matrice en 4 colonnes validée avant génération</CheckItem>
-        <CheckItem id="tp3-3" size={21}>Trois scénarios d’intégration, dont un 403</CheckItem>
-        <CheckItem id="tp3-4" size={21}>Diff des tests relu, services à 80 % des branches</CheckItem>
+        <CheckItem id="tp2-1" size={21}>La skill se charge seule (Références)</CheckItem>
+        <CheckItem id="tp2-2" size={21}>Matrice en 4 colonnes validée avant génération</CheckItem>
+        <CheckItem id="tp2-3" size={21}>Trois scénarios d’intégration, dont un 403</CheckItem>
+        <CheckItem id="tp2-4" size={21}>Diff des tests relu, services à 80 % des branches</CheckItem>
       </>
     }
   >
@@ -5446,7 +5570,7 @@ const M4_Divider: Page = () => (
     }
     sub="Repérer les anti-patterns du code généré, restructurer avec SOLID, optimiser en mesurant, moderniser le legacy."
     dur="13:35 – 14:40 · TP inclus"
-    labs={<Tag tone="green" size={19}>TP 4 · refactoring avec votre agent</Tag>}
+    labs={<Tag tone="green" size={19}>TP 3 · refactoring avec votre agent</Tag>}
   >
     <SecItem n={1}>Les anti-patterns du code généré</SecItem>
     <SecItem n={2}>Refactoring avancé : SOLID</SecItem>
@@ -5576,11 +5700,11 @@ const M4_Perf: Page = () => (
     <div className={A.in} style={{ position: 'absolute', left: 1040, top: 262, width: 760, background: C.card, borderRadius: 20, boxShadow: SHADOW, padding: '26px 30px', ...dl(200) }}>
       <PanelTitle icon="gauge">Benchmark · 200 salles × 10 000 réservations</PanelTitle>
       <div style={{ marginTop: 10, display: 'flex', flexDirection: 'column', gap: 24 }}>
-        <M4Bar label="Généré au TP 2 · boucles imbriquées" ms="1 840 ms" w={100} tone="coral" cls={A.grow} />
+        <M4Bar label="Généré au TP 1 · boucles imbriquées" ms="1 840 ms" w={100} tone="coral" cls={A.grow} />
         <M4Bar label="Index par salle + tri" ms="14 ms" w={2} tone="green" cls={b.grow(1)} />
         <M4Bar label="Requête SQL bornée + index" ms="3 ms" w={1} tone="teal" cls={b.grow(2)} />
       </div>
-      <div style={{ marginTop: 22, fontSize: 19, color: C.muted }}>Ordres de grandeur illustratifs : mesurez sur votre machine au TP 4.</div>
+      <div style={{ marginTop: 22, fontSize: 19, color: C.muted }}>Ordres de grandeur illustratifs : mesurez sur votre machine au TP 3.</div>
     </div>
   </Frame>
 );
@@ -5722,7 +5846,7 @@ const ANA_INFO: Record<AnaField, { t: string; tone: Tone; icon: IconName; text: 
   name: { t: 'name · le nom', tone: 'navy', icon: 'user', text: 'Le nom affiché dans la liste des rôles du Chat, et celui qu’un autre agent utilise pour le solliciter. Sans lui, le nom du fichier.', tip: 'Court et unique : « Refactoreur », pas « Agent 2 ».' },
   desc: { t: 'description · quand l’utiliser', tone: 'blue', icon: 'note', text: 'Obligatoire pour le harnais Copilot. Elle dit ce que fait l’agent et quand le choisir : c’est elle qui décide de la délégation.', tip: 'Dites aussi ce qu’il ne fait jamais.' },
   tools: { t: 'tools · ce qu’il a le droit de faire', tone: 'coral', icon: 'tool', text: 'La liste des outils : sans « edit », il ne peut pas modifier de fichier ; sans « execute », pas de terminal. Cliquez les outils pour voir le risque.', tip: 'Le minimum nécessaire, jamais « * » par confort.' },
-  skills: { t: 'skills · ses savoir-faire', tone: 'violet', icon: 'book', text: 'Les skills chargées dans son contexte : ici la méthode de refactoring, écrite une fois, réutilisable par d’autres agents.', tip: 'Une skill = un dossier .github/skills/<nom>/, comme au TP 3.' },
+  skills: { t: 'skills · ses savoir-faire', tone: 'violet', icon: 'book', text: 'Les skills chargées dans son contexte : ici la méthode de refactoring, écrite une fois, réutilisable par d’autres agents.', tip: 'Une skill = un dossier .github/skills/<nom>/, comme au TP 2.' },
   model: { t: 'model · facultatif', tone: 'green', icon: 'cpu', text: 'Un modèle, ou une liste par ordre de préférence. Sans ce champ : le modèle choisi dans le sélecteur.', tip: 'Les champs handoffs et agents des anciens tutoriels sont ignorés par le harnais Copilot.' },
   body: { t: 'Le corps · son rôle et ses règles', tone: 'pink', icon: 'chat', text: 'Les consignes en Markdown, ajoutées à chaque demande faite à cet agent, en plus de copilot-instructions.md : sa mission, sa méthode, ses interdits.', tip: 'Des règles vérifiables, pas des vœux pieux.' },
 };
@@ -5842,7 +5966,7 @@ const AGENTS6: AgDef[] = [
     file: 'architecte.agent.md',
     icon: 'layers',
     tone: 'teal',
-    tp: 'TP 6',
+    tp: 'TP 5',
     desc: 'Découpe une demande en lots vérifiables. Ne code jamais.',
     tools: ['read', 'search'],
     extra: [],
@@ -5856,35 +5980,35 @@ const AGENTS6: AgDef[] = [
     file: 'testeur.agent.md',
     icon: 'flask',
     tone: 'pink',
-    tp: 'TP 6',
+    tp: 'TP 5',
     desc: 'Écrit les tests d’un lot à partir de la matrice validée.',
     tools: ['read', 'search', 'edit', 'execute'],
     extra: [<><Ck>skills</Ck>: [<Cs>'matrice-de-tests'</Cs>]</>],
     body: ['Tu es le Testeur de SalleLibre.', '- Matrice validée d’abord, puis les tests.', '- Un nouveau test doit d’abord être ROUGE.', '- Tu ne modifies que tests/, jamais src/.', '- Tu ne supprimes ni n’affaiblis un test.'],
     mission: 'Prouver le comportement attendu avant qu’il existe : des tests rouges, puis verts.',
     never: 'Toucher au code de production, sauter ou affaiblir un test.',
-    call: 'Votre skill du TP 3, devenue un rôle à part entière.',
+    call: 'Votre skill du TP 2, devenue un rôle à part entière.',
   },
   {
     tab: 'Refactoreur',
     file: 'refactoreur.agent.md',
     icon: 'wand',
     tone: 'violet',
-    tp: 'TP 4',
+    tp: 'TP 3',
     desc: 'Refactore par petits pas sûrs, sans changer le comportement.',
     tools: ['read', 'search', 'edit', 'execute'],
     extra: [<><Ck>skills</Ck>: [<Cs>'refactoring-sur'</Cs>]</>],
     body: ['Tu es le Refactoreur de SalleLibre.', '- Tests avant et après chaque geste.', '- Un refactoring à la fois ; rouge : annule.', '- Aucune correction de bug au passage.', '- Ne modifie jamais tests/.'],
     mission: 'Améliorer la structure (SOLID, performance) avec la preuve que rien n’a bougé.',
     never: 'Modifier un test, corriger un bug en douce, livrer un diff géant.',
-    call: 'Choisi dans la liste des rôles pendant le TP 4.',
+    call: 'Choisi dans la liste des rôles pendant le TP 3.',
   },
   {
     tab: 'Auditeur',
     file: 'auditeur.agent.md',
     icon: 'shield',
     tone: 'coral',
-    tp: 'TP 5',
+    tp: 'TP 4',
     desc: 'Audite un diff selon OWASP Top 10 : 2025. Lecture seule.',
     tools: ['read', 'search'],
     extra: [<><Ck>user-invocable</Ck>: <Cn>false</Cn> <Cc>{'# sous-agent seulement'}</Cc></>],
@@ -5898,7 +6022,7 @@ const AGENTS6: AgDef[] = [
     file: 'documentaliste.agent.md',
     icon: 'doc',
     tone: 'green',
-    tp: 'TP 6',
+    tp: 'TP 5',
     desc: 'Met à jour OpenAPI et README à partir du code.',
     tools: ['read', 'search', 'edit'],
     extra: [<Cc>{'# model : un modèle rapide suffit'}</Cc>],
@@ -5912,7 +6036,7 @@ const AGENTS6: AgDef[] = [
     file: 'chef-orchestre.agent.md',
     icon: 'route',
     tone: 'navy',
-    tp: 'TP 6',
+    tp: 'TP 5',
     desc: 'Mène une feature de bout en bout en déléguant.',
     tools: ['agent', 'read', 'search', 'edit', 'execute', 'todo'],
     extra: [],
@@ -6091,11 +6215,11 @@ const M4_Qcm: Page = () => (
   </QcmPage>
 );
 
-// ─── TP 4 ───────────────────────────────────────────────────────────────────
+// ─── TP 3 ───────────────────────────────────────────────────────────────────
 const M4_TP: Page = () => (
   <LabPage
     mod={4}
-    n="4"
+    n="3"
     title="Refactoring en profondeur"
     defi="refacto"
     who="Individuel"
@@ -6117,10 +6241,10 @@ const M4_TP: Page = () => (
     objective={<>Optimiser le code du matin (SOLID, patterns, performance) avec <strong>votre</strong> agent Refactoreur, sans changer le comportement.</>}
     crit={
       <>
-        <CheckItem id="tp4-1" size={21}>Rapport d’anti-patterns en rôle Ask, priorisé</CheckItem>
-        <CheckItem id="tp4-2" size={21}>Refactoreur : 4 outils au plus, règles vérifiables</CheckItem>
-        <CheckItem id="tp4-3" size={21}>Trois refactorings, un commit chacun, tests intouchés</CheckItem>
-        <CheckItem id="tp4-4" size={21}>Benchmark avant / après de la recherche</CheckItem>
+        <CheckItem id="tp3-1" size={21}>Rapport d’anti-patterns en rôle Ask, priorisé</CheckItem>
+        <CheckItem id="tp3-2" size={21}>Refactoreur : 4 outils au plus, règles vérifiables</CheckItem>
+        <CheckItem id="tp3-3" size={21}>Trois refactorings, un commit chacun, tests intouchés</CheckItem>
+        <CheckItem id="tp3-4" size={21}>Benchmark avant / après de la recherche</CheckItem>
       </>
     }
   >
@@ -6150,7 +6274,7 @@ const M5_Divider: Page = () => (
     }
     sub="Les risques propres au code produit par IA, la grille OWASP, les prompts orientés sécurité, les outils… et le droit."
     dur="14:40 – 15:30 · TP inclus"
-    labs={<Tag tone="green" size={19}>TP 5 · audit par un agent Auditeur</Tag>}
+    labs={<Tag tone="green" size={19}>TP 4 · audit par un agent Auditeur</Tag>}
   >
     <SecItem n={1}>Risques spécifiques au code généré</SecItem>
     <SecItem n={2}>Détecter les vulnérabilités suggérées</SecItem>
@@ -6282,13 +6406,13 @@ const M5_Owasp: Page = () => (
           max={10}
           label="Ma revue couvre"
           levels={[
-            { min: 0, text: 'Revue fonctionnelle seulement : le TP 5 tombe à pic.', tone: 'coral' },
+            { min: 0, text: 'Revue fonctionnelle seulement : le TP 4 tombe à pic.', tone: 'coral' },
             { min: 4, text: 'Bonne base : outillez le reste en CI.', tone: 'yellow' },
             { min: 8, text: 'Revue solide : faites-en un prompt d’équipe.', tone: 'green' },
           ]}
         />
         <div style={{ marginTop: 18, fontSize: 21, lineHeight: 1.45, color: C.muted }}>
-          Cette liste devient votre grille d’audit au TP 5… et un fichier de prompt au module 6.
+          Cette liste devient votre grille d’audit au TP 4… et un fichier de prompt au module 6.
         </div>
       </div>
     </Checklist>
@@ -6424,11 +6548,11 @@ const M5_Qcm: Page = () => (
   </QcmPage>
 );
 
-// ─── TP 5 ───────────────────────────────────────────────────────────────────
+// ─── TP 4 ───────────────────────────────────────────────────────────────────
 const M5_TP: Page = () => (
   <LabPage
     mod={5}
-    n="5"
+    n="4"
     title="Audit de sécurité du code généré"
     defi="audit"
     who="Individuel"
@@ -6450,10 +6574,10 @@ const M5_TP: Page = () => (
     objective={<>Faire auditer le code de {PROJECT} par un agent Auditeur qui ne peut rien modifier, puis prouver et corriger chaque faille avec des prompts ciblés.</>}
     crit={
       <>
-        <CheckItem id="tp5-1" size={21}>Auditeur : read et search seulement, sous-agent</CheckItem>
-        <CheckItem id="tp5-1b" size={21}>Au moins quatre failles trouvées et classées</CheckItem>
-        <CheckItem id="tp5-2" size={21}>Un test d’exploitation par faille, dont le DELETE d’autrui</CheckItem>
-        <CheckItem id="tp5-4" size={21}>security.instructions.md commité</CheckItem>
+        <CheckItem id="tp4-1" size={21}>Auditeur : read et search seulement, sous-agent</CheckItem>
+        <CheckItem id="tp4-1b" size={21}>Au moins quatre failles trouvées et classées</CheckItem>
+        <CheckItem id="tp4-2" size={21}>Un test d’exploitation par faille, dont le DELETE d’autrui</CheckItem>
+        <CheckItem id="tp4-4" size={21}>security.instructions.md commité</CheckItem>
       </>
     }
   >
@@ -6483,7 +6607,7 @@ const M6_Divider: Page = () => (
     }
     sub="Conventions, pull requests, CI/CD, orchestration d’agents, mesure et charte : passer d’usages individuels à une pratique d’équipe."
     dur="15:40 – 16:40 · TP inclus"
-    labs={<Tag tone="green" size={19}>TP 6 · feature orchestrée</Tag>}
+    labs={<Tag tone="green" size={19}>TP 5 · feature orchestrée</Tag>}
   >
     <SecItem n={1}>Des conventions d’usage d’équipe</SecItem>
     <SecItem n={2}>Pull requests, revue de code et CI/CD</SecItem>
@@ -7103,7 +7227,7 @@ const M6_Qcm: Page = () => (
   </QcmPage>
 );
 
-// ─── TP 6 · projet de clôture ───────────────────────────────────────────────
+// ─── TP 5 · projet de clôture ───────────────────────────────────────────────
 const M6Feat = ({ icon, tone, title, children }: { icon: IconName; tone: Tone; title: string; children: ReactNode }) => (
   <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
     <IconTile name={icon} tone={tone} size={40} />
@@ -7116,7 +7240,7 @@ const M6Feat = ({ icon, tone, title, children }: { icon: IconName; tone: Tone; t
 const M6_TP: Page = () => (
   <LabPage
     mod={6}
-    n="6"
+    n="5"
     title="Projet de clôture : une feature orchestrée"
     defi="soutenance"
     who="Individuel · 2 ou 3 volontaires présentent"
@@ -7138,10 +7262,10 @@ const M6_TP: Page = () => (
     objective={<>Livrer une feature de {PROJECT} en orchestrant vos agents, en gardant la main aux deux décisions : le plan, puis le diff.</>}
     crit={
       <>
-        <CheckItem id="tp6-1" size={21}>Délégation par nom, deux points d’arrêt</CheckItem>
-        <CheckItem id="tp6-2" size={21}>Plan validé, tests rouges puis verts</CheckItem>
-        <CheckItem id="tp6-3" size={21}>Audit du diff fait, failles traitées</CheckItem>
-        <CheckItem id="tp6-4" size={21}>Diff des tests relu, PR décrite, CI verte</CheckItem>
+        <CheckItem id="tp5-1" size={21}>Délégation par nom, deux points d’arrêt</CheckItem>
+        <CheckItem id="tp5-2" size={21}>Plan validé, tests rouges puis verts</CheckItem>
+        <CheckItem id="tp5-3" size={21}>Audit du diff fait, failles traitées</CheckItem>
+        <CheckItem id="tp5-4" size={21}>Diff des tests relu, PR décrite, CI verte</CheckItem>
       </>
     }
   >
@@ -7394,6 +7518,9 @@ export const meta: SlideMeta = {
   labs: labsPack,
 };
 
+// Module → index of its opening page (written by scripts/deck-features.mjs).
+const MOD_START: Record<number, number> = {0:0,1:7,2:16,3:31,4:41,5:52,6:61,7:72,8:40};
+
 export default [
   O_Cover,
   O_Welcome,
@@ -7411,7 +7538,6 @@ export default [
   M1_Compare,
   M1_Levers,
   M1_Qcm,
-  M1_TP,
   M2_Divider,
   M2_Scaffold,
   M2_ApiFlow,
@@ -7490,7 +7616,7 @@ TRANSITION — « Quelques mots sur la journée et sur ce que vous allez produir
 
 OBJECTIF — Donner la promesse chiffrée et le contrat pédagogique.
 
-DIRE — « Sept heures, dont environ 40 % de pratique : six TP individuels qui s’enchaînent sur le même projet. À chaque TP, vous ajoutez une brique au dossier .github de votre dépôt : des instructions au TP 2, une skill au TP 3, un agent Refactoreur au TP 4, un agent Auditeur au TP 5, et au TP 6 un chef d’orchestre qui fait travailler vos agents ensemble sur une feature complète. Le contrat : je montre, vous pratiquez. Et le fil conducteur : Copilot propose, le développeur dispose… et prouve. »
+DIRE — « Sept heures, dont environ un tiers de pratique : cinq TP individuels qui s’enchaînent sur le même projet. À chaque TP, vous ajoutez une brique au dossier .github de votre dépôt : des instructions au TP 1, une skill au TP 2, un agent Refactoreur au TP 3, un agent Auditeur au TP 4, et au TP 5 un chef d’orchestre qui fait travailler vos agents ensemble sur une feature complète. Le contrat : je montre, vous pratiquez. Et le fil conducteur : Copilot propose, le développeur dispose… et prouve. »
 
 TRANSITION — « Faisons connaissance. »`,
   `⏱ 3 min · TOUR DE TABLE (sondage)
@@ -7506,7 +7632,7 @@ TRANSITION — « Voici les objectifs officiels de la formation. »`,
 
 OBJECTIF — Présenter les six objectifs du programme et l’équilibre de la journée.
 
-DIRE — « Six objectifs, un par module, à une nuance près : le sixième — identifier et contourner les limites de Copilot — est transversal. Chaque module se termine par un QCM et un TP. L’équilibre annoncé : 60 % d’apports et de démonstrations, 40 % de pratique. Le fil technique de la journée, ce sont les fichiers qui guident Copilot : instructions, skills, agents, jusqu’à l’orchestration. »
+DIRE — « Six objectifs, un par module, à une nuance près : le sixième — identifier et contourner les limites de Copilot — est transversal. Chaque module se termine par un QCM et un TP. L’équilibre annoncé : deux tiers d’apports et de démonstrations, un tiers de pratique. Le fil technique de la journée, ce sont les fichiers qui guident Copilot : instructions, skills, agents, jusqu’à l’orchestration. »
 
 TRANSITION — « Le déroulé heure par heure. »`,
   `⏱ 2 min · PROGRAMME
@@ -7522,7 +7648,7 @@ TRANSITION — « Parlons du projet sur lequel vous allez travailler toute la jo
 
 OBJECTIF — Présenter le projet commun et la chaîne des TP.
 
-DIRE — « SalleLibre est une API REST de réservation de salles de réunion. Volontairement banale : tout le monde comprend le métier, donc on peut se concentrer sur la technique. Mais elle contient tout ce qui rend Copilot intéressant… et dangereux : de la logique métier avec des cas limites — les chevauchements de créneaux —, de l’authentification et des rôles, un algorithme de recherche, et de la documentation. Chacun choisit sa stack. À droite, votre parcours : six TP, chacun produit quelque chose que le suivant réutilise, et votre dossier .github grossit à chaque étape. »
+DIRE — « SalleLibre est une API REST de réservation de salles de réunion. Volontairement banale : tout le monde comprend le métier, donc on peut se concentrer sur la technique. Mais elle contient tout ce qui rend Copilot intéressant… et dangereux : de la logique métier avec des cas limites — les chevauchements de créneaux —, de l’authentification et des rôles, un algorithme de recherche, et de la documentation. Chacun choisit sa stack. À droite, votre parcours : cinq TP, chacun produit quelque chose que le suivant réutilise, et votre dossier .github grossit à chaque étape. »
 
 TRANSITION — « Dernière étape avant de coder : le check-up technique. »`,
   `⏱ 3 min · CHECK-UP (minuteur 3 min)
@@ -7538,7 +7664,7 @@ TRANSITION — « Tout le monde est prêt ? Module 1 : le prompt engineering ava
 
 OBJECTIF — Annoncer le module 1 du programme : techniques avancées de prompt engineering.
 
-DIRE — « Module 1 : le prompt engineering avancé. Vous connaissez les bases, on ne s’y attarde pas. On repart de ce que Copilot voit réellement, on distingue les quatre réglages d’une session — harnais, rôle, modèle, environnement —, puis on structure les prompts, on les décompose en étapes, et surtout on apprend à mesurer : comparer deux prompts autrement qu’à l’impression. Puis le TP 1. »
+DIRE — « Module 1 : le prompt engineering avancé. Vous connaissez les bases, on ne s’y attarde pas. On repart de ce que Copilot voit réellement, on distingue les quatre réglages d’une session — harnais, rôle, modèle, environnement —, puis on structure les prompts, on les décompose en étapes, et surtout on apprend à mesurer : comparer deux prompts autrement qu’à l’impression. »
 
 TRANSITION — « Point de départ : qu’est-ce que Copilot voit quand il vous répond ? »`,
   `⏱ 5 min · CONTEXTE (2 temps)
@@ -7557,7 +7683,7 @@ TRANSITION — « Cette fenêtre, qui la remplit ? Ça dépend de quatre réglag
 OBJECTIF — Distinguer les quatre réglages d’une session de Chat ; fixer les réglages de la journée.
 
 DIRE — « Dans la zone de saisie du Chat, il y a désormais quatre listes. La session, ou harnais : qui fait tourner la boucle de l’agent. Depuis fin octobre, le harnais Copilot est le défaut ; l’ancien moteur de VS Code s’appelle Local, il est déprécié. Claude ou Codex sont d’autres harnais, branchés dans la même fenêtre. Le rôle : ce qu’on demande à l’agent d’être. Ask répond, Plan planifie sans toucher au code, Agent agit. Et cet après-midi, vos propres rôles : vos agents personnalisés. Le modèle : le cerveau. Il change la qualité et le coût, jamais les droits. Enfin l’environnement : où s’exécutent les commandes. »
-→ beat 1 « Nos réglages pour la journée : session Copilot, permissions manuelles, on approuve chaque commande. Pendant les mesures du TP 1, on fixe le modèle : sinon on compare deux modèles, pas deux prompts. »
+→ beat 1 « Nos réglages pour la journée : session Copilot, permissions manuelles, on approuve chaque commande. Quand on compare deux prompts, on fixe le modèle : sinon on compare deux modèles, pas deux prompts. »
 
 ANIMATION — Démo rapide : ouvrir les quatre listes dans VS Code, montrer le harnais Copilot sélectionné.
 
@@ -7598,9 +7724,9 @@ OBJECTIF — Comparer des prompts par des mesures, et itérer méthodiquement.
 DIRE — « Copilot n’est pas déterministe : un essai ne prouve rien. Protocole : même tâche, même modèle, session neuve, plusieurs essais par version. V1, le prompt basique : il compile une fois sur trois, les bornes sont fausses. »
 → beat 1 « V2 ajoute contexte et contraintes : nettement mieux. »
 → beat 2 « V3 ajoute exemples et critère de fin : zéro aller-retour. »
-→ beat 3 « Votre grille doit être décidée avant les essais, avec des critères binaires ou comptables. Et pour itérer : un seul changement à la fois. Les chiffres affichés sont illustratifs : vous produirez les vôtres au TP 1. »
+→ beat 3 « Votre grille doit être décidée avant les essais, avec des critères binaires ou comptables. Et pour itérer : un seul changement à la fois. Les chiffres affichés sont illustratifs. »
 
-TRANSITION — « Avant le TP, les leviers du chat que vous devez avoir sous les doigts. »`,
+TRANSITION — « Avant la pause, les leviers du chat que vous devez avoir sous les doigts. »`,
   `⏱ 3 min · LEVIERS DU CHAT
 
 OBJECTIF — Rappeler les références, participants, commandes et le choix du modèle.
@@ -7618,21 +7744,12 @@ DIRE — « Le piège attendu, c’est la B : les instructions personnalisées s
 
 ANIMATION — Faire voter à voix haute, cliquer la réponse majoritaire, puis → pour la bonne réponse et → pour l’essentiel.
 
-TRANSITION — « À vous : TP 1. »`,
-  `⏱ 20 min (minuteur) · TP 1
-
-OBJECTIF — Atelier du programme : réécrire des prompts basiques en prompts avancés et mesurer l’impact sur la qualité du code généré.
-
-DIRE — « TP individuel. Réglages : session Copilot, rôle Agent, et un seul modèle choisi dans la liste pour toutes vos mesures, pas Auto : sinon vous mesurez le modèle, pas le prompt. Trois prompts basiques. Pour chacun : lancez-le tel quel deux fois en session neuve, notez la grille. Réécrivez-le avec les cinq composants, relancez deux fois, notez. Gardez le code du meilleur résultat pour overlaps : c’est la première brique de SalleLibre. Et conservez votre meilleur prompt dans prompts/meilleur-prompt.md : au TP 2, il deviendra une skill. »
-
-ANIMATION — Coller les trois prompts de départ dans le Chat. Lancer le minuteur. Point d’étape à 10 minutes : « Où en êtes-vous : P1, P2 ou P3 ? » Quelqu’un bloqué partage son écran 2 minutes. À 18 minutes, demander à deux volontaires leurs chiffres V1/V2.
-
-TRANSITION — « Vous avez une fonction et une méthode. Passons à l’échelle d’un module entier… et écrivons enfin les règles de la maison. »`,
-  `⏱ 1 min · DIVISEUR M2 · 10:25
+TRANSITION — « Pause : reprise à 10 h 05 avec le module 2. »`,
+  `⏱ 1 min · DIVISEUR M2 · 10:05
 
 OBJECTIF — Annoncer le module 2 du programme : génération de modules et d’architectures complexes.
 
-DIRE — « Module 2 : on passe de la fonction au module, puis à l’application. Générer une structure complète, une API REST de bout en bout, les patterns Repository, Service et Factory, les dépendances générées. Et la seconde moitié du module : les fichiers qui guident Copilot. Vous ne répéterez plus vos règles dans chaque prompt : vous les écrirez une fois, dans le dépôt. Le TP 2 produit l’API SalleLibre, guidée par vos propres instructions. »
+DIRE — « Module 2 : on passe de la fonction au module, puis à l’application. Générer une structure complète, une API REST de bout en bout, les patterns Repository, Service et Factory, les dépendances générées. Et la seconde moitié du module : les fichiers qui guident Copilot. Vous ne répéterez plus vos règles dans chaque prompt : vous les écrirez une fois, dans le dépôt. Le TP 1 produit l’API SalleLibre, guidée par vos propres instructions. »
 
 TRANSITION — « Tout commence par l’arborescence. »`,
   `⏱ 4 min · STRUCTURE DE PROJET (2 temps)
@@ -7683,7 +7800,7 @@ OBJECTIF — Donner la carte des fichiers de personnalisation lus par le harnais
 
 DIRE — « Sept fichiers, tous en Markdown ou presque, tous versionnés avec le code. Les règles de la maison, à chaque requête : copilot-instructions.md ou AGENTS.md. Des règles ciblées par chemin : les fichiers .instructions.md. Vos préférences personnelles, dans votre dossier utilisateur. Puis trois fichiers plus puissants : la skill, une méthode chargée à la demande ; l’agent, un rôle avec ses outils ; et mcp.json, qui donne des outils de plus à l’agent. Regardez la colonne de droite : c’est le programme de vos TP. Votre dossier .github grossit à chaque TP. »
 
-TRANSITION — « Le premier, celui que vous écrirez dans le TP 2. »`,
+TRANSITION — « Le premier, celui que vous écrirez dans le TP 1. »`,
   `⏱ 3 min · COPILOT-INSTRUCTIONS.MD (démo)
 
 OBJECTIF — Montrer un fichier d’instructions de dépôt court, impératif et vérifiable.
@@ -7705,7 +7822,7 @@ TRANSITION — « Toutes les règles ne concernent pas tous les fichiers. »`,
 
 OBJECTIF — Écrire des instructions ciblées par chemin avec applyTo.
 
-DIRE — « Un fichier .instructions.md commence par un en-tête YAML : applyTo dit à quels fichiers il s’applique. Ici, les conventions de test, seulement quand Copilot travaille dans tests/. Le reste du temps, il ne coûte rien. À droite, les motifs que vous écrirez aujourd’hui : tests au TP 3, sécurité de l’API au TP 5. Le motif double étoile, tout le dépôt : autant l’écrire dans copilot-instructions.md. Et le piège classique : test au singulier au lieu de tests. Le fichier n’est jamais appliqué, et rien ne vous prévient. Le réflexe : vérifier les Références. »
+DIRE — « Un fichier .instructions.md commence par un en-tête YAML : applyTo dit à quels fichiers il s’applique. Ici, les conventions de test, seulement quand Copilot travaille dans tests/. Le reste du temps, il ne coûte rien. À droite, les motifs que vous écrirez aujourd’hui : tests au TP 2, sécurité de l’API au TP 4. Le motif double étoile, tout le dépôt : autant l’écrire dans copilot-instructions.md. Et le piège classique : test au singulier au lieu de tests. Le fichier n’est jamais appliqué, et rien ne vous prévient. Le réflexe : vérifier les Références. »
 
 TRANSITION — « Ces instructions s’additionnent à d’autres sources. »`,
   `⏱ 2 min · QUATRE SOURCES DE CONSIGNES
@@ -7720,7 +7837,7 @@ TRANSITION — « Et vos prompts réutilisables, ceux que vous rangiez dans .git
 OBJECTIF — Expliquer que les prompt files sont ignorés par le harnais Copilot et que les skills les remplacent.
 
 DIRE — « Beaucoup d’entre vous ont des .prompt.md, lancés par /nom. C’est le format du harnais Local, l’ancien moteur : le harnais Copilot les ignore. Le format qui les remplace, c’est la skill : un dossier, un SKILL.md, et ses fichiers — modèles, scripts. Copilot lit sa description et la charge quand la demande s’y prête, ou quand vous tapez /nom. C’est un standard ouvert, lu par d’autres agents. »
-→ beat 1 « Convertir un prompt d’équipe en skill : un en-tête name et description, et disable-model-invocation à true si vous voulez qu’elle ne parte que sur /nouvel-endpoint. Votre première skill : au TP 3, et en bonus dès le TP 2. »
+→ beat 1 « Convertir un prompt d’équipe en skill : un en-tête name et description, et disable-model-invocation à true si vous voulez qu’elle ne parte que sur /nouvel-endpoint. Votre première skill : au TP 2, et en bonus dès le TP 1. »
 
 TRANSITION — « Dernier outil : voir d’un coup d’œil ce qui est chargé. »`,
   `⏱ 2 min · ÉDITEUR DE PERSONNALISATION (démo)
@@ -7740,21 +7857,23 @@ DIRE — « Le piège C est le plus intéressant : demander au modèle de valide
 
 ANIMATION — Vote à voix haute, clic sur la réponse majoritaire, → bonne réponse, → l’essentiel.
 
-TRANSITION — « TP 2 : l’API complète, guidée par vos instructions. »`,
-  `⏱ 30 min (minuteur) · TP 2
+TRANSITION — « TP 1 : l’API complète, guidée par vos instructions. »`,
+  `⏱ 30 min (minuteur) · TP 1
 
 OBJECTIF — Cas pratique du programme : générer une API REST complète avec authentification, validation et documentation, guidée par un fichier d’instructions de dépôt.
 
-DIRE — « TP individuel. D’abord le rôle Plan : arborescence et interfaces, vous validez, vous sauvegardez dans PLAN.md. Ensuite, avant toute génération, vous écrivez .github/copilot-instructions.md : quarante lignes au plus, la stack, les couches, les erreurs métier et leurs codes HTTP, la règle des dépendances. /init peut proposer un premier jet : raccourcissez-le. Puis le rôle Agent, lot par lot : le domaine — reprenez overlaps du TP 1 —, des repositories en mémoire, les services, puis routes, validation, authentification, et la documentation. À chaque réponse, vérifiez que vos instructions apparaissent dans les Références. Si Copilot ignore une règle, corrigez le fichier, pas le prompt. Critères : 409 sur chevauchement, 401 sans jeton, 403 sans le bon rôle. »
+DIRE — « TP individuel. D’abord le rôle Plan : arborescence et interfaces, vous validez, vous sauvegardez dans PLAN.md. Ensuite, avant toute génération, vous écrivez .github/copilot-instructions.md : quarante lignes au plus, la stack, les couches, les erreurs métier et leurs codes HTTP, la règle des dépendances. /init peut proposer un premier jet : raccourcissez-le. Puis le rôle Agent, lot par lot : le domaine — commencez par la règle de chevauchement —, des repositories en mémoire, les services, puis routes, validation, authentification, et la documentation. À chaque réponse, vérifiez que vos instructions apparaissent dans les Références. Si Copilot ignore une règle, corrigez le fichier, pas le prompt. Critères : 409 sur chevauchement, 401 sans jeton, 403 sans le bon rôle. »
 
 ANIMATION — Lancer le minuteur. Points d’étape à 10 et 20 minutes : « Où en êtes-vous : plan, instructions, lot 1, 2 ou 3 ? » Quelqu’un bloqué partage son écran 2 minutes. Rappeler que tout générer en un seul prompt rend le diff impossible à relire. Pour le bonus : coller dans le Chat l’en-tête d’une skill (name, description, disable-model-invocation).
 
 TRANSITION — « Votre API tourne. Est-elle correcte ? Module 3 : les tests. »`,
-  `⏱ 1 min · DIVISEUR M3 · 11:35
+  `⏱ 1 min · DIVISEUR M3 · 11:15
 
 OBJECTIF — Annoncer le module 3 du programme : automatisation de la génération de tests.
 
-DIRE — « Module 3 : les tests. C’est là que Copilot fait gagner le plus de temps… et là qu’il donne la plus fausse impression de sécurité. Stratégie d’abord — couverture, cas limites, cas négatifs —, puis tests unitaires, mocks et stubs, tests d’intégration, et enfin l’analyse de couverture et ses pièges. TP 3 : la suite complète de l’API du TP 2, avec votre première skill : la méthode de test de l’équipe, écrite une fois. »
+MARGE — Module le plus long de la matinée : 20 min de marge, puisque la M1 n’a plus de TP. Si le groupe a pris du retard, réduisez les points d’étape du TP, pas la reprise.
+
+DIRE — « Module 3 : les tests. C’est là que Copilot fait gagner le plus de temps… et là qu’il donne la plus fausse impression de sécurité. Stratégie d’abord — couverture, cas limites, cas négatifs —, puis tests unitaires, mocks et stubs, tests d’intégration, et enfin l’analyse de couverture et ses pièges. TP 2 : la suite complète de l’API du TP 1, avec votre première skill : la méthode de test de l’équipe, écrite une fois. »
 
 TRANSITION — « Tout commence par une stratégie, pas par /tests. »`,
   `⏱ 4 min · MATRICE DE CAS (4 temps)
@@ -7805,12 +7924,12 @@ TRANSITION — « Ce qui nous amène au QCM. »`,
 
 OBJECTIF — Ancrer le réflexe de relire le diff des tests.
 
-DIRE — « Quand l’objectif est "tout au vert", modifier le test est un chemin valide pour l’agent. La règle d’équipe : le diff des tests se relit avant le diff du code. Écrivez-la dans vos instructions de test : c’est le premier fichier du TP 3. »
+DIRE — « Quand l’objectif est "tout au vert", modifier le test est un chemin valide pour l’agent. La règle d’équipe : le diff des tests se relit avant le diff du code. Écrivez-la dans vos instructions de test : c’est le premier fichier du TP 2. »
 
 ANIMATION — Vote à voix haute, clic sur la réponse majoritaire, → bonne réponse, → l’essentiel.
 
-TRANSITION — « TP 3, puis déjeuner. »`,
-  `⏱ 25 min (minuteur) · TP 3
+TRANSITION — « TP 2, puis déjeuner. »`,
+  `⏱ 25 min (minuteur) · TP 2
 
 OBJECTIF — Atelier du programme : à partir du module développé au module 2, générer une suite complète de tests unitaires, mocks et tests d’intégration.
 
@@ -7832,7 +7951,7 @@ TRANSITION — « L’après-midi commence par ce que Copilot fait le moins bien
 
 OBJECTIF — Annoncer le module 4 du programme : optimisation et refactoring avancé.
 
-DIRE — « Module 4. Copilot produit du code qui marche ; il ne produit pas spontanément du code qui dure. On va identifier les anti-patterns du code généré, refactorer avec SOLID, optimiser les performances en mesurant, moderniser du legacy, comparer plusieurs implémentations. Puis on industrialise : un agent personnalisé, un rôle écrit une fois avec ses outils et ses interdits. TP 4 : un refactoring en profondeur de votre code du matin, avec votre propre agent Refactoreur. »
+DIRE — « Module 4. Copilot produit du code qui marche ; il ne produit pas spontanément du code qui dure. On va identifier les anti-patterns du code généré, refactorer avec SOLID, optimiser les performances en mesurant, moderniser du legacy, comparer plusieurs implémentations. Puis on industrialise : un agent personnalisé, un rôle écrit une fois avec ses outils et ses interdits. TP 3 : un refactoring en profondeur de votre code du matin, avec votre propre agent Refactoreur. »
 
 TRANSITION — « Commençons par un exercice d’œil. »`,
   `⏱ 5 min · ANTI-PATTERNS (exercice, 6 temps)
@@ -7853,7 +7972,7 @@ TRANSITION — « Le défaut numéro trois, c’était la performance. »`,
 
 OBJECTIF — Optimisation des performances : génération d’algorithmes efficaces.
 
-DIRE — « Copilot écrit l’algorithme le plus évident. Il sait faire mieux si on lui donne la mesure et la cible : le profil, la complexité visée, la contrainte de signature, les tests inchangés, et un benchmark reproductible. Le code du TP 2 : près de deux secondes. » → clic. « Index par salle et tri : quelques millisecondes. » → clic. « Une requête bornée avec index côté base : encore mieux, mais il faut alors des tests d’intégration. Les chiffres sont des ordres de grandeur : vous mesurerez les vôtres. Et lisibilité contre performance, c’est un choix, pas un réflexe. »
+DIRE — « Copilot écrit l’algorithme le plus évident. Il sait faire mieux si on lui donne la mesure et la cible : le profil, la complexité visée, la contrainte de signature, les tests inchangés, et un benchmark reproductible. Le code du TP 1 : près de deux secondes. » → clic. « Index par salle et tri : quelques millisecondes. » → clic. « Une requête bornée avec index côté base : encore mieux, mais il faut alors des tests d’intégration. Les chiffres sont des ordres de grandeur : vous mesurerez les vôtres. Et lisibilité contre performance, c’est un choix, pas un réflexe. »
 
 TRANSITION — « Optimiser du code neuf, c’est facile. Moderniser du vieux code, beaucoup moins. »`,
   `⏱ 4 min · LEGACY (4 temps)
@@ -7879,7 +7998,7 @@ OBJECTIF — Lire et écrire un fichier .agent.md : nom, description, outils, sk
 DIRE — « Un agent personnalisé, c’est un fichier Markdown dans .github/agents. Le nom : celui que vous voyez dans la liste des rôles, et celui qu’un autre agent utilisera pour le solliciter. »
 → beat 1 « La description : obligatoire pour le harnais Copilot. Elle dit quand choisir cet agent, et c’est elle qui décide de la délégation. »
 → beat 2 « Les outils : ce qu’il a le droit de faire. Sans edit, il ne modifie rien ; sans execute, pas de terminal. » Cliquer web : « Terminal plus Internet : une page piégée peut lui dicter une commande. » Re-cliquer pour retirer.
-→ beat 3 « Les skills : ses savoir-faire. Exactement le format de votre skill du TP 3. »
+→ beat 3 « Les skills : ses savoir-faire. Exactement le format de votre skill du TP 2. »
 → beat 4 « Le modèle : facultatif. Et attention aux anciens tutoriels : handoffs et agents sont des champs de l’ancien harnais Local, ignorés par le harnais Copilot. »
 → beat 5 « Le corps : la mission, la méthode, les interdits. Des règles vérifiables : « lance les tests avant et après », pas « sois rigoureux ». »
 
@@ -7891,11 +8010,11 @@ TRANSITION — « Un agent seul, c’est utile. Une équipe d’agents, c’est 
 OBJECTIF — Montrer des exemples complets d’agents, leurs droits et leurs interdits, et préparer l’orchestration du module 6.
 
 DIRE — « L’Architecte : lecture seule. Il découpe une demande en lots de un à trois fichiers, chacun avec son test. Il ne peut rien casser. »
-→ beat 1 « Le Testeur : il reprend votre skill du TP 3. Sa règle d’or : un nouveau test doit d’abord être rouge, et il ne touche jamais src. »
-→ beat 2 « Le Refactoreur : celui que vous écrivez au TP 4. »
-→ beat 3 « L’Auditeur : lecture seule, et user-invocable à false : il n’apparaît pas dans la liste, on le sollicite comme sous-agent. Intérêt : un contexte neuf, il n’a pas écrit le code qu’il relit. Vous l’utiliserez au TP 5. »
+→ beat 1 « Le Testeur : il reprend votre skill du TP 2. Sa règle d’or : un nouveau test doit d’abord être rouge, et il ne touche jamais src. »
+→ beat 2 « Le Refactoreur : celui que vous écrivez au TP 3. »
+→ beat 3 « L’Auditeur : lecture seule, et user-invocable à false : il n’apparaît pas dans la liste, on le sollicite comme sous-agent. Intérêt : un contexte neuf, il n’a pas écrit le code qu’il relit. Vous l’utiliserez au TP 4. »
 → beat 4 « Le Documentaliste : edit, mais seulement sur la doc ; un modèle rapide suffit. »
-→ beat 5 « Et le chef d’orchestre : il a l’outil agent, il délègue aux autres par leur nom exact, et il s’arrête pour vous demander de valider le plan. On le détaille au module 6, c’est votre TP 6. Regardez les outils : moins un agent en a, plus on peut lui faire confiance. »
+→ beat 5 « Et le chef d’orchestre : il a l’outil agent, il délègue aux autres par leur nom exact, et il s’arrête pour vous demander de valider le plan. On le détaille au module 6, c’est votre TP 5. Regardez les outils : moins un agent en a, plus on peut lui faire confiance. »
 
 ANIMATION — Les onglets sont cliquables : revenir sur l’onglet demandé par un participant.
 
@@ -7921,8 +8040,8 @@ DIRE — « Le réflexe : un diff que vous ne pouvez pas relire se rejette. Les 
 
 ANIMATION — Vote à voix haute, clic sur la réponse majoritaire, → bonne réponse, → l’essentiel.
 
-TRANSITION — « TP 4. »`,
-  `⏱ 25 min (minuteur) · TP 4
+TRANSITION — « TP 3. »`,
+  `⏱ 25 min (minuteur) · TP 3
 
 OBJECTIF — Atelier du programme : refactoring en profondeur, optimiser le code généré le matin en appliquant SOLID et les patterns vus.
 
@@ -7935,7 +8054,7 @@ TRANSITION — « Votre code est propre. Est-il sûr ? Module 5. »`,
 
 OBJECTIF — Annoncer le module 5 du programme : sécurité et audit du code généré.
 
-DIRE — « Module 5. Votre code est testé et propre. Est-il sûr ? On va voir les risques spécifiques au code généré, la checklist OWASP appliquée à Copilot, comment détecter les vulnérabilités dans une suggestion, comment écrire des prompts orientés sécurité, et la question des droits d’auteur et des licences. TP 5 : vous faites auditer votre propre code par un agent Auditeur en lecture seule, sollicité comme sous-agent. »
+DIRE — « Module 5. Votre code est testé et propre. Est-il sûr ? On va voir les risques spécifiques au code généré, la checklist OWASP appliquée à Copilot, comment détecter les vulnérabilités dans une suggestion, comment écrire des prompts orientés sécurité, et la question des droits d’auteur et des licences. TP 4 : vous faites auditer votre propre code par un agent Auditeur en lecture seule, sollicité comme sous-agent. »
 
 TRANSITION — « D’abord, l’ampleur du problème. »`,
   `⏱ 4 min · RISQUES
@@ -7949,7 +8068,7 @@ TRANSITION — « Exercice : six failles dans une suggestion. »`,
 
 OBJECTIF — Détecter les vulnérabilités dans le code suggéré.
 
-DIRE — « Cette fois en Python, mais les failles sont les mêmes dans toutes les stacks. Cherchez. » Une minute, puis → clic par faille. « Un : secret en dur. Deux : signature non vérifiée, n’importe qui forge un jeton admin — on le voit réellement dans des suggestions, souvent pour "faire marcher" un test. Trois : injection SQL par f-string. Quatre : SELECT étoile renvoyé tel quel, les e-mails de tout le monde. Cinq : l’IDOR, Bob annule la réservation d’Alice — c’est le test d’intégration 403 du TP 3. Six : la trace d’erreur renvoyée au client. »
+DIRE — « Cette fois en Python, mais les failles sont les mêmes dans toutes les stacks. Cherchez. » Une minute, puis → clic par faille. « Un : secret en dur. Deux : signature non vérifiée, n’importe qui forge un jeton admin — on le voit réellement dans des suggestions, souvent pour "faire marcher" un test. Trois : injection SQL par f-string. Quatre : SELECT étoile renvoyé tel quel, les e-mails de tout le monde. Cinq : l’IDOR, Bob annule la réservation d’Alice — c’est le test d’intégration 403 du TP 2. Six : la trace d’erreur renvoyée au client. »
 
 TRANSITION — « Pour ne rien oublier, une grille. »`,
   `⏱ 4 min · OWASP (checklist interactive)
@@ -7990,8 +8109,8 @@ DIRE — « Le piège D est le plus dangereux : une alerte fermée à tort n’e
 
 ANIMATION — Vote à voix haute, clic sur la réponse majoritaire, → bonne réponse, → l’essentiel.
 
-TRANSITION — « TP 5 : auditez votre code. »`,
-  `⏱ 25 min (minuteur) · TP 5
+TRANSITION — « TP 4 : auditez votre code. »`,
+  `⏱ 25 min (minuteur) · TP 4
 
 OBJECTIF — Atelier du programme : analyser un code généré par Copilot, identifier les failles et les corriger avec des prompts ciblés.
 
@@ -8040,7 +8159,7 @@ TRANSITION — « Vous avez écrit un agent par TP. Et si on les faisait travail
 
 OBJECTIF — Montrer un agent orchestrateur complet : outils, délégation par nom, points d’arrêt humains.
 
-DIRE — « Voici le fichier de votre TP 6. Un agent comme les autres, avec un outil de plus : agent, qui lui permet de solliciter d’autres agents comme sous-agents. Dans le harnais Copilot, il les appelle par leur nom exact, et chaque sous-agent travaille dans son propre contexte : il ne voit que la tâche confiée, et ne renvoie que son résultat. Lisez le corps : un plan d’abord, puis pour chaque lot les tests rouges, le code, l’audit. Le chef d’orchestre code lui-même, mais ne touche jamais aux tests. »
+DIRE — « Voici le fichier de votre TP 5. Un agent comme les autres, avec un outil de plus : agent, qui lui permet de solliciter d’autres agents comme sous-agents. Dans le harnais Copilot, il les appelle par leur nom exact, et chaque sous-agent travaille dans son propre contexte : il ne voit que la tâche confiée, et ne renvoie que son résultat. Lisez le corps : un plan d’abord, puis pour chaque lot les tests rouges, le code, l’audit. Le chef d’orchestre code lui-même, mais ne touche jamais aux tests. »
 → beat 1 « Ses quatre équipiers, et leurs droits : l’Architecte et l’Auditeur sont en lecture seule, ils ne peuvent rien casser. Le Testeur n’écrit que dans tests, le Documentaliste que dans la doc. »
 → beat 2 « Et les deux losanges verts : les deux moments où le chef d’orchestre s’arrête et vous rend la main. Le plan, puis le diff. Ce sont les deux lignes en vert dans le fichier : sans elles, l’agent enchaîne tout seul. »
 → beat 3 « Dans le Chat, chaque sous-agent apparaît replié avec son nom : dépliez-le pour voir ce qu’il a lu et rendu. Et si un ancien tutoriel vous fait écrire des handoffs, des boutons de relais : c’est l’ancien harnais Local, le harnais Copilot les ignore. »
@@ -8093,7 +8212,7 @@ DIRE — « Le taux d’acceptation est l’indicateur le plus visible du tablea
 ANIMATION — Vote à voix haute, clic sur la réponse majoritaire, → bonne réponse, → l’essentiel.
 
 TRANSITION — « Projet de clôture. »`,
-  `⏱ 25 min (minuteur) · TP 6
+  `⏱ 25 min (minuteur) · TP 5
 
 OBJECTIF — Projet de clôture du programme : livrer une feature complète (code, tests, documentation, sécurité) en orchestrant des agents, puis la présenter.
 
@@ -8138,3 +8257,16 @@ TRANSITION — « Merci à toutes et à tous. »`,
 
 DIRE — « Merci pour votre énergie et vos questions. Une seule chose à retenir : Copilot propose, le développeur dispose… et prouve. Bonne continuation ! »`,
 ];
+
+// @@TIMERS-BEGIN
+// Minuteurs de la deck — généré par scripts/timers-manifest.mjs (page = index 0-based).
+export const timers = [
+  { id: "setup", label: "Check-up", page: 6, minutes: 3 },
+  { id: "tp-1", label: "TP 1", page: 30, minutes: 30 },
+  { id: "tp-2", label: "TP 2", page: 39, minutes: 25 },
+  { id: "tp-3", label: "TP 3", page: 51, minutes: 25 },
+  { id: "tp-4", label: "TP 4", page: 60, minutes: 25 },
+  { id: "tp-5", label: "TP 5", page: 71, minutes: 25 },
+  { id: "soutenance", label: "Présentation", page: 72, minutes: 4 },
+];
+// @@TIMERS-END

@@ -1,0 +1,16 @@
+[project]
+name = "guichet"
+version = "1.0.0"
+description = "Guichet · portail des demandes d'Oasis Digital (stack Python)"
+requires-python = ">=3.12"
+dependencies = ["anthropic>=2.8,<3"]
+
+[dependency-groups]
+dev = ["pytest>=8"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+
+[tool.uv]
+package = false

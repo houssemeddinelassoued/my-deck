@@ -468,7 +468,7 @@ const M3_Score: Page = () => {
         {SCORE_ROWS.map((r, ri) => {
           const top = rank(ri) <= 3;
           return (
-            <div key={r.id} style={{ display: 'grid', gridTemplateColumns: '480px repeat(5, 1fr) 260px 90px', alignItems: 'center', gap: 10, padding: '9px 0', borderBottom: `1px solid ${C.rule}`, background: top ? `${T.green.bg}88` : 'transparent', transition: `background 300ms ${EASE}` }}>
+            <div key={r.id} style={{ display: 'grid', gridTemplateColumns: '480px repeat(5, 1fr) 260px 90px', alignItems: 'center', gap: 10, padding: '9px 0', borderBottom: `1px solid ${C.rule}`, background: top ? `${mix(T.green.bg, 53, 'transparent')}` : 'transparent', transition: `background 300ms ${EASE}` }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 14, paddingLeft: 8 }}>
                 <span style={{ width: 46, fontFamily: mono, fontWeight: 700, fontSize: 20, color: C.navy }}>{r.id}</span>
                 <span style={{ fontSize: 22, color: C.ink }}>{r.t}</span>

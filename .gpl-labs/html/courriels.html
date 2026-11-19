@@ -1,0 +1,204 @@
+<!doctype html><html lang="fr"><head><meta charset="utf-8"><title>Courriels de la boîte de Mathieu</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Barlow+Condensed:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+@page { size: A4; margin: 16mm 16mm 18mm; }
+* { box-sizing: border-box; }
+:root { --ink:#2B2F33; --soft:#4B545B; --muted:#77818A; --faint:#AFB8C0; --rule:#DCE3E8; --panel:#EAF0F4;
+  --blue:#1F78C1; --teal:#22A6B3; --green:#3A9F45; --yellow:#FFD000; --amber:#E8A600; --coral:#E0573D; --violet:#6B57C9; }
+html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+body { margin:0; font-family: Barlow, Arial, sans-serif; font-size: 10.5pt; line-height: 1.45; color: var(--ink); }
+h1, h2, h3, .disp { font-family: 'Barlow Condensed', 'Arial Narrow', Arial, sans-serif; }
+h1 { font-size: 30pt; line-height: 1.05; margin: 0 0 8pt; }
+h2 { font-size: 19pt; line-height: 1.1; margin: 0 0 10pt; display:flex; align-items:center; gap:10pt; }
+h2 .n { flex:none; width: 26pt; height: 26pt; border-radius: 7pt; background: var(--yellow); color: var(--ink); display:inline-flex; align-items:center; justify-content:center; font-size: 15pt; }
+h3 { font-size: 13.5pt; margin: 14pt 0 5pt; color: var(--blue); break-after: avoid; }
+h2 { break-after: avoid; }
+p { margin: 0 0 7pt; }
+ul, ol { margin: 0 0 8pt; padding-left: 16pt; } li { margin: 2pt 0; }
+.np { break-before: page; }
+.keep { break-inside: avoid; }
+.eyebrow { font-family: 'Barlow Condensed', Arial, sans-serif; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; font-size: 9.5pt; color: var(--blue); }
+.muted { color: var(--muted); } .small { font-size: 9pt; }
+.lede { font-size: 12pt; color: var(--soft); margin-bottom: 12pt; }
+.box { border-radius: 8pt; padding: 9pt 12pt; margin: 8pt 0 10pt; break-inside: avoid; }
+.box > b:first-child, .box .t { display:block; font-family:'Barlow Condensed', Arial, sans-serif; font-weight:700; font-size: 10pt; letter-spacing:.1em; text-transform: uppercase; margin-bottom: 3pt; }
+.tip { background: #E3EFF9; } .tip .t { color: var(--blue); }
+.warn { background: #FBE3DD; } .warn .t { color: #B23A22; }
+.ok { background: #E3F2E5; } .ok .t { color: #2A7A33; }
+.note { background: #FFF6CC; } .note .t { color: #8A6A00; }
+.prompt { background: #fff; border: 1.2pt solid var(--rule); border-left: 4pt solid var(--blue); border-radius: 6pt; padding: 8pt 12pt; margin: 6pt 0 10pt; break-inside: avoid; }
+.prompt .t { color: var(--blue); font-family:'Barlow Condensed', Arial, sans-serif; font-weight:700; font-size:9.5pt; letter-spacing:.1em; text-transform:uppercase; margin-bottom: 3pt; display:block; }
+.prompt .slot { font-family: 'JetBrains Mono', Consolas, monospace; font-size: 9pt; color: var(--muted); }
+table { width: 100%; border-collapse: collapse; margin: 6pt 0 10pt; break-inside: avoid; }
+th { background: var(--blue); color: #fff; text-align: left; font-weight: 600; font-size: 9.5pt; padding: 5pt 7pt; }
+td { border-bottom: 1pt solid var(--rule); padding: 5pt 7pt; vertical-align: top; }
+tr.alt td { background: #F6F9FB; }
+td.blank { height: 22pt; }
+.k { font-weight: 700; color: var(--blue); white-space: nowrap; }
+.check { list-style: none; padding-left: 0; } .check li { padding-left: 20pt; position: relative; margin: 4pt 0; }
+.check li::before { content: ''; position: absolute; left: 0; top: 2pt; width: 11pt; height: 11pt; border: 1.3pt solid var(--soft); border-radius: 2.5pt; }
+.x2 { display:inline-block; font-size: 8pt; font-weight:700; color:#fff; background: var(--coral); border-radius: 3pt; padding: 0 4pt; margin-left: 4pt; }
+.grid2 { display:grid; grid-template-columns: 1fr 1fr; gap: 10pt; }
+.card { border: 1pt solid var(--rule); border-radius: 8pt; padding: 8pt 10pt; break-inside: avoid; }
+.card h4 { margin: 0 0 3pt; font-family:'Barlow Condensed', Arial, sans-serif; font-size: 12pt; }
+.tag { display:inline-block; font-size: 8.5pt; font-weight: 600; padding: 0 6pt; border-radius: 99pt; background: var(--panel); color: var(--soft); }
+.fict { font-size: 8.5pt; color: var(--muted); border: 1pt dashed var(--faint); border-radius: 4pt; padding: 2pt 6pt; display: inline-block; }
+code { font-family: 'JetBrains Mono', Consolas, monospace; font-size: 8.8pt; background: var(--panel); padding: 0 3pt; border-radius: 3pt; }
+
+.dochead { display:flex; justify-content:space-between; align-items:flex-end; border-bottom: 2pt solid var(--ink); padding-bottom: 6pt; margin-bottom: 12pt; }
+.dochead .who { font-family:'Barlow Condensed', Arial, sans-serif; font-weight:700; font-size: 11pt; letter-spacing:.06em; text-transform: uppercase; color: var(--soft); }
+.dochead .ref { font-size: 9pt; color: var(--muted); text-align:right; }
+.mail { border: 1pt solid var(--rule); border-radius: 6pt; overflow: hidden; }
+.mail .hd { background: #F6F9FB; border-bottom: 1pt solid var(--rule); padding: 8pt 12pt; }
+.mail .hd table { margin: 0; } .mail .hd td { border: 0; padding: 1.5pt 0; } .mail .hd td:first-child { width: 18mm; color: var(--muted); }
+.mail .subj { font-family:'Barlow Condensed', Arial, sans-serif; font-weight:700; font-size: 15pt; margin: 2pt 0 4pt; }
+.mail .bd { padding: 12pt 14pt; font-size: 10.5pt; }
+.att { display:inline-block; border:1pt solid var(--rule); border-radius: 4pt; padding: 1pt 6pt; font-size: 9pt; margin-right: 4pt; background:#fff; }
+.form td:first-child { width: 34%; color: var(--soft); font-weight: 600; }
+table.form { break-inside: auto; } table.form tr { break-inside: avoid; }
+.fiche h2 { margin-bottom: 6pt; } .fiche td, .fiche th { padding: 3.2pt 7pt; font-size: 9.6pt; line-height: 1.35; }
+.sign { margin-top: 10pt; color: var(--soft); }
+.hand { font-style: italic; color: #1F4E8A; }
+
+.inbox { display:flex; justify-content:space-between; align-items:center; background: var(--ink); color:#fff; border-radius: 6pt; padding: 7pt 12pt; margin-bottom: 10pt; }
+.inbox b { font-family:'Barlow Condensed', Arial, sans-serif; font-size: 12pt; letter-spacing:.04em; }
+.inbox span { font-size: 9.5pt; opacity: .85; }
+.sent { display:inline-block; background:#FFF6CC; color:#8A6A00; border-radius: 4pt; padding: 2pt 8pt; font-size: 9.5pt; font-weight: 600; margin-top: 10pt; }
+.mailpage { break-after: page; }
+.mailpage:last-child { break-after: auto; }
+</style></head><body><section class="mailpage">
+  <div class="inbox"><b>Outlook · Mathieu · Boîte de réception</b><span>Situation au mercredi 16 décembre 2026 · Courriel 1 / 8</span></div>
+  <div class="mail"><div class="hd">
+  <div class="subj">Centre sportif · Date de début de pose du mur-rideau du hall ?</div>
+  <table>
+    <tr><td>De</td><td>Simon Tremblay &lt;s.tremblay@borea-construction.exemple&gt; · Construction Boréa</td></tr>
+    <tr><td>À</td><td>Mathieu · Groupe Lessard</td></tr>
+    
+    <tr><td>Date</td><td>Mardi 15 décembre 2026, 16 h 48</td></tr>
+    
+  </table></div><div class="bd"><p>Bonjour Mathieu,</p>
+<p>Nous bâtissons l’échéancier des finitions intérieures du hall. Pouvez-vous nous confirmer la date de début de pose du mur-rideau ?</p>
+<p>Éric nous avait parlé d’un début en mars. Nous avons besoin de votre confirmation pour la réunion de coordination de vendredi (18 décembre), avant la fermeture des Fêtes.</p>
+<p>Merci,</p>
+<p class="sign">Simon Tremblay<br><span class="small muted">Chargé de projet · Construction Boréa · 514-555-0171</span></p></div></div>
+  <p class="small muted" style="margin-top:12pt">Atelier 1 · étape 4 · Où va ce courriel : à traiter, à Nadia, à relancer ou à classer ? <span class="fict">Cas fictif de formation · IA124</span></p>
+</section>
+<section class="mailpage">
+  <div class="inbox"><b>Outlook · Mathieu · Boîte de réception</b><span>Situation au mercredi 16 décembre 2026 · Courriel 2 / 8</span></div>
+  <div class="mail"><div class="hd">
+  <div class="subj">Certificat d’assurance à jour à fournir</div>
+  <table>
+    <tr><td>De</td><td>Julie Bergeron &lt;j.bergeron@borea-construction.exemple&gt; · Construction Boréa</td></tr>
+    <tr><td>À</td><td>Mathieu · Groupe Lessard</td></tr>
+    
+    <tr><td>Date</td><td>Lundi 14 décembre 2026, 10 h 05</td></tr>
+    
+  </table></div><div class="bd"><p>Bonjour,</p>
+<p>En faisant la mise à jour du dossier de chantier, nous constatons que votre certificat d’assurance responsabilité civile a expiré le 30 novembre.</p>
+<p>Il nous faut le certificat à jour avant toute présence de votre équipe au chantier. Merci de nous le faire parvenir d’ici le vendredi 18 décembre.</p>
+<p>Bonne journée,</p>
+<p class="sign">Julie Bergeron<br><span class="small muted">Adjointe administrative · Construction Boréa · 514-555-0172</span></p></div></div>
+  <p class="small muted" style="margin-top:12pt">Atelier 1 · étape 4 · Où va ce courriel : à traiter, à Nadia, à relancer ou à classer ? <span class="fict">Cas fictif de formation · IA124</span></p>
+</section>
+<section class="mailpage">
+  <div class="inbox"><b>Outlook · Mathieu · Éléments envoyés</b><span>Situation au mercredi 16 décembre 2026 · Courriel 3 / 8</span></div>
+  <div class="mail"><div class="hd">
+  <div class="subj">Centre sportif · Dessins d’atelier MR-01 pour approbation</div>
+  <table>
+    <tr><td>De</td><td>Mathieu · Groupe Lessard</td></tr>
+    <tr><td>À</td><td>Marc-André Leduc &lt;ma.leduc@ateliermercier.exemple&gt; · Atelier Mercier architectes</td></tr>
+    <tr><td>Cc</td><td>Simon Tremblay · Construction Boréa</td></tr>
+    <tr><td>Date</td><td>Lundi 7 décembre 2026, 15 h 32</td></tr>
+    <tr><td>Pièces j.</td><td><span class="att">📎 MR-01_rev0.pdf (24 pages)</span></td></tr>
+  </table></div><div class="bd"><p>Bonjour Monsieur Leduc,</p>
+<p>Veuillez trouver ci-joints les dessins d’atelier MR-01 du mur-rideau du hall (révision 0) pour approbation.</p>
+<p>Selon le devis, le délai d’approbation est de 10 jours ouvrables. Votre retour nous permettra de passer la commande du verre.</p>
+<p>Je reste disponible pour en discuter.</p>
+<p class="sign">Mathieu<br><span class="small muted">Chargé de projet · Groupe Lessard · 514-555-0131</span></p><div class="sent">⚑ Aucune réponse au mercredi 16 décembre</div></div></div>
+  <p class="small muted" style="margin-top:12pt">Atelier 1 · étape 4 · Où va ce courriel : à traiter, à Nadia, à relancer ou à classer ? <span class="fict">Cas fictif de formation · IA124</span></p>
+</section>
+<section class="mailpage">
+  <div class="inbox"><b>Outlook · Mathieu · Boîte de réception</b><span>Situation au mercredi 16 décembre 2026 · Courriel 4 / 8</span></div>
+  <div class="mail"><div class="hd">
+  <div class="subj">Bordereau de livraison 4471</div>
+  <table>
+    <tr><td>De</td><td>Vitrerie Laurentienne &lt;commandes@vitrerie-laurentienne.exemple&gt;</td></tr>
+    <tr><td>À</td><td>Mathieu · Groupe Lessard</td></tr>
+    
+    <tr><td>Date</td><td>Lundi 14 décembre 2026, 13 h 20</td></tr>
+    <tr><td>Pièces j.</td><td><span class="att">📎 Bordereau_4471_signe.pdf</span></td></tr>
+  </table></div><div class="bd"><p>Bonjour,</p>
+<p>Veuillez trouver ci-joint le bordereau de livraison 4471, signé à la réception à votre usine ce matin.</p>
+<p>Contenu : 2 échantillons d’unités scellées 300 × 300 mm (types V1 et V2) pour le projet Centre sportif.</p>
+<p>Aucune action requise de votre part.</p>
+<p class="sign">Martin Dubé<br><span class="small muted">Service à la clientèle · Vitrerie Laurentienne · 514-555-0164</span></p></div></div>
+  <p class="small muted" style="margin-top:12pt">Atelier 1 · étape 4 · Où va ce courriel : à traiter, à Nadia, à relancer ou à classer ? <span class="fict">Cas fictif de formation · IA124</span></p>
+</section>
+<section class="mailpage">
+  <div class="inbox"><b>Outlook · Mathieu · Boîte de réception</b><span>Situation au mercredi 16 décembre 2026 · Courriel 5 / 8</span></div>
+  <div class="mail"><div class="hd">
+  <div class="subj">Formulaire d’accès au chantier · à remplir pour chaque travailleur</div>
+  <table>
+    <tr><td>De</td><td>Isabelle Côté &lt;i.cote@riviere-claire.exemple&gt; · Ville de Rivière-Claire</td></tr>
+    <tr><td>À</td><td>Mathieu · Groupe Lessard</td></tr>
+    <tr><td>Cc</td><td>Simon Tremblay · Construction Boréa</td></tr>
+    <tr><td>Date</td><td>Mardi 15 décembre 2026, 9 h 41</td></tr>
+    <tr><td>Pièces j.</td><td><span class="att">📎 Formulaire_acces_chantier.pdf</span></td></tr>
+  </table></div><div class="bd"><p>Bonjour,</p>
+<p>Pour des raisons de sécurité, tout travailleur doit remplir le formulaire d’accès au chantier et fournir son attestation de formation en santé et sécurité avant sa première présence.</p>
+<p>Merci de nous transmettre les formulaires de votre équipe d’installation avant le vendredi 15 janvier 2027.</p>
+<p>Cordialement,</p>
+<p class="sign">Isabelle Côté<br><span class="small muted">Gestionnaire de projet · Service des immeubles · Ville de Rivière-Claire</span></p></div></div>
+  <p class="small muted" style="margin-top:12pt">Atelier 1 · étape 4 · Où va ce courriel : à traiter, à Nadia, à relancer ou à classer ? <span class="fict">Cas fictif de formation · IA124</span></p>
+</section>
+<section class="mailpage">
+  <div class="inbox"><b>Outlook · Mathieu · Boîte de réception</b><span>Situation au mercredi 16 décembre 2026 · Courriel 6 / 8</span></div>
+  <div class="mail"><div class="hd">
+  <div class="subj">Écart de 40 mm à l’axe C</div>
+  <table>
+    <tr><td>De</td><td>Patrice · Contremaître d’installation, Groupe Lessard</td></tr>
+    <tr><td>À</td><td>Mathieu</td></tr>
+    
+    <tr><td>Date</td><td>Mercredi 16 décembre 2026, 7 h 05</td></tr>
+    
+  </table></div><div class="bd"><p>Salut Mathieu,</p>
+<p>Hier, j’ai fait un tour au chantier avec Luc (Boréa) pour voir l’avancement. À l’axe C, l’ouverture du hall mesure 40 mm de plus que les plans (hauteur entre la dalle et la poutre).</p>
+<p>Si c’est pareil ailleurs, nos dessins MR-01 sont à revoir avant la fabrication. On fait quoi ?</p>
+<p>Je peux reprendre des mesures jeudi si tu veux.</p>
+<p class="sign">Patrice</p></div></div>
+  <p class="small muted" style="margin-top:12pt">Atelier 1 · étape 4 · Où va ce courriel : à traiter, à Nadia, à relancer ou à classer ? <span class="fict">Cas fictif de formation · IA124</span></p>
+</section>
+<section class="mailpage">
+  <div class="inbox"><b>Outlook · Mathieu · Boîte de réception</b><span>Situation au mercredi 16 décembre 2026 · Courriel 7 / 8</span></div>
+  <div class="mail"><div class="hd">
+  <div class="subj">Liste des contacts du chantier · révision 3</div>
+  <table>
+    <tr><td>De</td><td>Julie Bergeron &lt;j.bergeron@borea-construction.exemple&gt; · Construction Boréa</td></tr>
+    <tr><td>À</td><td>Tous les sous-traitants du chantier</td></tr>
+    
+    <tr><td>Date</td><td>Mardi 15 décembre 2026, 11 h 30</td></tr>
+    <tr><td>Pièces j.</td><td><span class="att">📎 Contacts_chantier_rev3.pdf</span></td></tr>
+  </table></div><div class="bd"><p>Bonjour à tous,</p>
+<p>Voici la liste des contacts du chantier à jour (révision 3). Seul changement : l’ajout de notre nouvelle coordonnatrice en santé et sécurité.</p>
+<p>Merci de la diffuser à vos équipes.</p>
+<p class="sign">Julie Bergeron<br><span class="small muted">Adjointe administrative · Construction Boréa</span></p></div></div>
+  <p class="small muted" style="margin-top:12pt">Atelier 1 · étape 4 · Où va ce courriel : à traiter, à Nadia, à relancer ou à classer ? <span class="fict">Cas fictif de formation · IA124</span></p>
+</section>
+<section class="mailpage">
+  <div class="inbox"><b>Outlook · Mathieu · Éléments envoyés</b><span>Situation au mercredi 16 décembre 2026 · Courriel 8 / 8</span></div>
+  <div class="mail"><div class="hd">
+  <div class="subj">Demande de prix · panneaux d’allège isolés · Centre sportif</div>
+  <table>
+    <tr><td>De</td><td>Mathieu · Groupe Lessard</td></tr>
+    <tr><td>À</td><td>Kevin Ouellet &lt;k.ouellet@panneaux-nordik.exemple&gt; · Panneaux Nordik</td></tr>
+    
+    <tr><td>Date</td><td>Vendredi 4 décembre 2026, 10 h 17</td></tr>
+    <tr><td>Pièces j.</td><td><span class="att">📎 Panneaux_allege_details.pdf</span></td></tr>
+  </table></div><div class="bd"><p>Bonjour Monsieur Ouellet,</p>
+<p>Pourriez-vous nous transmettre votre prix pour 38 panneaux d’allège isolés (détails et dimensions ci-joints), avec votre délai de livraison ?</p>
+<p>Une réponse d’ici le vendredi 11 décembre nous serait utile pour finaliser nos commandes.</p>
+<p>Merci d’avance,</p>
+<p class="sign">Mathieu<br><span class="small muted">Chargé de projet · Groupe Lessard · 514-555-0131</span></p><div class="sent">⚑ Aucune réponse au mercredi 16 décembre</div></div></div>
+  <p class="small muted" style="margin-top:12pt">Atelier 1 · étape 4 · Où va ce courriel : à traiter, à Nadia, à relancer ou à classer ? <span class="fict">Cas fictif de formation · IA124</span></p>
+</section></body></html>

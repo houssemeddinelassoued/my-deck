@@ -1,0 +1,2 @@
+# attendu : execution-dynamique
+regle = eval(demande["formule_priorite"])

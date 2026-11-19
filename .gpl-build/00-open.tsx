@@ -384,7 +384,7 @@ const GP_HowWeWork: Page = () => (
         Aucune donnée confidentielle dans les outils
       </RuleChip>
       <RuleChip icon="facade" d={800}>
-        Fil rouge : le Centre sportif des Méandres
+        Fil rouge : le Centre sportif de Montréal
       </RuleChip>
     </div>
     <Callout
@@ -400,7 +400,7 @@ const GP_HowWeWork: Page = () => (
   </Frame>
 );
 
-// ─── Running case: Centre sportif des Méandres ──────────────────────────────────────────────────────────────────────
+// ─── Running case: Centre sportif de Montréal ──────────────────────────────────────────────────────────────────────
 const Fact = ({ icon, children }: { icon: IconName; children: ReactNode }) => (
   <div style={{ display: 'flex', alignItems: 'center', gap: 16, fontSize: 27, color: C.ink }}>
     <Icon name={icon} size={30} color={C.teal} />
@@ -422,7 +422,7 @@ const CastCard = ({ id, d, children }: { id: CastId; d: number; children: ReactN
 
 const GP_Case: Page = () => (
   <Frame mod={0} kind="cas" label="Ouverture · Fil rouge">
-    <Title>Notre fil rouge : le Centre sportif des Méandres</Title>
+    <Title>Notre fil rouge : le Centre sportif de Montréal</Title>
     <Lede>Un projet fictif, mais typique de vos dossiers. Nous le retrouverons dans chaque module.</Lede>
     <div
       className={A.left}
@@ -431,7 +431,7 @@ const GP_Case: Page = () => (
       <div style={{ display: 'flex', alignItems: 'center', gap: 20 }}>
         <IconTile name="facade" tone="teal" size={76} solid />
         <div>
-          <div style={{ fontFamily: display, fontWeight: 700, fontSize: 36, lineHeight: 1.05, color: C.ink }}>Centre sportif des Méandres</div>
+          <div style={{ fontFamily: display, fontWeight: 700, fontSize: 36, lineHeight: 1.05, color: C.ink }}>Centre sportif de Montréal</div>
           <div style={{ fontSize: 22, color: C.muted }}>Ville de Rivière-Claire · institutionnel</div>
         </div>
       </div>
@@ -483,10 +483,10 @@ const Pain = ({ icon, d, children }: { icon: IconName; d: number; children: Reac
 
 const GP_Brief: Page = () => (
   <Frame mod={0} kind="cas" label="Ouverture · Fil rouge">
-    <Title>Le projet des Méandres en quatre chiffres</Title>
+    <Title>Le projet de Montréal en quatre chiffres</Title>
     <Lede>Éric a transmis le dossier lundi. Mathieu doit le lancer… entre douze autres projets.</Lede>
     <div style={{ position: 'absolute', left: 120, top: 290, width: 1680, display: 'flex', gap: 28 }}>
-      <KeyNum value="27 sem." label="avant le bâtiment fermé, le vendredi 14 mai" tone="blue" d={100} />
+      <KeyNum value="27 sem." label="avant le bâtiment fermé, le vendredi 28 mai" tone="blue" d={100} />
       <KeyNum value="1,2 M$" label="de contrat pour le lot enveloppe" tone="green" d={220} />
       <KeyNum value="8 sem." label="de délai pour le verre, une fois commandé" tone="yellow" d={340} />
       <KeyNum value="13" label="projets suivis par Mathieu en même temps" tone="violet" d={460} />
@@ -538,7 +538,7 @@ const GP_Quiz0: Page = () => (
       <Opt why="Piège ! Accepter un avis de modification engage Lessard : c’est une décision humaine. L’IA peut comparer le prix au devis, pas trancher.">
         Accepter seule un avis de modification de 18 000 $
       </Opt>
-      <Opt ok why="Oui : à partir des faits donnés par Mathieu (dessins envoyés le 23 novembre, toujours pas de retour), elle propose une relance polie et précise. Mathieu relit avant d’envoyer.">
+      <Opt ok why="Oui : à partir des faits donnés par Mathieu (dessins envoyés le 7 décembre, toujours pas de retour), elle propose une relance polie et précise. Mathieu relit avant d’envoyer.">
         Rédiger une relance à l’architecte pour les dessins d’atelier
       </Opt>
     </Qcm>
@@ -622,7 +622,7 @@ TRANSITION — « Voici comment ces deux jours s'organisent. »`,
 
 OBJECTIF — Donner de la visibilité sur le déroulement.
 
-DIRE — « Jour 1 : comprendre et planifier. Module 1, l'IA expliquée simplement. Module 2, l'IA dans la gestion de projet : vos cas d'usage et Copilot au quotidien. Puis l'atelier 1 : vous lancez le projet des Méandres avec l'IA et vous triez sa boîte de réception. »
+DIRE — « Jour 1 : comprendre et planifier. Module 1, l'IA expliquée simplement. Module 2, l'IA dans la gestion de projet : vos cas d'usage et Copilot au quotidien. Puis l'atelier 1 : vous lancez le projet de Montréal avec l'IA et vous triez sa boîte de réception. »
 
 « Jour 2 : automatiser et adopter. Module 4, réunions de chantier, visites, relances et suivi. Module 5, limites, confidentialité et adoption. Puis l'atelier 2 : un mini-projet complet, si possible sur un de vos vrais dossiers, anonymisé. »
 
@@ -642,16 +642,16 @@ DIRE — « Vous verrez des étiquettes en haut des pages. »
 LES TROIS RÈGLES —
 1. Questions bienvenues à tout moment, au micro ou par écrit.
 2. « Aucune donnée confidentielle dans les outils pendant la formation : pas de nom de client, pas de prix, pas d'adresse. » On y reviendra au module 5.
-3. Fil rouge : le Centre sportif des Méandres, présenté juste après.
+3. Fil rouge : le Centre sportif de Montréal, présenté juste après.
 
 CLASSE VIRTUELLE — Caméra si possible, micro coupé hors échanges. Idéal : deux écrans, ou la formation dans une fenêtre et Copilot dans l'autre.
 
-TRANSITION — « Faisons connaissance avec le projet des Méandres. »`,
+TRANSITION — « Faisons connaissance avec le projet de Montréal. »`,
   `⏱ 3 min · FIL ROUGE
 
 OBJECTIF — Ancrer la formation dans un projet qui ressemble aux leurs, réutilisé dans chaque module et dans les deux ateliers.
 
-DIRE — « Le Centre sportif des Méandres est un projet fictif, mais il devrait vous sembler familier : un bâtiment institutionnel pour une ville, un entrepreneur général, un architecte, et votre lot, l'enveloppe en aluminium et verre. Un mur-rideau de 420 m² dans le hall, 46 fenêtres, 6 portes d'entrée et une verrière. »
+DIRE — « Le Centre sportif de Montréal est un projet fictif, mais il devrait vous sembler familier : un bâtiment institutionnel pour une ville, un entrepreneur général, un architecte, et votre lot, l'enveloppe en aluminium et verre. Un mur-rideau de 420 m² dans le hall, 46 fenêtres, 6 portes d'entrée et une verrière. »
 
 « Les noms sont inventés : Construction Boréa, Atelier Mercier, Ville de Rivière-Claire. Aucun vrai client n'apparaît dans la formation. »
 
@@ -669,7 +669,7 @@ TRANSITION — « Regardons le dossier que Mathieu vient de recevoir. »`,
 
 OBJECTIF — Poser les données du projet et la question de la formation.
 
-DIRE — « 27 semaines avant le bâtiment fermé, le vendredi 14 mai : c'est la date à laquelle l'EG veut l'enveloppe étanche pour lancer les finitions intérieures. 1,2 million de dollars de contrat. 8 semaines de délai pour le verre, une fois la commande passée, donc une commande qui dépend de l'approbation des dessins d'atelier. Et 13 projets suivis par Mathieu en même temps. »
+DIRE — « 27 semaines avant le bâtiment fermé, le vendredi 28 mai : c'est la date à laquelle l'EG veut l'enveloppe étanche pour lancer les finitions intérieures. 1,2 million de dollars de contrat. 8 semaines de délai pour le verre, une fois la commande passée, donc une commande qui dépend de l'approbation des dessins d'atelier. Et 13 projets suivis par Mathieu en même temps. »
 
 « Voici ce qui inquiète Mathieu. » Lire les quatre irritants : l'échéancier en cascade, le volume de courriels, les comptes rendus de réunion et de visite, les relances. « Ces quatre irritants viennent du questionnaire que vous avez rempli, et du cadrage avec votre direction. Ils correspondent aux quatre usages qu'on verra au module 2 : planifier, suivre, faire rapport, communiquer. »
 

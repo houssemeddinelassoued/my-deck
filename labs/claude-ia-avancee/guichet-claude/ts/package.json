@@ -1,0 +1,15 @@
+{
+  "name": "guichet-ts",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Guichet · portail des demandes d'Oasis Digital (stack TypeScript, Node 22.18+, types retirés à l'exécution).",
+  "type": "module",
+  "engines": { "node": ">=22.18" },
+  "scripts": {
+    "start": "node src/serveur.ts",
+    "test": "node --test test/"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^1.8.0"
+  }
+}

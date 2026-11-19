@@ -9,7 +9,7 @@
 | **Modèle** | le cerveau : change la qualité et le coût, **jamais les droits** | Auto, modèles rapides, modèles de raisonnement |
 | **Environnement** | où s’exécutent les commandes, où vont les modifications | votre poste, une copie de travail, le cloud |
 
-Réglages de la journée : session **Copilot**, permissions **manuelles**, modèle **fixé** pendant les mesures (TP 1), Auto ensuite.
+Réglages de la journée : session **Copilot**, permissions **manuelles**, modèle **fixé** pendant la comparaison de deux prompts, Auto ensuite.
 
 ## Quel rôle pour quel besoin ?
 

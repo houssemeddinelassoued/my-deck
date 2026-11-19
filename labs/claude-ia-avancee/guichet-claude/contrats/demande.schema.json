@@ -1,0 +1,16 @@
+{
+  "$comment": "Contrat de la demande qualifiée. Source de vérité des champs : le modèle, le code et les tests l'utilisent. Atelier 2, étape A2.1 : à compléter (énumérations, champs requis, champs en trop, client non vide).",
+  "type": "object",
+  "required": ["type", "client", "resume"],
+  "properties": {
+    "type": { "type": "string", "description": "incident, evolution, devis ou question" },
+    "priorite": { "type": "string", "description": "P1 (urgent), P2, P3" },
+    "client": { "type": "string", "description": "Nom de l'entreprise cliente" },
+    "contact": { "type": ["string", "null"], "description": "Nom de la personne qui écrit" },
+    "email": { "type": ["string", "null"] },
+    "telephone": { "type": ["string", "null"], "description": "Format E.164 (+216…, +33…)" },
+    "utilisateurs_touches": { "type": ["integer", "null"] },
+    "panne_totale": { "type": "boolean", "description": "Le service est-il totalement indisponible ?" },
+    "resume": { "type": "string", "maxLength": 280, "description": "Une phrase factuelle, sans donnée personnelle" }
+  }
+}

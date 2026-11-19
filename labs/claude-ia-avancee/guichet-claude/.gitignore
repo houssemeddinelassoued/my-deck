@@ -1,0 +1,15 @@
+.env
+.guichet-stack
+donnees/guichet.db
+donnees/*.db-*
+generations/
+node_modules/
+.venv/
+__pycache__/
+.pytest_cache/
+target/
+bin/
+obj/
+*.log
+CLAUDE.local.md
+.claude/settings.local.json

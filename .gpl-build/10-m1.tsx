@@ -603,7 +603,7 @@ const M1_Pipeline: Page = () => (
       </M1Station>
     </div>
     <Callout cls={b.on(4)} title="Qui décide ?" tone="yellow" icon="humanCheck" style={{ position: 'absolute', left: 120, top: 760, width: 1680 }}>
-      Aucun des trois. Mathieu valide le nouvel échéancier avec l’EG ; Hélène arbitre si le 14 mai est menacé.
+      Aucun des trois. Mathieu valide le nouvel échéancier avec l’EG ; Hélène arbitre si le 28 mai est menacé.
     </Callout>
   </Frame>
 );
@@ -693,7 +693,7 @@ const M1Key = ({ tone, children }: { tone: Tone; children: ReactNode }) => (
 
 const M1_Sort: Page = () => (
   <Frame mod={1} kind="exercice" beats={1}>
-    <Title>À vous : classez ces tâches du projet des Méandres</Title>
+    <Title>À vous : classez ces tâches du projet de Montréal</Title>
     <Lede>Dites-moi où va chaque étiquette. Le corrigé apparaît au clic.</Lede>
     <M1Zone x={120} icon="gear" tone="grey" label="Automatisation" />
     <M1Zone x={690} icon="arm" tone="teal" label="Robotisation" />
@@ -1065,7 +1065,7 @@ DIRE — « Le verrier écrit à Mathieu : "Les unités scellées auront deux se
 → beat 1 : « L'IA comprend : quel projet est touché, quel retard, quel impact sur la pose du mur-rideau. »
 → beat 2 : « L'automatisation applique une règle : si une livraison bouge de plus d'une semaine, alerte à Mathieu et à Patrice. »
 → beat 3 : « Le robot logiciel recopie la nouvelle date dans le registre des livraisons, écran par écran. »
-→ beat 4 : « Et qui décide ? Aucun des trois. Mathieu revoit l'échéancier avec l'EG ; Hélène arbitre si le bâtiment fermé du 14 mai est menacé. »
+→ beat 4 : « Et qui décide ? Aucun des trois. Mathieu revoit l'échéancier avec l'EG ; Hélène arbitre si le bâtiment fermé du 28 mai est menacé. »
 
 TRANSITION — « Résumons les différences critère par critère. »`,
   `⏱ 3 min · TABLEAU COMPARATIF (5 clics)
@@ -1082,7 +1082,7 @@ DIRE — Une ligne par clic.
 TRANSITION — « À vous de jouer. »`,
   `⏱ 6 min · EXERCICE GLISSER-DÉPOSER (1 clic pour le corrigé)
 
-OBJECTIF — Appliquer la distinction sur des tâches du projet des Méandres.
+OBJECTIF — Appliquer la distinction sur des tâches du projet de Montréal.
 
 ANIMATION — Pour chaque étiquette, demandez la colonne à voix haute (« auto », « robot » ou « IA ») et glissez-la selon la majorité. Double-cliquer une étiquette la remet à sa place.
 → beat 1 : le corrigé apparaît sur chaque étiquette.

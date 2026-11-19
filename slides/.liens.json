@@ -1,0 +1,47 @@
+[
+  {
+    "label": "BenchLM — benchmarks et classement des IA",
+    "url": "https://benchlm.ai/",
+    "groupe": "Veille et ressources"
+  },
+  {
+    "label": "Skills.sh — l'écosystème Open Agent Skills",
+    "url": "https://skills.sh/",
+    "groupe": "Veille et ressources"
+  },
+  {
+    "label": "Awesome Copilot — la bibliothèque communautaire",
+    "url": "https://awesome-copilot.github.com/",
+    "groupe": "Veille et ressources"
+  },
+  {
+    "label": "GitHub Copilot",
+    "url": "https://github.com/features/copilot",
+    "groupe": "Outils IA"
+  },
+  {
+    "label": "Microsoft Copilot",
+    "url": "https://copilot.microsoft.com/",
+    "groupe": "Outils IA"
+  },
+  {
+    "label": "Gemini",
+    "url": "https://gemini.google.com/app",
+    "groupe": "Outils IA"
+  },
+  {
+    "label": "ChatGPT",
+    "url": "https://chat.openai.com/",
+    "groupe": "Outils IA"
+  },
+  {
+    "label": "Claude",
+    "url": "https://claude.ai/",
+    "groupe": "Outils IA"
+  },
+  {
+    "label": "DeepSeek",
+    "url": "https://chat.deepseek.com/",
+    "groupe": "Outils IA"
+  }
+]

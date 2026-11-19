@@ -274,7 +274,7 @@ const Cl2Ref = ({ name, src }: { name: ReactNode; src: string }) => (
   </div>
 );
 
-const Cl2Chips = ({ children }: { children: ReactNode }) => <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10 }}>{children}</div>;
+const Cl2Chips = ({ children }: { children: ReactNode }) => <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>{children}</div>;
 
 const Cl2_Resources: Page = () => (
   <Frame mod={0} label="Clôture · Pour aller plus loin">

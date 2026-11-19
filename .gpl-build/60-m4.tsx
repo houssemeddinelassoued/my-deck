@@ -80,7 +80,7 @@ const M4Sec = ({ n, tone, title, children }: { n: number; tone: Tone; title: str
 const M4_Transcript: Page = () => (
   <Frame mod={4} kind="demo" beats={3}>
     <Title>De la transcription au compte rendu</Title>
-    <Lede>Réunion de chantier du mardi 2 mars, sur Teams, 6 personnes, 40 minutes. Extrait de la transcription :</Lede>
+    <Lede>Réunion de chantier du mardi 16 mars, sur Teams, 6 personnes, 40 minutes. Extrait de la transcription :</Lede>
     <div className={A.left} style={{ position: 'absolute', left: 120, top: 270, width: 880, boxSizing: 'border-box', background: C.card, borderRadius: 18, boxShadow: SHADOW, padding: '18px 18px', ...dl(100) }}>
       <M4Say who="Mathieu">Le verre est arrivé, mais il manque 6 unités pour le hall.</M4Say>
       <M4Say who="Boréa">On peut quand même commencer la pose le 22 ?</M4Say>
@@ -104,15 +104,15 @@ const M4_Transcript: Page = () => (
     <div className={A.right} style={{ position: 'absolute', left: 1060, top: 270, width: 740, boxSizing: 'border-box', background: C.card, borderRadius: 18, boxShadow: `${SHADOW}, inset 6px 0 0 ${C.violet}`, padding: '22px 28px 26px', ...dl(250) }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
         <Icon name="note" size={32} color={C.violet} />
-        <span style={{ fontFamily: display, fontWeight: 700, fontSize: 32, color: C.ink }}>Compte rendu · 2 mars</span>
+        <span style={{ fontFamily: display, fontWeight: 700, fontSize: 32, color: C.ink }}>Compte rendu · 16 mars</span>
       </div>
       <M4Sec n={1} tone="green" title="Décision">
-        Pose à partir du 22 mars, façade nord d’abord.
+        Pose à partir du 5 avril, façade nord d’abord.
       </M4Sec>
       <M4Sec n={2} tone="blue" title="Actions">
-        <b>Patrice</b> · relevés de la façade nord · 9 mars
+        <b>Patrice</b> · relevés de la façade nord · 23 mars
         <br />
-        <b>Nadia</b> · relancer le verrier (6 unités) · 3 mars
+        <b>Nadia</b> · relancer le verrier (6 unités) · 17 mars
       </M4Sec>
       <M4Sec n={3} tone="yellow" title="Point ouvert">
         Couleur des panneaux d’allège : décision jeudi, avec la Ville.
@@ -138,7 +138,7 @@ const M4_CrPrompt: Page = () => (
     <Title>La demande de compte rendu, prête à copier</Title>
     <Lede>À enregistrer dans votre bibliothèque. Les zones jaunes changent à chaque réunion.</Lede>
     <PromptBox cls={A.left} size={27} style={{ position: 'absolute', left: 120, top: 280, width: 1000, ...dl(100) }}>
-      Tu es l’assistant du projet <M4Slot>Méandres</M4Slot>. À partir de la transcription ci-dessous de la réunion de chantier du <M4Slot>2 mars</M4Slot>, rédige le compte rendu en trois parties :
+      Tu es l’assistant du projet <M4Slot>Montréal</M4Slot>. À partir de la transcription ci-dessous de la réunion de chantier du <M4Slot>16 mars</M4Slot>, rédige le compte rendu en trois parties :
       <br />
       1. <b>Décisions</b> prises (seulement celles qui ont été clairement prises) ;
       <br />
@@ -177,13 +177,13 @@ const M4_CrErrors: Page = () => (
       <Eyebrow c={T.green.fg} size={21}>
         Décisions
       </Eyebrow>
-      <M4CrLine>• Pose à partir du 22 mars, façade nord d’abord.</M4CrLine>
+      <M4CrLine>• Pose à partir du 5 avril, façade nord d’abord.</M4CrLine>
       <M4CrLine>• Panneaux d’allège : gris anthracite retenu.</M4CrLine>
       <Eyebrow c={T.blue.fg} size={21} style={{ marginTop: 14 }}>
         Actions
       </Eyebrow>
-      <M4CrLine>• Mathieu : refaire les relevés de la façade nord, d’ici le 9 mars.</M4CrLine>
-      <M4CrLine>• Nadia : relancer le verrier d’ici le 15 mars.</M4CrLine>
+      <M4CrLine>• Mathieu : refaire les relevés de la façade nord, d’ici le 23 mars.</M4CrLine>
+      <M4CrLine>• Nadia : relancer le verrier d’ici le 29 mars.</M4CrLine>
       <Eyebrow c={T.yellow.fg} size={21} style={{ marginTop: 14 }}>
         Points ouverts
       </Eyebrow>
@@ -201,7 +201,7 @@ const M4_CrErrors: Page = () => (
         C’est Patrice qui refait les relevés, pas Mathieu.
       </M3Exp>
       <M3Exp n={3} title="Une date inventée">
-        Nadia a dit « demain », soit le 3 mars.
+        Nadia a dit « demain », soit le 17 mars.
       </M3Exp>
       <M3Exp n={4} title="Un point ouvert effacé">
         La couleur des panneaux reste à trancher.
@@ -237,7 +237,7 @@ const M4_Visit: Page = () => (
     <Lede>Mathieu dicte au téléphone en marchant, prend trois photos, puis donne le tout à Copilot.</Lede>
     <div className={A.left} style={{ position: 'absolute', left: 120, top: 270, width: 760, boxSizing: 'border-box', background: C.card, borderRadius: 18, boxShadow: SHADOW, padding: '20px 26px', ...dl(100) }}>
       <Eyebrow c={C.soft} size={21}>
-        Notes dictées · visite du 30 mars
+        Notes dictées · visite du 13 avril
       </Eyebrow>
       <div style={{ marginTop: 10, fontSize: 22, lineHeight: 1.5, color: C.ink, fontStyle: 'italic' }}>
         « Façade nord, fenêtres posées à 80 %, euh… axe C le solin est pas fini, faut que Patrice repasse. Fenêtre N-12 vitre égratignée, à changer. Porte d’entrée 2, le ferme-porte frotte. Le hall attend toujours les 6 unités. Boréa veut la liste avant vendredi. »
@@ -251,7 +251,7 @@ const M4_Visit: Page = () => (
     <div className={A.right} style={{ position: 'absolute', left: 940, top: 270, width: 860, boxSizing: 'border-box', background: C.card, borderRadius: 18, boxShadow: `${SHADOW}, inset 6px 0 0 ${C.violet}`, padding: '20px 28px 22px', ...dl(250) }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
         <Icon name="doc" size={30} color={C.violet} />
-        <span style={{ fontFamily: display, fontWeight: 700, fontSize: 30, color: C.ink }}>Rapport de visite · 30 mars</span>
+        <span style={{ fontFamily: display, fontWeight: 700, fontSize: 30, color: C.ink }}>Rapport de visite · 13 avril</span>
       </div>
       <M4Sec n={1} tone="green" title="Avancement">
         Façade nord : fenêtres posées à 80 %. Hall : en attente de 6 unités scellées.
@@ -374,7 +374,7 @@ const M4Card = ({ n, who, what, when, tone }: { n: number; who: string; what: st
           <Icon name="calendar" size={18} /> {when}
         </Tag>
         <Tag tone="violet" size={20}>
-          <Icon name="link" size={18} /> CR 2 mars
+          <Icon name="link" size={18} /> CR 16 mars
         </Tag>
       </div>
     </div>
@@ -389,19 +389,19 @@ const M4_ToTasks: Page = () => (
       <Eyebrow c={T.blue.fg} size={21}>
         Actions du compte rendu
       </Eyebrow>
-      <M4Act who="Patrice" what="Relevés de la façade nord" when="9 mars" />
-      <M4Act who="Nadia" what="Relancer le verrier" when="3 mars" />
-      <M4Act who="Mathieu" what="Confirmer la séquence à Boréa" when="4 mars" />
+      <M4Act who="Patrice" what="Relevés de la façade nord" when="23 mars" />
+      <M4Act who="Nadia" what="Relancer le verrier" when="17 mars" />
+      <M4Act who="Mathieu" what="Confirmer la séquence à Boréa" when="18 mars" />
     </div>
     <svg width={120} height={60} style={{ position: 'absolute', left: 770, top: 400, overflow: 'visible' }}>
       <path d="M0 30 H100" stroke={C.blue} strokeWidth={5} strokeDasharray="10 14" className={cx(A.march, b.fade(1))} />
       <path d="M92 16 L110 30 L92 44" fill="none" stroke={C.blue} strokeWidth={5} strokeLinecap="round" className={b.fade(1)} />
     </svg>
-    <AppWin id="planner" title="Méandres · cette semaine" cls={A.right} style={{ position: 'absolute', left: 920, top: 280, width: 880, ...dl(200) }} pad={24}>
+    <AppWin id="planner" title="Montréal · cette semaine" cls={A.right} style={{ position: 'absolute', left: 920, top: 280, width: 880, ...dl(200) }} pad={24}>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-        <M4Card n={1} who="Patrice" what="Relevés de la façade nord" when="9 mars" tone="violet" />
-        <M4Card n={2} who="Nadia" what="Relancer le verrier pour les 6 unités" when="3 mars" tone="green" />
-        <M4Card n={3} who="Mathieu" what="Confirmer la séquence de pose à Boréa" when="4 mars" tone="blue" />
+        <M4Card n={1} who="Patrice" what="Relevés de la façade nord" when="23 mars" tone="violet" />
+        <M4Card n={2} who="Nadia" what="Relancer le verrier pour les 6 unités" when="17 mars" tone="green" />
+        <M4Card n={3} who="Mathieu" what="Confirmer la séquence de pose à Boréa" when="18 mars" tone="blue" />
       </div>
     </AppWin>
     <Callout cls={A.in} title="Comment ?" tone="blue" icon="plug" size={25} style={{ position: 'absolute', left: 120, top: 640, width: 620, ...dl(500) }}>
@@ -441,7 +441,7 @@ const M4_Rules: Page = () => (
     <Title>Le suivi automatique : des règles « si… alors »</Title>
     <Lede>Les deux premières sont de l’automatisation, sans IA. Et c’est déjà beaucoup de temps gagné.</Lede>
     <div style={{ position: 'absolute', left: 120, top: 290, width: 1680, display: 'flex', flexDirection: 'column', gap: 26 }}>
-      <M4RuleRow n={1} a="Un courriel arrive" c="il vient de Boréa ou parle des Méandres" x="Classé dans le dossier du projet" />
+      <M4RuleRow n={1} a="Un courriel arrive" c="il vient de Boréa ou parle de Montréal" x="Classé dans le dossier du projet" />
       <M4RuleRow n={2} a="Chaque matin, 8 h" c="un courriel envoyé il y a 5 jours, sans réponse" x="Rappel à Mathieu : relancer ?" />
       <M4RuleRow n={3} a="Un courriel arrive" c="c’est une demande administrative (certificat, formulaire)" x="L’IA prépare le transfert à Nadia, avec la consigne" ai />
     </div>
@@ -486,10 +486,10 @@ const M4_Alerts: Page = () => (
           Aucune réponse de l’architecte depuis 9 jours
         </M4Signal>
         <M4Signal n={2} icon="truck">
-          Le verrier ne garantit son créneau que jusqu’au 11 décembre
+          Le verrier ne garantit son créneau que jusqu’au 23 décembre
         </M4Signal>
         <M4Signal n={3} icon="route">
-          L’approbation est sur le chemin critique du 14 mai
+          L’approbation est sur le chemin critique du 28 mai
         </M4Signal>
         <M4Signal n={4} icon="chat">
           Dernier courriel de l’architecte : « on manque de monde avant les Fêtes »
@@ -616,7 +616,7 @@ const M4_Report: Page = () => (
     </div>
     <div className={A.right} style={{ position: 'absolute', left: 900, top: 270, width: 900, boxSizing: 'border-box', background: C.card, borderRadius: 18, boxShadow: `${SHADOW}, inset 0 7px 0 ${C.yellow}`, padding: '26px 34px', ...dl(200) }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <span style={{ fontFamily: display, fontWeight: 700, fontSize: 34, color: C.ink }}>Méandres · semaine 14</span>
+        <span style={{ fontFamily: display, fontWeight: 700, fontSize: 34, color: C.ink }}>Montréal · semaine 14</span>
         <Tag tone="yellow" size={22}>
           MÉTÉO JAUNE
         </Tag>
@@ -832,9 +832,9 @@ TRANSITION — « Voyons comment l'IA passe d'une transcription à un compte ren
 
 OBJECTIF — Visualiser l'extraction : décisions, actions, points ouverts.
 
-DIRE — « À gauche, un extrait de la transcription de la réunion de chantier du 2 mars, sur Teams. Des phrases spontanées, dans le désordre. »
+DIRE — « À gauche, un extrait de la transcription de la réunion de chantier du 16 mars, sur Teams. Des phrases spontanées, dans le désordre. »
 → beat 1 : « L'IA repère la décision, en vert : on commence la pose le 22 par la façade nord. »
-→ beat 2 : « Les actions, en bleu : Patrice refait les relevés d'ici le 9 ; Nadia relance le verrier demain, donc le 3 mars. »
+→ beat 2 : « Les actions, en bleu : Patrice refait les relevés d'ici le 9 ; Nadia relance le verrier demain, donc le 17 mars. »
 → beat 3 : « Les points ouverts, en jaune : la couleur des panneaux d'allège. Décision jeudi, avec la Ville. »
 
 INSISTER — « Remarquez : "on en reparle jeudi" n'est pas une décision. Une bonne extraction distingue ce qui est décidé de ce qui est discuté. Dans une réclamation, cette nuance vaut cher. »
@@ -864,7 +864,7 @@ OBJECTIF — Entraîner l'œil à repérer les erreurs typiques d'un compte rend
 ANIMATION — Laissez 2 minutes : chacun compare, pour soi, avec la transcription de la page précédente (revenez-y si besoin). Faites annoncer les erreurs au micro, puis un clic par erreur.
 → beat 1 : Fausse décision : la couleur des panneaux n'a pas été retenue, on en a seulement discuté.
 → beat 2 : Mauvaise personne : c'est Patrice qui refait les relevés.
-→ beat 3 : Date inventée : Nadia a dit « demain », donc le 3 mars, pas le 15.
+→ beat 3 : Date inventée : Nadia a dit « demain », donc le 17 mars, pas le 15.
 → beat 4 : Point ouvert effacé : la couleur des panneaux reste à trancher.
 
 MESSAGE CLÉ — « Ce sont exactement les quatre erreurs à vérifier : décisions, responsables, dates, points ouverts. Deux minutes de relecture. »
@@ -936,7 +936,7 @@ TRANSITION — « Les tâches et les courriels peuvent maintenant se suivre pres
 OBJECTIF — Montrer l'automatisation simple du tri et des relances, avant même l'IA.
 
 DIRE — « Une règle a trois parties : quand, si, alors. »
-→ beat 1 : « Quand un courriel arrive, s'il vient de Boréa ou parle des Méandres, alors il est classé dans le dossier du projet. C'est une simple règle Outlook, sans IA, sans licence. Faites-en une par gros projet. »
+→ beat 1 : « Quand un courriel arrive, s'il vient de Boréa ou parle de Montréal, alors il est classé dans le dossier du projet. C'est une simple règle Outlook, sans IA, sans licence. Faites-en une par gros projet. »
 → beat 2 : « Chaque matin à 8 h, si un courriel envoyé il y a 5 jours n'a pas de réponse, alors rappel à Mathieu : relancer ? Avec Power Automate, ou simplement un indicateur de suivi Outlook. »
 → beat 3 : « Quand un courriel arrive, si c'est une demande administrative, alors l'IA prépare le transfert à Nadia, avec la consigne. Ici on combine règle et IA, et c'est Mathieu qui clique "envoyer". »
 
@@ -952,8 +952,8 @@ OBJECTIF — Distinguer constat (règle) et anticipation (IA).
 DIRE — « À gauche, l'alerte par règle : l'approbation des dessins est en retard de 4 jours. Utile, mais le retard est déjà là. »
 « À droite, l'alerte intelligente : l'IA croise des signaux faibles. »
 → beat 1 : « Aucune réponse de l'architecte depuis 9 jours. »
-→ beat 2 : « Le verrier ne garantit son créneau de production que jusqu'au 11 décembre. »
-→ beat 3 : « L'approbation est sur le chemin critique du 14 mai. »
+→ beat 2 : « Le verrier ne garantit son créneau de production que jusqu'au 23 décembre. »
+→ beat 3 : « L'approbation est sur le chemin critique du 28 mai. »
 → beat 4 : « Et le dernier courriel de l'architecte : "on manque de monde avant les Fêtes". Une règle ne lit pas le ton ; l'IA, si. »
 → beat 5 : « Conclusion : risque que la commande du verre passe après les Fêtes. Suggestion : appeler l'architecte aujourd'hui. Avant que le retard n'arrive. »
 

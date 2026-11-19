@@ -89,7 +89,7 @@ const O_Welcome: Page = () => (
       <div style={{ marginTop: 8, fontSize: 22, color: C.soft, lineHeight: 1.4 }}>Votre formateur pour la journée</div>
     </div>
     <div style={{ position: 'absolute', left: 520, top: 300, width: 1280, display: 'flex', gap: 26 }}>
-      <OPromise value={<CountUp to={7} suffix=" h" />} label="de formation intensive : 60 % d’apports et de démos, 40 % de pratique" tone="blue" d={150} />
+      <OPromise value={<CountUp to={7} suffix=" h" />} label="de formation intensive : deux tiers d’apports et de démos, un tiers de pratique" tone="blue" d={150} />
       <OPromise value={<CountUp to={6} />} label="TP individuels enchaînés sur le même projet, du prompt à l’orchestration d’agents" tone="green" d={280} />
       <OPromise value={<CountUp to={1} />} label="feature complète (code, tests, doc, sécurité) livrée par vos agents, sous votre contrôle" tone="violet" d={410} />
     </div>
@@ -190,7 +190,7 @@ const O_Objectifs: Page = () => (
       <Eyebrow c={C.navy}>Équilibre de la journée</Eyebrow>
       <div style={{ marginTop: 22, display: 'flex', flexDirection: 'column', gap: 22 }}>
         <OBar label="Apports, démos, cas réels" value="60 %" pct={60} bg={G.blue} c={C.blue} d={600} />
-        <OBar label="TP et mises en situation" value="40 %" pct={40} bg={G.green} c={C.green} d={750} />
+        <OBar label="TP et mises en situation" value="31 %" pct={31} bg={G.green} c={C.green} d={750} />
       </div>
       <div style={{ marginTop: 28, fontSize: 22, lineHeight: 1.45, color: C.muted }}>
         Évaluation continue : questions orales, QCM à chaque module, TP, présentation finale par des volontaires. Fil technique de la journée : instructions, skills, agents personnalisés, orchestration.
@@ -233,16 +233,16 @@ const O_Programme: Page = () => (
     <div style={{ position: 'absolute', left: 120, top: 190, width: 1680, display: 'flex', gap: 60 }}>
       <OHalf icon="chat" tone="blue" title="Matinée" sub="Prompt engineering et génération avancée" d={0}>
         <OSlot t="9:00" title={`Ouverture · fil rouge ${PROJECT}`} tone="grey" d={150} />
-        <OSlot t="9:15" mod="M1" title="Prompt engineering avancé" sub="Contexte, session et harnais, prompts structurés · TP 1" tone="blue" d={250} />
-        <OSlot t="10:10" title="Pause" tone="yellow" d={330} />
-        <OSlot t="10:25" mod="M2" title="Modules & architectures" sub="API REST, patterns, fichiers qui guident Copilot · TP 2" tone="teal" d={400} />
-        <OSlot t="11:35" mod="M3" title="Automatiser les tests" sub="Matrice, mocks, intégration, skill de test · TP 3" tone="pink" d={500} />
+        <OSlot t="9:15" mod="M1" title="Prompt engineering avancé" sub="Contexte, session et harnais, prompts structurés, comparer et mesurer" tone="blue" d={250} />
+        <OSlot t="9:50" title="Pause" tone="yellow" d={330} />
+        <OSlot t="10:05" mod="M2" title="Modules & architectures" sub="API REST, patterns, fichiers qui guident Copilot · TP 1" tone="teal" d={400} />
+        <OSlot t="11:15" mod="M3" title="Automatiser les tests" sub="Matrice, mocks, intégration, skill de test · TP 2" tone="pink" d={500} />
       </OHalf>
       <OHalf icon="shieldCheck" tone="violet" title="Après-midi" sub="Agents, sécurité et orchestration en équipe" d={200}>
         <OSlot t="13:30" title="Reprise · quiz flash de la matinée" tone="grey" d={450} />
-        <OSlot t="13:35" mod="M4" title="Optimisation & refactoring" sub="SOLID, performance, legacy, agents personnalisés · TP 4" tone="violet" d={550} />
-        <OSlot t="14:40" mod="M5" title="Sécurité & audit" sub="OWASP, failles du code généré, agent auditeur · TP 5" tone="coral" d={650} />
-        <OSlot t="15:40" mod="M6" title="Copilot en équipe" sub="PR, CI/CD, orchestration d’agents, charte · TP 6" tone="green" d={750} />
+        <OSlot t="13:35" mod="M4" title="Optimisation & refactoring" sub="SOLID, performance, legacy, agents personnalisés · TP 3" tone="violet" d={550} />
+        <OSlot t="14:40" mod="M5" title="Sécurité & audit" sub="OWASP, failles du code généré, agent auditeur · TP 4" tone="coral" d={650} />
+        <OSlot t="15:40" mod="M6" title="Copilot en équipe" sub="PR, CI/CD, orchestration d’agents, charte · TP 5" tone="green" d={750} />
         <OSlot t="16:40" title="Présentations · synthèse · évaluation" tone="navy" d={850} />
       </OHalf>
     </div>
@@ -362,7 +362,7 @@ TRANSITION — « Quelques mots sur la journée et sur ce que vous allez produir
 
 OBJECTIF — Donner la promesse chiffrée et le contrat pédagogique.
 
-DIRE — « Sept heures, dont environ 40 % de pratique : six TP individuels qui s’enchaînent sur le même projet. À chaque TP, vous ajoutez une brique au dossier .github de votre dépôt : des instructions au TP 2, une skill au TP 3, un agent Refactoreur au TP 4, un agent Auditeur au TP 5, et au TP 6 un chef d’orchestre qui fait travailler vos agents ensemble sur une feature complète. Le contrat : je montre, vous pratiquez. Et le fil conducteur : Copilot propose, le développeur dispose… et prouve. »
+DIRE — « Sept heures, dont environ un tiers de pratique : cinq TP individuels qui s’enchaînent sur le même projet. À chaque TP, vous ajoutez une brique au dossier .github de votre dépôt : des instructions au TP 1, une skill au TP 2, un agent Refactoreur au TP 3, un agent Auditeur au TP 4, et au TP 5 un chef d’orchestre qui fait travailler vos agents ensemble sur une feature complète. Le contrat : je montre, vous pratiquez. Et le fil conducteur : Copilot propose, le développeur dispose… et prouve. »
 
 TRANSITION — « Faisons connaissance. »`,
   `⏱ 3 min · TOUR DE TABLE (sondage)
@@ -378,7 +378,7 @@ TRANSITION — « Voici les objectifs officiels de la formation. »`,
 
 OBJECTIF — Présenter les six objectifs du programme et l’équilibre de la journée.
 
-DIRE — « Six objectifs, un par module, à une nuance près : le sixième — identifier et contourner les limites de Copilot — est transversal. Chaque module se termine par un QCM et un TP. L’équilibre annoncé : 60 % d’apports et de démonstrations, 40 % de pratique. Le fil technique de la journée, ce sont les fichiers qui guident Copilot : instructions, skills, agents, jusqu’à l’orchestration. »
+DIRE — « Six objectifs, un par module, à une nuance près : le sixième — identifier et contourner les limites de Copilot — est transversal. Chaque module se termine par un QCM et un TP. L’équilibre annoncé : deux tiers d’apports et de démonstrations, un tiers de pratique. Le fil technique de la journée, ce sont les fichiers qui guident Copilot : instructions, skills, agents, jusqu’à l’orchestration. »
 
 TRANSITION — « Le déroulé heure par heure. »`,
   `⏱ 2 min · PROGRAMME
@@ -394,7 +394,7 @@ TRANSITION — « Parlons du projet sur lequel vous allez travailler toute la jo
 
 OBJECTIF — Présenter le projet commun et la chaîne des TP.
 
-DIRE — « SalleLibre est une API REST de réservation de salles de réunion. Volontairement banale : tout le monde comprend le métier, donc on peut se concentrer sur la technique. Mais elle contient tout ce qui rend Copilot intéressant… et dangereux : de la logique métier avec des cas limites — les chevauchements de créneaux —, de l’authentification et des rôles, un algorithme de recherche, et de la documentation. Chacun choisit sa stack. À droite, votre parcours : six TP, chacun produit quelque chose que le suivant réutilise, et votre dossier .github grossit à chaque étape. »
+DIRE — « SalleLibre est une API REST de réservation de salles de réunion. Volontairement banale : tout le monde comprend le métier, donc on peut se concentrer sur la technique. Mais elle contient tout ce qui rend Copilot intéressant… et dangereux : de la logique métier avec des cas limites — les chevauchements de créneaux —, de l’authentification et des rôles, un algorithme de recherche, et de la documentation. Chacun choisit sa stack. À droite, votre parcours : cinq TP, chacun produit quelque chose que le suivant réutilise, et votre dossier .github grossit à chaque étape. »
 
 TRANSITION — « Dernière étape avant de coder : le check-up technique. »`,
   `⏱ 3 min · CHECK-UP (minuteur 3 min)

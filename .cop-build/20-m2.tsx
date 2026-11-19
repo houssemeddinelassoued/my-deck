@@ -11,8 +11,8 @@ const M2_Divider: Page = () => (
       </>
     }
     sub="De l’arborescence à l’API REST complète, guidée par vos fichiers d’instructions : structure, patterns, dépendances."
-    dur="10:25 – 11:35 · TP inclus"
-    labs={<Tag tone="green" size={19}>TP 2 · API REST complète</Tag>}
+    dur="10:05 – 11:15 · TP inclus"
+    labs={<Tag tone="green" size={19}>TP 1 · API REST complète</Tag>}
   >
     <SecItem n={1}>Générer une structure de projet complète</SecItem>
     <SecItem n={2}>Une API REST de bout en bout</SecItem>
@@ -292,12 +292,12 @@ const M2_Panorama: Page = () => (
     <Title>Les fichiers qui guident Copilot : lequel pour quel besoin ?</Title>
     <Lede>Des fichiers Markdown versionnés avec le code. Le harnais Copilot les lit à la même place dans VS Code, le CLI et l’app.</Lede>
     <div style={{ position: 'absolute', left: 120, top: 262, width: 1680, display: 'flex', flexDirection: 'column', gap: 12 }}>
-      <M2FRow path=".github/copilot-instructions.md" what="Les règles de la maison" when="à chaque requête" tone="navy" day="TP 2" d={100} />
-      <M2FRow path="AGENTS.md" what="La même chose, format partagé entre outils" when="à chaque requête" tone="navy" day="TP 2" d={160} />
-      <M2FRow path=".github/instructions/*.instructions.md" what="Des règles pour certains fichiers" when="si applyTo correspond" tone="blue" day="TP 3 · 5" d={220} />
+      <M2FRow path=".github/copilot-instructions.md" what="Les règles de la maison" when="à chaque requête" tone="navy" day="TP 1" d={100} />
+      <M2FRow path="AGENTS.md" what="La même chose, format partagé entre outils" when="à chaque requête" tone="navy" day="TP 1" d={160} />
+      <M2FRow path=".github/instructions/*.instructions.md" what="Des règles pour certains fichiers" when="si applyTo correspond" tone="blue" day="TP 2 · 4" d={220} />
       <M2FRow path="~/.copilot/copilot-instructions.md" what="Vos préférences personnelles" when="dans tous vos projets" tone="teal" day="Option" d={280} />
-      <M2FRow path=".github/skills/<nom>/SKILL.md" what="Une méthode réutilisable, avec ses fichiers" when="à la demande" tone="violet" day="TP 3" d={340} />
-      <M2FRow path=".github/agents/<nom>.agent.md" what="Un rôle : consignes, outils, modèle" when="quand vous le choisissez" tone="violet" day="TP 4 · 6" d={400} />
+      <M2FRow path=".github/skills/<nom>/SKILL.md" what="Une méthode réutilisable, avec ses fichiers" when="à la demande" tone="violet" day="TP 2" d={340} />
+      <M2FRow path=".github/agents/<nom>.agent.md" what="Un rôle : consignes, outils, modèle" when="quand vous le choisissez" tone="violet" day="TP 3 · 5" d={400} />
       <M2FRow path=".vscode/mcp.json" what="Des outils de plus pour l’agent" when="quand il en a besoin" tone="pink" day="Mention" d={460} />
     </div>
     <Hint cls={A.fade} style={{ position: 'absolute', left: 120, top: 880, ...dl(700) }}>
@@ -395,10 +395,10 @@ const M2_ApplyTo: Page = () => (
         Exemples de motifs
       </Eyebrow>
       <M2Glob glob="tests/**" file="tests" d={200}>
-        conventions de test (TP 3)
+        conventions de test (TP 2)
       </M2Glob>
       <M2Glob glob="src/api/**" file="sécurité" d={300}>
-        contrôle d’accès, DTO, secrets (TP 5)
+        contrôle d’accès, DTO, secrets (TP 4)
       </M2Glob>
       <M2Glob glob="src/legacy/**" file="code hérité" d={400}>
         « ne corrige rien pendant un refactoring »
@@ -495,7 +495,7 @@ const M2_PromptSkill: Page = () => (
       </CodeDark>
     </div>
     <Hint cls={A.fade} style={{ position: 'absolute', left: 120, top: 905, ...dl(600) }}>
-      Vos .prompt.md d’hier se convertissent en skills. Votre première skill : au TP 3.
+      Vos .prompt.md d’hier se convertissent en skills. Votre première skill : au TP 2.
     </Hint>
   </Frame>
 );
@@ -569,7 +569,7 @@ const M2_Qcm: Page = () => (
   </QcmPage>
 );
 
-// ─── TP 2 ───────────────────────────────────────────────────────────────────
+// ─── TP 1 ───────────────────────────────────────────────────────────────────
 const M2Step = ({ n, children }: { n: number; children: ReactNode }) => (
   <div style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
     <Num n={n} tone="blue" size={32} style={{ marginTop: 2 }} />
@@ -580,7 +580,7 @@ const M2Step = ({ n, children }: { n: number; children: ReactNode }) => (
 const M2_TP: Page = () => (
   <LabPage
     mod={2}
-    n="2"
+    n="1"
     title="Générer une API REST complète"
     defi="generer"
     who="Individuel"
@@ -606,20 +606,20 @@ const M2_TP: Page = () => (
     }
     crit={
       <>
-        <CheckItem id="tp2-1" size={21}>Plan validé avant toute ligne de code</CheckItem>
-        <CheckItem id="tp2-2" size={21}>Instructions citées dans les Références</CheckItem>
-        <CheckItem id="tp2-3" size={21}>409 sur chevauchement, 401 sans jeton, 403 sans rôle</CheckItem>
-        <CheckItem id="tp2-4" size={21}>Doc OpenAPI accessible et à jour</CheckItem>
+        <CheckItem id="tp1-1" size={21}>Plan validé avant toute ligne de code</CheckItem>
+        <CheckItem id="tp1-2" size={21}>Instructions citées dans les Références</CheckItem>
+        <CheckItem id="tp1-3" size={21}>409 sur chevauchement, 401 sans jeton, 403 sans rôle</CheckItem>
+        <CheckItem id="tp1-4" size={21}>Doc OpenAPI accessible et à jour</CheckItem>
       </>
     }
   >
     <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
       <M2Step n={1}>Rôle Plan : arborescence et interfaces, validées dans PLAN.md.</M2Step>
       <M2Step n={2}>Écrivez copilot-instructions.md : stack, couches, erreurs → codes HTTP, dépendances.</M2Step>
-      <M2Step n={3}>Rôle Agent, lot par lot : domaine (overlaps du TP 1), repositories, services.</M2Step>
+      <M2Step n={3}>Rôle Agent, lot par lot : domaine (d’abord la règle de chevauchement), repositories, services.</M2Step>
       <M2Step n={4}>Routes, validation, auth, puis OpenAPI. Une règle ignorée ? Corrigez le fichier, pas le prompt.</M2Step>
     </div>
-    <TpBonus>Transformez votre meilleur prompt du TP 1 en skill /chevauchement (disable-model-invocation: true), puis rejouez-la.</TpBonus>
+    <TpBonus>Écrivez un prompt pour la règle de chevauchement, transformez-le en skill /chevauchement (disable-model-invocation: true), puis rejouez-la.</TpBonus>
   </LabPage>
 );
 
@@ -629,11 +629,11 @@ export const __pages = [M2_Divider, M2_Scaffold, M2_ApiFlow, M2_Patterns, M2_Exe
 
 // @@NOTES-BEGIN
 export const __notes = [
-  `⏱ 1 min · DIVISEUR M2 · 10:25
+  `⏱ 1 min · DIVISEUR M2 · 10:05
 
 OBJECTIF — Annoncer le module 2 du programme : génération de modules et d’architectures complexes.
 
-DIRE — « Module 2 : on passe de la fonction au module, puis à l’application. Générer une structure complète, une API REST de bout en bout, les patterns Repository, Service et Factory, les dépendances générées. Et la seconde moitié du module : les fichiers qui guident Copilot. Vous ne répéterez plus vos règles dans chaque prompt : vous les écrirez une fois, dans le dépôt. Le TP 2 produit l’API SalleLibre, guidée par vos propres instructions. »
+DIRE — « Module 2 : on passe de la fonction au module, puis à l’application. Générer une structure complète, une API REST de bout en bout, les patterns Repository, Service et Factory, les dépendances générées. Et la seconde moitié du module : les fichiers qui guident Copilot. Vous ne répéterez plus vos règles dans chaque prompt : vous les écrirez une fois, dans le dépôt. Le TP 1 produit l’API SalleLibre, guidée par vos propres instructions. »
 
 TRANSITION — « Tout commence par l’arborescence. »`,
   `⏱ 4 min · STRUCTURE DE PROJET (2 temps)
@@ -684,7 +684,7 @@ OBJECTIF — Donner la carte des fichiers de personnalisation lus par le harnais
 
 DIRE — « Sept fichiers, tous en Markdown ou presque, tous versionnés avec le code. Les règles de la maison, à chaque requête : copilot-instructions.md ou AGENTS.md. Des règles ciblées par chemin : les fichiers .instructions.md. Vos préférences personnelles, dans votre dossier utilisateur. Puis trois fichiers plus puissants : la skill, une méthode chargée à la demande ; l’agent, un rôle avec ses outils ; et mcp.json, qui donne des outils de plus à l’agent. Regardez la colonne de droite : c’est le programme de vos TP. Votre dossier .github grossit à chaque TP. »
 
-TRANSITION — « Le premier, celui que vous écrirez dans le TP 2. »`,
+TRANSITION — « Le premier, celui que vous écrirez dans le TP 1. »`,
   `⏱ 3 min · COPILOT-INSTRUCTIONS.MD (démo)
 
 OBJECTIF — Montrer un fichier d’instructions de dépôt court, impératif et vérifiable.
@@ -706,7 +706,7 @@ TRANSITION — « Toutes les règles ne concernent pas tous les fichiers. »`,
 
 OBJECTIF — Écrire des instructions ciblées par chemin avec applyTo.
 
-DIRE — « Un fichier .instructions.md commence par un en-tête YAML : applyTo dit à quels fichiers il s’applique. Ici, les conventions de test, seulement quand Copilot travaille dans tests/. Le reste du temps, il ne coûte rien. À droite, les motifs que vous écrirez aujourd’hui : tests au TP 3, sécurité de l’API au TP 5. Le motif double étoile, tout le dépôt : autant l’écrire dans copilot-instructions.md. Et le piège classique : test au singulier au lieu de tests. Le fichier n’est jamais appliqué, et rien ne vous prévient. Le réflexe : vérifier les Références. »
+DIRE — « Un fichier .instructions.md commence par un en-tête YAML : applyTo dit à quels fichiers il s’applique. Ici, les conventions de test, seulement quand Copilot travaille dans tests/. Le reste du temps, il ne coûte rien. À droite, les motifs que vous écrirez aujourd’hui : tests au TP 2, sécurité de l’API au TP 4. Le motif double étoile, tout le dépôt : autant l’écrire dans copilot-instructions.md. Et le piège classique : test au singulier au lieu de tests. Le fichier n’est jamais appliqué, et rien ne vous prévient. Le réflexe : vérifier les Références. »
 
 TRANSITION — « Ces instructions s’additionnent à d’autres sources. »`,
   `⏱ 2 min · QUATRE SOURCES DE CONSIGNES
@@ -721,7 +721,7 @@ TRANSITION — « Et vos prompts réutilisables, ceux que vous rangiez dans .git
 OBJECTIF — Expliquer que les prompt files sont ignorés par le harnais Copilot et que les skills les remplacent.
 
 DIRE — « Beaucoup d’entre vous ont des .prompt.md, lancés par /nom. C’est le format du harnais Local, l’ancien moteur : le harnais Copilot les ignore. Le format qui les remplace, c’est la skill : un dossier, un SKILL.md, et ses fichiers — modèles, scripts. Copilot lit sa description et la charge quand la demande s’y prête, ou quand vous tapez /nom. C’est un standard ouvert, lu par d’autres agents. »
-→ beat 1 « Convertir un prompt d’équipe en skill : un en-tête name et description, et disable-model-invocation à true si vous voulez qu’elle ne parte que sur /nouvel-endpoint. Votre première skill : au TP 3, et en bonus dès le TP 2. »
+→ beat 1 « Convertir un prompt d’équipe en skill : un en-tête name et description, et disable-model-invocation à true si vous voulez qu’elle ne parte que sur /nouvel-endpoint. Votre première skill : au TP 2, et en bonus dès le TP 1. »
 
 TRANSITION — « Dernier outil : voir d’un coup d’œil ce qui est chargé. »`,
   `⏱ 2 min · ÉDITEUR DE PERSONNALISATION (démo)
@@ -741,12 +741,12 @@ DIRE — « Le piège C est le plus intéressant : demander au modèle de valide
 
 ANIMATION — Vote à voix haute, clic sur la réponse majoritaire, → bonne réponse, → l’essentiel.
 
-TRANSITION — « TP 2 : l’API complète, guidée par vos instructions. »`,
-  `⏱ 30 min (minuteur) · TP 2
+TRANSITION — « TP 1 : l’API complète, guidée par vos instructions. »`,
+  `⏱ 30 min (minuteur) · TP 1
 
 OBJECTIF — Cas pratique du programme : générer une API REST complète avec authentification, validation et documentation, guidée par un fichier d’instructions de dépôt.
 
-DIRE — « TP individuel. D’abord le rôle Plan : arborescence et interfaces, vous validez, vous sauvegardez dans PLAN.md. Ensuite, avant toute génération, vous écrivez .github/copilot-instructions.md : quarante lignes au plus, la stack, les couches, les erreurs métier et leurs codes HTTP, la règle des dépendances. /init peut proposer un premier jet : raccourcissez-le. Puis le rôle Agent, lot par lot : le domaine — reprenez overlaps du TP 1 —, des repositories en mémoire, les services, puis routes, validation, authentification, et la documentation. À chaque réponse, vérifiez que vos instructions apparaissent dans les Références. Si Copilot ignore une règle, corrigez le fichier, pas le prompt. Critères : 409 sur chevauchement, 401 sans jeton, 403 sans le bon rôle. »
+DIRE — « TP individuel. D’abord le rôle Plan : arborescence et interfaces, vous validez, vous sauvegardez dans PLAN.md. Ensuite, avant toute génération, vous écrivez .github/copilot-instructions.md : quarante lignes au plus, la stack, les couches, les erreurs métier et leurs codes HTTP, la règle des dépendances. /init peut proposer un premier jet : raccourcissez-le. Puis le rôle Agent, lot par lot : le domaine — commencez par la règle de chevauchement —, des repositories en mémoire, les services, puis routes, validation, authentification, et la documentation. À chaque réponse, vérifiez que vos instructions apparaissent dans les Références. Si Copilot ignore une règle, corrigez le fichier, pas le prompt. Critères : 409 sur chevauchement, 401 sans jeton, 403 sans le bon rôle. »
 
 ANIMATION — Lancer le minuteur. Points d’étape à 10 et 20 minutes : « Où en êtes-vous : plan, instructions, lot 1, 2 ou 3 ? » Quelqu’un bloqué partage son écran 2 minutes. Rappeler que tout générer en un seul prompt rend le diff impossible à relire. Pour le bonus : coller dans le Chat l’en-tête d’une skill (name, description, disable-model-invocation).
 

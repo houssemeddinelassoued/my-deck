@@ -9,14 +9,6 @@
       }
     },
     {
-      "id": "f-7a2a39b0",
-      "name": "Hela",
-      "icon": {
-        "type": "color",
-        "value": "#e5484d"
-      }
-    },
-    {
       "id": "f-3b8bd4bc",
       "name": "Docaposte Institute",
       "icon": {
@@ -46,6 +38,22 @@
       "icon": {
         "type": "color",
         "value": "#0091ff"
+      }
+    },
+    {
+      "id": "f-7a2a39b0",
+      "name": "Hela",
+      "icon": {
+        "type": "color",
+        "value": "#e5484d"
+      }
+    },
+    {
+      "id": "f-c23c1389",
+      "name": "Autres",
+      "icon": {
+        "type": "color",
+        "value": "#6e56cf"
       }
     }
   ],
@@ -78,6 +86,14 @@
     "ai-history-10-chatgpt": "f-74edf8ee",
     "ml-explique": "f-74edf8ee",
     "llm-explique": "f-74edf8ee",
-    "ia-developpeurs-code-assiste": "f-f60ec6cd"
+    "ia-developpeurs-code-assiste": "f-f60ec6cd",
+    "ia-gestion-de-projet-lessard": "f-f60ec6cd",
+    "ia-support-infrastructure": "f-9d7fbf87",
+    "ia-gestion-de-projet-lefleuve-ca": "f-f60ec6cd",
+    "vibe-coding-docaposte": "f-3b8bd4bc",
+    "copilot-debutant-v2": "f-3b8bd4bc",
+    "getting-started": "f-c23c1389",
+    "introduction-ia-ethique": "f-f60ec6cd",
+    "claude-ia-avancee-developpeurs": "f-cda573a4"
   }
 }

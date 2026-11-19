@@ -1,0 +1,8 @@
+{
+  "_lisezmoi": "Atelier 1, étape A1.3 : choisirExemples(texte, exemples, k). Score = nombre de mots-clés en commun (motsCles est fourni) ; tri par score décroissant, à égalité l'ordre du fichier est conservé (tri stable) ; un exemple est ignoré si un exemple du même type est déjà choisi ; on s'arrête à k.",
+  "cas": [
+    { "texte": "Le portail RH ne charge plus depuis ce matin, 40 personnes bloquées, contrat Or.", "k": 3, "attendu": ["E01", "E04", "E06"] },
+    { "texte": "We need a quote for a mobile application.", "k": 2, "attendu": ["E02", "E05"] },
+    { "texte": "Le portail RH ne charge plus depuis ce matin, 40 personnes bloquées, contrat Or.", "k": 6, "attendu": ["E01", "E04", "E06", "E05"] }
+  ]
+}

@@ -1,0 +1,299 @@
+<!doctype html><html lang="fr"><head><meta charset="utf-8"><title>Atelier 1 · Corrigé du formateur</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Barlow+Condensed:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+@page { size: A4; margin: 16mm 16mm 18mm; }
+* { box-sizing: border-box; }
+:root { --ink:#2B2F33; --soft:#4B545B; --muted:#77818A; --faint:#AFB8C0; --rule:#DCE3E8; --panel:#EAF0F4;
+  --blue:#1F78C1; --teal:#22A6B3; --green:#3A9F45; --yellow:#FFD000; --amber:#E8A600; --coral:#E0573D; --violet:#6B57C9; }
+html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+body { margin:0; font-family: Barlow, Arial, sans-serif; font-size: 10.5pt; line-height: 1.45; color: var(--ink); }
+h1, h2, h3, .disp { font-family: 'Barlow Condensed', 'Arial Narrow', Arial, sans-serif; }
+h1 { font-size: 30pt; line-height: 1.05; margin: 0 0 8pt; }
+h2 { font-size: 19pt; line-height: 1.1; margin: 0 0 10pt; display:flex; align-items:center; gap:10pt; }
+h2 .n { flex:none; width: 26pt; height: 26pt; border-radius: 7pt; background: var(--yellow); color: var(--ink); display:inline-flex; align-items:center; justify-content:center; font-size: 15pt; }
+h3 { font-size: 13.5pt; margin: 14pt 0 5pt; color: var(--blue); break-after: avoid; }
+h2 { break-after: avoid; }
+p { margin: 0 0 7pt; }
+ul, ol { margin: 0 0 8pt; padding-left: 16pt; } li { margin: 2pt 0; }
+.np { break-before: page; }
+.keep { break-inside: avoid; }
+.eyebrow { font-family: 'Barlow Condensed', Arial, sans-serif; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; font-size: 9.5pt; color: var(--blue); }
+.muted { color: var(--muted); } .small { font-size: 9pt; }
+.lede { font-size: 12pt; color: var(--soft); margin-bottom: 12pt; }
+.box { border-radius: 8pt; padding: 9pt 12pt; margin: 8pt 0 10pt; break-inside: avoid; }
+.box > b:first-child, .box .t { display:block; font-family:'Barlow Condensed', Arial, sans-serif; font-weight:700; font-size: 10pt; letter-spacing:.1em; text-transform: uppercase; margin-bottom: 3pt; }
+.tip { background: #E3EFF9; } .tip .t { color: var(--blue); }
+.warn { background: #FBE3DD; } .warn .t { color: #B23A22; }
+.ok { background: #E3F2E5; } .ok .t { color: #2A7A33; }
+.note { background: #FFF6CC; } .note .t { color: #8A6A00; }
+.prompt { background: #fff; border: 1.2pt solid var(--rule); border-left: 4pt solid var(--blue); border-radius: 6pt; padding: 8pt 12pt; margin: 6pt 0 10pt; break-inside: avoid; }
+.prompt .t { color: var(--blue); font-family:'Barlow Condensed', Arial, sans-serif; font-weight:700; font-size:9.5pt; letter-spacing:.1em; text-transform:uppercase; margin-bottom: 3pt; display:block; }
+.prompt .slot { font-family: 'JetBrains Mono', Consolas, monospace; font-size: 9pt; color: var(--muted); }
+table { width: 100%; border-collapse: collapse; margin: 6pt 0 10pt; break-inside: avoid; }
+th { background: var(--blue); color: #fff; text-align: left; font-weight: 600; font-size: 9.5pt; padding: 5pt 7pt; }
+td { border-bottom: 1pt solid var(--rule); padding: 5pt 7pt; vertical-align: top; }
+tr.alt td { background: #F6F9FB; }
+td.blank { height: 22pt; }
+.k { font-weight: 700; color: var(--blue); white-space: nowrap; }
+.check { list-style: none; padding-left: 0; } .check li { padding-left: 20pt; position: relative; margin: 4pt 0; }
+.check li::before { content: ''; position: absolute; left: 0; top: 2pt; width: 11pt; height: 11pt; border: 1.3pt solid var(--soft); border-radius: 2.5pt; }
+.x2 { display:inline-block; font-size: 8pt; font-weight:700; color:#fff; background: var(--coral); border-radius: 3pt; padding: 0 4pt; margin-left: 4pt; }
+.grid2 { display:grid; grid-template-columns: 1fr 1fr; gap: 10pt; }
+.card { border: 1pt solid var(--rule); border-radius: 8pt; padding: 8pt 10pt; break-inside: avoid; }
+.card h4 { margin: 0 0 3pt; font-family:'Barlow Condensed', Arial, sans-serif; font-size: 12pt; }
+.tag { display:inline-block; font-size: 8.5pt; font-weight: 600; padding: 0 6pt; border-radius: 99pt; background: var(--panel); color: var(--soft); }
+.fict { font-size: 8.5pt; color: var(--muted); border: 1pt dashed var(--faint); border-radius: 4pt; padding: 2pt 6pt; display: inline-block; }
+code { font-family: 'JetBrains Mono', Consolas, monospace; font-size: 8.8pt; background: var(--panel); padding: 0 3pt; border-radius: 3pt; }
+
+.dochead { display:flex; justify-content:space-between; align-items:flex-end; border-bottom: 2pt solid var(--ink); padding-bottom: 6pt; margin-bottom: 12pt; }
+.dochead .who { font-family:'Barlow Condensed', Arial, sans-serif; font-weight:700; font-size: 11pt; letter-spacing:.06em; text-transform: uppercase; color: var(--soft); }
+.dochead .ref { font-size: 9pt; color: var(--muted); text-align:right; }
+.mail { border: 1pt solid var(--rule); border-radius: 6pt; overflow: hidden; }
+.mail .hd { background: #F6F9FB; border-bottom: 1pt solid var(--rule); padding: 8pt 12pt; }
+.mail .hd table { margin: 0; } .mail .hd td { border: 0; padding: 1.5pt 0; } .mail .hd td:first-child { width: 18mm; color: var(--muted); }
+.mail .subj { font-family:'Barlow Condensed', Arial, sans-serif; font-weight:700; font-size: 15pt; margin: 2pt 0 4pt; }
+.mail .bd { padding: 12pt 14pt; font-size: 10.5pt; }
+.att { display:inline-block; border:1pt solid var(--rule); border-radius: 4pt; padding: 1pt 6pt; font-size: 9pt; margin-right: 4pt; background:#fff; }
+.form td:first-child { width: 34%; color: var(--soft); font-weight: 600; }
+table.form { break-inside: auto; } table.form tr { break-inside: avoid; }
+.fiche h2 { margin-bottom: 6pt; } .fiche td, .fiche th { padding: 3.2pt 7pt; font-size: 9.6pt; line-height: 1.35; }
+.sign { margin-top: 10pt; color: var(--soft); }
+.hand { font-style: italic; color: #1F4E8A; }
+
+.conf { display:inline-block; font-family:'Barlow Condensed', Arial, sans-serif; font-weight:700; letter-spacing:.12em; text-transform:uppercase; font-size:9pt; color:#fff; background: var(--coral); border-radius:4pt; padding:2pt 8pt; }
+.ans td:first-child { width: 24%; font-weight: 600; }
+.mini td, .mini th { font-size: 9pt; padding: 3.5pt 6pt; }
+.r { text-align:center; font-weight:700; }
+.fix { background: #FBE3DD; }
+.q li { margin: 3pt 0; }
+table.mini, table.ans { break-inside: auto; } table.mini tr, table.ans tr { break-inside: avoid; }
+</style></head><body>
+<section>
+  <img src="data:image/png;base64,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" alt="Technologia" style="height:28pt;mix-blend-mode:multiply">
+  <div style="margin-top:14pt"><span class="conf">Formateur · ne pas distribuer</span></div>
+  <h1 style="margin-top:10pt">Atelier 1 · Corrigé du formateur</h1>
+  <p class="lede">IA124 · Groupe Lessard · Centre sportif de Montréal (cas fictif). Les réponses attendues, étape par étape, avec la numérotation du guide du participant et du deck.</p>
+  <div class="box note"><span class="t">Comment utiliser ce corrigé</span>Il n’existe pas <i>une</i> bonne réponse : les productions de l’IA varient d’un participant à l’autre. Ce corrigé donne <b>une version de référence</b> et surtout <b>ce qui doit absolument y être</b> (les points « À exiger »). Pendant les points d’étape, cherchez ces points-là, pas la formulation.</div>
+  <h2>Le déroulé et les minuteurs</h2>
+  <table>
+    <tr><th style="width:24%">Étape</th><th style="width:22%">Démonstration (deck)</th><th style="width:18%">Minuteur</th><th>Point d’étape (3 min, 1 clic)</th></tr>
+    <tr><td><b>1 · Découvrir</b></td><td>Copilot dans Outlook, Copilot Chat</td><td>m3-s1 · 5 min</td><td>Fichier joint par tous ? Deux volontaires : la meilleure question de Copilot.</td></tr>
+    <tr class="alt"><td><b>2 · Cadrer</b></td><td>La fiche de démarrage</td><td>m3-s2 · 10 min</td><td>Combien d’exclusions sur 5 ? « Dès mars » signalé ?</td></tr>
+    <tr><td><b>3 · Planifier</b></td><td>3a à 3e, puis le mini-outil (option)</td><td>m3-s3 · 25 min</td><td>Dates supposées ? Ligne de RACI fautive ? Deux échéanciers montrés.</td></tr>
+    <tr class="alt"><td><b>4 · Trier et relancer</b></td><td>La boîte de réception (glisser-déposer)</td><td>m3-s4 · 10 min</td><td>Désaccords avec Copilot ? Une ou deux relances lues.</td></tr>
+    <tr><td><b>5 · Vérifier</b></td><td>Grille de contrôle, quatre pièges</td><td>m3-s5 · 5 min</td><td>Scores, puis 2 ou 3 volontaires pour le débriefing.</td></tr>
+  </table>
+  <p class="small muted">Chaque page « À vous » a son minuteur ; le point d’étape apparaît au clic. Les minuteurs se règlent à ±1 min depuis la vue présentateur.</p>
+  <div class="box tip"><span class="t">Les dates qui reviennent partout</span>Départ <b>lun. 16 nov. 2026</b> · dessins MR-01 envoyés <b>lun. 7 déc.</b> · approbation due <b>lun. 21 déc.</b> (10 jours ouvrables) · Fêtes <b>21 déc. → 1er janv.</b> (retour le 4 janv.) · commande du verre <b>22 déc.</b> (créneau du verrier jusqu’au 23) · verre livré <b>fin février</b> · structure <b>vers le 15 mars</b> · relevés <b>15 → 26 mars</b> · pose <b>à partir du 5 avril</b> · bâtiment fermé <b>ven. 28 mai 2027</b>.</div>
+</section>
+
+<section class="np">
+  <h2><span class="n">1</span>Étape 1 · Découvrir l’outil</h2>
+  <p class="lede">Pas de « bonne réponse » ici : on vérifie que chacun sait joindre un document et l’interroger.</p>
+  <h3>Le résumé attendu de la soumission</h3>
+  <ul>
+    <li><b>Périmètre</b> : mur-rideau du hall 420 m², 46 fenêtres (F1 ×30, F2 ×12, F3 ×4), 6 portes dont 2 automatiques, verrière 64 m², panneaux d’allège et solins, dessins scellés, mobilisation et nettoyage. Total <b>1 200 000 $</b> avant taxes.</li>
+    <li><b>Exclusions</b> : calfeutrage intérieur, stores et habillages, finitions intérieures, raccordement électrique des portes automatiques, permis et frais de la Ville.</li>
+    <li><b>Délais</b> : dessins 3 semaines après réception des documents pour construction, approbation 10 jours ouvrables, verre 8 semaines après commande ferme, fabrication 6 semaines.</li>
+    <li><b>Inclus discret</b> : échantillons de verre (2 types), essai d’étanchéité sur une travée, garanties 2 ans / 10 ans.</li>
+  </ul>
+  <p class="small muted">La soumission seule ne contient <b>pas</b> la promesse « dès mars » : elle est dans le dossier d’Éric. Si un participant la voit déjà ici, c’est qu’il a joint les deux fichiers.</p>
+  <h3>Les questions que Copilot devrait renvoyer (« Qu’est-ce qui manque ? »)</h3>
+  <ul class="q">
+    <li>Les documents pour construction sont-ils reçus ? (les plans de la soumission sont « émis pour soumission, rév. B »)</li>
+    <li>Quelle est la date de fin imposée ? Quelle est la date de disponibilité du chantier ?</li>
+    <li>Qui est l’interlocuteur chez l’entrepreneur général et chez l’architecte ?</li>
+    <li>Quelles sont les conditions de paiement et la retenue ? Y a-t-il des pénalités de retard ?</li>
+  </ul>
+  <div class="box ok"><span class="t">À exiger</span>Le fichier est bien joint (ou le résumé collé) · le bouclier vert est visible · chacun a noté au moins deux questions pour l’étape 2.</div>
+
+  <h2 style="margin-top:16pt"><span class="n">2</span>Étape 2 · Cadrer : la fiche de démarrage</h2>
+  <h3>La fiche de référence</h3>
+  <table class="ans">
+    <tr><th>Rubrique</th><th>Attendu</th></tr>
+    <tr><td>Identification</td><td>P-2611-04 · Centre sportif de Montréal · propriétaire Ville de Rivière-Claire · EG Construction Boréa (Simon Tremblay) · architecte Atelier Mercier (Marc-André Leduc) · contrat signé le 6 nov. 2026, 1 200 000 $ avant taxes, retenue 10 %.</td></tr>
+    <tr class="alt"><td>Périmètre inclus</td><td>Mur-rideau du hall (420 m²), 46 fenêtres, 6 portes dont 2 automatiques, verrière (64 m²), panneaux d’allège et solins, dessins d’atelier signés et scellés, installation. Plus : échantillons de verre (2 types), essai d’étanchéité, garanties.</td></tr>
+    <tr><td>Exclusions</td><td><b>Les 5</b> : calfeutrage intérieur · stores · finitions intérieures · raccordement électrique des portes automatiques · permis.</td></tr>
+    <tr class="alt"><td>Dates clés</td><td>Départ 16 nov. 2026 · Fêtes 21 déc. → 1er janv. · structure vers le 15 mars 2027 (estimation Boréa) · <b>bâtiment fermé ven. 28 mai 2027</b> (contractuel).</td></tr>
+    <tr><td>Délais</td><td>Dessins 3 sem. · approbation 10 jours ouvrables · verre 8 sem. après commande ferme · fabrication 6 sem. · relevés 2 sem. après la structure · installation 8 sem.</td></tr>
+    <tr class="alt"><td>Intervenants</td><td>Boréa : Simon Tremblay (CP), Luc Paquette (surintendant), Julie Bergeron (adjointe). Atelier Mercier : M.-A. Leduc. Ville : Isabelle Côté. Fournisseurs : Vitrerie Laurentienne, Panneaux Nordik. Lessard : Mathieu, Hélène, Nadia, Éric, Patrice.</td></tr>
+    <tr><td>Engagements</td><td>Pose du hall « dès mars » (verbal, Éric à Simon, le 3 nov.). Bâtiment fermé le 28 mai.</td></tr>
+    <tr class="alt"><td>Contraintes</td><td>Une seule grue partagée, à réserver 2 sem. d’avance auprès de Luc · formulaire d’accès de la Ville pour chaque travailleur · certificat d’assurance à jour avant la mobilisation · réunions de chantier aux 2 semaines, le mardi, dès janvier.</td></tr>
+  </table>
+  <h3>Les points à clarifier avec Éric (le cœur de la correction)</h3>
+  <ol class="q">
+    <li><b>« Dès mars » est intenable.</b> Structure vers le 15 mars, puis 2 semaines de relevés : la pose ne peut commencer qu’en fin mars au mieux, début avril de façon réaliste. Est-ce écrit au contrat ? Qui prévient Boréa, et quand ?</li>
+    <li><b>Calfeutrage intérieur et stores, « on en reparlera ».</b> Hors contrat. Il faut une réponse claire : refus, ou travaux supplémentaires avec prix à part. Sinon, litige en vue.</li>
+    <li><b>Point de départ des dessins.</b> La soumission compte 3 semaines « après la réception des documents pour construction » ; la fiche les compte « à partir du départ du projet ». Avons-nous les plans pour construction ?</li>
+    <li><b>Architecte « pas toujours rapide ».</b> Les 10 jours ouvrables finissent le 21 déc., premier jour des Fêtes : prévoir une relance et une marge.</li>
+    <li><b>Échantillons de verre</b> promis dans la soumission, absents de la fiche : qui les envoie à l’architecte, et quand ?</li>
+  </ol>
+  <div class="box ok"><span class="t">À exiger</span>Les 5 exclusions · aucune date inventée · la contradiction « dès mars » contre la structure au 15 mars · le calfeutrage et les stores présentés comme une demande hors contrat · les points ouverts formulés comme des <b>questions à Éric</b>, pas des décisions de l’IA.</div>
+  <div class="box warn"><span class="t">Erreurs fréquentes de l’IA</span>Elle ajoute le calfeutrage ou les stores au périmètre · elle oublie le raccordement des portes et les permis · elle présente « dès mars » comme un jalon acquis · elle invente une date d’approbation ou une pénalité de retard.</div>
+</section>
+
+<section class="np">
+  <h2><span class="n">3</span>Étape 3 · Planifier</h2>
+  <h3>3a · Le découpage de référence (7 étapes)</h3>
+  <table class="mini">
+    <tr><th style="width:24%">Étape</th><th>Tâches (1 à 2 semaines)</th></tr>
+    <tr><td>1 · Transfert et démarrage</td><td>Revue du contrat et fiche de démarrage · réunion de démarrage interne (Éric, Hélène, Patrice, Nadia) · réunion de démarrage avec Boréa · liste des intervenants</td></tr>
+    <tr class="alt"><td>2 · Dessins d’atelier</td><td>Dessins MR-01 (mur-rideau) et fenêtres · soumission à l’architecte · échantillons de verre · corrections et réémission</td></tr>
+    <tr><td>3 · Achats et livraisons</td><td>Commande ferme du verre · profilés et quincaillerie · panneaux d’allège · suivi des livraisons</td></tr>
+    <tr class="alt"><td>4 · Fabrication</td><td>Cadres en usine · contrôle qualité · expédition par zones</td></tr>
+    <tr><td>5 · Installation</td><td>Relevés au chantier · réservation de la grue · fenêtres et entrées · mur-rideau et verrière · essai d’étanchéité</td></tr>
+    <tr class="alt"><td>6 · Fermeture</td><td>Liste de déficiences · documents de fin de projet · garanties · retenue</td></tr>
+    <tr><td class="fix">7 · Gestion de projet</td><td class="fix">Réunions de chantier (aux 2 semaines, le mardi) · rapports à Hélène · avis de modification · suivi des risques</td></tr>
+  </table>
+  <p><b>À exiger</b> : la 7<sup>e</sup> colonne, le travail du chargé de projet, que l’IA oublie presque toujours. Autres oublis à faire trouver : approbation des échantillons, essai d’étanchéité, protection des ouvrages, documents de fin exigés par l’EG, assurance et formulaires d’accès, réservation de la grue.</p>
+
+  <h3>3b · L’échéancier de référence</h3>
+  <p class="small muted">Semaine 1 = 16 nov. 2026 ; semaine 28 = 24 → 28 mai 2027. Une version acceptable parmi d’autres : ce qui compte, ce sont les délais du dossier, les Fêtes et les dépendances.</p>
+  <table class="mini">
+    <tr><th style="width:15%">Étape</th><th>Tâche</th><th style="width:10%">Resp.</th><th style="width:12%">Début</th><th style="width:12%">Fin</th><th style="width:17%">Dépendance</th></tr>
+    <tr><td>Transfert</td><td>Revue du contrat, fiche de démarrage</td><td>Mathieu</td><td>2026-11-16</td><td>2026-11-18</td><td>—</td></tr>
+    <tr class="alt"><td>Transfert</td><td>Démarrage avec Boréa (clarifier « dès mars »)</td><td>Mathieu</td><td>2026-11-20</td><td>2026-11-20</td><td>Fiche</td></tr>
+    <tr><td>Dessins</td><td>Dessins d’atelier MR-01 et fenêtres</td><td>Mathieu</td><td>2026-11-16</td><td>2026-12-04</td><td>Plans pour construction</td></tr>
+    <tr class="alt"><td>Dessins</td><td>Approbation par l’architecte (10 j. ouvr.)</td><td>Mathieu</td><td>2026-12-07</td><td>2026-12-21</td><td>Dessins</td></tr>
+    <tr><td>Dessins</td><td>Échantillons de verre V1, V2 à l’architecte</td><td>Nadia</td><td>2026-12-14</td><td>2026-12-18</td><td>—</td></tr>
+    <tr class="alt"><td>Achats</td><td>Commande ferme du verre</td><td>Mathieu</td><td>2026-12-22</td><td>2026-12-22</td><td>Approbation</td></tr>
+    <tr><td>Achats</td><td>Livraison du verre (8 sem. + Fêtes)</td><td>Nadia</td><td>2026-12-22</td><td>2027-02-26</td><td>Commande</td></tr>
+    <tr class="alt"><td>Achats</td><td>Profilés, quincaillerie, panneaux d’allège</td><td>Nadia</td><td>2027-01-04</td><td>2027-01-15</td><td>Approbation</td></tr>
+    <tr><td>Fabrication</td><td>Cadres en usine (6 sem.), contrôle, expédition</td><td>Mathieu</td><td>2027-01-18</td><td>2027-03-26</td><td>Profilés</td></tr>
+    <tr class="alt"><td>Installation</td><td>Formulaires d’accès de l’équipe</td><td>Nadia</td><td>2027-01-04</td><td>2027-01-15</td><td>—</td></tr>
+    <tr><td>Installation</td><td>Relevés au chantier</td><td>Patrice</td><td>2027-03-15</td><td>2027-03-26</td><td>Structure (Boréa)</td></tr>
+    <tr class="alt"><td>Installation</td><td>Réservation de la grue (2 sem. d’avance)</td><td>Patrice</td><td>2027-03-15</td><td>2027-03-19</td><td>—</td></tr>
+    <tr><td>Installation</td><td>Fenêtres, entrées, mur-rideau, verrière</td><td>Patrice</td><td>2027-04-05</td><td>2027-05-28</td><td>Relevés, verre</td></tr>
+    <tr class="alt"><td>Installation</td><td>Essai d’étanchéité sur une travée</td><td>Patrice</td><td>2027-05-03</td><td>2027-05-07</td><td>Mur-rideau</td></tr>
+    <tr><td>Fermeture</td><td>Liste de déficiences</td><td>Mathieu</td><td>2027-05-24</td><td>2027-05-28</td><td>Installation</td></tr>
+  </table>
+  <p><b>Jalons</b> : dessins approuvés (21 déc. 2026) · verre livré (fin février 2027) · bâtiment fermé (28 mai 2027).<br>
+  <b>Chemin critique</b> : dessins → approbation → commande et livraison du verre → relevés → pose. <b>Marge : nulle</b> (8 semaines de pose du 5 avril au 28 mai).</p>
+  <div class="box warn"><span class="t">Ce que l’IA rate le plus souvent</span>L’approbation en « 2 jours » ou « 1 semaine » · le verre qui ignore les Fêtes · la pose avant les relevés ou avant la structure · une date de fin après le 28 mai sans le signaler · un « 2 responsables » par tâche. <b>Pour aller plus loin</b> : les jours fériés de la pose (Vendredi saint 26 mars, lundi de Pâques 29 mars, Journée nationale des patriotes lundi 24 mai) mangent la marge déjà nulle. Bon sujet pour la question « Quelles dates as-tu supposées ? ».</div>
+</section>
+
+<section class="np">
+  <h3 style="margin-top:0">3c · Le registre des risques de référence</h3>
+  <table class="mini">
+    <tr><th style="width:5%">N°</th><th style="width:27%">Risque</th><th style="width:6%">P</th><th style="width:6%">I</th><th>Mesure</th><th style="width:10%">Resp.</th></tr>
+    <tr><td>R1</td><td>Approbation des dessins en retard</td><td class="r">2</td><td class="r">3</td><td>Soumettre en deux envois ; relance à J+5 ; point fixe à chaque réunion de chantier.</td><td>Mathieu</td></tr>
+    <tr class="alt"><td>R2</td><td>Structure d’acier terminée en retard (EG)</td><td class="r">3</td><td class="r">3</td><td>Suivi hebdomadaire avec Boréa ; relevés par zones dès qu’une zone est prête.</td><td>Mathieu</td></tr>
+    <tr><td>R3</td><td>Délai du verre plus long que prévu</td><td class="r">3</td><td class="r">2</td><td>Commande ferme dès l’approbation ; date de livraison confirmée par écrit.</td><td>Nadia</td></tr>
+    <tr class="alt"><td>R4</td><td>Écarts de mesures au chantier</td><td class="r">2</td><td class="r">2</td><td>Relevés par Patrice avant la fabrication finale ; tolérances aux dessins.</td><td>Patrice</td></tr>
+    <tr><td>R5</td><td>Promesse des ventes intenable (« dès mars »)</td><td class="r">1</td><td class="r">3</td><td>Clarifier avec Éric, puis avec Boréa, à la réunion de démarrage.</td><td>Éric</td></tr>
+    <tr class="alt"><td>R6</td><td>Météo pendant la pose</td><td class="r">1</td><td class="r">2</td><td>Jours tampons à l’échéancier ; protections temporaires prêtes.</td><td>Patrice</td></tr>
+  </table>
+  <p class="small">Autres risques recevables : grue partagée indisponible · certificat d’assurance ou formulaires d’accès non prêts (équipe refusée au chantier) · demandes hors contrat (calfeutrage, stores) · échantillons refusés par l’architecte.</p>
+  <div class="box note"><span class="t">Le message à faire passer</span>Les risques proposés par l’IA sont bons ; les notes P et I sont un <b>jugement</b>. Si un participant a mis R2 en vert, demandez-lui ce qu’il vit sur ses chantiers : c’est son expérience qui tranche, pas l’IA.</div>
+
+  <h3>3d · La RACI corrigée</h3>
+  <table class="mini">
+    <tr><th style="width:30%">Activité</th><th class="r">Mathieu</th><th class="r">Hélène</th><th class="r">Nadia</th><th class="r">Éric</th><th class="r">Patrice</th><th style="width:22%">Commentaire</th></tr>
+    <tr><td>Revue du contrat</td><td class="r">R</td><td class="r">A</td><td class="r">I</td><td class="r">C</td><td class="r">I</td><td>Correct dans le premier jet.</td></tr>
+    <tr class="alt"><td>Dessins d’atelier</td><td class="r">R</td><td class="r">A</td><td class="r"></td><td class="r"></td><td class="r">C</td><td>Correct.</td></tr>
+    <tr><td class="fix">Commandes et livraisons</td><td class="r fix">A</td><td class="r fix">I</td><td class="r fix">R</td><td class="r fix"></td><td class="r fix">I</td><td class="fix">Deux A dans le jet de l’IA : Hélène passe à I.</td></tr>
+    <tr class="alt"><td>Classement et suivis</td><td class="r">A</td><td class="r"></td><td class="r">R</td><td class="r"></td><td class="r"></td><td>Correct (repris au jour 2).</td></tr>
+    <tr><td>Pose au chantier</td><td class="r">A</td><td class="r">I</td><td class="r">I</td><td class="r"></td><td class="r">R</td><td>Correct.</td></tr>
+    <tr class="alt"><td class="fix">Liste de déficiences</td><td class="r fix">A</td><td class="r fix">I</td><td class="r fix">C</td><td class="r fix"></td><td class="r fix">R</td><td class="fix">Aucun A dans le jet de l’IA : Mathieu approuve, Patrice corrige.</td></tr>
+  </table>
+  <p class="small">Autre réponse acceptable : Hélène A et Mathieu R sur une ligne, si c’est la réalité chez Lessard. La règle à vérifier : <b>exactement un A par ligne</b>, et au moins un R. Dans le modèle Excel, la colonne Contrôle le signale.</p>
+
+  <h3>3e · Dans l’outil</h3>
+  <ul>
+    <li><b>Excel</b> : le tableau 3b collé en B5 de la feuille Tâches ; l’échéancier se colore, les Fêtes sont grisées. Si les dates restent en texte : demander le format CSV « ; », puis <i>Données › Convertir</i>.</li>
+    <li><b>Planner / Smartsheet</b> : chaque tâche a un responsable et une date de fin. Dans Smartsheet, import depuis le modèle Excel.</li>
+    <li><b>Mini-outil</b> (option) : les dates et les retards affichés sont justes ; l’export CSV se rouvre dans Excel.</li>
+  </ul>
+  <div class="box ok"><span class="t">À exiger</span>Chaque tâche a <b>un seul</b> responsable et une date, dans un outil de suivi : pas seulement dans la conversation.</div>
+</section>
+
+<section style="margin-top:18pt">
+  <h2><span class="n">4</span>Étape 4 · Trier la boîte de réception et relancer</h2>
+  <p class="lede">Situation au mercredi 16 décembre 2026.</p>
+  <table class="mini">
+    <tr><th style="width:4%">N°</th><th style="width:26%">Courriel</th><th style="width:12%">Corrigé</th><th>Justification · consigne</th></tr>
+    <tr><td>1</td><td>Boréa · date de début de pose du mur-rideau ?</td><td><b>À traiter</b></td><td>Réponse attendue avant la coordination du ven. 18 déc. Boréa cite « mars » : <b>ne pas confirmer</b>. Accorder la réponse avec Éric, proposer une date réaliste (pose à partir du 5 avril, après les relevés).</td></tr>
+    <tr class="alt"><td>2</td><td>Boréa · certificat d’assurance à fournir</td><td><b>À Nadia</b></td><td>Expiré le 30 nov. Consigne : « Obtiens le certificat d’assurance responsabilité civile à jour et envoie-le à Julie Bergeron (Boréa) avant le vendredi 18 décembre. »</td></tr>
+    <tr><td>3</td><td>Vous · dessins MR-01 pour approbation (7 déc.)</td><td><b>À relancer</b></td><td>Aucune réponse ; échéance des 10 jours ouvrables le lun. 21 déc., premier jour des Fêtes. Sans approbation, la commande du verre glisse en janvier.</td></tr>
+    <tr class="alt"><td>4</td><td>Vitrerie Laurentienne · bordereau 4471</td><td><b>À classer</b></td><td>Échantillons V1 et V2 reçus. « Aucune action requise »… mais ces échantillons doivent partir chez l’architecte : « À Nadia » est accepté si elle s’en charge.</td></tr>
+    <tr><td>5</td><td>Ville · formulaire d’accès au chantier</td><td><b>À Nadia</b></td><td>Consigne : « Fais remplir le formulaire d’accès et rassemble les attestations SST de l’équipe de Patrice ; à renvoyer à la Ville avant le vendredi 15 janvier 2027. »</td></tr>
+    <tr class="alt"><td>6</td><td>Patrice · écart de 40 mm à l’axe C</td><td><b>À traiter</b></td><td>Le plus urgent : si l’écart se répète, MR-01 est à revoir avant la fabrication. Répondre à Patrice (oui, mesures jeudi sur tous les axes), prévenir l’architecte et Boréa.</td></tr>
+    <tr><td>7</td><td>Boréa · liste des contacts (rév. 3)</td><td><b>À classer</b></td><td>Seul changement : la coordonnatrice SST. Diffusion à l’équipe : peut aller à Nadia.</td></tr>
+    <tr class="alt"><td>8</td><td>Vous · prix des panneaux d’allège (4 déc.)</td><td><b>À relancer</b></td><td>Réponse attendue le 11 déc., rien reçu. Les panneaux sont à commander début janvier.</td></tr>
+  </table>
+  <div class="box warn"><span class="t">Les pièges de Copilot dans ce tri</span>Il met le courriel 6 « à classer » (pas de question explicite au chargé de projet) · il prend « Aucune action requise » au pied de la lettre (courriel 4) · dans un brouillon de réponse au courriel 1, il <b>confirme mars</b>. C’est l’occasion de rappeler : un courriel urgent mal classé coûte cher.</div>
+  <h3>La relance de référence (MR-01)</h3>
+  <div class="prompt"><span class="t">Exemple de résultat attendu</span>
+  <b>Objet</b> : Centre sportif · Dessins MR-01 · approbation requise d’ici le lundi 21 décembre<br><br>
+  Bonjour Monsieur Leduc,<br>
+  Le 7 décembre, nous vous avons soumis les dessins d’atelier MR-01 du mur-rideau du hall pour approbation. Selon le devis, le délai est de 10 jours ouvrables, soit le lundi 21 décembre.<br>
+  Votre approbation nous permettra de commander le verre avant la fermeture des Fêtes : sans elle, la livraison glisse et le bâtiment fermé du 28 mai est menacé.<br>
+  Pourriez-vous nous transmettre vos commentaires ou votre approbation d’ici le vendredi 18 décembre ? Je reste disponible pour en discuter.<br>
+  Mathieu · Chargé de projet · Groupe Lessard<br>
+  <span class="small muted">c. c. : Simon Tremblay, Construction Boréa</span></div>
+  <div class="box ok"><span class="t">À exiger</span>Les dates exactes (7 déc., 21 déc.) · une date de réponse demandée · Boréa en copie · rien d’inventé (pénalité, clause). <b>Piste experte</b> : avec l’écart de 40 mm du courriel 6, faut-il relancer l’approbation de MR-01… ou prévenir l’architecte d’une révision possible ? Excellente question pour le point d’étape.</div>
+</section>
+
+<section style="margin-top:18pt">
+  <h2><span class="n">5</span>Étape 5 · Vérifier et présenter</h2>
+  <h3>La grille, avec ce qu’il faut chercher</h3>
+  <table class="mini">
+    <tr><th style="width:44%">Critère</th><th style="width:6%">Pts</th><th>Où regarder</th></tr>
+    <tr><td>Délais clés validés par une personne qui sait</td><td class="r">2</td><td>Verre, fabrication : confirmés par le verrier et l’usine ? Sinon, marqués « à confirmer ».</td></tr>
+    <tr class="alt"><td>Dépendances indiquées</td><td class="r">1</td><td>Approbation → commande du verre → pose ; structure → relevés → pose.</td></tr>
+    <tr><td>Chemin critique identifié</td><td class="r">1</td><td>Dessins, approbation, verre, relevés, pose. Marge nulle.</td></tr>
+    <tr class="alt"><td>Un seul responsable et une date par tâche</td><td class="r">2</td><td>Pas de « Mathieu / Nadia », pas de tâche sans date.</td></tr>
+    <tr><td>Calendrier réel respecté</td><td class="r">1</td><td>Fêtes 21 déc. → 1er janv., jours fériés du printemps.</td></tr>
+    <tr class="alt"><td>Chaque risque majeur a une mesure et un responsable</td><td class="r">1</td><td>R1, R2, R3 au minimum.</td></tr>
+    <tr><td>Exclusions et promesses des ventes reprises</td><td class="r">1</td><td>Les 5 exclusions ; « dès mars » traité, pas ignoré.</td></tr>
+    <tr class="alt"><td>Aucun fait inventé</td><td class="r">2</td><td>Délais, quantités, normes, pénalités : tout vient du dossier.</td></tr>
+  </table>
+  <p>Barème : <b>0 à 5</b> premier jet · <b>6 à 9</b> presque · <b>10 ou 11</b> prêt à présenter à Hélène.</p>
+  <h3>Les quatre pièges du plan généré (page « Repérez les quatre pièges »)</h3>
+  <ol class="q">
+    <li><b>Approbation en 2 jours</b> : durée inventée ; le devis dit 10 jours ouvrables.</li>
+    <li><b>Verre des semaines 4 à 11 « en continu »</b> : traverse les Fêtes (semaines 6 et 7), et la commande précède l’approbation.</li>
+    <li><b>Pose des fenêtres semaine 13, relevés semaine 15</b> : ordre inversé, et avant la fin de la structure (semaine 18).</li>
+    <li><b>Mur-rideau mi-avril</b> : réaliste, mais la promesse « dès mars » d’Éric est ignorée, sans prévenir Boréa.</li>
+  </ol>
+  <h3>Pour le débriefing (2 ou 3 volontaires)</h3>
+  <ul>
+    <li>Ce que l’IA a bien fait : résumé du dossier, structure, idées de risques, premier jet de RACI et de relance.</li>
+    <li>Ce qu’il a fallu corriger : délais, Fêtes, dépendances, « dès mars », A en double ou absent, tri du courriel 6.</li>
+    <li>Le message de fin : l’IA fait gagner du temps sur la mise en forme ; le chargé de projet reste responsable des dates et des engagements.</li>
+  </ul>
+</section>
+
+<section style="margin-top:18pt">
+  <h2><span class="n">6</span>Parcours adjointe : réponses attendues</h2>
+  <h3>Les suivis de la semaine (tri par échéance)</h3>
+  <table class="mini">
+    <tr><th>Suivi</th><th style="width:16%">Pour qui</th><th style="width:16%">Avant le</th><th style="width:30%">À demander à Mathieu</th></tr>
+    <tr><td>Certificat d’assurance responsabilité à jour</td><td>Boréa (Julie Bergeron)</td><td>ven. 18 déc.</td><td>Qui le fournit chez Lessard ?</td></tr>
+    <tr class="alt"><td>Échantillons V1, V2 à l’architecte</td><td>Atelier Mercier</td><td>ven. 18 déc.</td><td>Les envoyer maintenant ou attendre MR-01 ?</td></tr>
+    <tr><td>Diffuser la liste des contacts rév. 3</td><td>Équipe Lessard</td><td>cette semaine</td><td>—</td></tr>
+    <tr class="alt"><td>Relance du prix des panneaux d’allège</td><td>Panneaux Nordik</td><td>cette semaine</td><td>Accord pour relancer en son nom</td></tr>
+    <tr><td>Formulaires d’accès et attestations SST</td><td>Ville de Rivière-Claire</td><td>ven. 15 janv.</td><td>Liste de l’équipe de Patrice</td></tr>
+  </table>
+  <h3>Un plan de classement acceptable</h3>
+  <p><code>01 Contrat et soumission</code> · <code>02 Dessins et approbations</code> · <code>03 Achats et livraisons</code> · <code>04 Chantier</code> (accès, sécurité, relevés) · <code>05 Correspondance</code> · <code>06 Fin de projet</code> (déficiences, garanties).</p>
+  <p>Règle de nommage : <code>P-2611-04_AAAA-MM-JJ_Type_Description</code>. Exemples :</p>
+  <ul>
+    <li><code>P-2611-04_2026-12-07_DA_MR-01_rev0_pour-approbation.pdf</code></li>
+    <li><code>P-2611-04_2026-12-14_BL_Vitrerie-Laurentienne-4471.pdf</code></li>
+    <li><code>P-2611-04_2026-12-15_Contacts-chantier_rev3.pdf</code></li>
+  </ul>
+  <div class="box ok"><span class="t">À exiger</span>Des échéances datées · ce que Nadia doit faire valider par Mathieu avant d’agir · un plan de classement qui suit le cycle du projet, avec une règle de nommage appliquée à de vrais fichiers.</div>
+
+  <h2 style="margin-top:16pt"><span class="n">7</span>Les questions qu’on vous posera</h2>
+  <table class="ans">
+    <tr><th>Question</th><th>Réponse courte</th></tr>
+    <tr><td>« Copilot ne lit pas mon PDF. »</td><td>Coller le résumé de la dernière page du dossier d’Éric. Vérifier le bouclier vert et la taille du fichier.</td></tr>
+    <tr class="alt"><td>« Mon tableau se colle dans une seule colonne. »</td><td>Demander le même tableau en CSV, séparateur point-virgule, puis <i>Données › Convertir</i>.</td></tr>
+    <tr><td>« L’IA m’a donné une autre date de fin. »</td><td>C’est le bon réflexe de la questionner : « Quelles dates as-tu supposées ? » Le 28 mai est contractuel.</td></tr>
+    <tr class="alt"><td>« Pourquoi pas Hélène comme A partout ? »</td><td>Possible si c’est la réalité, mais elle devient un goulot. La RACI se valide avec les personnes concernées.</td></tr>
+    <tr><td>« Puis-je utiliser mon ChatGPT personnel ? »</td><td>Pas pour un vrai dossier client. Ici le cas est fictif, mais l’habitude se prend avec le compte Lessard.</td></tr>
+  </table>
+</section>
+</body></html>

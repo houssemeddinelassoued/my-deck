@@ -356,11 +356,44 @@ Ne régénère pas un chapitre qui existe déjà et convient (l'introduction à 
 5. **Compile et contrôle** : si la source utilise un autre kit, ajoute les composants manquants au nouveau kit, puis vérifie par le build et les captures.
 6. **Capitalise** : un chapitre nouveau ou nettement amélioré entre dans la bibliothèque (source, pages, durée, public, charte, pages périssables).
 
+### Images et visuels
+
+Tu peux **proposer des images** quand elles aident à comprendre ou à retenir, jamais pour décorer :
+
+- icônes et logos des outils enseignés ou cités (assistants IA, IDE, outils de tickets, de bureautique…) ;
+- portraits des figures importantes (histoire de l'IA : Turing, McCarthy, Rosenblatt, Hinton…) ;
+- photos de machines ou d'événements marquants (Mark I Perceptron, Deep Blue, AlphaGo) ;
+- captures d'interface, figures d'articles fondateurs, toute autre image pertinente.
+
+**Démarche :**
+
+1. **Propose d'abord.** Dans le plan ou le scénario page par page, liste les images envisagées (page, image, source, licence). Pour une retouche, propose-les dans ta réponse avant de télécharger.
+2. **Réutilise ce qui existe** : `assets/ai-history/`, `assets/technologia/`, `@assets/houssem-formateur.png`, les portraits de la frise dans `slides/copilot-debutant/assets/timeline/` et `slides/docaposte-dev-ia/assets/timeline/`. Un visuel servant à plusieurs decks va dans le dossier global `assets/` (import `@assets/...`) ; sinon dans `slides/<id>/assets/`. Copie, ne déplace pas.
+3. **Sources fiables et licences notées** :
+   - portraits et photos historiques : Wikimedia Commons ou sites officiels des institutions, avec l'auteur et la licence ;
+   - logos et icônes d'outils : kit presse ou page « brand » de l'éditeur. Usage nominatif seulement (désigner l'outil), sans déformer ni recolorer, ni suggérer un partenariat ;
+   - captures : faites par toi sur l'outil réel, datées ;
+   - jamais une image trouvée sans licence claire, jamais une banque d'images payante sans accord.
+4. **Respecte la charte** : un logo d'outil tiers n'est pas le logo du commanditaire. Applique les interdits consignés (nom ou logo du commanditaire dans un deck « inspiré de », logos de clients non autorisés).
+5. **Personnes réelles** : photos authentiques uniquement, jamais un portrait généré par IA. Les personnages du fil rouge sont fictifs : initiales, avatars ou illustrations, jamais la photo d'une personne réelle.
+6. **Fichiers locaux et légers** : télécharge dans le dépôt, sans lien direct vers un site externe (la page doit s'afficher même si le site change). Portraits recadrés en 256 px, icônes en SVG de préférence, photos de 200 Ko environ au plus, noms explicites (`hinton.jpg`, `copilot.svg`). Un SVG téléchargé s'affiche avec `<img>`, jamais injecté dans le HTML. Pas de paquet d'icônes (pas de nouvelle dépendance).
+7. **Crédits** : un commentaire au-dessus des imports (source, licence) ; une ligne de crédit discrète sur la page quand la licence l'exige (CC BY, CC BY-SA). Chaque image a un texte alternatif ou une légende.
+
 ### Production dans le dépôt open-slide de l'utilisateur
 
-Si le dépôt contient `open-slide.config.ts` et `slides/` :
+Si le dépôt contient `open-slide.config.ts` et `slides/`, lis `CLAUDE.md` et **travaille avec les skills officiels du dépôt**. Invoque-les avec l'outil Skill, ou lis `.claude/skills/<nom>/SKILL.md` si l'outil n'est pas disponible (par exemple en sous-agent) :
 
-- Lis `CLAUDE.md` et les skills `slide-authoring`, `create-slide` (nouveau deck) et `formation-virtuelle`.
+| Skill | Quand l'utiliser |
+|---|---|
+| `slide-authoring` | **Avant toute écriture ou modification de page.** C'est la référence technique : contrat de fichier, canevas 1920×1080, échelle typographique, palette, mise en page, assets, notes, révélations, transitions, check-list d'autocontrôle. |
+| `create-slide` | Nouveau deck : structure, production, remise. Ses questions de cadrage sont couvertes par ta phase 2 : ne les repose pas, suis ses étapes de production. |
+| `create-theme` | Créer ou extraire une charte (`themes/<id>.md` et `themes/<id>.demo.tsx`) : nouveau commanditaire, charte « inspirée de ». `create-slide` lit les thèmes avant d'écrire. |
+| `current-slide` | Quand l'utilisateur parle de « cette page » ou de « cet élément » sans les nommer. Relis `node_modules/.open-slide/current.json` à chaque fois : il change quand l'utilisateur navigue. |
+| `apply-comments` | Appliquer les commentaires de l'inspecteur (`@slide-comment`). Dans un deck généré, reporte chaque correction dans la part de `.<id>-build/`, puis régénère : jamais dans l'`index.tsx`. |
+| `formation-virtuelle` | Règles du distanciel, propres au dépôt : avant toute page, exercice, QCM ou note d'une formation. |
+
+Les skills `slide-authoring`, `create-slide`, `create-theme`, `current-slide` et `apply-comments` sont gérés par `@open-slide/core` : ne les modifie pas. Si l'une de leurs règles gêne la formation, signale-le à l'utilisateur.
+
 - Pour une formation longue (plus de 40 pages), utilise le **modèle générateur**. Un dossier `.<id>-build/` contient un `kit.tsx` (charte, composants, badges, gabarits), des parts par module (blocs `@@PAGES` / `@@NOTES`) et un `build.mjs` qui assemble `slides/<id>/index.tsx` et vérifie les types. **On n'édite jamais l'`index.tsx` généré.** Repars du kit existant le plus proche (même commanditaire, même charte) plutôt que de zéro.
 - Règles du dépôt : pas de nouvelle dépendance ; bloc « One press = one step » copié à l'identique ; ateliers zippés et reliés au bouton « Labs » (`meta.labs`).
 - **Rangées de cartes en CSS grid** (`gridTemplateColumns: 'repeat(N, Wpx)'`), jamais en `flex-wrap` : sous mise à l'échelle de l'écran, la dernière carte passe hors du canevas.
@@ -383,6 +416,8 @@ Hors open-slide, livre dans le format demandé (PPTX, HTML, Markdown, document) 
 - [ ] Au moins un exercice où la technologie enseignée **n'est pas** la bonne réponse.
 - [ ] Clôtures : devoir léger et fiche de demi-journée chaque soir ; plan d'action personnel, évaluation à chaud et validation des compétences à la fin.
 - [ ] Aucun mot interdit en distanciel. Cherche : équipe, binôme, sous-groupe, main levée, la salle, papillon, tableau, circul, clavardage, et corrige chaque occurrence qui ne parle pas du sujet de la formation.
+- [ ] Check-list d'autocontrôle du skill `slide-authoring` passée.
+- [ ] Images : source et licence notées, fichiers locaux et légers, crédits affichés quand la licence l'exige, aucun logo interdit par la charte.
 - [ ] Captures de chaque page, tous clics révélés : rien de tronqué, hors cadre ou superposé. Test à plusieurs tailles d'écran et facteurs d'échelle.
 - [ ] Langue soignée : apostrophe ’, guillemets « », espaces insécables, vouvoiement, variante de français respectée.
 

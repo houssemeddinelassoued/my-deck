@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node guichet.mjs *)",
+      "Bash(git status)",
+      "Bash(git diff *)",
+      "Bash(git log *)"
+    ],
+    "ask": [
+      "Bash(git commit *)"
+    ],
+    "deny": [
+      "Read(./.env)",
+      "Edit(./.env)",
+      "Read(./**/secrets/**)",
+      "Edit(./donnees/**)",
+      "Bash(git push *)",
+      "Bash(curl *)"
+    ]
+  }
+}

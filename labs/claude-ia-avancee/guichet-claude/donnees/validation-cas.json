@@ -1,0 +1,14 @@
+{
+  "_lisezmoi": "Atelier 2, étape A2.1 : validerDemande(objet, schema) doit renvoyer une liste d'erreurs vide pour les objets valides, non vide sinon. Le schéma utilisé est contrats/demande.schema.json.",
+  "base": { "type": "incident", "priorite": "P1", "client": "Atlas Industrie", "contact": "Karim Ben Salah", "email": "karim.bensalah@atlas-industrie.tn", "telephone": "+21622333444", "utilisateurs_touches": 40, "panne_totale": true, "resume": "Portail RH inaccessible, 40 personnes bloquées." },
+  "cas": [
+    { "nom": "objet complet", "modifs": {}, "valide": true },
+    { "nom": "téléphone absent (null)", "modifs": { "telephone": null }, "valide": true },
+    { "nom": "priorité hors liste", "modifs": { "priorite": "urgent" }, "valide": false },
+    { "nom": "type hors liste", "modifs": { "type": "bug" }, "valide": false },
+    { "nom": "champ inventé", "modifs": { "directeur": "M. X, 22 000 000" }, "valide": false },
+    { "nom": "client vide", "modifs": { "client": "" }, "valide": false },
+    { "nom": "champ requis manquant", "supprimer": ["panne_totale"], "valide": false },
+    { "nom": "mauvais type", "modifs": { "utilisateurs_touches": "40" }, "valide": false }
+  ]
+}

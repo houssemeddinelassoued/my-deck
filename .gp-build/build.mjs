@@ -15,6 +15,7 @@
 import { execSync } from 'node:child_process';
 import fs from 'node:fs';
 import path from 'node:path';
+import { finalizeDeck, writeDeck } from '../scripts/deck-features.mjs';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
@@ -134,7 +135,12 @@ ${notes.map((n) => `  ${n},`).join('\n')}
 
 const dest = path.join(ROOT, 'slides', DECK.id);
 fs.mkdirSync(dest, { recursive: true });
-fs.writeFileSync(path.join(dest, 'index.tsx'), text);
+writeDeck(path.join(dest, 'index.tsx'), text); // + saved design, client logo, MOD_START
+
+// Minuteurs (presenter « Minuteurs ») : re-list the timers of the rebuilt deck.
+
+// Upper-case drive letter, or Vite loads React twice (q:/ vs Q:/) and every page fails to render.
+  execSync(`node scripts/timers-manifest.mjs ${path.basename(dest)}`, { cwd: ROOT.replace(/^([a-z]):/, (_, d) => `${d.toUpperCase()}:`), stdio: 'inherit' });
 console.log(`→ slides/${DECK.id}/index.tsx: ${pages.length} pages (Jour 1: 1–${split}, Jour 2: ${split + 1}–${pages.length}), ${text.split('\n').length} lines`);
 
 if (process.argv[2] !== '--no-tsc') {

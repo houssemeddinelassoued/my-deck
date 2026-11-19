@@ -1,0 +1,121 @@
+<!doctype html><html lang="fr"><head><meta charset="utf-8"><title>Soumission S-26-0412</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Barlow+Condensed:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+@page { size: A4; margin: 16mm 16mm 18mm; }
+* { box-sizing: border-box; }
+:root { --ink:#2B2F33; --soft:#4B545B; --muted:#77818A; --faint:#AFB8C0; --rule:#DCE3E8; --panel:#EAF0F4;
+  --blue:#1F78C1; --teal:#22A6B3; --green:#3A9F45; --yellow:#FFD000; --amber:#E8A600; --coral:#E0573D; --violet:#6B57C9; }
+html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+body { margin:0; font-family: Barlow, Arial, sans-serif; font-size: 10.5pt; line-height: 1.45; color: var(--ink); }
+h1, h2, h3, .disp { font-family: 'Barlow Condensed', 'Arial Narrow', Arial, sans-serif; }
+h1 { font-size: 30pt; line-height: 1.05; margin: 0 0 8pt; }
+h2 { font-size: 19pt; line-height: 1.1; margin: 0 0 10pt; display:flex; align-items:center; gap:10pt; }
+h2 .n { flex:none; width: 26pt; height: 26pt; border-radius: 7pt; background: var(--yellow); color: var(--ink); display:inline-flex; align-items:center; justify-content:center; font-size: 15pt; }
+h3 { font-size: 13.5pt; margin: 14pt 0 5pt; color: var(--blue); break-after: avoid; }
+h2 { break-after: avoid; }
+p { margin: 0 0 7pt; }
+ul, ol { margin: 0 0 8pt; padding-left: 16pt; } li { margin: 2pt 0; }
+.np { break-before: page; }
+.keep { break-inside: avoid; }
+.eyebrow { font-family: 'Barlow Condensed', Arial, sans-serif; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; font-size: 9.5pt; color: var(--blue); }
+.muted { color: var(--muted); } .small { font-size: 9pt; }
+.lede { font-size: 12pt; color: var(--soft); margin-bottom: 12pt; }
+.box { border-radius: 8pt; padding: 9pt 12pt; margin: 8pt 0 10pt; break-inside: avoid; }
+.box > b:first-child, .box .t { display:block; font-family:'Barlow Condensed', Arial, sans-serif; font-weight:700; font-size: 10pt; letter-spacing:.1em; text-transform: uppercase; margin-bottom: 3pt; }
+.tip { background: #E3EFF9; } .tip .t { color: var(--blue); }
+.warn { background: #FBE3DD; } .warn .t { color: #B23A22; }
+.ok { background: #E3F2E5; } .ok .t { color: #2A7A33; }
+.note { background: #FFF6CC; } .note .t { color: #8A6A00; }
+.prompt { background: #fff; border: 1.2pt solid var(--rule); border-left: 4pt solid var(--blue); border-radius: 6pt; padding: 8pt 12pt; margin: 6pt 0 10pt; break-inside: avoid; }
+.prompt .t { color: var(--blue); font-family:'Barlow Condensed', Arial, sans-serif; font-weight:700; font-size:9.5pt; letter-spacing:.1em; text-transform:uppercase; margin-bottom: 3pt; display:block; }
+.prompt .slot { font-family: 'JetBrains Mono', Consolas, monospace; font-size: 9pt; color: var(--muted); }
+table { width: 100%; border-collapse: collapse; margin: 6pt 0 10pt; break-inside: avoid; }
+th { background: var(--blue); color: #fff; text-align: left; font-weight: 600; font-size: 9.5pt; padding: 5pt 7pt; }
+td { border-bottom: 1pt solid var(--rule); padding: 5pt 7pt; vertical-align: top; }
+tr.alt td { background: #F6F9FB; }
+td.blank { height: 22pt; }
+.k { font-weight: 700; color: var(--blue); white-space: nowrap; }
+.check { list-style: none; padding-left: 0; } .check li { padding-left: 20pt; position: relative; margin: 4pt 0; }
+.check li::before { content: ''; position: absolute; left: 0; top: 2pt; width: 11pt; height: 11pt; border: 1.3pt solid var(--soft); border-radius: 2.5pt; }
+.x2 { display:inline-block; font-size: 8pt; font-weight:700; color:#fff; background: var(--coral); border-radius: 3pt; padding: 0 4pt; margin-left: 4pt; }
+.grid2 { display:grid; grid-template-columns: 1fr 1fr; gap: 10pt; }
+.card { border: 1pt solid var(--rule); border-radius: 8pt; padding: 8pt 10pt; break-inside: avoid; }
+.card h4 { margin: 0 0 3pt; font-family:'Barlow Condensed', Arial, sans-serif; font-size: 12pt; }
+.tag { display:inline-block; font-size: 8.5pt; font-weight: 600; padding: 0 6pt; border-radius: 99pt; background: var(--panel); color: var(--soft); }
+.fict { font-size: 8.5pt; color: var(--muted); border: 1pt dashed var(--faint); border-radius: 4pt; padding: 2pt 6pt; display: inline-block; }
+code { font-family: 'JetBrains Mono', Consolas, monospace; font-size: 8.8pt; background: var(--panel); padding: 0 3pt; border-radius: 3pt; }
+
+.dochead { display:flex; justify-content:space-between; align-items:flex-end; border-bottom: 2pt solid var(--ink); padding-bottom: 6pt; margin-bottom: 12pt; }
+.dochead .who { font-family:'Barlow Condensed', Arial, sans-serif; font-weight:700; font-size: 11pt; letter-spacing:.06em; text-transform: uppercase; color: var(--soft); }
+.dochead .ref { font-size: 9pt; color: var(--muted); text-align:right; }
+.mail { border: 1pt solid var(--rule); border-radius: 6pt; overflow: hidden; }
+.mail .hd { background: #F6F9FB; border-bottom: 1pt solid var(--rule); padding: 8pt 12pt; }
+.mail .hd table { margin: 0; } .mail .hd td { border: 0; padding: 1.5pt 0; } .mail .hd td:first-child { width: 18mm; color: var(--muted); }
+.mail .subj { font-family:'Barlow Condensed', Arial, sans-serif; font-weight:700; font-size: 15pt; margin: 2pt 0 4pt; }
+.mail .bd { padding: 12pt 14pt; font-size: 10.5pt; }
+.att { display:inline-block; border:1pt solid var(--rule); border-radius: 4pt; padding: 1pt 6pt; font-size: 9pt; margin-right: 4pt; background:#fff; }
+.form td:first-child { width: 34%; color: var(--soft); font-weight: 600; }
+table.form { break-inside: auto; } table.form tr { break-inside: avoid; }
+.fiche h2 { margin-bottom: 6pt; } .fiche td, .fiche th { padding: 3.2pt 7pt; font-size: 9.6pt; line-height: 1.35; }
+.sign { margin-top: 10pt; color: var(--soft); }
+.hand { font-style: italic; color: #1F4E8A; }
+</style></head><body>
+<section>
+  <div class="dochead"><div><div class="who">Groupe Lessard · Service des ventes</div></div><div class="ref">Soumission S-26-0412 · 2 octobre 2026<br><span class="fict">Cas fictif de formation · IA124</span></div></div>
+  <div class="eyebrow">Soumission · Lot enveloppe en aluminium et verre</div>
+  <h1>Centre sportif de Montréal</h1>
+  <table class="form">
+    <tr><td>Client</td><td>Construction Boréa · à l’attention de Simon Tremblay, chargé de projet</td></tr>
+    <tr><td>Propriétaire</td><td>Ville de Rivière-Claire</td></tr>
+    <tr><td>Architecte</td><td>Atelier Mercier architectes · plans et devis émis pour soumission, rév. B</td></tr>
+    <tr><td>Préparée par</td><td>Éric, représentant des ventes</td></tr>
+    <tr><td>Validité</td><td>30 jours · taxes en sus</td></tr>
+  </table>
+  <h3>Description des travaux et prix</h3>
+  <table>
+    <tr><th style="width:6%">N°</th><th>Description</th><th style="width:16%">Quantité</th><th style="width:16%;text-align:right">Prix</th></tr>
+    <tr><td>1</td><td>Mur-rideau du hall, aluminium à rupture thermique, unités scellées triples</td><td>420 m²</td><td style="text-align:right">520 000 $</td></tr>
+    <tr class="alt"><td>2</td><td>Fenêtres fixes et ouvrantes · F1 (30 u), F2 (12 u), F3 (4 u)</td><td>46 u</td><td style="text-align:right">310 000 $</td></tr>
+    <tr><td>3</td><td>Portes d’entrée en aluminium, dont 2 automatiques (opérateurs fournis, raccordement exclu)</td><td>6 u</td><td style="text-align:right">96 000 $</td></tr>
+    <tr class="alt"><td>4</td><td>Verrière au-dessus du hall</td><td>64 m²</td><td style="text-align:right">148 000 $</td></tr>
+    <tr><td>5</td><td>Panneaux d’allège isolés et solins</td><td>forfait</td><td style="text-align:right">58 000 $</td></tr>
+    <tr class="alt"><td>6</td><td>Dessins d’atelier et calculs, signés et scellés par un ingénieur</td><td>forfait</td><td style="text-align:right">38 000 $</td></tr>
+    <tr><td>7</td><td>Mobilisation, levage, protection des ouvrages, nettoyage final</td><td>forfait</td><td style="text-align:right">30 000 $</td></tr>
+    <tr><td></td><td colspan="2" style="text-align:right"><b>Total avant taxes</b></td><td style="text-align:right"><b>1 200 000 $</b></td></tr>
+  </table>
+  <div class="grid2">
+    <div class="card"><h4>Inclus</h4>
+      <ul style="margin:0"><li>Fourniture, fabrication et installation des items 1 à 7</li><li>Échantillons de verre pour approbation (2 types)</li><li>Essais d’étanchéité sur une travée du mur-rideau</li><li>Garantie : 2 ans main-d’œuvre, 10 ans unités scellées</li></ul></div>
+    <div class="card"><h4>Exclus</h4>
+      <ul style="margin:0"><li>Calfeutrage intérieur</li><li>Stores et habillages intérieurs</li><li>Finitions intérieures</li><li>Raccordement électrique des portes automatiques</li><li>Permis et frais de la Ville</li></ul></div>
+  </div>
+</section>
+
+<section class="np">
+  <div class="dochead"><div><div class="who">Groupe Lessard · Service des ventes</div></div><div class="ref">Soumission S-26-0412 · page 2<br><span class="fict">Cas fictif de formation · IA124</span></div></div>
+  <h3>Délais</h3>
+  <table>
+    <tr><th style="width:40%">Activité</th><th>Délai</th></tr>
+    <tr><td>Dessins d’atelier</td><td>3 semaines après la réception des documents pour construction</td></tr>
+    <tr class="alt"><td>Approbation des dessins</td><td>Par l’architecte, 10 jours ouvrables selon le devis (section 01 33 00)</td></tr>
+    <tr><td>Verre (unités scellées)</td><td>8 semaines après la commande ferme, sur dessins approuvés</td></tr>
+    <tr class="alt"><td>Fabrication</td><td>6 semaines en usine</td></tr>
+    <tr><td>Installation</td><td>8 semaines, selon l’accès au chantier et à la grue</td></tr>
+  </table>
+  <h3>Conditions</h3>
+  <ul>
+    <li>Les dates de pose seront confirmées <b>après l’approbation des dessins d’atelier et les relevés au chantier</b>, une fois la structure terminée.</li>
+    <li>Les délais de fabrication et de livraison ne comprennent pas les fermetures de l’usine (Fêtes, vacances de la construction).</li>
+    <li>L’accès au chantier, la grue et les aires d’entreposage sont fournis par l’entrepreneur général.</li>
+    <li>Paiements mensuels selon l’avancement, retenue contractuelle de 10 %.</li>
+    <li>Toute modification fera l’objet d’un avis de modification avant exécution.</li>
+  </ul>
+  <h3>Acceptation</h3>
+  <table class="form">
+    <tr><td>Pour Construction Boréa</td><td class="hand">Simon Tremblay · accepté le 6 novembre 2026</td></tr>
+    <tr><td>Pour le Groupe Lessard</td><td class="hand">Éric · 6 novembre 2026</td></tr>
+  </table>
+  <div class="box warn"><span class="t">Cas fictif</span>Soumission créée pour la formation IA124. Montants et quantités fictifs.</div>
+</section>
+</body></html>

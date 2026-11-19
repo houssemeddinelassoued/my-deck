@@ -1,0 +1,22 @@
+{
+  "$comment": "Sortie du juge LLM (Atelier 2, étape A2.4).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["criteres", "synthese"],
+  "properties": {
+    "criteres": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["critere", "note", "justification"],
+        "properties": {
+          "critere": { "type": "string" },
+          "note": { "type": "integer", "minimum": 1, "maximum": 4 },
+          "justification": { "type": "string" }
+        }
+      }
+    },
+    "synthese": { "type": "string" }
+  }
+}

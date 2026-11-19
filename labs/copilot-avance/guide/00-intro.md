@@ -4,40 +4,39 @@
 
 Pendant une journée, vous construisez **SalleLibre**, une API REST fictive de réservation de salles de réunion (salles, réservations sans chevauchement, authentification JWT et rôles, recherche de salles libres, documentation OpenAPI), avec GitHub Copilot dans VS Code. Stack au choix : TypeScript · Express, Python · FastAPI, Java · Spring Boot ou C# · ASP.NET Core.
 
-Les six TP s’enchaînent sur **le même dépôt**. Vous connaissez déjà Copilot : on ne revient pas sur les bases. Chaque TP ajoute une brique à votre dossier `.github`, du fichier d’instructions jusqu’à une équipe d’agents orchestrée.
+Les cinq TP s’enchaînent sur **le même dépôt**. Vous connaissez déjà Copilot : on ne revient pas sur les bases. Chaque TP ajoute une brique à votre dossier `.github`, du fichier d’instructions jusqu’à une équipe d’agents orchestrée.
 
 Les TP sont **individuels** : chacun sur son poste, minuteur affiché, points d’étape oraux toutes les 8 à 10 minutes. Bloqué plus de 5 minutes ? Dites-le au micro : partage d’écran de 2 minutes. Les textes à copier (prompts, squelettes de fichiers) sont collés dans le Chat de la classe virtuelle.
 
-## Les 6 TP
+## Les 5 TP
 
 | TP | Module | Durée | Ce que vous ajoutez |
 |---|---|---|---|
-| 1 · Prompts mesurés | M1 · Prompt engineering | 20 min | une grille de mesure, `overlaps` |
-| 2 · API REST complète | M2 · Architectures | 30 min | `PLAN.md`, `.github/copilot-instructions.md`, l’API |
-| 3 · Suite de tests | M3 · Tests | 25 min | `tests.instructions.md`, la skill `matrice-de-tests` |
-| 4 · Refactoring | M4 · Refactoring | 25 min | l’agent `Refactoreur` et sa skill `refactoring-sur` |
-| 5 · Audit de sécurité | M5 · Sécurité | 25 min | l’agent `Auditeur` (sous-agent), `security.instructions.md` |
-| 6 · Feature orchestrée | M6 · Équipe | 25 min | l’agent `Chef d’orchestre` et ses équipiers, une PR |
+| 1 · API REST complète | M2 · Architectures | 30 min | `PLAN.md`, `.github/copilot-instructions.md`, l’API |
+| 2 · Suite de tests | M3 · Tests | 25 min | `tests.instructions.md`, la skill `matrice-de-tests` |
+| 3 · Refactoring | M4 · Refactoring | 25 min | l’agent `Refactoreur` et sa skill `refactoring-sur` |
+| 4 · Audit de sécurité | M5 · Sécurité | 25 min | l’agent `Auditeur` (sous-agent), `security.instructions.md` |
+| 5 · Feature orchestrée | M6 · Équipe | 25 min | l’agent `Chef d’orchestre` et ses équipiers, une PR |
 
 ## Votre dossier .github en fin de journée
 
 ```
 .github/
-├── copilot-instructions.md          TP 2 · les règles de la maison (≤ 40 lignes)
+├── copilot-instructions.md          TP 1 · les règles de la maison (≤ 40 lignes)
 ├── instructions/
-│   ├── tests.instructions.md        TP 3 · applyTo: "tests/**"
-│   └── security.instructions.md     TP 5 · applyTo: "src/api/**,src/services/**"
+│   ├── tests.instructions.md        TP 2 · applyTo: "tests/**"
+│   └── security.instructions.md     TP 4 · applyTo: "src/api/**,src/services/**"
 ├── skills/
-│   ├── chevauchement/SKILL.md       TP 2 bonus · /chevauchement
-│   ├── matrice-de-tests/            TP 3 · SKILL.md + CASES.modele.md
-│   └── refactoring-sur/SKILL.md     TP 4
+│   ├── chevauchement/SKILL.md       TP 1 bonus · /chevauchement
+│   ├── matrice-de-tests/            TP 2 · SKILL.md + CASES.modele.md
+│   └── refactoring-sur/SKILL.md     TP 3
 └── agents/
-    ├── refactoreur.agent.md         TP 4
-    ├── auditeur.agent.md            TP 5 · lecture seule, sous-agent
-    ├── architecte.agent.md          TP 6 · fourni
-    ├── testeur.agent.md             TP 6 · fourni
-    ├── documentaliste.agent.md      TP 6 · fourni
-    └── chef-orchestre.agent.md      TP 6
+    ├── refactoreur.agent.md         TP 3
+    ├── auditeur.agent.md            TP 4 · lecture seule, sous-agent
+    ├── architecte.agent.md          TP 5 · fourni
+    ├── testeur.agent.md             TP 5 · fourni
+    ├── documentaliste.agent.md      TP 5 · fourni
+    └── chef-orchestre.agent.md      TP 5
 ```
 
 ## Règles du jeu

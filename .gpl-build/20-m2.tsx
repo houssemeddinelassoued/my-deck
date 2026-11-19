@@ -222,7 +222,7 @@ const M2_UcPlan: Page = () => (
       </>
     }
     app="copilot"
-    prompt="Tu es chargé de projet chez un fabricant-installateur d’enveloppe en aluminium et verre. Voici la soumission et les exclusions transmises par les ventes (ci-dessous). Propose les grandes étapes jusqu’au bâtiment fermé du 14 mai, avec leurs dépendances."
+    prompt="Tu es chargé de projet chez un fabricant-installateur d’enveloppe en aluminium et verre. Voici la soumission et les exclusions transmises par les ventes (ci-dessous). Propose les grandes étapes jusqu’au bâtiment fermé du 28 mai, avec leurs dépendances."
     answer={
       <>
         <M2Line>
@@ -279,7 +279,7 @@ const M2_UcTrack: Page = () => (
           <b>À transférer à Nadia (4)</b> : bordereau de livraison à classer ; certificat d’assurance demandé par Boréa…
         </M2Line>
         <M2Line>
-          <b>À relancer (2)</b> : dessins d’atelier soumis le 23 novembre, sans retour ; prix des panneaux d’allège.
+          <b>À relancer (2)</b> : dessins d’atelier soumis le 7 décembre, sans retour ; prix des panneaux d’allège.
         </M2Line>
       </>
     }
@@ -314,7 +314,7 @@ const M2_UcReport: Page = () => (
     answer={
       <>
         <M2Line>
-          <b>Décision</b> : pose du mur-rideau du hall à partir du 22 mars, si la dalle est libérée (accord de Boréa).
+          <b>Décision</b> : pose du mur-rideau du hall à partir du 5 avril, si la dalle est libérée (accord de Boréa).
         </M2Line>
         <M2Line>
           <b>Actions</b> : Mathieu envoie les dessins corrigés du solin (vendredi) ; Boréa confirme l’accès à la grue (date à confirmer).
@@ -351,17 +351,17 @@ const M2_UcComm: Page = () => (
       </>
     }
     app="claude"
-    prompt="Les dessins d’atelier du mur-rideau ont été soumis à l’architecte le 23 novembre, sans retour. Sans approbation d’ici le 7 décembre, la commande du verre glisse. Rédige une relance courtoise, une relance ferme pour dans 5 jours, et un courriel à Boréa sur le risque."
+    prompt="Les dessins d’atelier du mur-rideau ont été soumis à l’architecte le 7 décembre, sans retour. Sans approbation d’ici le 21 décembre, la commande du verre glisse. Rédige une relance courtoise, une relance ferme pour dans 5 jours, et un courriel à Boréa sur le risque."
     answer={
       <>
         <M2Line>
-          <b>Relance courtoise</b> : « Nous avons transmis le 23 novembre les dessins d’atelier du mur-rideau. Pourriez-vous nous indiquer… »
+          <b>Relance courtoise</b> : « Nous avons transmis le 7 décembre les dessins d’atelier du mur-rideau. Pourriez-vous nous indiquer… »
         </M2Line>
         <M2Line>
-          <b>Relance ferme</b> : « Sans approbation d’ici le 7 décembre, la commande du verre (8 semaines) ne pourra… »
+          <b>Relance ferme</b> : « Sans approbation d’ici le 21 décembre, la commande du verre (8 semaines) ne pourra… »
         </M2Line>
         <M2Line>
-          <b>À Boréa</b> : « Pour votre information : l’approbation des dessins conditionne la pose du 22 mars… »
+          <b>À Boréa</b> : « Pour votre information : l’approbation des dessins conditionne la pose du 5 avril… »
         </M2Line>
       </>
     }
@@ -551,22 +551,22 @@ const M2_Microsoft: Page = () => (
     <AppWin id="outlook" title="Dessins d’atelier · mur-rideau (14)" cls={A.left} style={{ position: 'absolute', left: 120, top: 280, width: 820, ...dl(100) }}>
       <M2Mail from="Architecte" subj="RE: RE: Dessins MR-01, commentaires" />
       <M2Mail from="Boréa" subj="RE: Date de pose du hall ?" faded />
-      <M2Mail from="Hélène" subj="RE: Risque sur le 14 mai ?" faded />
+      <M2Mail from="Hélène" subj="RE: Risque sur le 28 mai ?" faded />
       <div className={b.on(1)}>
         <M2Mini>
-          <b>Résumé par Copilot</b> : l’architecte demande deux corrections (solin, ancrages). Boréa veut une date de pose. Hélène demande si le 14 mai est menacé. Aucune réponse envoyée.
+          <b>Résumé par Copilot</b> : l’architecte demande deux corrections (solin, ancrages). Boréa veut une date de pose. Hélène demande si le 28 mai est menacé. Aucune réponse envoyée.
         </M2Mini>
       </div>
     </AppWin>
-    <AppWin id="teams" title="Réunion de chantier · Méandres" cls={A.right} style={{ position: 'absolute', left: 980, top: 280, width: 820, ...dl(250) }}>
+    <AppWin id="teams" title="Réunion de chantier · Montréal" cls={A.right} style={{ position: 'absolute', left: 980, top: 280, width: 820, ...dl(250) }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 12, fontSize: 22, color: C.soft }}>
         <Icon name="video" size={26} color={C.violet} /> Réunion terminée · 52 min · transcription activée
       </div>
       <div className={b.on(2)}>
         <M2Mini>
           <b>Récapitulatif</b>
-          <br />• Décision : pose du hall à partir du 22 mars.
-          <br />• Tâche : Mathieu renvoie les dessins corrigés (échéance 11 décembre).
+          <br />• Décision : pose du hall à partir du 5 avril.
+          <br />• Tâche : Mathieu renvoie les dessins corrigés (échéance 18 décembre).
           <br />• Point ouvert : accès à la grue, à confirmer par Boréa.
         </M2Mini>
       </div>
@@ -578,11 +578,11 @@ const M2_Microsoft: Page = () => (
 );
 
 // ─── M2 · Google Workspace ──────────────────────────────────────────────────
-const M2GTile = ({ d, icon, app, children }: { d: number; icon: IconName; app: string; children: ReactNode }) => (
+const M2GTile = ({ d, icon, id, app, children }: { d: number; icon: IconName; id?: AppId; app: string; children: ReactNode }) => (
   <div className={A.in} style={{ flex: 1, ...dl(d) }}>
     <div style={{ boxSizing: 'border-box', height: 420, background: C.card, borderRadius: 18, boxShadow: `${SHADOW}, inset 0 7px 0 ${C.green}`, padding: '28px 28px' }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
-        <IconTile name={icon} tone="green" size={60} />
+        {id ? <AppTile id={id} size={60} /> : <IconTile name={icon} tone="green" size={60} />}
         <span style={{ fontFamily: display, fontWeight: 700, fontSize: 38, color: C.ink }}>{app}</span>
       </div>
       <div style={{ marginTop: 20, fontSize: 26, lineHeight: 1.45, color: C.soft }}>{children}</div>
@@ -595,16 +595,16 @@ const M2_Google: Page = () => (
     <Title>Copilot dans Word, Excel, Planner et Power Automate</Title>
     <Lede>La même IA, dans les autres outils Microsoft 365 que vous ouvrez chaque jour.</Lede>
     <div style={{ position: 'absolute', left: 120, top: 290, width: 1680, display: 'flex', gap: 26 }}>
-      <M2GTile d={100} icon="doc" app="Word">
+      <M2GTile d={100} icon="doc" id="word" app="Word">
         Résumer un devis ou un contrat, comparer deux versions, rédiger une lettre ou un rapport de visite.
       </M2GTile>
-      <M2GTile d={220} icon="chart" app="Excel">
+      <M2GTile d={220} icon="chart" id="excel" app="Excel">
         Analyser le registre des livraisons, expliquer ou écrire une formule, repérer les écarts.
       </M2GTile>
-      <M2GTile d={340} icon="kanban" app="Planner">
+      <M2GTile d={340} icon="kanban" id="planner" app="Planner">
         Créer un plan et des tâches à partir d’un objectif, résumer l’avancement d’un plan.
       </M2GTile>
-      <M2GTile d={460} icon="loop" app="Automate">
+      <M2GTile d={460} icon="loop" id="automate" app="Automate">
         Décrire un flux en français : « quand un courriel de Boréa arrive, l’enregistrer dans le dossier ».
       </M2GTile>
     </div>
@@ -752,7 +752,7 @@ const M2_Anatomy: Page = () => (
           Tu es chargé de projet chez un fabricant-installateur d’enveloppe en aluminium et verre.
         </M2Seg>{' '}
         <M2Seg n={2} tone="teal">
-          Les dessins d’atelier du mur-rideau ont été soumis à l’architecte le 23 novembre, sans retour. Sans approbation d’ici le 7 décembre, la commande du verre glisse.
+          Les dessins d’atelier du mur-rideau ont été soumis à l’architecte le 7 décembre, sans retour. Sans approbation d’ici le 21 décembre, la commande du verre glisse.
         </M2Seg>{' '}
         <M2Seg n={3} tone="green">
           Rédige une relance à l’architecte
@@ -780,7 +780,7 @@ const M2_BeforeAfter: Page = () => {
       <div style={{ position: 'absolute', left: 120, top: 290, width: 760 }}>
         <PromptBox size={30} style={{ boxShadow: `${SHADOW_SM}, inset 6px 0 0 ${good ? C.green : C.coral}` }}>
           {good
-            ? 'Tu es chargé de projet. Le verrier devait confirmer hier la date de livraison des unités scellées (projet des Méandres, commande du 8 décembre). Rédige une relance de cinq lignes : rappel de la commande, date attendue, impact sur la pose du 22 mars. Ton courtois et ferme.'
+            ? 'Tu es chargé de projet. Le verrier devait confirmer hier la date de livraison des unités scellées (projet de Montréal, commande du 22 décembre). Rédige une relance de cinq lignes : rappel de la commande, date attendue, impact sur la pose du 5 avril. Ton courtois et ferme.'
             : 'Fais-moi un courriel pour relancer le fournisseur.'}
         </PromptBox>
         <div style={{ marginTop: 26, display: 'flex', gap: 14, flexWrap: 'wrap' }}>
@@ -796,10 +796,10 @@ const M2_BeforeAfter: Page = () => {
           {good ? (
             <>
               <M2Line>
-                <b>Objet</b> : Méandres · confirmation de livraison des unités scellées
+                <b>Objet</b> : Montréal · confirmation de livraison des unités scellées
               </M2Line>
-              <M2Line>Bonjour, nous attendions hier la confirmation de la date de livraison des unités scellées (commande du 8 décembre).</M2Line>
-              <M2Line>Notre pose du mur-rideau débute le 22 mars : il nous faut une livraison au plus tard le 15 février.</M2Line>
+              <M2Line>Bonjour, nous attendions hier la confirmation de la date de livraison des unités scellées (commande du 22 décembre).</M2Line>
+              <M2Line>Notre pose du mur-rideau débute le 5 avril : il nous faut une livraison au plus tard le 1er mars.</M2Line>
               <M2Line>Pourriez-vous nous confirmer la date d’ici jeudi ? Merci de votre suivi.</M2Line>
             </>
           ) : (
@@ -983,7 +983,7 @@ TRANSITION — « Quatre usages concrets, un par page. Premier : planifier. »`,
 OBJECTIF — Montrer une demande de planification réaliste et sa réponse.
 
 DIRE — « À gauche, ce que l'IA fait bien au lancement d'un projet : résumer le dossier des ventes, ordonner les étapes, repérer les délais critiques, lister les risques. »
-→ beat 1 : « La demande de Mathieu. Il dit qui il est, colle la soumission et les exclusions, et donne la date qui compte : le bâtiment fermé du 14 mai. »
+→ beat 1 : « La demande de Mathieu. Il dit qui il est, colle la soumission et les exclusions, et donne la date qui compte : le bâtiment fermé du 28 mai. »
 → beat 2 : « La réponse, en quelques secondes : six étapes cohérentes, et la bonne dépendance : le verre se commande après l'approbation des dessins. Est-ce parfait ? Non. Mais Mathieu ne part plus d'une page blanche. »
 
 QUESTION — « Que manque-t-il dans ce découpage ? » Réponses possibles : les relevés après la structure, la mobilisation de l'équipe de pose, la protection des ouvrages, les essais d'étanchéité, les documents de fin de projet exigés par l'EG. « Bravo : c'est exactement votre valeur ajoutée. »
@@ -1021,7 +1021,7 @@ TRANSITION — « Quatrième usage : les relances. »`,
 
 OBJECTIF — Répondre au besoin du questionnaire : « faire des suivis auprès des clients ».
 
-DIRE — « Les dessins d'atelier du mur-rideau attendent l'approbation de l'architecte depuis le 23 novembre. Chaque jour de retard pousse la commande du verre. »
+DIRE — « Les dessins d'atelier du mur-rideau attendent l'approbation de l'architecte depuis le 7 décembre. Chaque jour de retard pousse la commande du verre. »
 → beat 1 : « Une seule demande pour trois messages : une relance courtoise, une relance ferme à envoyer dans cinq jours, et un courriel à Boréa pour l'informer du risque. Ici avec Claude, que certains d'entre vous ont. »
 → beat 2 : « Trois tons, trois publics. La relance ferme rappelle le délai du verre : c'est l'argument qui fait bouger. »
 
@@ -1176,6 +1176,6 @@ DIRE — Relisez les cinq points :
 
 À VOTRE POSTE — Lisez la carte bleue.
 
-TRANSITION — « Assez parlé : place à l'atelier 1. Vous allez lancer le projet des Méandres. »`,
+TRANSITION — « Assez parlé : place à l'atelier 1. Vous allez lancer le projet de Montréal. »`,
 ];
 // @@NOTES-END

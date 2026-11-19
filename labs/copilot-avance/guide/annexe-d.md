@@ -40,7 +40,7 @@
 
 <!-- col -->
 
-## Les trois agents fournis pour le TP 6
+## Les trois agents fournis pour le TP 5
 
 ```markdown
 ---
@@ -86,4 +86,4 @@ Tu es le Documentaliste de SalleLibre.
 - Tu ne modifies aucun autre fichier.
 ```
 
-Le Refactoreur (TP 4), l’Auditeur (TP 5) et le Chef d’orchestre (TP 6) sont dans les pages de leur TP.
+Le Refactoreur (TP 3), l’Auditeur (TP 4) et le Chef d’orchestre (TP 5) sont dans les pages de leur TP.

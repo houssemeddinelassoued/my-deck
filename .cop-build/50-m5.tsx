@@ -12,7 +12,7 @@ const M5_Divider: Page = () => (
     }
     sub="Les risques propres au code produit par IA, la grille OWASP, les prompts orientés sécurité, les outils… et le droit."
     dur="14:40 – 15:30 · TP inclus"
-    labs={<Tag tone="green" size={19}>TP 5 · audit par un agent Auditeur</Tag>}
+    labs={<Tag tone="green" size={19}>TP 4 · audit par un agent Auditeur</Tag>}
   >
     <SecItem n={1}>Risques spécifiques au code généré</SecItem>
     <SecItem n={2}>Détecter les vulnérabilités suggérées</SecItem>
@@ -144,13 +144,13 @@ const M5_Owasp: Page = () => (
           max={10}
           label="Ma revue couvre"
           levels={[
-            { min: 0, text: 'Revue fonctionnelle seulement : le TP 5 tombe à pic.', tone: 'coral' },
+            { min: 0, text: 'Revue fonctionnelle seulement : le TP 4 tombe à pic.', tone: 'coral' },
             { min: 4, text: 'Bonne base : outillez le reste en CI.', tone: 'yellow' },
             { min: 8, text: 'Revue solide : faites-en un prompt d’équipe.', tone: 'green' },
           ]}
         />
         <div style={{ marginTop: 18, fontSize: 21, lineHeight: 1.45, color: C.muted }}>
-          Cette liste devient votre grille d’audit au TP 5… et un fichier de prompt au module 6.
+          Cette liste devient votre grille d’audit au TP 4… et un fichier de prompt au module 6.
         </div>
       </div>
     </Checklist>
@@ -286,11 +286,11 @@ const M5_Qcm: Page = () => (
   </QcmPage>
 );
 
-// ─── TP 5 ───────────────────────────────────────────────────────────────────
+// ─── TP 4 ───────────────────────────────────────────────────────────────────
 const M5_TP: Page = () => (
   <LabPage
     mod={5}
-    n="5"
+    n="4"
     title="Audit de sécurité du code généré"
     defi="audit"
     who="Individuel"
@@ -312,10 +312,10 @@ const M5_TP: Page = () => (
     objective={<>Faire auditer le code de {PROJECT} par un agent Auditeur qui ne peut rien modifier, puis prouver et corriger chaque faille avec des prompts ciblés.</>}
     crit={
       <>
-        <CheckItem id="tp5-1" size={21}>Auditeur : read et search seulement, sous-agent</CheckItem>
-        <CheckItem id="tp5-1b" size={21}>Au moins quatre failles trouvées et classées</CheckItem>
-        <CheckItem id="tp5-2" size={21}>Un test d’exploitation par faille, dont le DELETE d’autrui</CheckItem>
-        <CheckItem id="tp5-4" size={21}>security.instructions.md commité</CheckItem>
+        <CheckItem id="tp4-1" size={21}>Auditeur : read et search seulement, sous-agent</CheckItem>
+        <CheckItem id="tp4-1b" size={21}>Au moins quatre failles trouvées et classées</CheckItem>
+        <CheckItem id="tp4-2" size={21}>Un test d’exploitation par faille, dont le DELETE d’autrui</CheckItem>
+        <CheckItem id="tp4-4" size={21}>security.instructions.md commité</CheckItem>
       </>
     }
   >
@@ -339,7 +339,7 @@ export const __notes = [
 
 OBJECTIF — Annoncer le module 5 du programme : sécurité et audit du code généré.
 
-DIRE — « Module 5. Votre code est testé et propre. Est-il sûr ? On va voir les risques spécifiques au code généré, la checklist OWASP appliquée à Copilot, comment détecter les vulnérabilités dans une suggestion, comment écrire des prompts orientés sécurité, et la question des droits d’auteur et des licences. TP 5 : vous faites auditer votre propre code par un agent Auditeur en lecture seule, sollicité comme sous-agent. »
+DIRE — « Module 5. Votre code est testé et propre. Est-il sûr ? On va voir les risques spécifiques au code généré, la checklist OWASP appliquée à Copilot, comment détecter les vulnérabilités dans une suggestion, comment écrire des prompts orientés sécurité, et la question des droits d’auteur et des licences. TP 4 : vous faites auditer votre propre code par un agent Auditeur en lecture seule, sollicité comme sous-agent. »
 
 TRANSITION — « D’abord, l’ampleur du problème. »`,
   `⏱ 4 min · RISQUES
@@ -353,7 +353,7 @@ TRANSITION — « Exercice : six failles dans une suggestion. »`,
 
 OBJECTIF — Détecter les vulnérabilités dans le code suggéré.
 
-DIRE — « Cette fois en Python, mais les failles sont les mêmes dans toutes les stacks. Cherchez. » Une minute, puis → clic par faille. « Un : secret en dur. Deux : signature non vérifiée, n’importe qui forge un jeton admin — on le voit réellement dans des suggestions, souvent pour "faire marcher" un test. Trois : injection SQL par f-string. Quatre : SELECT étoile renvoyé tel quel, les e-mails de tout le monde. Cinq : l’IDOR, Bob annule la réservation d’Alice — c’est le test d’intégration 403 du TP 3. Six : la trace d’erreur renvoyée au client. »
+DIRE — « Cette fois en Python, mais les failles sont les mêmes dans toutes les stacks. Cherchez. » Une minute, puis → clic par faille. « Un : secret en dur. Deux : signature non vérifiée, n’importe qui forge un jeton admin — on le voit réellement dans des suggestions, souvent pour "faire marcher" un test. Trois : injection SQL par f-string. Quatre : SELECT étoile renvoyé tel quel, les e-mails de tout le monde. Cinq : l’IDOR, Bob annule la réservation d’Alice — c’est le test d’intégration 403 du TP 2. Six : la trace d’erreur renvoyée au client. »
 
 TRANSITION — « Pour ne rien oublier, une grille. »`,
   `⏱ 4 min · OWASP (checklist interactive)
@@ -394,8 +394,8 @@ DIRE — « Le piège D est le plus dangereux : une alerte fermée à tort n’e
 
 ANIMATION — Vote à voix haute, clic sur la réponse majoritaire, → bonne réponse, → l’essentiel.
 
-TRANSITION — « TP 5 : auditez votre code. »`,
-  `⏱ 25 min (minuteur) · TP 5
+TRANSITION — « TP 4 : auditez votre code. »`,
+  `⏱ 25 min (minuteur) · TP 4
 
 OBJECTIF — Atelier du programme : analyser un code généré par Copilot, identifier les failles et les corriger avec des prompts ciblés.
 

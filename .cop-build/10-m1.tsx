@@ -11,8 +11,7 @@ const M1_Divider: Page = () => (
       </>
     }
     sub="Comprendre ce que Copilot voit, structurer la demande, décomposer, mesurer et itérer."
-    dur="9:15 – 10:10 · TP inclus"
-    labs={<Tag tone="green" size={19}>TP 1 · réécrire et mesurer</Tag>}
+    dur="9:15 – 9:50"
   >
     <SecItem n={1}>Comment Copilot interprète le contexte</SecItem>
     <SecItem n={2}>Session, harnais, rôle, modèle</SecItem>
@@ -358,7 +357,7 @@ const M1_Compare: Page = () => (
       </Card>
     </div>
     <div className={A.fade} style={{ position: 'absolute', left: 120, top: 905, fontSize: 21, color: C.muted, ...dl(600) }}>
-      Exemple de mesure sur overlaps() · chiffres illustratifs : vous produirez les vôtres au TP 1.
+      Exemple de mesure sur overlaps() · chiffres illustratifs, pour la méthode.
     </div>
   </Frame>
 );
@@ -461,7 +460,7 @@ const M1_Session: Page = () => (
     </div>
     <div className={b.on(1)} style={{ position: 'absolute', left: 1220, top: 560, width: 580 }}>
       <Callout tone="green" icon="checkCircle" title="Nos réglages pour la journée" size={23}>
-        Session <strong>Copilot</strong>, permissions <strong>manuelles</strong>. Modèle <strong>fixé</strong> pendant les mesures du TP 1, Auto ensuite. Le rôle change selon le TP.
+        Session <strong>Copilot</strong>, permissions <strong>manuelles</strong>. Modèle <strong>fixé</strong> quand on compare deux prompts, Auto ensuite. Le rôle change selon le TP.
       </Callout>
     </div>
     <Hint cls={A.fade} style={{ position: 'absolute', left: 120, top: 860, ...dl(700) }}>
@@ -494,55 +493,8 @@ const M1_Qcm: Page = () => (
   </QcmPage>
 );
 
-// ─── TP 1 ───────────────────────────────────────────────────────────────────
-const M1_TP: Page = () => (
-  <LabPage
-    mod={1}
-    n="1"
-    title="Réécrire des prompts basiques et mesurer"
-    defi="ameliorer"
-    who="Individuel"
-    minutes={20}
-    feats={
-      <Tag tone="navy" size={19}>
-        <Icon name="cpu" size={20} /> Session Copilot · modèle fixé
-      </Tag>
-    }
-    where={
-      <>
-        <PathChip>prompts/tp1-mesures.md</PathChip> grille V1 / V2
-        <br />
-        <PathChip>src/domain/overlap.*</PathChip> + tests
-        <br />
-        <PathChip>prompts/meilleur-prompt.md</PathChip> → skill au TP 2
-      </>
-    }
-    objective={
-      <>
-        Prouver, chiffres à l’appui, qu’un prompt structuré produit un meilleur code qu’un prompt basique sur trois tâches de {PROJECT}.
-      </>
-    }
-    crit={
-      <>
-        <CheckItem id="tp1-1" size={22}>Session Copilot, rôle Agent, un seul modèle pour toutes les mesures</CheckItem>
-        <CheckItem id="tp1-2" size={22}>Trois prompts réécrits avec les cinq composants</CheckItem>
-        <CheckItem id="tp1-3" size={22}>Chaque version lancée 2 fois en session neuve, grille remplie</CheckItem>
-        <CheckItem id="tp1-4" size={22}>Le meilleur prompt conservé pour le TP 2</CheckItem>
-      </>
-    }
-  >
-    Les trois prompts de départ :
-    <div style={{ marginTop: 10, display: 'flex', flexDirection: 'column', gap: 8, fontFamily: mono, fontSize: 21, color: C.ink }}>
-      <span>P1 · « fais une fonction qui vérifie si deux réservations se chevauchent »</span>
-      <span>P2 · « génère les modèles de données de l’appli »</span>
-      <span>P3 · « écris la fonction qui trouve les salles libres »</span>
-    </div>
-    <TpBonus>Relancez votre meilleur prompt avec un autre modèle : la grille bouge-t-elle plus d’un modèle à l’autre que d’un prompt à l’autre ?</TpBonus>
-  </LabPage>
-);
-
 // @@PAGES-BEGIN
-export const __pages = [M1_Divider, M1_Context, M1_Session, M1_Anatomy, M1_MultiStep, M1_DocComments, M1_Compare, M1_Levers, M1_Qcm, M1_TP];
+export const __pages = [M1_Divider, M1_Context, M1_Session, M1_Anatomy, M1_MultiStep, M1_DocComments, M1_Compare, M1_Levers, M1_Qcm];
 // @@PAGES-END
 
 // @@NOTES-BEGIN
@@ -551,7 +503,7 @@ export const __notes = [
 
 OBJECTIF — Annoncer le module 1 du programme : techniques avancées de prompt engineering.
 
-DIRE — « Module 1 : le prompt engineering avancé. Vous connaissez les bases, on ne s’y attarde pas. On repart de ce que Copilot voit réellement, on distingue les quatre réglages d’une session — harnais, rôle, modèle, environnement —, puis on structure les prompts, on les décompose en étapes, et surtout on apprend à mesurer : comparer deux prompts autrement qu’à l’impression. Puis le TP 1. »
+DIRE — « Module 1 : le prompt engineering avancé. Vous connaissez les bases, on ne s’y attarde pas. On repart de ce que Copilot voit réellement, on distingue les quatre réglages d’une session — harnais, rôle, modèle, environnement —, puis on structure les prompts, on les décompose en étapes, et surtout on apprend à mesurer : comparer deux prompts autrement qu’à l’impression. »
 
 TRANSITION — « Point de départ : qu’est-ce que Copilot voit quand il vous répond ? »`,
   `⏱ 5 min · CONTEXTE (2 temps)
@@ -570,7 +522,7 @@ TRANSITION — « Cette fenêtre, qui la remplit ? Ça dépend de quatre réglag
 OBJECTIF — Distinguer les quatre réglages d’une session de Chat ; fixer les réglages de la journée.
 
 DIRE — « Dans la zone de saisie du Chat, il y a désormais quatre listes. La session, ou harnais : qui fait tourner la boucle de l’agent. Depuis fin octobre, le harnais Copilot est le défaut ; l’ancien moteur de VS Code s’appelle Local, il est déprécié. Claude ou Codex sont d’autres harnais, branchés dans la même fenêtre. Le rôle : ce qu’on demande à l’agent d’être. Ask répond, Plan planifie sans toucher au code, Agent agit. Et cet après-midi, vos propres rôles : vos agents personnalisés. Le modèle : le cerveau. Il change la qualité et le coût, jamais les droits. Enfin l’environnement : où s’exécutent les commandes. »
-→ beat 1 « Nos réglages pour la journée : session Copilot, permissions manuelles, on approuve chaque commande. Pendant les mesures du TP 1, on fixe le modèle : sinon on compare deux modèles, pas deux prompts. »
+→ beat 1 « Nos réglages pour la journée : session Copilot, permissions manuelles, on approuve chaque commande. Quand on compare deux prompts, on fixe le modèle : sinon on compare deux modèles, pas deux prompts. »
 
 ANIMATION — Démo rapide : ouvrir les quatre listes dans VS Code, montrer le harnais Copilot sélectionné.
 
@@ -611,9 +563,9 @@ OBJECTIF — Comparer des prompts par des mesures, et itérer méthodiquement.
 DIRE — « Copilot n’est pas déterministe : un essai ne prouve rien. Protocole : même tâche, même modèle, session neuve, plusieurs essais par version. V1, le prompt basique : il compile une fois sur trois, les bornes sont fausses. »
 → beat 1 « V2 ajoute contexte et contraintes : nettement mieux. »
 → beat 2 « V3 ajoute exemples et critère de fin : zéro aller-retour. »
-→ beat 3 « Votre grille doit être décidée avant les essais, avec des critères binaires ou comptables. Et pour itérer : un seul changement à la fois. Les chiffres affichés sont illustratifs : vous produirez les vôtres au TP 1. »
+→ beat 3 « Votre grille doit être décidée avant les essais, avec des critères binaires ou comptables. Et pour itérer : un seul changement à la fois. Les chiffres affichés sont illustratifs. »
 
-TRANSITION — « Avant le TP, les leviers du chat que vous devez avoir sous les doigts. »`,
+TRANSITION — « Avant la pause, les leviers du chat que vous devez avoir sous les doigts. »`,
   `⏱ 3 min · LEVIERS DU CHAT
 
 OBJECTIF — Rappeler les références, participants, commandes et le choix du modèle.
@@ -631,15 +583,6 @@ DIRE — « Le piège attendu, c’est la B : les instructions personnalisées s
 
 ANIMATION — Faire voter à voix haute, cliquer la réponse majoritaire, puis → pour la bonne réponse et → pour l’essentiel.
 
-TRANSITION — « À vous : TP 1. »`,
-  `⏱ 20 min (minuteur) · TP 1
-
-OBJECTIF — Atelier du programme : réécrire des prompts basiques en prompts avancés et mesurer l’impact sur la qualité du code généré.
-
-DIRE — « TP individuel. Réglages : session Copilot, rôle Agent, et un seul modèle choisi dans la liste pour toutes vos mesures, pas Auto : sinon vous mesurez le modèle, pas le prompt. Trois prompts basiques. Pour chacun : lancez-le tel quel deux fois en session neuve, notez la grille. Réécrivez-le avec les cinq composants, relancez deux fois, notez. Gardez le code du meilleur résultat pour overlaps : c’est la première brique de SalleLibre. Et conservez votre meilleur prompt dans prompts/meilleur-prompt.md : au TP 2, il deviendra une skill. »
-
-ANIMATION — Coller les trois prompts de départ dans le Chat. Lancer le minuteur. Point d’étape à 10 minutes : « Où en êtes-vous : P1, P2 ou P3 ? » Quelqu’un bloqué partage son écran 2 minutes. À 18 minutes, demander à deux volontaires leurs chiffres V1/V2.
-
-TRANSITION — « Vous avez une fonction et une méthode. Passons à l’échelle d’un module entier… et écrivons enfin les règles de la maison. »`,
+TRANSITION — « Pause : reprise à 10 h 05 avec le module 2. »`,
 ];
 // @@NOTES-END

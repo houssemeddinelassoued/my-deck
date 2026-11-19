@@ -1,0 +1,12 @@
+{
+  "_lisezmoi": "Défi final (Atelier 5) : langue détectée (fr ou en) et équipe de routage (en → Europe, fr → Tunis).",
+  "cas": [
+    { "texte": "Le portail RH ne charge plus depuis ce matin, 40 personnes bloquées.", "langue": "fr", "equipe": "Tunis" },
+    { "texte": "Hello, our supplier dashboard has been very slow since Monday. About 12 users are affected.", "langue": "en", "equipe": "Europe" },
+    { "texte": "We would like a quote for integrating our tracking API with your platform.", "langue": "en", "equipe": "Europe" },
+    { "texte": "Question : la facture d'octobre apparaît deux fois dans notre espace client, est-ce normal ?", "langue": "fr", "equipe": "Tunis" },
+    { "texte": "Hello, notre portail ne marche plus depuis la mise à jour et les utilisateurs sont bloqués.", "langue": "fr", "equipe": "Tunis" },
+    { "texte": "The export is broken, merci de regarder when you can, it is blocking the whole team.", "langue": "en", "equipe": "Europe" },
+    { "texte": "", "langue": "fr", "equipe": "Tunis" }
+  ]
+}

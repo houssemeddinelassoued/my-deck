@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Guichet · Oasis Digital</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header>
+      <div class="marque"><span class="pastille"></span> Oasis Digital · <strong>Guichet</strong></div>
+      <div id="etat" class="etat">…</div>
+    </header>
+
+    <main>
+      <section class="carte">
+        <h1>Déposer une demande</h1>
+        <form id="formulaire">
+          <div class="grille">
+            <label>Nom <input name="nom" autocomplete="name" /></label>
+            <label>Entreprise <input name="entreprise" autocomplete="organization" /></label>
+            <label>E-mail <input name="email" autocomplete="email" /></label>
+            <label>Téléphone <input name="telephone" autocomplete="tel" /></label>
+            <label>Date souhaitée <input name="date_souhaitee" placeholder="20/12/2026, demain…" /></label>
+            <label>Budget <input name="budget" placeholder="15 000 DT, 2000 €…" /></label>
+            <label>Site web <input name="site_web" placeholder="https://…" /></label>
+          </div>
+          <label>Votre demande <textarea name="message" rows="5" required></textarea></label>
+          <div class="actions">
+            <button type="submit">Envoyer</button>
+            <select id="exemple" aria-label="Pré-remplir avec une demande de référence">
+              <option value="">Pré-remplir avec une demande de référence…</option>
+            </select>
+          </div>
+        </form>
+        <div id="retour" class="retour" hidden></div>
+      </section>
+
+      <section class="carte">
+        <div class="titre-tableau">
+          <h2>Tableau de bord</h2>
+          <button id="rafraichir" class="discret" type="button">Rafraîchir</button>
+        </div>
+        <table>
+          <thead><tr id="entetes"></tr></thead>
+          <tbody id="lignes"></tbody>
+        </table>
+        <p id="vide" class="vide">Aucune demande pour l'instant.</p>
+      </section>
+    </main>
+
+    <script src="app.js"></script>
+  </body>
+</html>

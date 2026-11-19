@@ -73,7 +73,7 @@ const M6_Projects: Page = () => (
       <M6Proj d={100} icon="star" tone="blue" title="Votre propre projet" facts="Recommandé · sans client, prix ni adresse">
         Un de vos projets en cours : c’est celui qui vous servira lundi matin.
       </M6Proj>
-      <M6Proj d={200} icon="facade" tone="teal" title="La pose du hall des Méandres" facts="Installation · 8 semaines · Mathieu">
+      <M6Proj d={200} icon="facade" tone="teal" title="La pose du hall de Montréal" facts="Installation · 8 semaines · Mathieu">
         Le mur-rideau et la verrière du hall, de la livraison du verre à la fin de la pose.
       </M6Proj>
       <M6Proj d={300} icon="helmet" tone="coral" title="Les déficiences de fin de projet" facts="Fermeture · 4 semaines · Patrice">

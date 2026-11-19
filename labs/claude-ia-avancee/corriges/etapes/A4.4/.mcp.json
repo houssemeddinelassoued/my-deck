@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "demandes": {
+      "type": "stdio",
+      "command": "node",
+      "args": [
+        "outils/mcp-demandes/serveur.mjs"
+      ],
+      "env": {}
+    }
+  }
+}

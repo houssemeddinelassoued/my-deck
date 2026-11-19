@@ -11,8 +11,8 @@ const M3_Divider: Page = () => (
       </>
     }
     sub="Une stratégie d’abord, des tests ensuite : unitaires, mocks, intégration, couverture… et votre méthode de test écrite une fois, dans une skill."
-    dur="11:35 – 12:30 · TP inclus"
-    labs={<Tag tone="green" size={19}>TP 3 · suite de tests complète</Tag>}
+    dur="11:15 – 12:30 · TP inclus"
+    labs={<Tag tone="green" size={19}>TP 2 · suite de tests complète</Tag>}
   >
     <SecItem n={1}>Stratégie : couverture, cas limites, cas négatifs</SecItem>
     <SecItem n={2}>Tests unitaires paramétrés</SecItem>
@@ -395,11 +395,11 @@ const M3_Qcm: Page = () => (
   </QcmPage>
 );
 
-// ─── TP 3 ───────────────────────────────────────────────────────────────────
+// ─── TP 2 ───────────────────────────────────────────────────────────────────
 const M3_TP: Page = () => (
   <LabPage
     mod={3}
-    n="3"
+    n="2"
     title="Une suite de tests complète"
     defi="tests"
     who="Individuel"
@@ -418,13 +418,13 @@ const M3_TP: Page = () => (
         <PathChip>tests/CASES.md</PathChip> <PathChip>tests/**</PathChip> couverture
       </>
     }
-    objective={<>Écrire votre méthode de test une fois, dans une skill, puis l’appliquer à l’API du TP 2 : matrice, unitaires paramétrés, doubles, intégration, couverture.</>}
+    objective={<>Écrire votre méthode de test une fois, dans une skill, puis l’appliquer à l’API du TP 1 : matrice, unitaires paramétrés, doubles, intégration, couverture.</>}
     crit={
       <>
-        <CheckItem id="tp3-1" size={21}>La skill se charge seule (Références)</CheckItem>
-        <CheckItem id="tp3-2" size={21}>Matrice en 4 colonnes validée avant génération</CheckItem>
-        <CheckItem id="tp3-3" size={21}>Trois scénarios d’intégration, dont un 403</CheckItem>
-        <CheckItem id="tp3-4" size={21}>Diff des tests relu, services à 80 % des branches</CheckItem>
+        <CheckItem id="tp2-1" size={21}>La skill se charge seule (Références)</CheckItem>
+        <CheckItem id="tp2-2" size={21}>Matrice en 4 colonnes validée avant génération</CheckItem>
+        <CheckItem id="tp2-3" size={21}>Trois scénarios d’intégration, dont un 403</CheckItem>
+        <CheckItem id="tp2-4" size={21}>Diff des tests relu, services à 80 % des branches</CheckItem>
       </>
     }
   >
@@ -444,11 +444,13 @@ export const __pages = [M3_Divider, M3_Strategy, M3_Unit, M3_Mocks, M3_Integrati
 
 // @@NOTES-BEGIN
 export const __notes = [
-  `⏱ 1 min · DIVISEUR M3 · 11:35
+  `⏱ 1 min · DIVISEUR M3 · 11:15
 
 OBJECTIF — Annoncer le module 3 du programme : automatisation de la génération de tests.
 
-DIRE — « Module 3 : les tests. C’est là que Copilot fait gagner le plus de temps… et là qu’il donne la plus fausse impression de sécurité. Stratégie d’abord — couverture, cas limites, cas négatifs —, puis tests unitaires, mocks et stubs, tests d’intégration, et enfin l’analyse de couverture et ses pièges. TP 3 : la suite complète de l’API du TP 2, avec votre première skill : la méthode de test de l’équipe, écrite une fois. »
+MARGE — Module le plus long de la matinée : 20 min de marge, puisque la M1 n’a plus de TP. Si le groupe a pris du retard, réduisez les points d’étape du TP, pas la reprise.
+
+DIRE — « Module 3 : les tests. C’est là que Copilot fait gagner le plus de temps… et là qu’il donne la plus fausse impression de sécurité. Stratégie d’abord — couverture, cas limites, cas négatifs —, puis tests unitaires, mocks et stubs, tests d’intégration, et enfin l’analyse de couverture et ses pièges. TP 2 : la suite complète de l’API du TP 1, avec votre première skill : la méthode de test de l’équipe, écrite une fois. »
 
 TRANSITION — « Tout commence par une stratégie, pas par /tests. »`,
   `⏱ 4 min · MATRICE DE CAS (4 temps)
@@ -499,12 +501,12 @@ TRANSITION — « Ce qui nous amène au QCM. »`,
 
 OBJECTIF — Ancrer le réflexe de relire le diff des tests.
 
-DIRE — « Quand l’objectif est "tout au vert", modifier le test est un chemin valide pour l’agent. La règle d’équipe : le diff des tests se relit avant le diff du code. Écrivez-la dans vos instructions de test : c’est le premier fichier du TP 3. »
+DIRE — « Quand l’objectif est "tout au vert", modifier le test est un chemin valide pour l’agent. La règle d’équipe : le diff des tests se relit avant le diff du code. Écrivez-la dans vos instructions de test : c’est le premier fichier du TP 2. »
 
 ANIMATION — Vote à voix haute, clic sur la réponse majoritaire, → bonne réponse, → l’essentiel.
 
-TRANSITION — « TP 3, puis déjeuner. »`,
-  `⏱ 25 min (minuteur) · TP 3
+TRANSITION — « TP 2, puis déjeuner. »`,
+  `⏱ 25 min (minuteur) · TP 2
 
 OBJECTIF — Atelier du programme : à partir du module développé au module 2, générer une suite complète de tests unitaires, mocks et tests d’intégration.
 

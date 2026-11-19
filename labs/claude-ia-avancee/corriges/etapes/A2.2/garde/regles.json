@@ -1,0 +1,33 @@
+{
+  "$comment": "Règles de la garde (Atelier 2, étape A2.2). Chaque règle : un nom stable, un motif (expression régulière, drapeaux facultatifs), un message et la correction attendue. node guichet.mjs garde les applique au code de votre stack ; node guichet.mjs garde --cas les vérifie sur garde/cas/.",
+  "regles": [
+    {
+      "nom": "secret-en-dur",
+      "motif": "(ntn_|secret_|sk-ant-|ghp_|AKIA)[A-Za-z0-9_\\-]{8,}|(password|passwd|api[_-]?key|token)\\s*[:=]\\s*[\"'][^\"'\\s]{8,}[\"']",
+      "drapeaux": "i",
+      "message": "Secret littéral dans le code.",
+      "attendu": "lire la valeur depuis une variable d'environnement (NOTION_TOKEN, ANTHROPIC_API_KEY…)"
+    },
+    {
+      "nom": "reseau-non-prevu",
+      "motif": "https?://(?!localhost|127\\.0\\.0\\.1|api\\.anthropic\\.com|api\\.notion\\.com)[a-z0-9.-]+\\.[a-z]{2,}",
+      "drapeaux": "i",
+      "message": "Appel réseau vers un hôte non prévu.",
+      "attendu": "seuls localhost, api.anthropic.com et api.notion.com sont autorisés"
+    },
+    {
+      "nom": "sql-concatene",
+      "motif": "[f$][\"'][^\"'\\n]*\\b(SELECT\\s[^;\\n]*?\\bFROM|INSERT\\s+INTO|UPDATE\\s+\\w+\\s+SET|DELETE\\s+FROM)\\b[^\"'\\n]*\\{|\\b(SELECT\\s[^;\\n]*?\\bFROM|INSERT\\s+INTO|UPDATE\\s+\\w+\\s+SET|DELETE\\s+FROM)\\b[^;\\n]*(\\$\\{|[\"']\\s*\\+|\\+\\s*[\"']|\\$\")",
+      "drapeaux": "i",
+      "message": "Requête SQL construite par concaténation ou interpolation.",
+      "attendu": "requête paramétrée : placeholders ? (ou @nom) et valeurs passées à part"
+    },
+    {
+      "nom": "execution-dynamique",
+      "motif": "(?<![.\\w])(eval|exec)\\s*\\(|new\\s+Function\\s*\\(|Runtime\\.getRuntime\\(\\)\\.exec|CSharpScript\\.",
+      "drapeaux": "",
+      "message": "Exécution de code construit à l'exécution.",
+      "attendu": "une table de règles ou un switch explicite, jamais eval/exec sur une donnée"
+    }
+  ]
+}

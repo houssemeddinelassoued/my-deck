@@ -1,0 +1,4 @@
+date;cible;version;modele;stack;tests_verts;total;duree_s
+2026-11-16T10:31;normaliser;v1;haiku;ts;0;24;23
+2026-11-16T10:52;normaliser;v2;haiku;ts;23;24;71
+2026-11-16T11:04;normaliser;v3;sonnet;ts;24;24;122

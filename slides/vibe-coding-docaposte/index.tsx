@@ -549,6 +549,7 @@ const ICONS = {
   ),
   arrow: <path d="M4.5 12h15M13.5 6l6 6-6 6" />,
   plus: <path d="M12 5v14M5 12h14" />,
+  minus: <path d="M5 12h14" />,
   upload: (
     <>
       <path d="M12 16V4M7 9l5-5 5 5" />
@@ -1276,9 +1277,21 @@ const Range = ({
   />
 );
 
-type TimerRec = { total: number; left: number; t0: number | null };
+type TimerRec = { total: number; left: number; t0: number | null; base: number };
 const TIMERS = new Map<string, TimerRec>();
 const timerLeft = (r: TimerRec) => (r.t0 === null ? r.left : Math.max(0, r.left - (Date.now() - r.t0) / 1000));
+// Durations re-set from the presenter view (« Minuteurs ») live in localStorage,
+// per deck; other windows hear the storage event, this window the custom one.
+const OVERRIDES_KEY = `osd-timers:${SLIDE_ID}`;
+const OVERRIDES_EVENT = 'osd-timers';
+const readOverride = (id: string): number | null => {
+  try {
+    const n = JSON.parse(window.localStorage.getItem(OVERRIDES_KEY) ?? 'null')?.[id];
+    return typeof n === 'number' && n > 0 ? n : null;
+  } catch {
+    return null;
+  }
+};
 
 const Timer = ({
   id = 'default',
@@ -1300,11 +1313,29 @@ const Timer = ({
   const key = `${SLIDE_ID}:${id}:${minutes}`;
   let rec = TIMERS.get(key);
   if (!rec) {
-    rec = { total: minutes * 60, left: minutes * 60, t0: null };
+    rec = { total: minutes * 60, left: minutes * 60, t0: null, base: minutes };
     TIMERS.set(key, rec);
   }
   const r = rec;
   const [, tick] = useState(0);
+  const [override, setOverride] = useState<number | null>(() => readOverride(id));
+  useEffect(() => {
+    const sync = () => setOverride(readOverride(id));
+    window.addEventListener('storage', sync);
+    window.addEventListener(OVERRIDES_EVENT, sync);
+    return () => {
+      window.removeEventListener('storage', sync);
+      window.removeEventListener(OVERRIDES_EVENT, sync);
+    };
+  }, [id]);
+  const mins = override ?? minutes;
+  if (r.base !== mins) {
+    // Re-timed from the presenter view: shift the duration, keep what has elapsed.
+    const d = (mins - r.base) * 60;
+    r.total = Math.max(0, r.total + d);
+    r.left = Math.max(0, r.left + d);
+    r.base = mins;
+  }
   const running = r.t0 !== null;
   useEffect(() => {
     if (!running) return;
@@ -1327,13 +1358,27 @@ const Timer = ({
   };
   const reset = () => {
     r.t0 = null;
-    r.left = r.total;
+    r.total = mins * 60;
+    r.left = mins * 60;
+    r.base = mins;
+    tick((x) => x + 1);
+  };
+  const addMin = () => {
+    r.left = timerLeft(r) + 60;
+    if (r.t0 !== null) r.t0 = Date.now();
+    r.total = Math.max(r.total, r.left);
+    tick((x) => x + 1);
+  };
+  const subMin = () => {
+    r.left = Math.max(0, timerLeft(r) - 60);
+    if (r.t0 !== null) r.t0 = Date.now();
+    r.total = Math.max(r.left, r.total - 60);
     tick((x) => x + 1);
   };
   const done = left === 0;
   if (compact) {
     return (
-      <div className={cls} style={{ background: C.card, borderRadius: 18, boxShadow: SHADOW, padding: '16px 22px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', ...style }}>
+      <div className={cls} data-osd-timer={id} data-osd-timer-minutes={minutes} data-osd-timer-label={label} style={{ background: C.card, borderRadius: 18, boxShadow: SHADOW, padding: '16px 22px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', ...style }}>
         <div>
           <Eyebrow c={C.muted} size={17}>{label}</Eyebrow>
           <div style={{ fontFamily: mono, fontWeight: 700, fontSize: 44, lineHeight: 1.05, color: done ? C.coral : C.navy }}>
@@ -1342,18 +1387,26 @@ const Timer = ({
         </div>
         <div style={{ display: 'flex', gap: 8 }}>
           <Btn icon={running ? 'pause' : 'play'} size={20} onClick={toggle} />
+          <Btn icon="minus" ghost size={20} onClick={subMin} />
+          <Btn icon="plus" ghost size={20} onClick={addMin} />
           <Btn icon="reset" ghost tone="grey" size={20} onClick={reset} />
         </div>
       </div>
     );
   }
   return (
-    <div className={cls} style={{ display: 'flex', alignItems: 'center', gap: 18, ...style }}>
+    <div className={cls} data-osd-timer={id} data-osd-timer-minutes={minutes} data-osd-timer-label={label} style={{ display: 'flex', alignItems: 'center', gap: 18, ...style }}>
       <div style={{ fontFamily: mono, fontWeight: 700, fontSize: big ? 112 : 56, lineHeight: 1, letterSpacing: '0.02em', color: done ? C.coral : C.navy }}>
         {clock(left)}
       </div>
       <div style={{ display: 'flex', gap: 10 }}>
         <Btn icon={running ? 'pause' : 'play'} size={big ? 28 : 22} onClick={toggle} />
+        <Btn ghost size={big ? 28 : 22} onClick={subMin}>
+          −1 min
+        </Btn>
+        <Btn ghost size={big ? 28 : 22} onClick={addMin}>
+          +1 min
+        </Btn>
         <Btn icon="reset" ghost tone="grey" size={big ? 28 : 22} onClick={reset} />
       </div>
     </div>
@@ -2114,7 +2167,7 @@ const VibeLab = ({
         </div>
       </div>
       <div style={{ position: 'absolute', left: 1180, top: 234, width: 620, display: 'flex', flexDirection: 'column', gap: 16 }}>
-        <Timer id={`vibelab-${n}`} minutes={minutes} label={`Atelier ${n}`} compact cls={A.right} style={dl(150)} />
+        <Timer id={`vibelab-${n}-${minutes}`} minutes={minutes} label={`Atelier ${n}`} compact cls={A.right} style={dl(150)} />
         <div className={A.right} style={{ ...dl(260), background: C.card, borderRadius: 18, boxShadow: SHADOW, padding: '18px 22px' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 10 }}>
             <Icon name="checkCircle" size={24} color={T.green.fg} />
@@ -8658,3 +8711,35 @@ export const notes: (string | undefined)[] = [
   ...NOTES_M14,
 ];
 
+// @@TIMERS-BEGIN
+// Minuteurs de la deck — généré par scripts/timers-manifest.mjs (page = index 0-based).
+export const timers = [
+  { id: "vibelab-1.1-15", label: "Atelier 1.1", page: 18, minutes: 15 },
+  { id: "vibelab-2.1-20", label: "Atelier 2.1", page: 28, minutes: 20 },
+  { id: "pause-2-15", label: "Chronomètre", page: 29, minutes: 15 },
+  { id: "vibelab-3.1-20", label: "Atelier 3.1", page: 36, minutes: 20 },
+  { id: "pause-3-90", label: "Chronomètre", page: 38, minutes: 90 },
+  { id: "vibelab-4.1-20", label: "Atelier 4.1", page: 45, minutes: 20 },
+  { id: "vibelab-5.1-20", label: "Atelier 5.1", page: 51, minutes: 20 },
+  { id: "pause-5-15", label: "Chronomètre", page: 53, minutes: 15 },
+  { id: "vibelab-TP 1-20", label: "Atelier TP 1", page: 57, minutes: 20 },
+  { id: "tp1-twist", label: "Phase 2 · Twist", page: 58, minutes: 25 },
+  { id: "restit-j1", label: "Chronomètre", page: 59, minutes: 3 },
+  { id: "vibelab-7.1-35", label: "Atelier 7.1", page: 73, minutes: 35 },
+  { id: "pause-7-15", label: "Chronomètre", page: 74, minutes: 15 },
+  { id: "vibelab-8.1-35", label: "Atelier 8.1", page: 83, minutes: 35 },
+  { id: "pause-8-90", label: "Chronomètre", page: 85, minutes: 90 },
+  { id: "vibelab-9.1-35", label: "Atelier 9.1", page: 92, minutes: 35 },
+  { id: "pause-9-15", label: "Chronomètre", page: 93, minutes: 15 },
+  { id: "vibelab-TP 2-30", label: "Atelier TP 2", page: 98, minutes: 30 },
+  { id: "tp2-twist", label: "Phase 2 · Twist", page: 99, minutes: 30 },
+  { id: "restit-j2", label: "Chronomètre", page: 100, minutes: 3 },
+  { id: "pause-12-15", label: "Chronomètre", page: 119, minutes: 15 },
+  { id: "vibelab-12.1-50", label: "Atelier 12.1", page: 120, minutes: 50 },
+  { id: "pause-12-90", label: "Chronomètre", page: 122, minutes: 90 },
+  { id: "vibelab-TP Final-60", label: "Atelier TP Final", page: 126, minutes: 60 },
+  { id: "pause-13-15", label: "Chronomètre", page: 127, minutes: 15 },
+  { id: "vibelab-TP Final-25", label: "Atelier TP Final", page: 132, minutes: 25 },
+  { id: "restit-j3", label: "Chronomètre", page: 134, minutes: 5 },
+];
+// @@TIMERS-END

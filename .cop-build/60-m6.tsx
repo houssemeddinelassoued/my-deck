@@ -12,7 +12,7 @@ const M6_Divider: Page = () => (
     }
     sub="Conventions, pull requests, CI/CD, orchestration d’agents, mesure et charte : passer d’usages individuels à une pratique d’équipe."
     dur="15:40 – 16:40 · TP inclus"
-    labs={<Tag tone="green" size={19}>TP 6 · feature orchestrée</Tag>}
+    labs={<Tag tone="green" size={19}>TP 5 · feature orchestrée</Tag>}
   >
     <SecItem n={1}>Des conventions d’usage d’équipe</SecItem>
     <SecItem n={2}>Pull requests, revue de code et CI/CD</SecItem>
@@ -632,7 +632,7 @@ const M6_Qcm: Page = () => (
   </QcmPage>
 );
 
-// ─── TP 6 · projet de clôture ───────────────────────────────────────────────
+// ─── TP 5 · projet de clôture ───────────────────────────────────────────────
 const M6Feat = ({ icon, tone, title, children }: { icon: IconName; tone: Tone; title: string; children: ReactNode }) => (
   <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
     <IconTile name={icon} tone={tone} size={40} />
@@ -645,7 +645,7 @@ const M6Feat = ({ icon, tone, title, children }: { icon: IconName; tone: Tone; t
 const M6_TP: Page = () => (
   <LabPage
     mod={6}
-    n="6"
+    n="5"
     title="Projet de clôture : une feature orchestrée"
     defi="soutenance"
     who="Individuel · 2 ou 3 volontaires présentent"
@@ -667,10 +667,10 @@ const M6_TP: Page = () => (
     objective={<>Livrer une feature de {PROJECT} en orchestrant vos agents, en gardant la main aux deux décisions : le plan, puis le diff.</>}
     crit={
       <>
-        <CheckItem id="tp6-1" size={21}>Délégation par nom, deux points d’arrêt</CheckItem>
-        <CheckItem id="tp6-2" size={21}>Plan validé, tests rouges puis verts</CheckItem>
-        <CheckItem id="tp6-3" size={21}>Audit du diff fait, failles traitées</CheckItem>
-        <CheckItem id="tp6-4" size={21}>Diff des tests relu, PR décrite, CI verte</CheckItem>
+        <CheckItem id="tp5-1" size={21}>Délégation par nom, deux points d’arrêt</CheckItem>
+        <CheckItem id="tp5-2" size={21}>Plan validé, tests rouges puis verts</CheckItem>
+        <CheckItem id="tp5-3" size={21}>Audit du diff fait, failles traitées</CheckItem>
+        <CheckItem id="tp5-4" size={21}>Diff des tests relu, PR décrite, CI verte</CheckItem>
       </>
     }
   >
@@ -730,7 +730,7 @@ TRANSITION — « Vous avez écrit un agent par TP. Et si on les faisait travail
 
 OBJECTIF — Montrer un agent orchestrateur complet : outils, délégation par nom, points d’arrêt humains.
 
-DIRE — « Voici le fichier de votre TP 6. Un agent comme les autres, avec un outil de plus : agent, qui lui permet de solliciter d’autres agents comme sous-agents. Dans le harnais Copilot, il les appelle par leur nom exact, et chaque sous-agent travaille dans son propre contexte : il ne voit que la tâche confiée, et ne renvoie que son résultat. Lisez le corps : un plan d’abord, puis pour chaque lot les tests rouges, le code, l’audit. Le chef d’orchestre code lui-même, mais ne touche jamais aux tests. »
+DIRE — « Voici le fichier de votre TP 5. Un agent comme les autres, avec un outil de plus : agent, qui lui permet de solliciter d’autres agents comme sous-agents. Dans le harnais Copilot, il les appelle par leur nom exact, et chaque sous-agent travaille dans son propre contexte : il ne voit que la tâche confiée, et ne renvoie que son résultat. Lisez le corps : un plan d’abord, puis pour chaque lot les tests rouges, le code, l’audit. Le chef d’orchestre code lui-même, mais ne touche jamais aux tests. »
 → beat 1 « Ses quatre équipiers, et leurs droits : l’Architecte et l’Auditeur sont en lecture seule, ils ne peuvent rien casser. Le Testeur n’écrit que dans tests, le Documentaliste que dans la doc. »
 → beat 2 « Et les deux losanges verts : les deux moments où le chef d’orchestre s’arrête et vous rend la main. Le plan, puis le diff. Ce sont les deux lignes en vert dans le fichier : sans elles, l’agent enchaîne tout seul. »
 → beat 3 « Dans le Chat, chaque sous-agent apparaît replié avec son nom : dépliez-le pour voir ce qu’il a lu et rendu. Et si un ancien tutoriel vous fait écrire des handoffs, des boutons de relais : c’est l’ancien harnais Local, le harnais Copilot les ignore. »
@@ -783,7 +783,7 @@ DIRE — « Le taux d’acceptation est l’indicateur le plus visible du tablea
 ANIMATION — Vote à voix haute, clic sur la réponse majoritaire, → bonne réponse, → l’essentiel.
 
 TRANSITION — « Projet de clôture. »`,
-  `⏱ 25 min (minuteur) · TP 6
+  `⏱ 25 min (minuteur) · TP 5
 
 OBJECTIF — Projet de clôture du programme : livrer une feature complète (code, tests, documentation, sécurité) en orchestrant des agents, puis la présenter.
 

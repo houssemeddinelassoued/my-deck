@@ -16,6 +16,7 @@
 import { execSync } from 'node:child_process';
 import fs from 'node:fs';
 import path from 'node:path';
+import { finalizeDeck, writeDeck } from '../scripts/deck-features.mjs';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
@@ -160,7 +161,7 @@ if (mode === 'check') {
   const dir = path.join(BUILD, 'check');
   fs.mkdirSync(dir, { recursive: true });
   const base = path.basename(file, '.tsx');
-  fs.writeFileSync(path.join(dir, `${base}.tsx`), text);
+  fs.writeFileSync(path.join(dir, `${base}.tsx`), finalizeDeck(path.join(dir, `${base}.tsx`), text));
   fs.writeFileSync(
     path.join(dir, `tsconfig.${base}.json`),
     JSON.stringify({ extends: '../../tsconfig.json', include: [`./${base}.tsx`] }, null, 2),
@@ -181,7 +182,10 @@ if (mode === 'check') {
   if (pages !== notes) throw new Error(`pages (${pages}) ≠ notes (${notes})`);
   const dest = path.join(ROOT, 'slides', DECKS[day].id);
   fs.mkdirSync(dest, { recursive: true });
-  fs.writeFileSync(path.join(dest, 'index.tsx'), text);
+  writeDeck(path.join(dest, 'index.tsx'), text); // + saved design, client logo, MOD_START
+  // Minuteurs (presenter « Minuteurs ») : re-list the timers of the rebuilt deck.
+  // Upper-case drive letter, or Vite loads React twice (q:/ vs Q:/) and every page fails to render.
+  execSync(`node scripts/timers-manifest.mjs ${path.basename(dest)}`, { cwd: ROOT.replace(/^([a-z]):/, (_, d) => `${d.toUpperCase()}:`), stdio: 'inherit' });
   console.log(`→ slides/${DECKS[day].id}/index.tsx: ${pages} pages, ${text.split('\n').length} lines`);
   if (arg !== '--no-tsc') tsc(path.join(ROOT, 'tsconfig.json'), DECKS[day].id);
 } else if (mode === 'all') {
@@ -199,7 +203,9 @@ if (mode === 'check') {
   if (pages !== notes) throw new Error(`pages (${pages}) ≠ notes (${notes})`);
   const dest = path.join(ROOT, 'slides', FULL.id);
   fs.mkdirSync(dest, { recursive: true });
-  fs.writeFileSync(path.join(dest, 'index.tsx'), text);
+  writeDeck(path.join(dest, 'index.tsx'), text); // + saved design, client logo, MOD_START
+  // Minuteurs (presenter) : re-list the timers of the rebuilt deck (upper-case drive, see above).
+  execSync(`node scripts/timers-manifest.mjs ${FULL.id}`, { cwd: ROOT.replace(/^([a-z]):/, (_, d) => `${d.toUpperCase()}:`), stdio: 'inherit' });
   console.log(`→ slides/${FULL.id}/index.tsx: ${pages} pages (Jour 1: 1–${split}, Jour 2: ${split + 1}–${pages}), ${text.split('\n').length} lines`);
   if (arg !== '--no-tsc') tsc(path.join(ROOT, 'tsconfig.json'), FULL.id);
 } else if (mode === 'preview' || mode === 'unpreview') {
@@ -216,7 +222,7 @@ if (mode === 'check') {
   } else {
     const { text, pages } = assemble(day, [readPart(file)], cfg);
     fs.mkdirSync(dest, { recursive: true });
-    fs.writeFileSync(path.join(dest, 'index.tsx'), text);
+    writeDeck(path.join(dest, 'index.tsx'), text); // + saved design, client logo, MOD_START
     console.log(`preview → slides/${cfg.id}/index.tsx (${pages} pages)`);
     console.log(`screenshots: cd /c/Users/ASUS/AppData/Local/Temp/ia134pw && node shot.mjs ${cfg.id} ${cfg.p} ./${key} 1-${pages}`);
   }

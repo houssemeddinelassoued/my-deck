@@ -1,0 +1,15 @@
+{
+  "_lisezmoi": "Règle métier (Atelier 3, étape A3.4) : hors incident → P3 ; incident avec panne totale ou au moins 20 utilisateurs touchés → P1 ; sinon P1 pour un contrat « or », P2 pour les autres.",
+  "cas": [
+    { "faits": { "type": "incident", "panne_totale": true, "utilisateurs_touches": null }, "contrat": "bronze", "attendu": "P1" },
+    { "faits": { "type": "incident", "panne_totale": false, "utilisateurs_touches": 40 }, "contrat": "argent", "attendu": "P1" },
+    { "faits": { "type": "incident", "panne_totale": false, "utilisateurs_touches": 20 }, "contrat": "bronze", "attendu": "P1" },
+    { "faits": { "type": "incident", "panne_totale": false, "utilisateurs_touches": 19 }, "contrat": "bronze", "attendu": "P2" },
+    { "faits": { "type": "incident", "panne_totale": false, "utilisateurs_touches": 5 }, "contrat": "or", "attendu": "P1" },
+    { "faits": { "type": "incident", "panne_totale": false, "utilisateurs_touches": null }, "contrat": "argent", "attendu": "P2" },
+    { "faits": { "type": "incident", "panne_totale": false, "utilisateurs_touches": null }, "contrat": null, "attendu": "P2" },
+    { "faits": { "type": "question", "panne_totale": true, "utilisateurs_touches": 200 }, "contrat": "or", "attendu": "P3" },
+    { "faits": { "type": "devis", "panne_totale": false, "utilisateurs_touches": null }, "contrat": "or", "attendu": "P3" },
+    { "faits": { "type": "evolution", "panne_totale": false, "utilisateurs_touches": null }, "contrat": "bronze", "attendu": "P3" }
+  ]
+}

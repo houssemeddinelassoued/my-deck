@@ -217,14 +217,14 @@ const html = `<!doctype html><html lang="fr"><head><meta charset="utf-8"><title>
   ${logo}
   <div class="kicker">Formation · 1 jour · classe virtuelle</div>
   <h1>GitHub Copilot<br><span>niveau avancé</span></h1>
-  <p class="sub">Guide des 6 TP individuels · fil rouge SalleLibre<br>Instructions, skills, agents personnalisés et orchestration · 6 cheat sheets en annexe</p>
+  <p class="sub">Guide des 5 TP individuels · fil rouge SalleLibre<br>Instructions, skills, agents personnalisés et orchestration · 6 cheat sheets en annexe</p>
   <div class="who">Houssem Eddine LASSOUED · Docaposte Institute</div>
   <div class="foot">Version du 12 novembre 2026 · formats vérifiés sur code.visualstudio.com et docs.github.com le 11 novembre 2026</div>
 </section>
 <section class="intro">
   <h2>Mode d’emploi</h2>
   ${html2(intro['La journée'])}
-  <h3>Les 6 TP</h3>${html2(intro['Les 6 TP'])}
+  <h3>Les 5 TP</h3>${html2(intro['Les 5 TP'])}
   <h3>Votre dossier .github en fin de journée</h3>${html2(intro['Votre dossier .github en fin de journée'])}
   <h3>Règles du jeu</h3>${html2(intro['Règles du jeu'])}
 </section>

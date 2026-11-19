@@ -1,0 +1,33 @@
+{
+  "_lisezmoi": "24 cas de l'Atelier 1, partagés par les 4 stacks. Date de référence (aujourdhui) : 2026-11-14.",
+  "aujourdhui": "2026-11-14",
+  "cas": [
+    { "categorie": "telephone", "entree": "22 333 444", "attendu": "+21622333444" },
+    { "categorie": "telephone", "entree": "+216 22.333.444", "attendu": "+21622333444" },
+    { "categorie": "telephone", "entree": "00216 98 765 432", "attendu": "+21698765432" },
+    { "categorie": "telephone", "entree": "06 12 34 56 78", "attendu": "+33612345678" },
+    { "categorie": "telephone", "entree": "+216 (0) 71 234 567", "attendu": "+21671234567" },
+    { "categorie": "telephone", "entree": "12345", "attendu": null },
+
+    { "categorie": "email", "entree": " Sonia.Trabelsi@Medina-Retail.TN ", "attendu": "sonia.trabelsi@medina-retail.tn" },
+    { "categorie": "email", "entree": "karim.bensalah@atlas-industrie.tn", "attendu": "karim.bensalah@atlas-industrie.tn" },
+    { "categorie": "email", "entree": "ERIK@NORDICPARTS.EU", "attendu": "erik@nordicparts.eu" },
+    { "categorie": "email", "entree": "pas d'email", "attendu": null },
+    { "categorie": "email", "entree": "leila.haddad@carthage-assur", "attendu": null },
+    { "categorie": "email", "entree": "", "attendu": null },
+
+    { "categorie": "date_souhaitee", "entree": "2026-11-20", "attendu": "2026-11-20" },
+    { "categorie": "date_souhaitee", "entree": "20/12/2026", "attendu": "2026-12-20" },
+    { "categorie": "date_souhaitee", "entree": "20/11", "attendu": "2026-11-20" },
+    { "categorie": "date_souhaitee", "entree": "demain", "attendu": "2026-11-15" },
+    { "categorie": "date_souhaitee", "entree": "hier", "attendu": "2026-11-13" },
+    { "categorie": "date_souhaitee", "entree": "bientôt", "attendu": null },
+
+    { "categorie": "budget", "entree": "15 000 DT", "attendu": { "montant": 15000, "devise": "TND" } },
+    { "categorie": "budget", "entree": "1 500,50 DT", "attendu": { "montant": 1500.5, "devise": "TND" } },
+    { "categorie": "budget", "entree": "1.500,50 TND", "attendu": { "montant": 1500.5, "devise": "TND" } },
+    { "categorie": "budget", "entree": "2000 €", "attendu": { "montant": 2000, "devise": "EUR" } },
+    { "categorie": "budget", "entree": "3 500 euros", "attendu": { "montant": 3500, "devise": "EUR" } },
+    { "categorie": "budget", "entree": "à voir", "attendu": null }
+  ]
+}

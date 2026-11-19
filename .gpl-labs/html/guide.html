@@ -1,0 +1,416 @@
+<!doctype html><html lang="fr"><head><meta charset="utf-8"><title>Atelier 1 · Guide du participant</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Barlow+Condensed:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+@page { size: A4; margin: 16mm 16mm 18mm; }
+* { box-sizing: border-box; }
+:root { --ink:#2B2F33; --soft:#4B545B; --muted:#77818A; --faint:#AFB8C0; --rule:#DCE3E8; --panel:#EAF0F4;
+  --blue:#1F78C1; --teal:#22A6B3; --green:#3A9F45; --yellow:#FFD000; --amber:#E8A600; --coral:#E0573D; --violet:#6B57C9; }
+html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+body { margin:0; font-family: Barlow, Arial, sans-serif; font-size: 10.5pt; line-height: 1.45; color: var(--ink); }
+h1, h2, h3, .disp { font-family: 'Barlow Condensed', 'Arial Narrow', Arial, sans-serif; }
+h1 { font-size: 30pt; line-height: 1.05; margin: 0 0 8pt; }
+h2 { font-size: 19pt; line-height: 1.1; margin: 0 0 10pt; display:flex; align-items:center; gap:10pt; }
+h2 .n { flex:none; width: 26pt; height: 26pt; border-radius: 7pt; background: var(--yellow); color: var(--ink); display:inline-flex; align-items:center; justify-content:center; font-size: 15pt; }
+h3 { font-size: 13.5pt; margin: 14pt 0 5pt; color: var(--blue); break-after: avoid; }
+h2 { break-after: avoid; }
+p { margin: 0 0 7pt; }
+ul, ol { margin: 0 0 8pt; padding-left: 16pt; } li { margin: 2pt 0; }
+.np { break-before: page; }
+.keep { break-inside: avoid; }
+.eyebrow { font-family: 'Barlow Condensed', Arial, sans-serif; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; font-size: 9.5pt; color: var(--blue); }
+.muted { color: var(--muted); } .small { font-size: 9pt; }
+.lede { font-size: 12pt; color: var(--soft); margin-bottom: 12pt; }
+.box { border-radius: 8pt; padding: 9pt 12pt; margin: 8pt 0 10pt; break-inside: avoid; }
+.box > b:first-child, .box .t { display:block; font-family:'Barlow Condensed', Arial, sans-serif; font-weight:700; font-size: 10pt; letter-spacing:.1em; text-transform: uppercase; margin-bottom: 3pt; }
+.tip { background: #E3EFF9; } .tip .t { color: var(--blue); }
+.warn { background: #FBE3DD; } .warn .t { color: #B23A22; }
+.ok { background: #E3F2E5; } .ok .t { color: #2A7A33; }
+.note { background: #FFF6CC; } .note .t { color: #8A6A00; }
+.prompt { background: #fff; border: 1.2pt solid var(--rule); border-left: 4pt solid var(--blue); border-radius: 6pt; padding: 8pt 12pt; margin: 6pt 0 10pt; break-inside: avoid; }
+.prompt .t { color: var(--blue); font-family:'Barlow Condensed', Arial, sans-serif; font-weight:700; font-size:9.5pt; letter-spacing:.1em; text-transform:uppercase; margin-bottom: 3pt; display:block; }
+.prompt .slot { font-family: 'JetBrains Mono', Consolas, monospace; font-size: 9pt; color: var(--muted); }
+table { width: 100%; border-collapse: collapse; margin: 6pt 0 10pt; break-inside: avoid; }
+th { background: var(--blue); color: #fff; text-align: left; font-weight: 600; font-size: 9.5pt; padding: 5pt 7pt; }
+td { border-bottom: 1pt solid var(--rule); padding: 5pt 7pt; vertical-align: top; }
+tr.alt td { background: #F6F9FB; }
+td.blank { height: 22pt; }
+.k { font-weight: 700; color: var(--blue); white-space: nowrap; }
+.check { list-style: none; padding-left: 0; } .check li { padding-left: 20pt; position: relative; margin: 4pt 0; }
+.check li::before { content: ''; position: absolute; left: 0; top: 2pt; width: 11pt; height: 11pt; border: 1.3pt solid var(--soft); border-radius: 2.5pt; }
+.x2 { display:inline-block; font-size: 8pt; font-weight:700; color:#fff; background: var(--coral); border-radius: 3pt; padding: 0 4pt; margin-left: 4pt; }
+.grid2 { display:grid; grid-template-columns: 1fr 1fr; gap: 10pt; }
+.card { border: 1pt solid var(--rule); border-radius: 8pt; padding: 8pt 10pt; break-inside: avoid; }
+.card h4 { margin: 0 0 3pt; font-family:'Barlow Condensed', Arial, sans-serif; font-size: 12pt; }
+.tag { display:inline-block; font-size: 8.5pt; font-weight: 600; padding: 0 6pt; border-radius: 99pt; background: var(--panel); color: var(--soft); }
+.fict { font-size: 8.5pt; color: var(--muted); border: 1pt dashed var(--faint); border-radius: 4pt; padding: 2pt 6pt; display: inline-block; }
+code { font-family: 'JetBrains Mono', Consolas, monospace; font-size: 8.8pt; background: var(--panel); padding: 0 3pt; border-radius: 3pt; }
+
+.cover { height: 255mm; display:flex; flex-direction:column; }
+.cover .band { margin-top: 28mm; border-left: 6pt solid var(--yellow); padding-left: 16pt; }
+.cover h1 { font-size: 40pt; margin: 6pt 0 10pt; }
+.cover .sub { font-size: 14pt; color: var(--soft); max-width: 150mm; }
+.cover .meta { margin-top: 18mm; display:grid; grid-template-columns: 1fr 1fr; gap: 10pt; }
+.cover .foot { margin-top: auto; display:flex; justify-content: space-between; align-items: flex-end; color: var(--muted); font-size: 9.5pt; }
+.files li { margin: 3pt 0; }
+.files b { font-family: 'JetBrains Mono', Consolas, monospace; font-size: 8.8pt; font-weight: 500; }
+.toc { columns: 2; column-gap: 14pt; padding-left: 14pt; } .toc li { break-inside: avoid; }
+.steps td:first-child { width: 22%; } .steps td:nth-child(2) { width: 11%; white-space: nowrap; }
+</style></head><body>
+<section class="cover">
+  <img src="data:image/png;base64,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" alt="Technologia" style="height:34pt;align-self:flex-start;mix-blend-mode:multiply">
+  <div class="band">
+    <div class="eyebrow">IA124 · IA appliquée à la gestion de projet · Jour 1</div>
+    <h1>Atelier 1<br>Lancer un projet avec l’IA</h1>
+    <div class="sub">Guide du participant : du dossier des ventes au plan du projet du Centre sportif de Montréal, puis une boîte de réception à reprendre en main.</div>
+  </div>
+  <div class="meta">
+    <div class="card"><h4>Format</h4>Classe virtuelle · atelier <b>individuel</b>, chacun sur son poste · ≈ 1 h 45 : une courte démonstration, puis votre travail, étape par étape.</div>
+    <div class="card"><h4>Outils</h4>Copilot avec votre compte Lessard (Outlook et Copilot Chat). Puis Excel, Planner ou Smartsheet. Claude en option.</div>
+    <div class="card" style="grid-column: span 2"><h4>Dans votre paquet</h4>
+      <ul class="files" style="margin:0">
+        <li><b>Atelier1-Guide-participant.pdf</b> · ce guide : toutes les consignes et les demandes à copier</li>
+        <li><b>Atelier1-Dossier-transmis-par-Eric.pdf</b> · le dossier des ventes : courriel d’Éric, fiche de transfert, calendrier, intervenants</li>
+        <li><b>Soumission_Montreal.pdf</b> · la soumission signée (à joindre à Copilot Chat)</li>
+        <li><b>Atelier1-Courriels-boite-de-Mathieu.pdf</b> · 8 courriels, une page par courriel (étape 4)</li>
+        <li><b>Atelier1-Modele-suivi-des-taches.xlsx</b> · modèle Excel : tâches et échéancier, risques, RACI</li>
+      </ul>
+    </div>
+  </div>
+  <div class="foot"><span>Préparé pour le Groupe Lessard · Formateur : Houssem Eddine Lassoued</span><span class="fict">Cas fictif de formation</span></div>
+</section>
+
+<section class="np">
+  <h2>Sommaire</h2>
+  <ol class="toc">
+    <li>Avant de commencer</li><li>Votre mission et le livrable</li><li>Le cas en bref</li><li>Une bonne demande en cinq ingrédients</li>
+    <li>Étape 1 · Découvrir l’outil</li><li>Étape 2 · Cadrer : la fiche de démarrage</li><li>Étape 3 · Planifier</li>
+    <li>Étape 4 · Trier la boîte de réception et relancer</li><li>Étape 5 · Vérifier et présenter</li><li>Parcours adjointe</li>
+    <li>Pour aller plus loin : votre mini-outil de suivi</li><li>Coincé ?</li><li>Annexes : modèles et glossaire</li>
+  </ol>
+
+  <h2 style="margin-top:14pt"><span class="n">1</span>Avant de commencer</h2>
+  <h3>Installez-vous (5 minutes)</h3>
+  <ul class="check">
+    <li>Deux fenêtres côte à côte : la classe virtuelle d’un côté, Copilot de l’autre. Idéalement, deux écrans.</li>
+    <li>Ouvrez Copilot Chat (application Microsoft 365 Copilot, Teams ou Edge) et connectez-vous avec votre <b>compte Lessard</b>.</li>
+    <li>Vérifiez le <b>bouclier vert</b> près de la zone de saisie : il indique la protection des données de l’entreprise. Pas de bouclier : n’y mettez aucun dossier client.</li>
+    <li>Ouvrez les fichiers du paquet. Gardez ce guide ouvert : toutes les demandes à copier y sont.</li>
+    <li>Ouvrez le modèle Excel si vous comptez l’utiliser (étape 3).</li>
+  </ul>
+  <h3>Comment se passe l’atelier à distance</h3>
+  <ul>
+    <li><b>Individuel</b> : chacun travaille seul, sur son poste, micro coupé. Le formateur ne voit pas votre écran.</li>
+    <li>Le formateur montre chaque étape en quelques minutes, puis lance <b>le minuteur de l’étape</b> : 5, 10, 25, 10 et 5 minutes.</li>
+    <li><b>Un point d’étape</b> de 3 minutes à la fin de chaque étape : où en êtes-vous, qu’a raté l’IA ? Répondez au micro.</li>
+    <li>Bloqué ? Dites-le au micro ou dans le Chat. Le formateur peut vous demander de partager votre écran 2 minutes.</li>
+    <li>À la fin, <b>2 ou 3 volontaires</b> partagent leur écran 2 minutes. Les autres peuvent déposer une capture dans le Chat.</li>
+  </ul>
+  <div class="box warn"><span class="t">Les données : la règle qui ne se discute pas</span>Le cas de l’atelier est <b>fictif</b>. Sur vos vrais projets : uniquement les outils approuvés par Lessard, avec votre compte Lessard. Jamais de soumission, de prix, de nom de client ou de courriel client dans un compte personnel (ChatGPT, Gemini, Claude personnels).</div>
+
+  <h2 class="np"><span class="n">2</span>Votre mission et le livrable</h2>
+  <p class="lede">Vous êtes <b>Mathieu, chargé de projet</b>. Ce lundi 16 novembre, Éric (ventes) vous transmet le dossier du Centre sportif de Montréal. Vous devez lancer le projet cette semaine… entre douze autres projets. Puis, à la mi-décembre, reprendre en main votre boîte de réception.</p>
+  <div class="grid2">
+    <div class="card"><h4>Le livrable</h4>
+      <ul style="margin:0">
+        <li>Une fiche de démarrage d’une page, avec les points à clarifier</li>
+        <li>Un plan de 6 à 8 étapes, des tâches datées avec un responsable</li>
+        <li>3 jalons et le chemin critique</li>
+        <li>5 risques avec une mesure chacun</li>
+        <li>Une RACI vérifiée (un seul A par ligne)</li>
+        <li>Les tâches <b>dans un outil de suivi</b>, pas dans une conversation</li>
+        <li>La boîte de réception triée et une relance prête à envoyer</li>
+      </ul>
+    </div>
+    <div class="card"><h4>La règle d’or</h4>
+      <p>L’IA va vite pour structurer, résumer et proposer. Elle se trompe sur ce qui demande de connaître la réalité : délais, dépendances, responsabilités, promesses faites au client.</p>
+      <p style="margin:0"><b>Vous vérifiez tout</b>, ligne par ligne, avec le dossier et le calendrier réel.</p>
+    </div>
+  </div>
+  <h3>Le déroulé</h3>
+  <table class="steps">
+    <tr><th>Étape</th><th>Durée</th><th>Ce que vous faites</th><th>Résultat</th></tr>
+    <tr><td><b>1 · Découvrir</b></td><td>15 min</td><td>Démonstration de Copilot dans Outlook et de Copilot Chat, puis 5 minutes d’essai avec la soumission jointe.</td><td>Vous savez joindre un document et l’interroger.</td></tr>
+    <tr class="alt"><td><b>2 · Cadrer</b></td><td>10 min</td><td>Le dossier d’Éric en une fiche de démarrage.</td><td>Fiche + questions pour Éric.</td></tr>
+    <tr><td><b>3 · Planifier</b></td><td>25 min</td><td>Découpage, échéancier, risques, RACI, puis l’outil de suivi.</td><td>Le plan dans Excel, Planner, Smartsheet…</td></tr>
+    <tr class="alt"><td><b>4 · Trier et relancer</b></td><td>10 min</td><td>Les 8 courriels de Mathieu : votre tri, puis celui de Copilot. Une relance.</td><td>Boîte triée, relance prête.</td></tr>
+    <tr><td><b>5 · Vérifier et présenter</b></td><td>15 min</td><td>Grille de contrôle, puis partage d’écran de 2 ou 3 volontaires.</td><td>Plan prêt à présenter à Hélène.</td></tr>
+    <tr class="alt"><td><b>Option</b></td><td>—</td><td>Pour les plus rapides : votre propre mini-outil de suivi, généré par l’IA (section 11).</td><td>Un prototype personnel.</td></tr>
+  </table>
+  <p class="small muted">Chaque étape a son minuteur, puis un point d’étape. Si vous manquez de temps, priorité : la fiche (étape 2), l’échéancier en tableau (3b) et le tri (étape 4).</p>
+
+  <h2 class="np"><span class="n">3</span>Le cas en bref</h2>
+  <p class="lede">Le Centre sportif de Montréal est un projet fictif, mais il devrait vous sembler familier : un bâtiment institutionnel, un entrepreneur général, un architecte, et votre lot, l’enveloppe en aluminium et verre.</p>
+  <table>
+    <tr><th style="width:26%">Élément</th><th>Ce que dit le dossier</th></tr>
+    <tr><td class="k">Objet</td><td>Lot enveloppe : mur-rideau du hall (420 m²), 46 fenêtres, 6 portes d’entrée, 1 verrière.</td></tr>
+    <tr class="alt"><td class="k">Contrat</td><td>1,2 M$ avec Construction Boréa (entrepreneur général, « l’EG »). Propriétaire : Ville de Rivière-Claire. Architecte : Atelier Mercier.</td></tr>
+    <tr><td class="k">Départ</td><td>Lundi 16 novembre 2026.</td></tr>
+    <tr class="alt"><td class="k">Échéance</td><td>Bâtiment fermé le vendredi 28 mai 2027. Structure d’acier terminée vers le 15 mars.</td></tr>
+    <tr><td class="k">Délais</td><td>Dessins d’atelier : 3 semaines, puis 10 jours ouvrables d’approbation. Verre : 8 semaines après la commande.</td></tr>
+    <tr class="alt"><td class="k">Contraintes</td><td>Usine et chantier fermés 2 semaines aux Fêtes (21 décembre au 1er janvier). Relevés au chantier une fois la structure terminée.</td></tr>
+    <tr><td class="k">Déjà connu</td><td>Exclus : calfeutrage intérieur, stores. Éric a promis à Boréa une pose du hall « dès mars ».</td></tr>
+  </table>
+  <h3>L’équipe du projet</h3>
+  <div class="grid2">
+    <div class="card"><h4>Chez Lessard</h4>
+      <ul style="margin:0">
+        <li><b>Mathieu</b> · chargé de projet (vous)</li>
+        <li><b>Hélène</b> · directrice de projets</li>
+        <li><b>Nadia</b> · adjointe chargée de projet</li>
+        <li><b>Éric</b> · représentant des ventes</li>
+        <li><b>Patrice</b> · contremaître d’installation</li>
+      </ul></div>
+    <div class="card"><h4>À l’externe</h4>
+      <ul style="margin:0">
+        <li><b>Construction Boréa</b> · entrepreneur général</li>
+        <li><b>Atelier Mercier</b> · architecte</li>
+        <li><b>Ville de Rivière-Claire</b> · propriétaire</li>
+        <li><b>Vitrerie Laurentienne</b> · fournisseur du verre</li>
+        <li><b>Panneaux Nordik</b> · panneaux d’allège</li>
+      </ul></div>
+  </div>
+  <div class="box tip"><span class="t">Le dossier complet</span>Les détails (courriel d’Éric, fiche de transfert, calendrier, contacts, notes de la rencontre avec Boréa) sont dans <b>Atelier1-Dossier-transmis-par-Eric.pdf</b>. À la fin de ce dossier, un <b>résumé prêt à coller</b> si Copilot ne lit pas le PDF.</div>
+
+  <h2 class="np"><span class="n">4</span>Une bonne demande en cinq ingrédients</h2>
+  <p class="lede">Plus l’IA a de contexte, moins elle invente. Toutes les demandes de ce guide suivent cette recette.</p>
+  <table>
+    <tr><th style="width:18%">Ingrédient</th><th style="width:38%">La question</th><th>Exemple</th></tr>
+    <tr><td class="k">Rôle</td><td>Qui doit-elle être ?</td><td>« Tu es chargé de projet chez un fabricant-installateur d’enveloppe en aluminium et verre. »</td></tr>
+    <tr class="alt"><td class="k">Contexte</td><td>Que doit-elle savoir ? (l’ingrédient le plus oublié)</td><td>Le dossier, les dates, ce qui s’est passé, l’impact.</td></tr>
+    <tr><td class="k">Tâche</td><td>Que doit-elle faire, précisément ?</td><td>« Rédige la fiche de démarrage. »</td></tr>
+    <tr class="alt"><td class="k">Format</td><td>Sous quelle forme ?</td><td>« En une page », « en tableau : Tâche | Responsable | Fin ».</td></tr>
+    <tr><td class="k">Contraintes</td><td>Quelles limites ?</td><td>« Utilise seulement les dates du dossier », « 6 lignes maximum ».</td></tr>
+  </table>
+  <h3>Trois réflexes qui changent tout</h3>
+  <div class="grid2">
+    <div class="card"><h4>« Signale ce qui manque ou se contredit. »</h4>L’IA liste les questions à poser au lieu d’inventer les réponses.</div>
+    <div class="card"><h4>« Pose-moi d’abord tes questions. »</h4>Avant une tâche floue : elle vous demande ce qui lui manque.</div>
+    <div class="card"><h4>« Quelles dates as-tu supposées ? »</h4>Après un plan : elle avoue souvent ses hypothèses.</div>
+    <div class="card"><h4>Relancer, préciser, corriger</h4>La qualité vient de la conversation : « plus court », « en tableau », « tu as oublié les Fêtes ».</div>
+  </div>
+  <div class="box note"><span class="t">Pourquoi vérifier</span>L’IA prédit le mot le plus probable, pas le vrai. Un délai « typique », une norme, une quantité : elle peut les inventer avec aplomb.</div>
+
+  <h2 class="np"><span class="n">5</span>Étape 1 · Découvrir l’outil <span class="tag">15 min</span></h2>
+  <p class="lede">Le formateur montre deux façons d’utiliser Copilot. Ensuite, 5 minutes pour essayer vous-même.</p>
+  <h3>A · Copilot dans Outlook (licence Microsoft 365 Copilot)</h3>
+  <table>
+    <tr><th style="width:30%">Où</th><th>À quoi ça sert</th></tr>
+    <tr><td class="k">« Résumer » en haut d’un courriel</td><td>L’essentiel d’un long fil (14 messages avec l’architecte, par exemple) et ce qui reste ouvert.</td></tr>
+    <tr class="alt"><td class="k">« Brouillon avec Copilot »</td><td>Vous décrivez la réponse en une phrase, il rédige. Vous relisez, vous corrigez, vous envoyez.</td></tr>
+    <tr><td class="k">Accompagnement</td><td>Il relit votre propre courriel : ton, clarté, ce qui pourrait irriter. Utile avant un courriel délicat.</td></tr>
+    <tr class="alt"><td class="k">Le volet Copilot, à droite</td><td>Des questions sur vos courriels : « Quels courriels de Boréa attendent encore ma réponse ? »</td></tr>
+  </table>
+  <p class="small muted">Sans cette licence : copiez le texte du courriel dans Copilot Chat. C’est moins fluide, mais ça marche.</p>
+  <h3>B · Copilot Chat avec un document joint (tous les comptes Lessard)</h3>
+  <ol>
+    <li>Dans Copilot Chat, cliquez sur le trombone (ou « + ») et joignez <b>Soumission_Montreal.pdf</b>.</li>
+    <li>Posez la question :</li>
+  </ol>
+  <div class="prompt"><span class="t">Votre demande à copier</span>Résume ce dossier pour le chargé de projet : périmètre, exclusions, dates, promesses faites au client.</div>
+  <ol start="3"><li>Puis la relance la plus utile :</li></ol>
+  <div class="prompt"><span class="t">Votre demande à copier</span>Qu’est-ce qui manque pour lancer le projet ? Pose-moi tes questions.</div>
+  <ol start="4"><li>Notez les questions qu’elle vous renvoie : vous en aurez besoin à l’étape 2.</li></ol>
+  <div class="box tip"><span class="t">Et avec Claude ?</span>Si vous avez un compte Claude : un « projet » garde les documents et vos consignes d’une conversation à l’autre. Pratique pour un dossier qui dure six mois. Faites la même demande et comparez.</div>
+
+  <h2 class="np"><span class="n">6</span>Étape 2 · Cadrer : la fiche de démarrage <span class="tag">10 min</span></h2>
+  <p class="lede">Le passage de la vente au projet, c’est là que se perdent les promesses. Une fiche d’une page, relue par Éric, évite bien des surprises.</p>
+  <ol>
+    <li>Joignez <b>Atelier1-Dossier-transmis-par-Eric.pdf</b> et <b>Soumission_Montreal.pdf</b> à Copilot Chat (ou collez le résumé de la dernière page du dossier).</li>
+    <li>Copiez la demande :</li>
+  </ol>
+  <div class="prompt"><span class="t">Votre demande à copier</span>Tu es chargé de projet chez un fabricant-installateur d’enveloppe en aluminium et verre. À partir du dossier transmis par les ventes (fichiers joints), rédige la fiche de démarrage du projet en une page : périmètre (inclus / exclu), dates clés, intervenants, engagements pris envers le client. Signale ce qui manque ou se contredit, sous forme de questions à poser à Éric.</div>
+  <ol start="3">
+    <li>Relisez la fiche avec le dossier sous les yeux : toutes les exclusions y sont ? Les dates sont-elles celles du dossier ?</li>
+    <li>Gardez les « points à clarifier » : ce sont vos questions pour Éric. Ce n’est pas à l’IA de trancher.</li>
+  </ol>
+  <div class="box note"><span class="t">Cherchez la contradiction</span>Une promesse a été faite à Boréa. Est-elle tenable, compte tenu des autres dates du dossier ? Est-elle écrite au contrat ? Si la fiche ne le signale pas, demandez-le : « Les engagements d’Éric sont-ils compatibles avec les dates du dossier ? »</div>
+  <p class="small muted">Un modèle de fiche vide est en annexe A, si vous voulez comparer la structure.</p>
+
+  <h2 class="np"><span class="n">7</span>Étape 3 · Planifier <span class="tag">25 min</span></h2>
+  <p class="lede">Quatre demandes dans la même conversation (l’IA garde le contexte), puis le transfert dans un outil de suivi.</p>
+  <h3>3a · Le découpage</h3>
+  <div class="prompt"><span class="t">Votre demande à copier</span>Découpe le lot enveloppe en 6 à 8 étapes, puis chaque étape en tâches de 1 à 2 semaines. Présente le résultat en liste numérotée.</div>
+  <p><b>Complétez ce que l’IA oublie.</b> Posez-vous ces questions : où est le travail du chargé de projet lui-même (réunions, rapports, avis de modification) ? Les approbations du client (échantillons, maquette) ? Les essais ? La fermeture (déficiences, documents de fin, garanties) ? Les moyens au chantier (grue, accès) ?</p>
+  <h3>3b · L’échéancier et ses jalons</h3>
+  <div class="prompt"><span class="t">Votre demande à copier</span>Place ces tâches sur 28 semaines, du lundi 16 novembre 2026 au vendredi 28 mai 2027, avec les dépendances, 3 jalons et le chemin critique. Respecte les délais du dossier (dessins d’atelier 3 semaines, approbation 10 jours ouvrables, verre 8 semaines après la commande) et la fermeture de l’usine et du chantier du 21 décembre au 1er janvier. Présente un tableau avec exactement ces colonnes : Étape | Tâche | Responsable | Début | Fin | Statut | Dépendance. Dates au format AAAA-MM-JJ, statut « À faire », un seul responsable par tâche parmi Mathieu, Hélène, Nadia, Éric, Patrice.</div>
+  <p>Puis, toujours :</p>
+  <div class="prompt"><span class="t">La question de contrôle</span>Quelles dates as-tu supposées ? Lesquelles ne viennent pas du dossier ? Quel est le chemin critique, et quelle marge reste-t-il avant le 28 mai ?</div>
+  <h3>3c · Les risques</h3>
+  <div class="prompt"><span class="t">Votre demande à copier</span>Liste 6 risques pour ce projet. Pour chacun : probabilité (1 à 3), impact (1 à 3), une mesure concrète et un responsable. Présente un tableau : Risque | Probabilité | Impact | Mesure | Responsable.</div>
+  <p>L’IA est excellente pour proposer des risques auxquels vous n’aviez pas pensé. Mais la probabilité et l’impact sont un <b>jugement</b> : c’est votre expérience qui les fixe.</p>
+  <h3>3d · Qui fait quoi : la RACI</h3>
+  <div class="prompt"><span class="t">Votre demande à copier</span>Propose une matrice RACI pour ces six activités : revue du contrat, dessins d’atelier, commandes et livraisons, classement et suivis, pose au chantier, liste de déficiences. Présente un tableau : Tâche | Mathieu | Hélène | Nadia | Éric | Patrice. R réalise, A approuve, C est consulté, I est informé. Une seule lettre A par ligne.</div>
+  <div class="box warn"><span class="t">À vérifier ligne par ligne</span>Un seul A par ligne (qui tranche ?). Au moins un A par ligne (qui approuve ?). Et surtout : l’IA ne connaît pas votre organisation. Qui a vraiment l’autorité chez Lessard ? La RACI se valide avec les personnes concernées.</div>
+
+  <h3 class="np">3e · Du plan aux tâches : dans l’outil, pas dans un document</h3>
+  <p class="lede">Un plan qui reste dans une conversation ne se suit pas. Choisissez votre outil :</p>
+  <table>
+    <tr><th style="width:20%">Outil</th><th>Comment faire</th></tr>
+    <tr><td class="k">Excel (modèle fourni)</td><td>Ouvrez <b>Atelier1-Modele-suivi-des-taches.xlsx</b>. Copiez le tableau de l’étape 3b (bouton « Copier » sous la réponse) et collez-le dans la feuille <b>Tâches</b>, cellule <b>B5</b>. L’échéancier semaine par semaine se colore tout seul, les Fêtes sont grisées, les tâches en retard passent en rouge. Faites de même dans <b>Risques</b> (collez en B5) et <b>RACI</b> (collez en A5) : la colonne Contrôle signale une ligne sans A ou avec deux A.</td></tr>
+    <tr class="alt"><td class="k">Planner</td><td>Si votre licence le permet : demandez à Copilot dans Planner de créer le plan à partir de votre objectif, puis comparez avec votre tableau. Sinon, créez un plan et ajoutez les tâches (responsable, date d’échéance) à partir du tableau. La vue Chronologie affiche l’échéancier.</td></tr>
+    <tr><td class="k">Smartsheet</td><td>Remplissez d’abord le modèle Excel, puis dans Smartsheet : <i>Importer › Microsoft Excel</i>, feuille <b>Tâches</b>. La vue Gantt affiche l’échéancier dès que les tâches ont des dates.</td></tr>
+    <tr class="alt"><td class="k">Votre mini-outil</td><td>En option, pour les plus rapides : faites générer par l’IA votre propre outil de suivi (section 11).</td></tr>
+  </table>
+  <div class="box tip"><span class="t">Si le tableau se colle mal dans Excel</span>Demandez : « Donne-moi le même tableau au format CSV, séparateur point-virgule, dates AAAA-MM-JJ. » Copiez le texte, collez-le en B5, puis <i>Données › Convertir</i> avec le point-virgule comme séparateur.</div>
+  <div class="box ok"><span class="t">La valeur</span>Chaque tâche a un responsable et une date : demain, au jour 2, l’IA pourra suivre l’avancement et alerter avant que le retard n’arrive.</div>
+
+  <h2 class="np"><span class="n">8</span>Étape 4 · Trier la boîte de réception et relancer <span class="tag">10 min</span></h2>
+  <p class="lede">Nous sommes le <b>mercredi 16 décembre</b>. Ouvrez <b>Atelier1-Courriels-boite-de-Mathieu.pdf</b> : huit courriels, une page par courriel.</p>
+  <h3>a · D’abord vous</h3>
+  <p>Pour chaque courriel, décidez où il va : <b>À traiter</b> (aujourd’hui, par Mathieu) · <b>À Nadia</b> (à transférer, avec la consigne) · <b>À relancer</b> (on attend une réponse) · <b>À classer</b> (dans le dossier du projet).</p>
+  <table>
+    <tr><th style="width:6%">N°</th><th style="width:40%">Courriel</th><th>Votre choix</th><th>Choix de Copilot</th><th>Écart ? Pourquoi ?</th></tr>
+    <tr><td>1</td><td>Boréa · Date de pose du mur-rideau du hall ?</td><td class="blank"></td><td></td><td></td></tr>
+    <tr><td>2</td><td>Boréa · Certificat d’assurance à fournir</td><td class="blank"></td><td></td><td></td></tr>
+    <tr><td>3</td><td>Vous · Dessins MR-01 pour approbation (7 déc.)</td><td class="blank"></td><td></td><td></td></tr>
+    <tr><td>4</td><td>Vitrerie Laurentienne · Bordereau de livraison 4471</td><td class="blank"></td><td></td><td></td></tr>
+    <tr><td>5</td><td>Ville de Rivière-Claire · Formulaire d’accès au chantier</td><td class="blank"></td><td></td><td></td></tr>
+    <tr><td>6</td><td>Patrice · Écart de 40 mm à l’axe C</td><td class="blank"></td><td></td><td></td></tr>
+    <tr><td>7</td><td>Boréa · Liste des contacts du chantier (rév. 3)</td><td class="blank"></td><td></td><td></td></tr>
+    <tr><td>8</td><td>Vous · Prix des panneaux d’allège (4 déc.)</td><td class="blank"></td><td></td><td></td></tr>
+  </table>
+  <h3>b · Puis Copilot</h3>
+  <p>Joignez le PDF des courriels à Copilot Chat (ou copiez-collez leur texte), puis :</p>
+  <div class="prompt"><span class="t">Votre demande à copier</span>Voici les 8 courriels de ma boîte de réception de chargé de projet. Classe-les en quatre groupes : à traiter aujourd’hui par moi, à transférer à Nadia (mon adjointe) avec la consigne, à relancer, à classer dans le dossier du projet. Pour chacun, une ligne de justification. Pour ceux à transférer, rédige la consigne à Nadia en une phrase. Présente un tableau.</div>
+  <p><b>Comparez</b> avec votre propre tri. Les écarts sont intéressants : la règle de transfert dépend de votre équipe (c’est ce qu’on écrira au jour 2). Vérifiez surtout la colonne « à traiter » : un courriel urgent mal classé coûte cher.</p>
+  <h3>c · Une relance prête à envoyer</h3>
+  <div class="prompt"><span class="t">Votre demande à copier</span>Tu es chargé de projet chez un fabricant-installateur d’enveloppe en aluminium et verre. Le lundi 7 décembre, j’ai soumis à l’architecte (Atelier Mercier) les dessins d’atelier du mur-rideau du hall, MR-01, pour approbation. Aucune réponse depuis. Le devis prévoit 10 jours ouvrables d’approbation : sans approbation d’ici le lundi 21 décembre, la commande du verre (8 semaines de délai) passe après les Fêtes et menace le bâtiment fermé du 28 mai. Rédige une relance courtoise mais ferme : un objet clair, 6 lignes maximum, la date de réponse attendue. Prévois Construction Boréa en copie, pour information.</div>
+  <p>Relisez : les dates sont-elles exactes ? Le ton convient-il à votre relation avec cet architecte ? Rien d’inventé (une pénalité, une clause) ? Demandez une version plus courte ou plus ferme si besoin.</p>
+
+  <h2 class="np"><span class="n">9</span>Étape 5 · Vérifier et présenter <span class="tag">15 min</span></h2>
+  <h3>La grille de contrôle</h3>
+  <p>Passez votre plan à la grille. Comptez vos points (les critères ×2 valent 2 points) : <b>0 à 5</b> premier jet à retravailler · <b>6 à 9</b> presque, complétez les trous · <b>10 ou 11</b> prêt à présenter à Hélène.</p>
+  <ul class="check">
+    <li>Les délais clés ont été validés par une personne qui sait (verrier, bureau technique) <span class="x2">×2</span></li>
+    <li>Les dépendances sont indiquées : approbation → verre → pose</li>
+    <li>Le chemin critique est identifié</li>
+    <li>Chaque tâche a un responsable (un seul) et une date <span class="x2">×2</span></li>
+    <li>Le calendrier réel est respecté : fermeture des Fêtes, congés de l’équipe</li>
+    <li>Chaque risque majeur a une mesure et un responsable</li>
+    <li>Les exclusions et les promesses des ventes sont reprises</li>
+    <li>Aucun fait inventé : délais, normes, quantités vérifiés <span class="x2">×2</span></li>
+  </ul>
+  <h3>Les quatre pièges les plus fréquents</h3>
+  <div class="grid2">
+    <div class="card"><h4>1 · Une durée inventée</h4>L’IA remplace un délai du dossier par une valeur « typique ». Confrontez chaque durée au dossier.</div>
+    <div class="card"><h4>2 · Le calendrier réel oublié</h4>Les Fêtes, les congés, la météo : l’IA les ignore si vous ne les donnez pas.</div>
+    <div class="card"><h4>3 · Un ordre impossible</h4>Une tâche placée avant celle dont elle dépend (poser avant les relevés, par exemple).</div>
+    <div class="card"><h4>4 · Une promesse oubliée</h4>Un engagement des ventes que le plan contredit, sans que personne prévienne le client.</div>
+  </div>
+  <div class="box tip"><span class="t">Votre méthode</span>Confrontez chaque ligne au dossier et au calendrier réel. Et demandez à l’IA : « Quelles dates as-tu supposées ? » Elle vous le dira souvent.</div>
+  <h3>Présenter (2 ou 3 volontaires)</h3>
+  <p>Les volontaires partagent leur écran 2 minutes et répondent à trois questions. Les autres réagissent au micro ou déposent une capture dans le Chat.</p>
+  <ol>
+    <li>Qu’est-ce que l’IA a bien fait ? (résumé du dossier, structure, idées de risques…)</li>
+    <li>Qu’avez-vous dû corriger ? (délais, dépendances, promesses des ventes, oublis)</li>
+    <li>Le referiez-vous avec l’IA, sur votre prochain vrai projet ?</li>
+  </ol>
+  <p class="small muted">Puis un court sondage, un numéro par personne, à voix haute : le temps gagné par rapport à un plan fait seul.</p>
+
+  <h2 class="np"><span class="n">10</span>Parcours adjointe</h2>
+  <p class="lede">Même dossier, autre point de vue : celui de Nadia. Les adjointes commencent par l’étape 4, puis préparent les suivis et le classement.</p>
+  <ol>
+    <li><b>L’étape 4</b> (tri de la boîte de réception) : du point de vue de Nadia, quels courriels lui reviennent, avec quelle consigne ?</li>
+    <li><b>La liste des suivis à faire</b> :</li>
+  </ol>
+  <div class="prompt"><span class="t">Votre demande à copier</span>Je suis adjointe chargée de projet. À partir de ces courriels et du dossier du projet (joints), dresse la liste des suivis à faire cette semaine : quoi, pour qui, avant quand, et ce que je dois demander à Mathieu (le chargé de projet) avant d’agir. Présente un tableau trié par échéance.</div>
+  <ol start="3"><li><b>Le plan de classement du dossier</b> :</li></ol>
+  <div class="prompt"><span class="t">Votre demande à copier</span>Propose un plan de classement du dossier de projet pour un lot d’enveloppe en aluminium et verre (dossiers et sous-dossiers) : contrat et soumission, dessins et approbations, achats et livraisons, chantier, correspondance, fin de projet. Ajoute une règle de nommage des fichiers, avec trois exemples tirés de ces courriels.</div>
+  <ol start="4"><li>Ensuite, si le temps le permet : les étapes 2 et 3.</li></ol>
+  <div class="box tip"><span class="t">Regardez aussi la RACI</span>La ligne « Classement et suivis » : Nadia réalise, Mathieu approuve. Est-ce votre réalité ? C’est ce qu’on formalisera au jour 2 avec les règles de transfert.</div>
+
+  <h2 class="np"><span class="n">11</span>Pour aller plus loin</h2>
+  <h3>Votre propre mini-outil de suivi (vibecoding)</h3>
+  <p>Au-delà d’Excel, Planner ou Smartsheet, vous pouvez faire générer par l’IA un petit outil sur mesure. Le <b>vibecoding</b>, c’est décrire en français l’outil que vous voulez : l’IA écrit le code. Le formateur en fait la démonstration ; à vous d’essayer.</p>
+  <table>
+    <tr><th style="width:22%">Avec</th><th>Ce qui se passe</th></tr>
+    <tr><td class="k">Claude</td><td>L’outil s’affiche à côté de la conversation (« artefact ») : vous l’essayez tout de suite.</td></tr>
+    <tr class="alt"><td class="k">Gemini</td><td>Même principe avec « Canvas » : l’outil s’affiche et se modifie à côté de la conversation.</td></tr>
+    <tr><td class="k">Copilot</td><td>Il écrit le même code. Copiez-le dans le Bloc-notes, enregistrez sous <code>suivi-montreal.html</code>, puis ouvrez le fichier dans Edge. L’aperçu intégré dépend de votre version.</td></tr>
+  </table>
+  <div class="prompt"><span class="t">La demande du mini-outil</span>Tu es développeur web. Crée une application de suivi de projet en un seul fichier HTML (HTML, CSS et JavaScript dans le même fichier, sans serveur ni bibliothèque externe), en français.<br>
+Le projet : lot enveloppe du Centre sportif de Montréal, du lundi 16 novembre 2026 au vendredi 28 mai 2027.<br>
+Fonctions :<br>
+1. Un tableau des tâches : étape, tâche, responsable, début, fin, statut (À faire, En cours, À valider, Terminé), dépendance.<br>
+2. Ajouter, modifier, supprimer une tâche ; filtrer par responsable et par statut.<br>
+3. Les tâches en retard (fin dépassée et statut différent de « Terminé ») en rouge.<br>
+4. En haut : l’avancement en % (tâches terminées sur le total) et les 3 jalons avec leur date.<br>
+5. Une vue chronologique simple, semaine par semaine, avec les deux semaines des Fêtes grisées.<br>
+6. Les données restent dans le navigateur, avec un bouton « Exporter en CSV » (séparateur point-virgule, pour Excel en français).<br>
+Voici mes tâches de départ : <span class="slot">[collez ici le tableau de l’étape 3b]</span></div>
+  <p><b>Puis améliorez-le en une phrase</b>, comme avec un collègue : « Ajoute un filtre par étape. » · « Ajoute une colonne Lot. » · « Mets les jalons en losange dans la vue chronologique. » Testez : changez une date de fin dans le passé, la tâche doit passer en rouge. Exportez le CSV et ouvrez-le dans Excel.</p>
+  <div class="box warn"><span class="t">Les règles du jeu</span>C’est un <b>prototype personnel</b>. Pour cet atelier (cas fictif), Claude, Gemini ou Copilot conviennent. Pour un vrai projet : données anonymisées et outils approuvés par Lessard seulement. Un fichier sur votre poste n’est pas un outil d’équipe : pas de sauvegarde, pas de partage, pas de droits d’accès. Avant d’en faire l’outil de l’équipe, passez par vos TI. Et vérifiez ce qu’il calcule, comme pour le plan.</div>
+  <h3>Trois petits défis</h3>
+  <ul>
+    <li><b>Comparer</b> Copilot et Claude sur la même demande (fiche ou échéancier) : lequel signale le plus de points à clarifier ?</li>
+    <li><b>Smartsheet</b> : « Donne-moi ce plan sous forme de tableau prêt à importer dans Smartsheet, avec une colonne Prédécesseurs. »</li>
+    <li><b>En anglais</b> : « Rédige la même relance en anglais, pour un fournisseur américain. »</li>
+  </ul>
+
+  <h2 class="np"><span class="n">12</span>Coincé ?</h2>
+  <table>
+    <tr><th style="width:36%">Situation</th><th>Que faire</th></tr>
+    <tr><td>Copilot ne lit pas mon PDF</td><td>Ouvrez le PDF, sélectionnez tout (Ctrl+A), copiez (Ctrl+C) et collez le texte dans la conversation. Ou utilisez le résumé à coller, à la fin du dossier d’Éric.</td></tr>
+    <tr class="alt"><td>La réponse est longue et générique</td><td>Ajoutez les ingrédients qui manquent : le format (« en tableau », « en 10 lignes ») et les contraintes (« seulement les dates du dossier »).</td></tr>
+    <tr><td>L’IA invente des dates</td><td>« N’utilise que les dates et délais du dossier. Signale chaque hypothèse dans une colonne à part. »</td></tr>
+    <tr class="alt"><td>Le tableau se colle mal dans Excel</td><td>Bouton « Copier » sous la réponse, ou demandez un CSV au point-virgule (voir l’étape 3e).</td></tr>
+    <tr><td>Je n’ai pas la licence Microsoft 365 Copilot</td><td>Tout l’atelier se fait dans Copilot Chat, en joignant ou en collant les documents. Seules les fonctions intégrées à Outlook manquent.</td></tr>
+    <tr class="alt"><td>Je suis en retard</td><td>Priorité : la fiche (étape 2), l’échéancier en tableau (3b), le tri (étape 4). Le reste après la formation.</td></tr>
+    <tr><td>Je ne sais pas quoi demander</td><td>« Pose-moi les questions qui te manquent pour… » : laissez l’IA vous guider.</td></tr>
+    <tr class="alt"><td>Toujours bloqué</td><td>Dites-le au micro ou dans le Chat : le formateur vous propose un partage d’écran de 2 minutes.</td></tr>
+  </table>
+  <div class="box ok"><span class="t">Après la formation</span>Refaites ce parcours sur un de vos vrais projets, anonymisé, avec votre compte Lessard : fiche de démarrage, échéancier, risques, tri de la boîte de réception. Gardez les demandes qui marchent dans votre bibliothèque personnelle.</div>
+
+  <h2 class="np"><span class="n">A</span>Annexes : modèles</h2>
+  <h3>A · Fiche de démarrage</h3>
+  <table>
+    <tr><th style="width:30%">Rubrique</th><th>Contenu</th></tr>
+    <tr><td class="k">Périmètre inclus</td><td class="blank"></td></tr>
+    <tr><td class="k">Exclusions</td><td class="blank"></td></tr>
+    <tr><td class="k">Dates clés</td><td class="blank"></td></tr>
+    <tr><td class="k">Intervenants</td><td class="blank"></td></tr>
+    <tr><td class="k">Engagements envers le client</td><td class="blank"></td></tr>
+    <tr><td class="k">Points à clarifier (avec qui ?)</td><td class="blank"></td></tr>
+    <tr><td class="k">Risques immédiats</td><td class="blank"></td></tr>
+  </table>
+  <h3>B · Registre des risques</h3>
+  <table>
+    <tr><th style="width:6%">N°</th><th style="width:32%">Risque</th><th style="width:9%">Proba. (1-3)</th><th style="width:9%">Impact (1-3)</th><th>Mesure</th><th style="width:13%">Responsable</th></tr>
+    <tr><td>R1</td><td class="blank"></td><td></td><td></td><td></td><td></td></tr>
+    <tr><td>R2</td><td class="blank"></td><td></td><td></td><td></td><td></td></tr>
+    <tr><td>R3</td><td class="blank"></td><td></td><td></td><td></td><td></td></tr>
+    <tr><td>R4</td><td class="blank"></td><td></td><td></td><td></td><td></td></tr>
+    <tr><td>R5</td><td class="blank"></td><td></td><td></td><td></td><td></td></tr>
+  </table>
+  <h3>C · Matrice RACI</h3>
+  <table>
+    <tr><th style="width:34%">Activité</th><th>Mathieu</th><th>Hélène</th><th>Nadia</th><th>Éric</th><th>Patrice</th></tr>
+    <tr><td>Revue du contrat</td><td class="blank"></td><td></td><td></td><td></td><td></td></tr>
+    <tr><td>Dessins d’atelier</td><td class="blank"></td><td></td><td></td><td></td><td></td></tr>
+    <tr><td>Commandes et livraisons</td><td class="blank"></td><td></td><td></td><td></td><td></td></tr>
+    <tr><td>Classement et suivis</td><td class="blank"></td><td></td><td></td><td></td><td></td></tr>
+    <tr><td>Pose au chantier</td><td class="blank"></td><td></td><td></td><td></td><td></td></tr>
+    <tr><td>Liste de déficiences</td><td class="blank"></td><td></td><td></td><td></td><td></td></tr>
+  </table>
+  <p class="small muted">R réalise · A approuve (un seul par ligne) · C est consulté · I est informé.</p>
+
+  <h2 class="np"><span class="n">B</span>Annexe : glossaire</h2>
+  <table>
+    <tr><th style="width:26%">Terme</th><th>Définition</th></tr>
+    <tr><td class="k">EG</td><td>Entrepreneur général : ici Construction Boréa, qui coordonne le chantier et tous les sous-traitants.</td></tr>
+    <tr class="alt"><td class="k">Mur-rideau</td><td>Façade légère en aluminium et verre, accrochée à la structure du bâtiment.</td></tr>
+    <tr><td class="k">Verrière</td><td>Toiture vitrée (puits de lumière de grande taille).</td></tr>
+    <tr class="alt"><td class="k">Unités scellées</td><td>Vitrages isolants (deux ou trois verres scellés), fabriqués sur mesure par le verrier.</td></tr>
+    <tr><td class="k">Panneau d’allège</td><td>Panneau opaque isolé, placé sous une fenêtre ou entre deux étages dans un mur-rideau.</td></tr>
+    <tr class="alt"><td class="k">Solin</td><td>Pièce de tôle qui dirige l’eau vers l’extérieur à la jonction de deux éléments.</td></tr>
+    <tr><td class="k">Dessins d’atelier</td><td>Dessins de fabrication produits par Lessard et soumis à l’architecte pour approbation avant toute commande.</td></tr>
+    <tr class="alt"><td class="k">Relevés</td><td>Mesures prises au chantier sur la structure réelle, avant la fabrication finale.</td></tr>
+    <tr><td class="k">Bâtiment fermé</td><td>Enveloppe étanche : l’EG peut lancer les finitions intérieures. C’est l’échéance contractuelle du lot.</td></tr>
+    <tr class="alt"><td class="k">Jalon</td><td>Un événement daté qui marque une étape franchie (dessins approuvés, verre livré, bâtiment fermé).</td></tr>
+    <tr><td class="k">Chemin critique</td><td>La suite de tâches dont tout retard repousse la fin du projet. Ici : dessins → approbation → verre → relevés → pose.</td></tr>
+    <tr class="alt"><td class="k">RACI</td><td>Matrice des responsabilités : qui Réalise, qui Approuve, qui est Consulté, qui est Informé.</td></tr>
+    <tr><td class="k">Liste de déficiences</td><td>Liste des travaux à corriger ou à terminer, établie à la fin du projet.</td></tr>
+    <tr class="alt"><td class="k">Vibecoding</td><td>Créer un petit logiciel en le décrivant en langage courant ; l’IA écrit le code.</td></tr>
+  </table>
+</body></html>

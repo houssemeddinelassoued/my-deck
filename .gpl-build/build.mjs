@@ -15,6 +15,7 @@
 import { execSync } from 'node:child_process';
 import fs from 'node:fs';
 import path from 'node:path';
+import { finalizeDeck, writeDeck } from '../scripts/deck-features.mjs';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
@@ -89,7 +90,10 @@ for (const p of parts) {
   from += p.pages.length;
 }
 
-const kit = fs
+// Guide de l'atelier 1 (« Labs » toolbar button) — only wired once the PDF exists (node .gpl-labs/atelier1.mjs).
+const LABS_PDF = path.join(ROOT, 'slides', DECK.id, 'assets', 'guide-atelier1.pdf');
+const hasLabs = fs.existsSync(LABS_PDF);
+let kit = fs
   .readFileSync(path.join(BUILD, 'kit.tsx'), 'utf8')
   .replace(/\r\n/g, '\n')
   .replaceAll('__SLIDE_ID__', DECK.id)
@@ -97,6 +101,11 @@ const kit = fs
   .replaceAll('__DAY_SPLIT__', String(split))
   .replaceAll('__DAY__', '1')
   .trimEnd();
+if (hasLabs) {
+  const anchor = "import logoWide from '@assets/technologia/logo-horizontal.png';";
+  if (!kit.includes(anchor)) throw new Error('kit: logoWide import anchor missing');
+  kit = kit.replace(anchor, `${anchor}\nimport labsPack from './assets/guide-atelier1.pdf?url';`);
+}
 
 const text = [
   kit,
@@ -118,7 +127,7 @@ if (typeof document !== 'undefined') {
 export const meta: SlideMeta = {
   title: ${JSON.stringify(DECK.title)},
   createdAt: '${DECK.createdAt}',
-  theme: 'technologia',
+  theme: 'technologia',${hasLabs ? '\n  labs: labsPack,' : ''}
 };
 
 export default [
@@ -134,7 +143,10 @@ ${notes.map((n) => `  ${n},`).join('\n')}
 
 const dest = path.join(ROOT, 'slides', DECK.id);
 fs.mkdirSync(dest, { recursive: true });
-fs.writeFileSync(path.join(dest, 'index.tsx'), text);
+writeDeck(path.join(dest, 'index.tsx'), text); // + saved design, client logo, MOD_START
+// Minuteurs (presenter « Minuteurs ») : re-list the timers of the rebuilt deck.
+// Upper-case drive letter, or Vite loads React twice (q:/ vs Q:/) and every page fails to render.
+  execSync(`node scripts/timers-manifest.mjs ${path.basename(dest)}`, { cwd: ROOT.replace(/^([a-z]):/, (_, d) => `${d.toUpperCase()}:`), stdio: 'inherit' });
 console.log(`→ slides/${DECK.id}/index.tsx: ${pages.length} pages (Jour 1: 1–${split}, Jour 2: ${split + 1}–${pages.length}), ${text.split('\n').length} lines`);
 
 if (process.argv[2] !== '--no-tsc') {

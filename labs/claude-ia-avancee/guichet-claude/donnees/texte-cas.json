@@ -1,0 +1,11 @@
+{
+  "_lisezmoi": "Tâche de la boucle (Atelier 2, étape A2.3) : tronquerResume(texte, max). Espaces de début et de fin retirés ; au-delà de max caractères, on coupe au dernier espace avant max - 1 et on ajoute « … » (le résultat fait au plus max caractères).",
+  "cas": [
+    { "texte": "Court.", "max": 280, "attendu": "Court." },
+    { "texte": "   Espaces autour   ", "max": 280, "attendu": "Espaces autour" },
+    { "texte": "un deux trois quatre", "max": 20, "attendu": "un deux trois quatre" },
+    { "texte": "un deux trois quatre cinq", "max": 20, "attendu": "un deux trois…" },
+    { "texte": "abcdefghijklmnopqrstuvwxyz", "max": 10, "attendu": "abcdefghi…" },
+    { "texte": "", "max": 10, "attendu": "" }
+  ]
+}

@@ -954,7 +954,7 @@ const M6_Security: Page = () => (
         <div style={{ fontFamily: display, fontWeight: 700, fontSize: 21, letterSpacing: '0.1em', textTransform: 'uppercase', color: C.yellow, marginBottom: 10 }}>
           OWASP Top 10 pour les LLM · 2025
         </div>
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10 }}>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
           <Tag tone="coral" size={21}>
             LLM01 · Injection de prompt
           </Tag>

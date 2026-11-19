@@ -157,7 +157,7 @@ const M5_Errors: Page = () => (
       <M5Case n={2} tone="violet" icon="scale" year="New York · 2023" title="Les jurisprudences inventées" lesson="Toute source se vérifie à la source.">
         Des avocats déposent un mémoire avec six décisions inventées par ChatGPT. Le juge les sanctionne d’une amende.
       </M5Case>
-      <M5Case n={3} tone="blue" icon="chart" year="Méandres · semaine 14" title="Le rapport de Mathieu" lesson="Un chiffre faux peut fausser une décision.">
+      <M5Case n={3} tone="blue" icon="chart" year="Montréal · semaine 14" title="Le rapport de Mathieu" lesson="Un chiffre faux peut fausser une décision.">
         L’IA additionne mal deux avis de modification : 6 000 $ « disponibles » qui n’existent pas. Hélène approuve une dépense.
       </M5Case>
     </div>
@@ -242,7 +242,7 @@ const M5_Traffic: Page = () => (
       Le cellulaire personnel d’un propriétaire <M1Key tone="coral">ROUGE</M1Key>
     </Drag>
     <Drag x={970} y={262} w={405} tone="blue" size={22}>
-      Le prix de la soumission des Méandres <M1Key tone="yellow">JAUNE</M1Key>
+      Le prix de la soumission de Montréal <M1Key tone="yellow">JAUNE</M1Key>
     </Drag>
     <Drag x={1395} y={262} w={405} tone="blue" size={22}>
       Une procédure générique de pose de fenêtres <M1Key tone="green">VERT</M1Key>
@@ -550,7 +550,7 @@ const M5_Qcm1: Page = () => (
     mod={5}
     n={6}
     title="La soumission"
-    q="Pour aller vite, Éric colle la soumission des Méandres (prix, conditions, nom du client) dans son ChatGPT personnel pour la résumer. Quel est le problème principal ?"
+    q="Pour aller vite, Éric colle la soumission de Montréal (prix, conditions, nom du client) dans son ChatGPT personnel pour la résumer. Quel est le problème principal ?"
     explain="Les prix et les conditions d’un contrat sont confidentiels, pour Lessard comme pour le client. Un compte personnel n’offre pas la protection des données d’entreprise. La même demande, sans risque : Copilot avec le compte Lessard."
   >
     <Opt why="Piège ! La longueur n’est pas le sujet : l’outil la lirait sans difficulté.">La soumission est trop longue pour l’outil</Opt>
