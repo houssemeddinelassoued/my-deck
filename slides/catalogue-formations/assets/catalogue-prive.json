@@ -1,0 +1,30 @@
+{
+  "clients": {
+    "bci": {
+      "email": "zbougriou@bci-qc.ca",
+      "contact": "Zoheir Bougriou",
+      "notes": ""
+    },
+    "tolle": {
+      "email": "marie-pier@agencetolle.com",
+      "contact": "Marie-Pier Daigle",
+      "notes": ""
+    },
+    "sobeys": {
+      "email": "MouhamedAli.Diop@sobeys.com",
+      "contact": "Mouhamed Ali Diop",
+      "notes": ""
+    },
+    "wevioo": {
+      "email": "Slim.Gribaa@wevioo.com",
+      "contact": "Slim Gribaa",
+      "notes": ""
+    },
+    "apsm": {
+      "email": "",
+      "contact": "",
+      "notes": "Entretien de préparation avec Technologia le 18 novembre 2026."
+    }
+  },
+  "sessions": {}
+}
