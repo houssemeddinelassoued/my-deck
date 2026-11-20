@@ -1886,6 +1886,7 @@ const Toggle = ({
   <button
     type="button"
     data-osd-interactive
+    data-osd-toggle
     onClick={(e) => {
       e.currentTarget.blur();
       onChange(!on);
@@ -2852,6 +2853,7 @@ const Hotspot = ({
           e.currentTarget.blur();
           setOpen((o) => !o);
         }}
+        data-osd-hotspot={n}
         className={cx(open && k('hs-open'), beat ? k(`hsb${beat}`) : null)}
         style={{
           position: 'absolute',

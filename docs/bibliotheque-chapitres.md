@@ -10,7 +10,7 @@
 |---|---|---|
 | **Charte Docaposte Institute** | `.dap-build`, `.cop-build`, `.cpd-build`, `.po-build` | Thème `docaposte-institute` ; copie directe entre ces kits, en vérifiant les composants |
 | **Charte « inspirée de », sans nom ni logo** | `.iaa-build`, `.iad-build`, `.rh-build`, `.mkt-build`, `.o20-build`, `.irc-build`, `.sit-build` | Ne jamais y introduire le nom Docaposte ni sa marque à trois barres |
-| **Technologia** | `.ia134-build`, `.gp-build`, `.ia132-build`, `.eth-build` | Thème `technologia` (`.eth-build` : une seule journée, 8 modules) |
+| **Technologia** | `.ia134-build`, `.gp-build`, `.ia132-build`, `.eth-build`, `.ata-build` | Thème `technologia` (`.eth-build` : une seule journée, 8 modules ; `.ata-build` : 2 jours, 10 modules, composants de workflow FlowRow / Chain / AtelierPage) |
 | **Decks autonomes** | `slides/ai-history-*`, `llm-explique`, `ml-explique`, `fenetre-de-contexte` | Pages à recopier depuis leur `index.tsx`, avec leurs notes |
 
 D'une famille à l'autre, on porte les composants manquants dans le nouveau kit, puis on vérifie par le build et les captures.
@@ -67,6 +67,17 @@ D'une famille à l'autre, on porte les composants manquants dans le nouveau kit,
 | Agents, Skills, orchestration dans Copilot | `.cpd-build/85-m9.tsx` | ≈ 45 min | Relais `handoffs` ignorés par le harnais Copilot (défaut depuis le 28 octobre 2026) : à mettre à jour avant réutilisation |
 | Assistants et agents IA (métiers) | `.iaa-build/90-m8.tsx` | à mesurer | — |
 | Typologie, conception, déploiement, mesure | `.ia134-build/` (M3, M7, M9, M10) | à mesurer | — |
+
+## 5 bis. Automatisation (workflows, RPA, IA)
+
+| Chapitre | Source | Durée | Public | Pages périssables |
+|---|---|---|---|---|
+| Introduction : Quand / Si / Alors, avant-après, six niveaux, classique ou IA, règle vs IA sur 4 courriels, tri, exemples par service | `.ata-build/10-m1.tsx` | ≈ 45 min | Métiers | — |
+| Identifier les processus : SIPOC (notes de frais), cartographie en couloirs avec irritants, voleurs de temps, 4 critères, score /20, calculateur de gain, 2 exercices | `.ata-build/20-m2.tsx` | ≈ 1 h 20 | Tous | — |
+| Outils : familles, connecteur/API, panorama Make/Zapier/n8n/Power Automate/PAD, vocabulaire commun, choix interactif, visite de Make, préparation des comptes | `.ata-build/30-m3.tsx` | ≈ 50 min | Tous | `M3_Panorama`, `M3_Make` |
+| RPA : robot animé, écran vs API, assisté/non assisté, six briques, 3 cas, démo Power Automate Desktop, pannes et parades, exercice d'ordre | `.ata-build/40-m4.tsx` | ≈ 50 min | Tous | `M4_Modes` (licences) |
+| IA dans les workflows : texte libre → JSON, OCR, classification avec seuil, extraction, réponses en 3 niveaux, assistant/workflow/agent, prompt de workflow, exercice | `.ata-build/45-m5.tsx` | ≈ 55 min | Tous | `M5_Agents` |
+| Construire dans Make : premier flux, conception (fiche en 8 rubriques), sources, déclencheurs, actions, mapping, module Gemini + Parse JSON, routeur, ateliers guidés, scénario complet, tests, gain net, mise en production, fiche d'exploitation | `.ata-build/60-m6.tsx` … `93-m10.tsx` | ≈ 5 h | Tous | `M6_DemoPA`, `M8_IA` |
 
 ## 6. Blocs transverses
 
