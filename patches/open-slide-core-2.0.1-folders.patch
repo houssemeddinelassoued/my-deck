@@ -4384,6 +4384,82 @@ index 826ce5c..4401dda 100644
  }
  
  export function cssVarsToString(vars: Record<string, string>): string {
+diff --git a/src/app/lib/export-pdf.ts b/src/app/lib/export-pdf.ts
+index 7ce2b2b..ab37709 100644
+--- a/src/app/lib/export-pdf.ts
++++ b/src/app/lib/export-pdf.ts
+@@ -99,10 +99,32 @@ export type PdfExportProgress = {
+ const ANIMATION_TIMEOUT_MS = 15_000;
+ const POLL_INTERVAL_MS = 100;
+ 
++// Project patch: « version light » (to send before a training). A page is an activity — and is
++// left out — when it holds a workshop timer ([data-osd-timer]) or when its header strip (top
++// 130 px) shows an activity badge (QCM, Quiz, Exercice, Atelier…, Lab…, TP…, Simulateur, Jeu…).
++// Section dividers show their badge lower on the page, so they stay. Speaker notes are never printed.
++const ACTIVITY_LABEL =
++  /^(qcm|quiz|sondage|exercice|exercise|atelier( individuel| pratique)?|workshop|lab\b.*|tp\b.*|simulateur|jeu( de rôle)?|bonus)$/;
++const HEADER_STRIP_PX = 130;
++
++export function isActivityFrame(frame: HTMLElement): boolean {
++  if (frame.querySelector('[data-osd-timer]')) return true;
++  const top = frame.getBoundingClientRect().top;
++  for (const el of frame.querySelectorAll<HTMLElement>('span, div')) {
++    if (el.childElementCount > 2) continue;
++    const text = (el.textContent ?? '').replace(/\s+/g, ' ').trim().toLowerCase();
++    if (!text || text.length > 24 || !ACTIVITY_LABEL.test(text)) continue;
++    const r = el.getBoundingClientRect();
++    if (r.height > 0 && r.top - top < HEADER_STRIP_PX) return true;
++  }
++  return false;
++}
++
+ export async function exportSlideAsPdf(
+   slide: SlideModule,
+   slideId: string,
+   onProgress?: (progress: PdfExportProgress) => void,
++  options: { light?: boolean; titleSuffix?: string } = {},
+ ): Promise<void> {
+   const pages = slide.default ?? [];
+   if (pages.length === 0) return;
+@@ -154,11 +176,23 @@ export async function exportSlideAsPdf(
+   await nextPaint();
+ 
+   const previousTitle = document.title;
+-  document.title = slide.meta?.title ?? slideId;
++  document.title = `${slide.meta?.title ?? slideId}${options.titleSuffix ?? ''}`;
+ 
+   try {
+     await waitForFonts();
+ 
++    if (options.light) {
++      // Drop activity pages (pages keep their original numbers, so day/module labels stay right).
++      for (let i = frames.length - 1; i >= 0; i--) {
++        const frame = frames[i];
++        if (!frame || !isActivityFrame(frame)) continue;
++        reactRoots[i]?.unmount();
++        frame.remove();
++        frames.splice(i, 1);
++        reactRoots.splice(i, 1);
++      }
++    }
++
+     // Poll per-page animation completion. The bar tracks how many pages have
+     // settled, which matches "page X of N is being processed" mental model.
+     const deadline = performance.now() + ANIMATION_TIMEOUT_MS;
+@@ -167,10 +201,10 @@ export async function exportSlideAsPdf(
+       onProgress?.({
+         phase: 'processing',
+         current: settled,
+-        total,
+-        percent: Math.min(99, (settled / total) * 99),
++        total: frames.length,
++        percent: Math.min(99, (settled / Math.max(1, frames.length)) * 99),
+       });
+-      if (settled === total) break;
++      if (settled === frames.length) break;
+       await sleep(POLL_INTERVAL_MS);
+     }
+ 
 diff --git b/src/app/lib/folder-lock.ts b/src/app/lib/folder-lock.ts
 new file mode 100644
 index 0000000..3b5221c
@@ -7400,18 +7476,20 @@ index 0000000..aba1288
 +  );
 +}
 diff --git a/src/app/routes/slide.tsx b/src/app/routes/slide.tsx
-index 009bde3..4f5a5a3 100644
+index 009bde3..459406c 100644
 --- a/src/app/routes/slide.tsx
 +++ b/src/app/routes/slide.tsx
-@@ -7,6 +7,7 @@ import {
+@@ -6,7 +6,9 @@ import {
+   Download,
    FileCode2,
    FileImage,
++  FileMinus,
    FileText,
 +  FlaskConical,
    Link2,
    Loader2,
    Maximize,
-@@ -74,6 +75,7 @@ import { PdfProgressToast, PptxProgressToast } from '../components/export-progre
+@@ -74,6 +76,7 @@ import { PdfProgressToast, PptxProgressToast } from '../components/export-progre
  import { NotesDrawer } from '../components/notes-drawer';
  import { OverviewGrid } from '../components/overview-grid';
  import { openPresenterWindow, Player } from '../components/player';
@@ -7419,7 +7497,7 @@ index 009bde3..4f5a5a3 100644
  import { SlideCanvas } from '../components/slide-canvas';
  import { isDeckWarmed, markDeckWarmed, SlidePreloadLayer } from '../components/slide-preload-layer';
  import { SlideTransitionLayer } from '../components/slide-transition-layer';
-@@ -89,6 +91,7 @@ import { remapNotesSessionCacheAfterReorder } from '../lib/inspector/use-notes';
+@@ -89,6 +92,7 @@ import { remapNotesSessionCacheAfterReorder } from '../lib/inspector/use-notes';
  import type { SlideModule } from '../lib/sdk';
  import { usePrefersReducedMotion } from '../lib/use-prefers-reduced-motion';
  import { useSlideModule } from '../lib/use-slide-module';
@@ -7427,7 +7505,7 @@ index 009bde3..4f5a5a3 100644
  
  const { showSlideUi, showSlideBrowser, allowHtmlDownload } = config.build;
  
-@@ -123,6 +126,7 @@ export function Slide() {
+@@ -123,6 +127,7 @@ export function Slide() {
    } | null>(null);
    const [exporting, setExporting] = useState(false);
    const [linkCopied, setLinkCopied] = useState(false);
@@ -7435,7 +7513,7 @@ index 009bde3..4f5a5a3 100644
    const linkCopiedTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
    const [designOpen, setDesignOpen] = useState(false);
    const [overviewOpen, setOverviewOpen] = useState(false);
-@@ -188,6 +192,18 @@ export function Slide() {
+@@ -188,6 +193,18 @@ export function Slide() {
      [pageCount, setSearchParams],
    );
  
@@ -7454,7 +7532,7 @@ index 009bde3..4f5a5a3 100644
    const reorderPage = useCallback(
      async (from: number, to: number) => {
        if (from === to) return;
-@@ -340,8 +356,8 @@ export function Slide() {
+@@ -340,8 +357,8 @@ export function Slide() {
        } else if (e.key === 'Enter') {
          setPlayMode('window');
        } else if (e.key === 'p' || e.key === 'P') {
@@ -7464,7 +7542,7 @@ index 009bde3..4f5a5a3 100644
        } else if (import.meta.env.DEV && (e.key === 'd' || e.key === 'D')) {
          setDesignOpen((v) => !v);
        }
-@@ -497,10 +513,23 @@ export function Slide() {
+@@ -497,10 +514,23 @@ export function Slide() {
  
    const title = slide.meta?.title ?? slideId;
  
@@ -7491,7 +7569,7 @@ index 009bde3..4f5a5a3 100644
        setLinkCopied(true);
        if (linkCopiedTimerRef.current) clearTimeout(linkCopiedTimerRef.current);
        linkCopiedTimerRef.current = setTimeout(() => setLinkCopied(false), 1200);
-@@ -510,6 +539,37 @@ export function Slide() {
+@@ -510,6 +540,37 @@ export function Slide() {
      }
    };
  
@@ -7529,7 +7607,41 @@ index 009bde3..4f5a5a3 100644
    const exportHtml = async () => {
      if (!slide || exporting) return;
      setExporting(true);
-@@ -619,7 +679,7 @@ export function Slide() {
+@@ -563,6 +624,22 @@ export function Slide() {
+     });
+   };
+ 
++  // Project patch: light version (no QCM, exercises, workshops, timers) to send before a training.
++  const exportLightPdf = async () => {
++    if (!slide || exporting) return;
++    if (isSafari()) {
++      toast.error(t.slide.pdfExportSafariUnsupported, { duration: 5000 });
++      return;
++    }
++    await runProgressExport<PdfExportProgress>({
++      kind: 'pdf',
++      initial: { phase: 'processing', current: 0, total: pages.length, percent: 0 },
++      failedMessage: t.slide.pdfExportFailed,
++      renderToast: (progress) => <PdfProgressToast progress={progress} />,
++      run: (onProgress) => exportSlideAsPdf(slide, slideId, onProgress, { light: true, titleSuffix: ' — version light' }),
++    });
++  };
++
+   const exportPptx = async () => {
+     if (!slide || exporting) return;
+     await runProgressExport<PptxExportProgress>({
+@@ -595,6 +672,10 @@ export function Slide() {
+         <FileText />
+         {t.slide.exportAsPdf}
+       </DropdownMenuItem>
++      <DropdownMenuItem disabled={exporting} onClick={exportLightPdf}>
++        <FileMinus />
++        {t.slide.exportAsLightPdf}
++      </DropdownMenuItem>
+       <DropdownMenuSeparator />
+       <DropdownMenuItem disabled={exporting} onClick={exportPptx}>
+         <Presentation />
+@@ -619,7 +700,7 @@ export function Slide() {
          <div className="flex h-dvh flex-col overflow-hidden bg-sidebar text-foreground">
            {/* Toolbar sits directly on the chrome ground — three zones, mono-folio center */}
            <header className="relative flex h-12 shrink-0 items-center gap-2 px-2 md:px-3">
@@ -7538,7 +7650,7 @@ index 009bde3..4f5a5a3 100644
                {showSlideBrowser && (
                  <button
                    type="button"
-@@ -654,33 +714,30 @@ export function Slide() {
+@@ -654,33 +735,30 @@ export function Slide() {
                  </Tabs>
                )}
                {import.meta.env.DEV && <AgentConnectedBadge />}
@@ -7587,7 +7699,7 @@ index 009bde3..4f5a5a3 100644
                    <span className="relative grid size-4 place-items-center">
                      <Link2
                        className={cn(
-@@ -695,7 +752,95 @@ export function Slide() {
+@@ -695,7 +773,95 @@ export function Slide() {
                        )}
                      />
                    </span>
@@ -7684,7 +7796,7 @@ index 009bde3..4f5a5a3 100644
                )}
                {view === 'slides' && allowHtmlDownload && (
                  <DropdownMenu>
-@@ -743,10 +888,24 @@ export function Slide() {
+@@ -743,10 +909,24 @@ export function Slide() {
                        <Terminal />
                        {t.commandMenu.trigger}
                      </DropdownMenuItem>
@@ -7711,7 +7823,7 @@ index 009bde3..4f5a5a3 100644
                      {allowHtmlDownload && <DropdownMenuSeparator />}
                      {allowHtmlDownload && exportMenuItems}
                    </DropdownMenuContent>
-@@ -794,7 +953,6 @@ export function Slide() {
+@@ -794,7 +974,6 @@ export function Slide() {
                        <DropdownMenuItem
                          onClick={() => {
                            if (slideId) openPresenterWindow(slideId);
@@ -7719,7 +7831,7 @@ index 009bde3..4f5a5a3 100644
                          }}
                        >
                          <MonitorSpeaker />
-@@ -907,9 +1065,8 @@ export function Slide() {
+@@ -907,9 +1086,8 @@ export function Slide() {
                  onPresentFullscreen: () => setPlayMode('fullscreen'),
                  onPresenterView: () => {
                    if (slideId) openPresenterWindow(slideId);
@@ -7730,7 +7842,7 @@ index 009bde3..4f5a5a3 100644
                  onOverview: () => setOverviewOpen(true),
                  onToggleDesignPanel: () => setDesignOpen((v) => !v),
                  onExportHtml: exportHtml,
-@@ -1197,7 +1354,7 @@ function InlineTitleEditor({
+@@ -1197,7 +1375,7 @@ function InlineTitleEditor({
  
    if (editing) {
      return (
@@ -7739,7 +7851,7 @@ index 009bde3..4f5a5a3 100644
          <div className="inline-grid max-w-full items-center">
            <span
              aria-hidden
-@@ -1234,8 +1391,11 @@ function InlineTitleEditor({
+@@ -1234,8 +1412,11 @@ function InlineTitleEditor({
  
    if (!import.meta.env.DEV) {
      return (
@@ -7753,7 +7865,7 @@ index 009bde3..4f5a5a3 100644
            {title}
          </h1>
        </div>
-@@ -1243,9 +1403,10 @@ function InlineTitleEditor({
+@@ -1243,9 +1424,10 @@ function InlineTitleEditor({
    }
  
    return (
@@ -7795,7 +7907,7 @@ index 2ef0115..9fb0118 100644
    import type { DesignSystem } from './lib/design';
    import type { Page } from './lib/sdk';
 diff --git a/src/locale/en.ts b/src/locale/en.ts
-index 9a2525a..37cd160 100644
+index 9a2525a..ead46f8 100644
 --- a/src/locale/en.ts
 +++ b/src/locale/en.ts
 @@ -95,6 +95,58 @@ export const en: Locale = {
@@ -7857,7 +7969,7 @@ index 9a2525a..37cd160 100644
    slide: {
      home: 'Home',
      backToHome: 'Back to home',
-@@ -105,6 +157,12 @@ export const en: Locale = {
+@@ -105,12 +157,19 @@ export const en: Locale = {
      agentDisconnectedTooltip:
        'Lost connection to the dev server, so your agent can no longer see the current slide or inspector selection. Restart the dev server to restore the connection.',
      download: 'Download',
@@ -7870,7 +7982,14 @@ index 9a2525a..37cd160 100644
      copyLink: 'Copy link',
      moreActions: 'More actions',
      toastCopyLinkSuccess: 'Link copied to clipboard',
-@@ -143,7 +201,27 @@ export const en: Locale = {
+     toastCopyLinkFailed: 'Failed to copy link',
+     exportAsHtml: 'Export as HTML',
+     exportAsPdf: 'Export as PDF',
++    exportAsLightPdf: 'Light version (PDF) · no quizzes or workshops',
+     exportAsImagePptx: 'Export as image PPTX',
+     exportAsPptx: 'Export as PPTX',
+     pdfExportFailed: 'PDF export failed',
+@@ -143,7 +202,27 @@ export const en: Locale = {
      endOfDeck: 'End of deck',
      speakerNotes: 'Speaker notes',
      notesTextSmaller: 'Make notes text smaller',
@@ -7898,7 +8017,7 @@ index 9a2525a..37cd160 100644
      noNotesPrefix: 'No speaker notes for this slide. Add ',
      noNotesSuffix: ' to your slide module to see notes here.',
      blackScreen: 'Black screen',
-@@ -188,6 +266,7 @@ export const en: Locale = {
+@@ -188,6 +267,7 @@ export const en: Locale = {
      shortcutWhite: 'White screen',
      shortcutLaser: 'Laser pointer',
      shortcutPresenter: 'Open Presenter View',
@@ -7906,7 +8025,7 @@ index 9a2525a..37cd160 100644
      shortcutToggleHelp: 'Toggle this help',
      shortcutCloseExit: 'Close overlay / exit',
      overviewDialogAria: 'Slide overview',
-@@ -330,6 +409,9 @@ export const en: Locale = {
+@@ -330,6 +410,9 @@ export const en: Locale = {
      fontPresetCustom: 'Custom…',
      shuffleAria: 'Shuffle design',
      shuffleTitle: 'Shuffle for inspiration',
@@ -7916,7 +8035,7 @@ index 9a2525a..37cd160 100644
    },
  
    asset: {
-@@ -537,4 +619,121 @@ export const en: Locale = {
+@@ -537,4 +620,121 @@ export const en: Locale = {
      expandPromptAria: 'Expand prompt',
      collapsePromptAria: 'Collapse prompt',
    },
@@ -8040,10 +8159,10 @@ index 9a2525a..37cd160 100644
  };
 diff --git b/src/locale/fr.ts b/src/locale/fr.ts
 new file mode 100644
-index 0000000..2566d0e
+index 0000000..263610d
 --- /dev/null
 +++ b/src/locale/fr.ts
-@@ -0,0 +1,760 @@
+@@ -0,0 +1,761 @@
 +import type { Locale } from './types';
 +
 +export const fr: Locale = {
@@ -8222,6 +8341,7 @@ index 0000000..2566d0e
 +    toastCopyLinkFailed: 'Impossible de copier le lien',
 +    exportAsHtml: 'Exporter en HTML',
 +    exportAsPdf: 'Exporter en PDF',
++    exportAsLightPdf: 'Version light (PDF) · sans QCM ni ateliers',
 +    exportAsImagePptx: 'Exporter en PPTX (images)',
 +    exportAsPptx: 'Exporter en PPTX',
 +    pdfExportFailed: 'Échec de l’export PDF',
@@ -8817,7 +8937,7 @@ index 03c503c..302d2ea 100644
 -export { zhCN } from './zh-cn';
 -export { zhTW } from './zh-tw';
 diff --git a/src/locale/ja.ts b/src/locale/ja.ts
-index a39090f..f218a5f 100644
+index a39090f..28b2a43 100644
 --- a/src/locale/ja.ts
 +++ b/src/locale/ja.ts
 @@ -95,6 +95,58 @@ export const ja: Locale = {
@@ -8879,7 +8999,7 @@ index a39090f..f218a5f 100644
    slide: {
      agentConnected: 'エージェント接続中',
      agentConnectedTooltip:
-@@ -105,6 +157,12 @@ export const ja: Locale = {
+@@ -105,12 +157,19 @@ export const ja: Locale = {
      home: 'ホーム',
      backToHome: 'ホームへ戻る',
      download: 'ダウンロード',
@@ -8892,7 +9012,14 @@ index a39090f..f218a5f 100644
      copyLink: 'リンクをコピー',
      moreActions: 'その他の操作',
      toastCopyLinkSuccess: 'リンクをクリップボードにコピーしました',
-@@ -143,7 +201,27 @@ export const ja: Locale = {
+     toastCopyLinkFailed: 'リンクのコピーに失敗しました',
+     exportAsHtml: 'HTML として書き出し',
+     exportAsPdf: 'PDF として書き出し',
++    exportAsLightPdf: 'ライト版 (PDF) · クイズ・演習なし',
+     exportAsImagePptx: '画像 PPTX として書き出し',
+     exportAsPptx: 'PPTX として書き出し',
+     pdfExportFailed: 'PDF の書き出しに失敗しました',
+@@ -143,7 +202,27 @@ export const ja: Locale = {
      endOfDeck: 'デッキの終わり',
      speakerNotes: '発表者ノート',
      notesTextSmaller: 'ノートの文字を小さく',
@@ -8920,7 +9047,7 @@ index a39090f..f218a5f 100644
      noNotesPrefix: 'このスライドには発表者ノートがありません。スライドモジュールに ',
      noNotesSuffix: ' を追加するとここに表示されます。',
      blackScreen: '黒い画面',
-@@ -188,6 +266,7 @@ export const ja: Locale = {
+@@ -188,6 +267,7 @@ export const ja: Locale = {
      shortcutWhite: '白い画面',
      shortcutLaser: 'レーザーポインタ',
      shortcutPresenter: '発表者ビューを開く',
@@ -8928,7 +9055,7 @@ index a39090f..f218a5f 100644
      shortcutToggleHelp: 'このヘルプの表示切替',
      shortcutCloseExit: 'オーバーレイを閉じる / 終了',
      overviewDialogAria: 'スライド一覧',
-@@ -334,6 +413,9 @@ export const ja: Locale = {
+@@ -334,6 +414,9 @@ export const ja: Locale = {
      fontPresetCustom: 'カスタム…',
      shuffleAria: 'デザインをシャッフル',
      shuffleTitle: 'シャッフルしてインスピレーションを得る',
@@ -8938,7 +9065,7 @@ index a39090f..f218a5f 100644
    },
  
    asset: {
-@@ -545,4 +627,121 @@ export const ja: Locale = {
+@@ -545,4 +628,121 @@ export const ja: Locale = {
      expandPromptAria: 'プロンプトを展開',
      collapsePromptAria: 'プロンプトを折りたたむ',
    },
@@ -9061,7 +9188,7 @@ index a39090f..f218a5f 100644
 +  },
  };
 diff --git a/src/locale/types.ts b/src/locale/types.ts
-index e05bfe3..ba85ec7 100644
+index e05bfe3..1798c83 100644
 --- a/src/locale/types.ts
 +++ b/src/locale/types.ts
 @@ -1,7 +1,7 @@
@@ -9132,7 +9259,7 @@ index e05bfe3..ba85ec7 100644
    slide: {
      home: string;
      backToHome: string;
-@@ -107,6 +159,12 @@ export type Locale = {
+@@ -107,12 +159,19 @@ export type Locale = {
      agentDisconnected: string;
      agentDisconnectedTooltip: string;
      download: string;
@@ -9145,7 +9272,14 @@ index e05bfe3..ba85ec7 100644
      copyLink: string;
      moreActions: string;
      toastCopyLinkSuccess: string;
-@@ -144,7 +202,27 @@ export type Locale = {
+     toastCopyLinkFailed: string;
+     exportAsHtml: string;
+     exportAsPdf: string;
++    exportAsLightPdf: string;
+     exportAsImagePptx: string;
+     exportAsPptx: string;
+     pdfExportFailed: string;
+@@ -144,7 +203,27 @@ export type Locale = {
      endOfDeck: string;
      speakerNotes: string;
      notesTextSmaller: string;
@@ -9173,7 +9307,7 @@ index e05bfe3..ba85ec7 100644
      noNotesPrefix: string;
      noNotesSuffix: string;
      blackScreen: string;
-@@ -190,6 +268,7 @@ export type Locale = {
+@@ -190,6 +269,7 @@ export type Locale = {
      shortcutWhite: string;
      shortcutLaser: string;
      shortcutPresenter: string;
@@ -9181,7 +9315,7 @@ index e05bfe3..ba85ec7 100644
      shortcutToggleHelp: string;
      shortcutCloseExit: string;
      overviewDialogAria: string;
-@@ -328,6 +407,10 @@ export type Locale = {
+@@ -328,6 +408,10 @@ export type Locale = {
      fontPresetCustom: string;
      shuffleAria: string;
      shuffleTitle: string;
@@ -9192,7 +9326,7 @@ index e05bfe3..ba85ec7 100644
    };
  
    asset: {
-@@ -570,4 +653,120 @@ export type Locale = {
+@@ -570,4 +654,120 @@ export type Locale = {
      expandPromptAria: string;
      collapsePromptAria: string;
    };
@@ -9314,7 +9448,7 @@ index e05bfe3..ba85ec7 100644
 +  };
  };
 diff --git a/src/locale/zh-cn.ts b/src/locale/zh-cn.ts
-index 7fdf60b..c600fbd 100644
+index 7fdf60b..27fdeee 100644
 --- a/src/locale/zh-cn.ts
 +++ b/src/locale/zh-cn.ts
 @@ -95,6 +95,58 @@ export const zhCN: Locale = {
@@ -9376,7 +9510,7 @@ index 7fdf60b..c600fbd 100644
    slide: {
      agentConnected: 'Agent 已连接',
      agentConnectedTooltip: '目前的 slide 与 Inspector 选择会即时同步给 agent。',
-@@ -104,6 +156,12 @@ export const zhCN: Locale = {
+@@ -104,12 +156,19 @@ export const zhCN: Locale = {
      home: '首页',
      backToHome: '返回首页',
      download: '下载',
@@ -9389,7 +9523,14 @@ index 7fdf60b..c600fbd 100644
      copyLink: '复制链接',
      moreActions: '更多操作',
      toastCopyLinkSuccess: '已复制链接到剪贴板',
-@@ -142,7 +200,27 @@ export const zhCN: Locale = {
+     toastCopyLinkFailed: '复制链接失败',
+     exportAsHtml: '导出为 HTML',
+     exportAsPdf: '导出为 PDF',
++    exportAsLightPdf: '精简版 (PDF) · 不含测验与练习',
+     exportAsImagePptx: '导出图片 PPTX',
+     exportAsPptx: '导出 PPTX',
+     pdfExportFailed: 'PDF 导出失败',
+@@ -142,7 +201,27 @@ export const zhCN: Locale = {
      endOfDeck: '演示结束',
      speakerNotes: '演讲备注',
      notesTextSmaller: '缩小备注文字',
@@ -9417,7 +9558,7 @@ index 7fdf60b..c600fbd 100644
      noNotesPrefix: '该幻灯片没有演讲备注。在你的幻灯片模块中添加 ',
      noNotesSuffix: ' 即可在此查看备注。',
      blackScreen: '黑屏',
-@@ -187,6 +265,7 @@ export const zhCN: Locale = {
+@@ -187,6 +266,7 @@ export const zhCN: Locale = {
      shortcutWhite: '白屏',
      shortcutLaser: '激光笔',
      shortcutPresenter: '打开演讲者视图',
@@ -9425,7 +9566,7 @@ index 7fdf60b..c600fbd 100644
      shortcutToggleHelp: '切换此帮助',
      shortcutCloseExit: '关闭遮罩 / 退出',
      overviewDialogAria: '幻灯片总览',
-@@ -327,6 +406,9 @@ export const zhCN: Locale = {
+@@ -327,6 +407,9 @@ export const zhCN: Locale = {
      fontPresetCustom: '自定义…',
      shuffleAria: '随机设计',
      shuffleTitle: '随机配色获取灵感',
@@ -9435,7 +9576,7 @@ index 7fdf60b..c600fbd 100644
    },
  
    asset: {
-@@ -534,4 +616,121 @@ export const zhCN: Locale = {
+@@ -534,4 +617,121 @@ export const zhCN: Locale = {
      expandPromptAria: '展开 prompt',
      collapsePromptAria: '收起 prompt',
    },
@@ -9558,7 +9699,7 @@ index 7fdf60b..c600fbd 100644
 +  },
  };
 diff --git a/src/locale/zh-tw.ts b/src/locale/zh-tw.ts
-index 62297df..4bd4dbe 100644
+index 62297df..cde368f 100644
 --- a/src/locale/zh-tw.ts
 +++ b/src/locale/zh-tw.ts
 @@ -95,6 +95,58 @@ export const zhTW: Locale = {
@@ -9620,7 +9761,7 @@ index 62297df..4bd4dbe 100644
    slide: {
      agentConnected: 'Agent 已連線',
      agentConnectedTooltip: '目前的 slide 與 Inspector 選擇會即時同步給 agent。',
-@@ -104,6 +156,12 @@ export const zhTW: Locale = {
+@@ -104,12 +156,19 @@ export const zhTW: Locale = {
      home: '首頁',
      backToHome: '返回首頁',
      download: '下載',
@@ -9633,7 +9774,14 @@ index 62297df..4bd4dbe 100644
      copyLink: '複製連結',
      moreActions: '更多動作',
      toastCopyLinkSuccess: '已複製連結到剪貼簿',
-@@ -142,7 +200,27 @@ export const zhTW: Locale = {
+     toastCopyLinkFailed: '複製連結失敗',
+     exportAsHtml: '匯出為 HTML',
+     exportAsPdf: '匯出為 PDF',
++    exportAsLightPdf: '精簡版 (PDF) · 不含測驗與練習',
+     exportAsImagePptx: '匯出圖片 PPTX',
+     exportAsPptx: '匯出 PPTX',
+     pdfExportFailed: 'PDF 匯出失敗',
+@@ -142,7 +201,27 @@ export const zhTW: Locale = {
      endOfDeck: '簡報結束',
      speakerNotes: '演講備忘',
      notesTextSmaller: '縮小備忘文字',
@@ -9661,7 +9809,7 @@ index 62297df..4bd4dbe 100644
      noNotesPrefix: '此投影片沒有演講備忘。在你的投影片模組中加入 ',
      noNotesSuffix: ' 即可在此查看備忘。',
      blackScreen: '黑屏',
-@@ -187,6 +265,7 @@ export const zhTW: Locale = {
+@@ -187,6 +266,7 @@ export const zhTW: Locale = {
      shortcutWhite: '白屏',
      shortcutLaser: '雷射筆',
      shortcutPresenter: '開啟主講人檢視',
@@ -9669,7 +9817,7 @@ index 62297df..4bd4dbe 100644
      shortcutToggleHelp: '切換此說明',
      shortcutCloseExit: '關閉覆蓋 / 離開',
      overviewDialogAria: '投影片總覽',
-@@ -327,6 +406,9 @@ export const zhTW: Locale = {
+@@ -327,6 +407,9 @@ export const zhTW: Locale = {
      fontPresetCustom: '自訂…',
      shuffleAria: '隨機設計',
      shuffleTitle: '隨機配色獲取靈感',
@@ -9679,7 +9827,7 @@ index 62297df..4bd4dbe 100644
    },
  
    asset: {
-@@ -534,4 +616,121 @@ export const zhTW: Locale = {
+@@ -534,4 +617,121 @@ export const zhTW: Locale = {
      expandPromptAria: '展開 prompt',
      collapsePromptAria: '收合 prompt',
    },
