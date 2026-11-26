@@ -21,7 +21,7 @@ export const CLIENTS = {
     pour: 'Sobeys inc.',
     fict: 'Fil rouge : organisation fictive',
     sector: 'Épicerie et commerce de détail',
-    session: '',
+    session: 'Deux matinées · 9 h – 12 h',
     caseKey: 'camerasMagasin',
     caseFile: 'cameras-magasin',
   },

@@ -373,6 +373,8 @@ DIRE — « Module 4 : les grands enjeux éthiques. Vous venez de voir de vos ye
 
 RYTHME — 30 minutes, jusqu'au dîner.
 
+SOBEYS — 30 minutes, jusqu'à la fin de la matinée 1 (12 h).
+
 TRANSITION — « Les trois enjeux en un coup d'œil. »`,
   `⏱ 2 min · TROIS ENJEUX (3 clics)
 
@@ -456,13 +458,17 @@ RÉPONSE — D : oui, par des indices indirects.
 
 MESSAGE CLÉ — On ne prouve pas l'absence de biais en regardant les variables : on teste les résultats par groupe (taux de sélection des femmes et des hommes, par exemple).
 
-TRANSITION — « Bilan du module 4, puis le dîner. »`,
-  `⏱ 2 min · SYNTHÈSE MODULE 4 (puis DÎNER, ≈ 12 h)
+TRANSITION — « Bilan du module 4, puis le dîner. »
+
+SOBEYS — Dites « Bilan du module 4, puis on termine la matinée. »`,
+  `⏱ 2 min · SYNTHÈSE MODULE 4 (puis DÎNER, ≈ 12 h · SOBEYS : FIN DE LA MATINÉE 1 à 12 h)
 
 DIRE — Relisez les cinq points.
 
 À VOTRE POSTE — Les trois questions de la carte bleue : qui pourrait être désavantagé ? saurait-on expliquer ? quelles données y passent ?
 
-ANNONCE — « Au retour du dîner, 13 h : ce que la loi impose déjà au Québec, et les grands principes de l'IA responsable. Puis un cas de votre secteur, à juger vous-mêmes. » (APSM : des caméras de fatigue dans une mine. Sobeys : la reconnaissance faciale en magasin. Ne dévoilez pas le cas : effet de surprise pour l'atelier 2.)`,
+ANNONCE — « Au retour du dîner, 13 h : ce que la loi impose déjà au Québec, et les grands principes de l'IA responsable. Puis un cas de votre secteur, à juger vous-mêmes. » (APSM : des caméras de fatigue dans une mine. Sobeys : la reconnaissance faciale en magasin. Ne dévoilez pas le cas : effet de surprise pour l'atelier 2.)
+
+SOBEYS — Dites plutôt : « À la prochaine matinée, à 9 h : ce que la loi impose déjà au Québec, et les grands principes de l'IA responsable. Puis un cas de votre secteur, à juger vous-mêmes. » Rappelez la date de la matinée 2 et de garder le document de l'atelier 1. Aucun devoir demandé. Ne dévoilez pas le cas.`,
 ];
 // @@NOTES-END

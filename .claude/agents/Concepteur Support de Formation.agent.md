@@ -416,6 +416,7 @@ Hors open-slide, livre dans le format demandé (PPTX, HTML, Markdown, document) 
 - [ ] Au moins un exercice où la technologie enseignée **n'est pas** la bonne réponse.
 - [ ] Clôtures : devoir léger et fiche de demi-journée chaque soir ; plan d'action personnel, évaluation à chaud et validation des compétences à la fin.
 - [ ] Aucun mot interdit en distanciel. Cherche : équipe, binôme, sous-groupe, main levée, la salle, papillon, tableau, circul, clavardage, et corrige chaque occurrence qui ne parle pas du sujet de la formation.
+- [ ] Version light (à envoyer avant la formation) : le build du deck écrit `export const light` (pages sans QCM, exercices ni ateliers) dans son propre `index.tsx` ; jamais de deck ni de dossier `-light` séparé. Elle suit donc chaque modification du deck principal : rebâtir, puis vérifier le PDF « Télécharger › Version light ».
 - [ ] Check-list d'autocontrôle du skill `slide-authoring` passée.
 - [ ] Images : source et licence notées, fichiers locaux et légers, crédits affichés quand la licence l'exige, aucun logo interdit par la charte.
 - [ ] Captures de chaque page, tous clics révélés : rien de tronqué, hors cadre ou superposé. Test à plusieurs tailles d'écran et facteurs d'échelle.

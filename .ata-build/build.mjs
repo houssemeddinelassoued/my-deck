@@ -82,10 +82,12 @@ const parts = fs
   .map((f) => readPart(path.join(BUILD, f)));
 
 // ─── Version light (à envoyer avant la formation) ─────────────────────────────
-// Same sources, without QCM, exercises, ateliers and trainer-only pages, and without speaker notes.
-// A page is dropped when its own code uses <QcmPage>, <AtelierPage> or kind="qcm|exercice|atelier"
-// (section dividers <Section> are always kept), or when it is listed in LIGHT_DROP.
-const LIGHT = { id: 'automatisation-taches-ia-light', p: 'atl', title: 'Automatisation des tâches avec l’IA — IA135 · Version light (avant la formation)' };
+// No separate deck: index.tsx exports `light` = 0-based indices of the pages of the light
+// version, recomputed at every build, so the light version always follows the main deck.
+// The deck page's « Télécharger › Version light (PDF) » (core patch) prints only those pages,
+// and never the speaker notes. A page is left out when its own code uses <QcmPage>,
+// <AtelierPage> or kind="qcm|exercice|atelier" (section dividers <Section> are always kept),
+// or when it is listed in LIGHT_DROP. Pages can adapt to the light export with isLightExport().
 const LIGHT_DROP = new Set(['OP_Tour', 'OP_Quiz0', 'J1_Bilan', 'J1_Demain', 'J2_Rappel', 'M8_Cible', 'M9_Choix', 'CL_Plan']);
 const pageCode = (code, name) => {
   const i = code.indexOf(`const ${name}: Page`);
@@ -101,87 +103,76 @@ const isLight = (code, name) => {
   return !/<QcmPage\b|<AtelierPage\b|kind="(qcm|exercice|atelier)"/.test(c);
 };
 
-// Participant guide (node .ata-labs/guide.mjs) → « Labs » button of the full deck.
+// Participant guide (node .ata-labs/guide.mjs) → « Labs » button.
 const GUIDE = path.join(ROOT, 'slides', DECK.id, 'assets', 'guide-ia135.pdf');
 const hasGuide = fs.existsSync(GUIDE);
 const BT = '`';
 const DL = '$';
 
-const emit = (deck, light) => {
-  const sel = parts.map((p) => {
-    const keep = p.pages.map((n) => !light || isLight(p.code, n));
-    return { ...p, pages: p.pages.filter((_, i) => keep[i]), notes: p.notes.filter((_, i) => keep[i]) };
-  });
-  const pages = sel.flatMap((p) => p.pages);
-  const notes = light ? pages.map(() => 'undefined') : sel.flatMap((p) => p.notes);
-  const split = sel.filter((p) => p.day === 1).reduce((n, p) => n + p.pages.length, 0);
-  if (!light) {
-    let from = 1;
-    for (const p of sel) {
-      console.log(`  ${p.file}: ${p.pages.length} pages (${from}–${from + p.pages.length - 1})`);
-      from += p.pages.length;
-    }
+const pages = parts.flatMap((p) => p.pages);
+const notes = parts.flatMap((p) => p.notes);
+const lightIdx = parts.flatMap((p) => p.pages.map((n) => isLight(p.code, n))).flatMap((keep, i) => (keep ? [i] : []));
+const split = parts.filter((p) => p.day === 1).reduce((n, p) => n + p.pages.length, 0);
+{
+  let from = 1;
+  for (const p of parts) {
+    console.log(`  ${p.file}: ${p.pages.length} pages (${from}–${from + p.pages.length - 1})`);
+    from += p.pages.length;
   }
-  let kit = fs
-    .readFileSync(path.join(BUILD, 'kit.tsx'), 'utf8')
-    .replace(/\r\n/g, '\n')
-    .replaceAll('__SLIDE_ID__', deck.id)
-    .replaceAll('__P__', deck.p)
-    .replaceAll('__DAY_SPLIT__', String(split))
-    .replaceAll('__DAY__', '1')
-    .replaceAll('__LIGHT__', String(light))
-    .trimEnd();
-  // The light deck imports the full deck's assets (no copy).
-  if (light) kit = kit.replaceAll("from './assets/", `from '../${DECK.id}/assets/`);
-  const labs = !light && hasGuide;
-  if (labs) {
-    const anchor = "import logoWide from '@assets/technologia/logo-horizontal.png';";
-    kit = kit.replace(anchor, `${anchor}\nimport guideUrl from './assets/guide-ia135.pdf?url';`);
-  }
-  const styles = [
-    '// ─── Styles (collected above, injected once; updated in place on HMR) ───────',
-    "if (typeof document !== 'undefined') {",
-    `  const STYLE_ID = ${BT}osd-styles-${DL}{SLIDE_ID}${BT};`,
-    '  let el = document.getElementById(STYLE_ID) as HTMLStyleElement | null;',
-    '  if (!el) {',
-    "    el = document.createElement('style');",
-    '    el.id = STYLE_ID;',
-    '    document.head.appendChild(el);',
-    '  }',
-    "  const css = CSS.join('\\n');",
-    '  if (el.textContent !== css) el.textContent = css;',
-    '}',
-    '',
-    'export const meta: SlideMeta = {',
-    `  title: ${JSON.stringify(deck.title)},`,
-    `  createdAt: '${DECK.createdAt}',`,
-    "  theme: 'technologia',",
-    ...(labs ? ['  labs: guideUrl,'] : []),
-    '};',
-    '',
-    'export default [',
-    ...pages.map((n) => `  ${n},`),
-    '] satisfies Page[];',
-    '',
-    '// Speaker notes — one entry per page, same order as the default export.',
-    'export const notes: (string | undefined)[] = [',
-    ...notes.map((n) => `  ${n},`),
-    '];',
-    '',
-  ].join('\n');
-  const text = [kit, '', ...sel.map((p) => `// ═══ ${p.file.replace(/\.tsx$/, '')} ${'═'.repeat(Math.max(4, 70 - p.file.length))}\n\n${p.code}\n`), styles].join('\n');
-  const dest = path.join(ROOT, 'slides', deck.id);
-  fs.mkdirSync(dest, { recursive: true });
-  writeDeck(path.join(dest, 'index.tsx'), text); // + saved design, client logo, MOD_START
-  // Upper-case drive letter, or Vite loads React twice (q:/ vs Q:/) and every page fails to render.
-  execSync(`node scripts/timers-manifest.mjs ${path.basename(dest)}`, { cwd: ROOT.replace(/^([a-z]):/, (_, d) => `${d.toUpperCase()}:`), stdio: 'inherit' });
-  console.log(`→ slides/${deck.id}/index.tsx: ${pages.length} pages (Jour 1: 1–${split}, Jour 2: ${split + 1}–${pages.length})${labs ? ' · Labs : guide du participant' : ''}`);
-  return pages;
-};
-
-emit(DECK, false);
-const lightPages = emit(LIGHT, true);
-console.log(`  version light : ${lightPages.length} pages (sans QCM, exercices, ateliers ni notes du formateur)`);
+}
+let kit = fs
+  .readFileSync(path.join(BUILD, 'kit.tsx'), 'utf8')
+  .replace(/\r\n/g, '\n')
+  .replaceAll('__SLIDE_ID__', DECK.id)
+  .replaceAll('__P__', DECK.p)
+  .replaceAll('__DAY_SPLIT__', String(split))
+  .replaceAll('__DAY__', '1')
+  .trimEnd();
+if (hasGuide) {
+  const anchor = "import logoWide from '@assets/technologia/logo-horizontal.png';";
+  kit = kit.replace(anchor, `${anchor}\nimport guideUrl from './assets/guide-ia135.pdf?url';`);
+}
+const styles = [
+  '// ─── Styles (collected above, injected once; updated in place on HMR) ───────',
+  "if (typeof document !== 'undefined') {",
+  `  const STYLE_ID = ${BT}osd-styles-${DL}{SLIDE_ID}${BT};`,
+  '  let el = document.getElementById(STYLE_ID) as HTMLStyleElement | null;',
+  '  if (!el) {',
+  "    el = document.createElement('style');",
+  '    el.id = STYLE_ID;',
+  '    document.head.appendChild(el);',
+  '  }',
+  "  const css = CSS.join('\\n');",
+  '  if (el.textContent !== css) el.textContent = css;',
+  '}',
+  '',
+  'export const meta: SlideMeta = {',
+  `  title: ${JSON.stringify(DECK.title)},`,
+  `  createdAt: '${DECK.createdAt}',`,
+  "  theme: 'technologia',",
+  ...(hasGuide ? ['  labs: guideUrl,'] : []),
+  '};',
+  '',
+  'export default [',
+  ...pages.map((n) => `  ${n},`),
+  '] satisfies Page[];',
+  '',
+  '// Speaker notes — one entry per page, same order as the default export.',
+  'export const notes: (string | undefined)[] = [',
+  ...notes.map((n) => `  ${n},`),
+  '];',
+  '',
+  '// Version light (« Télécharger › Version light (PDF) ») — 0-based page indices, written by the build.',
+  `export const light: number[] = [${lightIdx.join(', ')}];`,
+  '',
+].join('\n');
+const text = [kit, '', ...parts.map((p) => `// ═══ ${p.file.replace(/\.tsx$/, '')} ${'═'.repeat(Math.max(4, 70 - p.file.length))}\n\n${p.code}\n`), styles].join('\n');
+const dest = path.join(ROOT, 'slides', DECK.id);
+fs.mkdirSync(dest, { recursive: true });
+writeDeck(path.join(dest, 'index.tsx'), text); // + saved design, client logo, MOD_START
+// Upper-case drive letter, or Vite loads React twice (q:/ vs Q:/) and every page fails to render.
+execSync(`node scripts/timers-manifest.mjs ${path.basename(dest)}`, { cwd: ROOT.replace(/^([a-z]):/, (_, d) => `${d.toUpperCase()}:`), stdio: 'inherit' });
+console.log(`→ slides/${DECK.id}/index.tsx: ${pages.length} pages (Jour 1: 1–${split}, Jour 2: ${split + 1}–${pages.length})${hasGuide ? ' · Labs : guide du participant' : ''} · version light : ${lightIdx.length} pages`);
 
 if (process.argv[2] !== '--no-tsc') {
   try {
@@ -189,7 +180,7 @@ if (process.argv[2] !== '--no-tsc') {
     console.log('tsc: OK');
   } catch (e) {
     const out = `${e.stdout ?? ''}${e.stderr ?? ''}`.split('\n');
-    const mine = out.filter((l) => l.includes(DECK.id) || l.includes(LIGHT.id) || /^\s/.test(l));
+    const mine = out.filter((l) => l.includes(DECK.id) || /^\s/.test(l));
     console.log(mine.slice(0, 80).join('\n'));
     console.log(`tsc: ${mine.filter((l) => l.includes('error TS')).length} error(s) in ${DECK.id}`);
     process.exitCode = 1;

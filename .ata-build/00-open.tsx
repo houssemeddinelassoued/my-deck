@@ -25,7 +25,7 @@ const OP_Cover: Page = () => (
       <p className={A.in} style={{ margin: '26px 0 0', fontSize: 34, lineHeight: 1.32, color: C.soft, ...dl(240) }}>
         Identifiez, concevez et déployez des workflows automatisés combinant RPA et intelligence artificielle
       </p>
-      {LIGHT ? (
+      {isLightExport() ? (
         <Tag cls={A.in} tone="yellow" size={24} style={{ marginTop: 26, ...dl(360) }}>
           <Icon name="book" size={24} /> Version light · à parcourir avant la formation
         </Tag>

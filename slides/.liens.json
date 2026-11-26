@@ -43,5 +43,10 @@
     "label": "DeepSeek",
     "url": "https://chat.deepseek.com/",
     "groupe": "Outils IA"
+  },
+  {
+    "label": "Lancer des Modèles LLM Model Localement",
+    "url": "https://llmrun.dev/",
+    "groupe": "Veille et ressources"
   }
 ]

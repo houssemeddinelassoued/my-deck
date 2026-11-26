@@ -399,11 +399,13 @@ export const __pages = [M5_Divider, M5_Law25, M5_Duties, M5_Art12, M5_Efvp, M5_M
 
 // @@NOTES-BEGIN
 export const __notes = [
-  `⏱ 1 min · DÉBUT DU MODULE 5 (≈ 13 h, au retour du dîner)
+  `⏱ 1 min · DÉBUT DU MODULE 5 (≈ 13 h, au retour du dîner · SOBEYS : DÉBUT DE LA MATINÉE 2, 9 h)
 
 OBJECTIF — Appliquer les principes de l'IA responsable et les cadres réglementaires comme la Loi 25 (objectif officiel n° 4).
 
 DIRE — « Bon retour ! Ce matin, on a vu ce qui peut mal tourner. Maintenant : ce que la loi impose déjà au Québec, et les principes qui guident le reste. Rassurez-vous : pas besoin d'être juriste. »
+
+SOBEYS — Début de la matinée 2. Vérifiez son, caméra et assistant d'IA ouvert. Rappel de 3 minutes, pris sur le temps du module : « Qu'est-ce qui vous est resté de la matinée 1 ? » Deux ou trois réponses au micro, puis dites : « Bienvenue ! À la matinée 1, on a vu ce qui peut mal tourner. Aujourd'hui : ce que la loi impose déjà au Québec, et les principes qui guident le reste. Rassurez-vous : pas besoin d'être juriste. »
 
 PRUDENCE — Vous n'êtes pas juriste non plus : pour un cas précis, renvoyez toujours au responsable de la protection des renseignements personnels de l'organisation, ou à un avocat. Ce module donne des repères, pas un avis juridique.
 
@@ -437,6 +439,8 @@ TRANSITION — « Arrêtons-nous sur l'obligation la plus directement liée à l
   `⏱ 4 min · ARTICLE 12.1 (4 clics)
 
 DIRE — « L'article 12.1 s'applique quand une décision repose exclusivement sur un traitement automatisé de renseignements personnels. Trois obligations, qu'on a vues dans la lettre "explicable" ce matin. »
+
+SOBEYS — Dites « à la matinée 1 » au lieu de « ce matin ».
 → beat 1 : « Informer la personne que la décision a été prise de façon automatisée, au plus tard au moment où on l'informe de la décision. »
 → beat 2 : « Sur demande, lui dire quels renseignements ont été utilisés, les raisons et les principaux facteurs et paramètres de la décision, et son droit de faire corriger ces renseignements. »
 → beat 3 : « Lui permettre de présenter ses observations à un membre du personnel en mesure de réviser la décision. »

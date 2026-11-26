@@ -149,8 +149,10 @@ if (typeof window !== 'undefined') {
 const SLIDE_ID = 'automatisation-taches-ia';
 const P = 'ata'; // CSS class prefix, unique per deck
 const DAY: number = 1;
-// Version light (sent before the training): same pages minus QCM, exercises and ateliers.
-const LIGHT: boolean = false;
+// Version light: true while the deck page prints « Télécharger › Version light (PDF) »
+// (the core patch marks its print root). Pages use it to adapt the cover tag or closing text.
+const isLightExport = (): boolean =>
+  typeof document !== 'undefined' && !!document.getElementById('os-print-root')?.hasAttribute('data-osd-light');
 // Combined 2-day deck: pages after DAY_SPLIT belong to day 2 (0 = single-day deck).
 const DAY_SPLIT: number = 67;
 const useDay = (): number => {
@@ -3704,7 +3706,7 @@ const OP_Cover: Page = () => (
       <p className={A.in} style={{ margin: '26px 0 0', fontSize: 34, lineHeight: 1.32, color: C.soft, ...dl(240) }}>
         Identifiez, concevez et déployez des workflows automatisés combinant RPA et intelligence artificielle
       </p>
-      {LIGHT ? (
+      {isLightExport() ? (
         <Tag cls={A.in} tone="yellow" size={24} style={{ marginTop: 26, ...dl(360) }}>
           <Icon name="book" size={24} /> Version light · à parcourir avant la formation
         </Tag>
@@ -7958,10 +7960,10 @@ const CL_Merci: Page = () => (
     <Squares s={300} x={1400} y={330} delay={200} />
     <div style={{ position: 'absolute', left: 120, top: 380, width: 1100 }}>
       <h1 className={A.in} style={{ margin: 0, fontFamily: display, fontWeight: 700, fontSize: 150, lineHeight: 1, color: C.ink }}>
-        {LIGHT ? 'À bientôt !' : 'Merci !'}
+        {isLightExport() ? 'À bientôt !' : 'Merci !'}
       </h1>
       <p className={A.in} style={{ margin: '28px 0 0', fontSize: 36, lineHeight: 1.35, color: C.soft, ...dl(150) }}>
-        {LIGHT
+        {isLightExport()
           ? 'Avant la formation : créez vos comptes gratuits (Make, Google) et pensez à une tâche répétitive de votre travail. Le guide du participant explique tout.'
           : 'Votre avis compte : prenez trois minutes pour remplir l’évaluation de la formation.'}
       </p>
@@ -9370,6 +9372,9 @@ DIRE — « Merci pour votre énergie pendant ces deux jours. Vous repartez avec
 
 LOGISTIQUE — Collez le lien de l'évaluation dans le Chat et laissez 3 minutes pour la remplir. Rappelez : supprimez votre clé d'API Gemini si vous ne l'utilisez plus (aistudio.google.com), et désactivez les scénarios Make de test.`,
 ];
+
+// Version light (« Télécharger › Version light (PDF) ») — 0-based page indices, written by the build.
+export const light: number[] = [0, 1, 3, 4, 6, 8, 9, 10, 11, 12, 13, 15, 17, 18, 19, 20, 21, 22, 23, 24, 26, 31, 32, 33, 34, 35, 36, 38, 41, 42, 43, 44, 45, 46, 47, 48, 49, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 64, 67, 69, 70, 71, 72, 75, 76, 77, 78, 79, 80, 81, 82, 85, 86, 87, 88, 89, 90, 91, 92, 97, 98, 106, 107, 108, 109, 110, 111, 113, 114, 117, 118, 120, 121];
 
 // @@TIMERS-BEGIN
 // Minuteurs de la deck — généré par scripts/timers-manifest.mjs (page = index 0-based).

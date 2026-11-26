@@ -3602,7 +3602,7 @@ const OP_Cover: Page = () => (
     <img src={logoStack} alt="Technologia" className={A.fade} style={{ position: 'absolute', left: 112, top: 78, height: 150, display: 'block' }} />
     <div style={{ position: 'absolute', left: 120, top: 318, width: 980 }}>
       <Eyebrow cls={A.in} size={28}>
-        Formation IA114 · 1 jour
+        <ByClient apsm="Formation IA114 · 1 jour" sobeys="Formation IA114 · 2 matinées" />
       </Eyebrow>
       <h1
         className={A.in}
@@ -3750,7 +3750,7 @@ const ObjStep = ({ i, h, tone, verb, when, children }: { i: number; h: number; t
     </div>
     <div className={A.fade} style={{ position: 'absolute', left: 26, bottom: 24, ...dl(600 + i * 140) }}>
       <Tag tone={when === 'Matin' ? 'blue' : 'green'} size={20}>
-        {when}
+        <ByClient apsm={when} sobeys={when === 'Matin' ? 'Matinée 1' : 'Matinée 2'} />
       </Tag>
     </div>
   </div>
@@ -3758,7 +3758,9 @@ const ObjStep = ({ i, h, tone, verb, when, children }: { i: number; h: number; t
 
 const OP_Objectives: Page = () => (
   <Frame mod={0}>
-    <Title>Ce que vous saurez faire ce soir</Title>
+    <Title>
+      <ByClient apsm="Ce que vous saurez faire ce soir" sobeys="Ce que vous saurez faire après les deux matinées" />
+    </Title>
     <Lede>Cinq objectifs, du plus simple au plus engageant.</Lede>
     <ObjStep i={1} h={400} tone="blue" verb="COMPRENDRE" when="Matin">
       Les concepts clés : IA, machine learning, deep learning
@@ -3814,7 +3816,62 @@ const HalfCol = ({ x, title, sub, d, children }: { x: number; title: string; sub
   </div>
 );
 
+const ProgramColsSobeys = () => (
+  <>
+    <HalfCol x={120} title="Matinée 1" sub="Fondamentaux de l’IA" d={0}>
+      <ProgRow t="9:00" icon="users" d={150}>
+        Accueil et tour de table
+      </ProgRow>
+      <ProgRow t="9:15" n={1} d={210}>
+        Qu’est-ce que l’intelligence artificielle ?
+      </ProgRow>
+      <ProgRow t="10:05" n={2} d={270}>
+        Applications concrètes et démonstrations
+      </ProgRow>
+      <ProgBreak t="10:35" d={330}>
+        Pause
+      </ProgBreak>
+      <ProgRow t="10:50" n={3} tone="yellow" d={390}>
+        Atelier 1 · Explorer des outils IA
+      </ProgRow>
+      <ProgRow t="11:30" n={4} tone="violet" d={450}>
+        Les grands enjeux éthiques
+      </ProgRow>
+      <ProgBreak t="12:00" d={510}>
+        Fin de la matinée 1
+      </ProgBreak>
+    </HalfCol>
+    <HalfCol x={984} title="Matinée 2" sub="Éthique et gouvernance" d={150}>
+      <ProgRow t="9:00" n={5} tone="violet" d={300}>
+        Rappel, Loi 25 et principes de l’IA responsable
+      </ProgRow>
+      <ProgRow t="9:40" n={6} tone="yellow" d={360}>
+        Atelier 2 · Étude de cas éthique
+      </ProgRow>
+      <ProgBreak t="10:20" d={420}>
+        Pause
+      </ProgBreak>
+      <ProgRow t="10:35" n={7} tone="violet" d={480}>
+        Vers une gouvernance de l’IA
+      </ProgRow>
+      <ProgRow t="11:00" n={8} tone="yellow" d={540}>
+        Atelier 3 · Mini-charte éthique
+      </ProgRow>
+      <ProgRow t="11:45" icon="flag" d={600}>
+        Bilan, plan d’action et évaluation
+      </ProgRow>
+      <ProgBreak t="12:00" d={660}>
+        Fin de la formation
+      </ProgBreak>
+    </HalfCol>
+  </>
+);
+
 const ProgramCols = () => (
+  useClient() === 'sobeys' ? <ProgramColsSobeys /> : <ProgramColsApsm />
+);
+
+const ProgramColsApsm = () => (
   <>
     <HalfCol x={120} title="Matin" sub="Fondamentaux de l’IA" d={0}>
       <ProgRow t="9:00" icon="users" d={150}>
@@ -3867,7 +3924,9 @@ const ProgramCols = () => (
 
 const OP_Program: Page = () => (
   <Frame mod={0}>
-    <Title>Programme de la journée</Title>
+    <Title>
+      <ByClient apsm="Programme de la journée" sobeys="Programme des deux matinées" />
+    </Title>
     <ProgramCols />
     <div className={A.fade} style={{ position: 'absolute', left: 120, top: 900, display: 'flex', alignItems: 'center', gap: 28, fontSize: 24, color: C.soft, ...dl(800) }}>
       <span style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
@@ -4020,20 +4079,22 @@ const OP_Mutuelle: Page = () => (
 // ─── The question of the day ────────────────────────────────────────────────
 const OP_Question: Page = () => (
   <Frame mod={0} kind="cas" label="Ouverture · Fil rouge">
-    <Title>La question qui nous suivra toute la journée</Title>
+    <Title>
+      <ByClient apsm="La question qui nous suivra toute la journée" sobeys="La question qui nous suivra pendant les deux matinées" />
+    </Title>
     <div className={A.in} style={{ position: 'absolute', left: 120, top: 260, width: 1680, ...dl(100) }}>
       <Quote by="Nathalie, au comité de direction de la Mutuelle">
         Comment profiter de l’IA <Hl>sans trahir la confiance</Hl> de nos membres et de nos employés ?
       </Quote>
     </div>
     <div style={{ position: 'absolute', left: 120, top: 520, width: 1680, display: 'grid', gridTemplateColumns: 'repeat(3, 540px)', columnGap: 30 }}>
-      <Card tone="blue" icon="bulb" title="Ce matin" size={26} cls={A.in} style={{ height: 300, ...dl(300) }}>
+      <Card tone="blue" icon="bulb" title={<ByClient apsm="Ce matin" sobeys="Matinée 1 · début" />} size={26} cls={A.in} style={{ height: 300, ...dl(300) }}>
         Comprendre ce qu’est l’IA, ce qu’elle sait faire, et l’essayer vous-même.
       </Card>
-      <Card tone="violet" icon="scale" title="Avant et après le dîner" size={26} cls={A.in} style={{ height: 300, ...dl(450) }}>
+      <Card tone="violet" icon="scale" title={<ByClient apsm="Avant et après le dîner" sobeys="Fin de la matinée 1 et début de la matinée 2" />} size={26} cls={A.in} style={{ height: 300, ...dl(450) }}>
         Repérer les risques : biais, opacité, données. Connaître la Loi 25.
       </Card>
-      <Card tone="yellow" icon="shieldCheck" title="Cet après-midi" size={26} cls={A.in} style={{ height: 300, ...dl(600) }}>
+      <Card tone="yellow" icon="shieldCheck" title={<ByClient apsm="Cet après-midi" sobeys="Matinée 2" />} size={26} cls={A.in} style={{ height: 300, ...dl(600) }}>
         Juger un cas de votre secteur, puis écrire les règles du jeu : une mini-charte.
       </Card>
     </div>
@@ -4049,7 +4110,7 @@ const OP_Quiz0: Page = () => (
     <Qcm
       multi
       q="Parmi ces affirmations sur l’IA, lesquelles sont vraies ?"
-      explain="L’IA est utile et déjà partout, mais elle n’est ni neutre ni infaillible. Et au Québec, la loi encadre déjà les décisions automatisées. C’est tout le programme de la journée."
+      explain="L’IA est utile et déjà partout, mais elle n’est ni neutre ni infaillible. Et au Québec, la loi encadre déjà les décisions automatisées. C’est tout le programme de la formation."
     >
       <Opt why="Piège ! Une IA apprend à partir de données produites par des humains. Elle hérite de leurs déséquilibres : on le verra au module 4.">
         Une IA est neutre, puisque c’est une machine
@@ -4885,7 +4946,7 @@ const M2_Cases: Page = () => (
       </M2Case>
     </div>
     <Callout cls={A.in} title="Le revers de chaque réussite" tone="violet" icon="scale" size={26} style={{ position: 'absolute', left: 120, top: 870, width: 1680, padding: '14px 26px', ...dl(700) }}>
-      Qui vérifie l’erreur du système ? Qui a donné ses données ? Qui peut contester ? Ce sera notre après-midi.
+      Qui vérifie l’erreur du système ? Qui a donné ses données ? Qui peut contester ? Ce sera <ByClient apsm="notre après-midi" sobeys="notre deuxième matinée" />.
     </Callout>
   </Frame>
 );
@@ -7234,7 +7295,9 @@ const CLMod = ({ n, tone, title, d, children }: { n: number; tone: Tone; title: 
 
 const CL_Journey: Page = () => (
   <Frame mod={9} kind="synthese">
-    <Title>Une journée, huit modules : le chemin parcouru</Title>
+    <Title>
+      <ByClient apsm="Une journée, huit modules : le chemin parcouru" sobeys="Deux matinées, huit modules : le chemin parcouru" />
+    </Title>
     <div style={{ position: 'absolute', left: 120, top: 220, width: 1680, display: 'grid', gridTemplateColumns: 'repeat(4, 397px)', rowGap: 26, columnGap: 30 }}>
       <CLMod n={1} tone="blue" title="Qu’est-ce que l’IA ?" d={100}>
         Elle apprend d’exemples et prédit le probable, pas le vrai.
@@ -7273,7 +7336,7 @@ const CL_Quiz: Page = () => (
     <Qcm
       multi
       q="Lesquelles de ces pratiques relèvent d’une IA responsable ?"
-      explain="Dire qu’une IA intervient, tester les résultats, garder un humain capable de réviser, encadrer les outils : c’est la réponse à la question de Nathalie, ce matin."
+      explain={<>Dire qu’une IA intervient, tester les résultats, garder un humain capable de réviser, encadrer les outils : c’est la réponse à la question de Nathalie, <ByClient apsm="ce matin" sobeys="posée dès la première matinée" />.</>}
     >
       <Opt ok why="Oui : c’est la transparence, exigée en Europe pour les agents conversationnels et attendue partout.">
         Informer les membres qu’ils échangent avec une IA
@@ -7559,11 +7622,19 @@ VERSION CLIENT — AVANT LA SESSION, cliquez le logo du client sur cette page : 
 
 OBJECTIF — Installer un climat chaleureux et poser le cadre : une journée pour passer de « on entend parler de l'IA partout » à « je comprends ce qu'elle fait, ce qu'elle risque, et comment l'encadrer ».
 
+SOBEYS — Deux matinées de trois heures (matinée 1, puis matinée 2), pas une journée. Même objectif pour l'ensemble.
+
 DIRE — « Bonjour et bienvenue à la formation Introduction à l'IA et à l'éthique. Ce matin, on comprend ce qu'est l'intelligence artificielle et ce qu'elle sait faire ; on l'essaie. Cet après-midi, on regarde ses risques en face, la Loi 25, et on écrit ensemble les règles du jeu. »
+
+SOBEYS — Dites plutôt : « Bonjour et bienvenue à la formation Introduction à l'IA et à l'éthique. À la matinée 1, on comprend ce qu'est l'intelligence artificielle et ce qu'elle sait faire ; on l'essaie ; puis on ouvre le dossier des risques. À la matinée 2, on regarde la Loi 25, on juge un cas de votre secteur, et on écrit ensemble les règles du jeu. »
 
 Montrer l'animation : « Une balance : d'un côté la performance de l'IA, de l'autre la confiance. Toute la journée, on va chercher l'équilibre. »
 
+SOBEYS — Dites « Pendant nos deux matinées » au lieu de « Toute la journée ».
+
 LOGISTIQUE — Classe virtuelle : horaire 9 h – 16 h, pauses vers 10 h 35 et 14 h 20, dîner 12 h – 13 h. Vérifiez le son, la caméra et l'accès au Chat. Demandez à chacun d'ouvrir dès maintenant un assistant d'IA dans un autre onglet ou sur un second écran : un compte gratuit ChatGPT, Copilot, Gemini ou Claude suffit. Évaluation à la fin de la journée.
+
+SOBEYS — Deux matinées de 9 h à 12 h, sans dîner : pause vers 10 h 35 à la matinée 1, vers 10 h 20 à la matinée 2. Confirmez la date et l'heure de la matinée 2. Demandez de garder le document de l'atelier 1 (les trois constats) : on s'en resservira à la matinée 2. L'évaluation a lieu à la fin de la matinée 2.
 
 TRANSITION — « Avant d'entrer dans le sujet, quelques mots sur moi. »`,
   `⏱ 2 min
@@ -7582,6 +7653,8 @@ TRANSITION — « À votre tour maintenant. »`,
   `⏱ 7 min (30 secondes par personne, ajuster selon la taille du groupe)
 
 OBJECTIF — Connaître le groupe, ses secteurs et son humeur face à l'IA, pour adapter les exemples de la journée.
+
+SOBEYS — « Exemples de la journée » = exemples des deux matinées.
 
 ANIMATION — Lancez le minuteur. Appelez chaque personne par son prénom (ordre de la liste des participants) ; elle ouvre son micro et répond aux deux questions. Notez dans un document à vous les secteurs (RH, santé, finance, marketing, public…) : vous y reviendrez au module 2. Notez aussi les mots d'humeur : « inquiétude » et « méfiance » sont de très bonnes portes d'entrée pour l'après-midi.
 
@@ -7604,14 +7677,20 @@ DIRE — « Cinq marches, qui reprennent les objectifs de la formation. »
 4. APPLIQUER — « La Loi 25 et les principes de l'IA responsable. »
 5. ÉLABORER — « Votre mini-charte éthique, la dernière marche, celle qui engage. »
 
-TRANSITION — « Voici comment la journée s'organise. »`,
+TRANSITION — « Voici comment la journée s'organise. »
+
+SOBEYS — Dites « Voici comment nos deux matinées s'organisent. »`,
   `⏱ 1 min
 
 OBJECTIF — Donner de la visibilité sur le déroulement.
 
 DIRE — « Le matin, les fondamentaux : ce qu'est l'IA, ses applications, avec des démonstrations, puis l'atelier 1 où vous explorez vous-mêmes un agent conversationnel et un outil de génération. Avant le dîner, on ouvre le dossier éthique : biais, transparence, vie privée. »
 
+SOBEYS — Dites plutôt : « La matinée 1 : les fondamentaux, ce qu'est l'IA, ses applications avec des démonstrations, puis l'atelier 1 où vous explorez vous-mêmes un agent conversationnel et un outil de génération. En fin de matinée, on ouvre le dossier éthique : biais, transparence, vie privée. »
+
 « L'après-midi : la Loi 25 et les principes de l'IA responsable, puis l'atelier 2, une étude de cas de votre secteur. Après la pause, la gouvernance : qui fait quoi dans une organisation. Et l'atelier 3 : votre mini-charte. »
+
+SOBEYS — Dites plutôt : « La matinée 2 : la Loi 25 et les principes de l'IA responsable, puis l'atelier 2, une étude de cas de votre secteur. Après la pause, la gouvernance : qui fait quoi dans une organisation. Et l'atelier 3 : votre mini-charte. Chaque matinée va de 9 h à 12 h. »
 
 À SOULIGNER — Les modules en jaune sont les ateliers : chacun sur son poste, guidé pas à pas, avec un minuteur. Les numéros en haut à droite de chaque page sont cliquables : ils vous ramènent au début d'un module.
 
@@ -7656,6 +7735,8 @@ DIRE — Lisez la citation lentement : « Comment profiter de l'IA sans trahir l
 
 « Ce matin, on comprend et on essaie. Autour du dîner, on repère les risques. Cet après-midi, on juge un cas de votre secteur et on écrit les règles du jeu. »
 
+SOBEYS — Dites plutôt : « À la matinée 1, on comprend, on essaie, puis on repère les risques. À la matinée 2, on juge un cas de votre secteur et on écrit les règles du jeu. »
+
 INTERACTION — « Dans votre organisation, qui se pose cette question aujourd'hui ? » Une ou deux réponses au micro suffisent.
 
 TRANSITION — « Testons vos intuitions avant de commencer. »`,
@@ -7679,6 +7760,8 @@ TRANSITION — « Mais d'abord : qu'est-ce que c'est, au juste, l'intelligence a
 OBJECTIF — Annoncer le plan du module.
 
 DIRE — « Module 1 : qu'est-ce que l'intelligence artificielle ? Le but n'est pas de faire de vous des spécialistes, mais que vous compreniez assez bien la machine pour savoir quand lui faire confiance… et quand vous en méfier. C'est la base de toute l'éthique de cet après-midi. »
+
+SOBEYS — Dites « de la matinée 2 » au lieu de « de cet après-midi ».
 
 « Au programme : une définition et un peu d'histoire ; comment une machine apprend ; la différence entre IA, machine learning et deep learning ; un panorama des technologies ; et comment un outil comme ChatGPT écrit ses réponses. »
 
@@ -7879,6 +7962,8 @@ OBJECTIF — Passer de la théorie aux usages réels.
 
 DIRE — « Module 2 : les applications concrètes. Quatre secteurs, ceux du programme : RH, santé, finance, marketing. Des réussites documentées. Deux démonstrations. Et les quatre projets d'IA de la Mutuelle des Érables, qui vont nous servir tout l'après-midi. »
 
+SOBEYS — Dites « qui vont nous servir jusqu'à la fin de la formation ».
+
 RYTHME — Environ 30 minutes, puis la pause.
 
 TRANSITION — « Faisons le tour des secteurs. »`,
@@ -7887,6 +7972,8 @@ TRANSITION — « Faisons le tour des secteurs. »`,
 OBJECTIF — Identifier des cas d'usage concrets dans différents secteurs (objectif officiel n° 2).
 
 DIRE — Un secteur par clic. Pour chacun, lisez les trois usages, puis la vigilance en rouge : c'est le fil qu'on tirera cet après-midi.
+
+SOBEYS — Dites « à la matinée 2 » au lieu de « cet après-midi ».
 → beat 1 : RH. « Rédiger des offres d'emploi inclusives, présélectionner des candidatures, répondre aux questions des employés. Vigilance : les biais dans le tri. »
 → beat 2 : Santé. « Aide au diagnostic en imagerie, transcription des notes cliniques, prévision de l'achalandage des urgences. Vigilance : des données parmi les plus sensibles, et la décision reste médicale. »
 → beat 3 : Finance et assurance. « Fraude en temps réel, risque de crédit ou d'assurance, lecture de documents. Vigilance : pouvoir expliquer un refus. »
@@ -7961,6 +8048,8 @@ TRANSITION — « Ces outils, la Mutuelle veut les utiliser. Voici ses quatre pr
 
 OBJECTIF — Poser les quatre projets du fil rouge, chacun avec sa question éthique. On les retrouvera tout l'après-midi.
 
+SOBEYS — Dites « à la matinée 2 » au lieu de « tout l'après-midi ».
+
 DIRE — Présentez les quatre cartes (elles apparaissent seules), puis un clic par question éthique :
 → beat 1 : P1, Léa, portée par Vincent. « Peut-elle promettre ? Le membre sait-il qu'il parle à une IA ? »
 → beat 2 : P2, le tri des candidatures de Samir, entraîné sur 10 ans d'embauches. « Le modèle reproduit-il les choix du passé ? »
@@ -8012,6 +8101,8 @@ DIRE — « Votre mission : prendre l'IA en flagrant délit. Chacun sur son post
 « Un outil au choix, en version gratuite : ChatGPT, Copilot, Gemini, Claude, Le Chat ou Perplexity. » APSM : aucun outil sous licence d'entreprise n'est choisi, tout se fait en gratuit.
 
 « Votre livrable : trois constats, notés dans un document à vous (Word, Bloc-notes, OneNote, papier). On s'en resservira cet après-midi. »
+
+SOBEYS — Dites « à la matinée 2 ». Rappelez de garder ce document : il sert à nouveau à la prochaine matinée.
 
 RÈGLE D'OR — « Aucune donnée réelle : ni nom, ni dossier, ni information de santé. Tous les textes sont fictifs : je les colle dans le Chat au début de chaque étape. »
 
@@ -8086,6 +8177,8 @@ OBJECTIF — Ouvrir le volet éthique, en partant de ce que les participants vie
 DIRE — « Module 4 : les grands enjeux éthiques. Vous venez de voir de vos yeux des images stéréotypées et des sources inventées. Ce n'est pas un hasard : c'est la mécanique même de l'IA. Trois enjeux : les biais, la transparence, la vie privée. »
 
 RYTHME — 30 minutes, jusqu'au dîner.
+
+SOBEYS — 30 minutes, jusqu'à la fin de la matinée 1 (12 h).
 
 TRANSITION — « Les trois enjeux en un coup d'œil. »`,
   `⏱ 2 min · TROIS ENJEUX (3 clics)
@@ -8170,19 +8263,25 @@ RÉPONSE — D : oui, par des indices indirects.
 
 MESSAGE CLÉ — On ne prouve pas l'absence de biais en regardant les variables : on teste les résultats par groupe (taux de sélection des femmes et des hommes, par exemple).
 
-TRANSITION — « Bilan du module 4, puis le dîner. »`,
-  `⏱ 2 min · SYNTHÈSE MODULE 4 (puis DÎNER, ≈ 12 h)
+TRANSITION — « Bilan du module 4, puis le dîner. »
+
+SOBEYS — Dites « Bilan du module 4, puis on termine la matinée. »`,
+  `⏱ 2 min · SYNTHÈSE MODULE 4 (puis DÎNER, ≈ 12 h · SOBEYS : FIN DE LA MATINÉE 1 à 12 h)
 
 DIRE — Relisez les cinq points.
 
 À VOTRE POSTE — Les trois questions de la carte bleue : qui pourrait être désavantagé ? saurait-on expliquer ? quelles données y passent ?
 
-ANNONCE — « Au retour du dîner, 13 h : ce que la loi impose déjà au Québec, et les grands principes de l'IA responsable. Puis un cas de votre secteur, à juger vous-mêmes. » (APSM : des caméras de fatigue dans une mine. Sobeys : la reconnaissance faciale en magasin. Ne dévoilez pas le cas : effet de surprise pour l'atelier 2.)`,
-  `⏱ 1 min · DÉBUT DU MODULE 5 (≈ 13 h, au retour du dîner)
+ANNONCE — « Au retour du dîner, 13 h : ce que la loi impose déjà au Québec, et les grands principes de l'IA responsable. Puis un cas de votre secteur, à juger vous-mêmes. » (APSM : des caméras de fatigue dans une mine. Sobeys : la reconnaissance faciale en magasin. Ne dévoilez pas le cas : effet de surprise pour l'atelier 2.)
+
+SOBEYS — Dites plutôt : « À la prochaine matinée, à 9 h : ce que la loi impose déjà au Québec, et les grands principes de l'IA responsable. Puis un cas de votre secteur, à juger vous-mêmes. » Rappelez la date de la matinée 2 et de garder le document de l'atelier 1. Aucun devoir demandé. Ne dévoilez pas le cas.`,
+  `⏱ 1 min · DÉBUT DU MODULE 5 (≈ 13 h, au retour du dîner · SOBEYS : DÉBUT DE LA MATINÉE 2, 9 h)
 
 OBJECTIF — Appliquer les principes de l'IA responsable et les cadres réglementaires comme la Loi 25 (objectif officiel n° 4).
 
 DIRE — « Bon retour ! Ce matin, on a vu ce qui peut mal tourner. Maintenant : ce que la loi impose déjà au Québec, et les principes qui guident le reste. Rassurez-vous : pas besoin d'être juriste. »
+
+SOBEYS — Début de la matinée 2. Vérifiez son, caméra et assistant d'IA ouvert. Rappel de 3 minutes, pris sur le temps du module : « Qu'est-ce qui vous est resté de la matinée 1 ? » Deux ou trois réponses au micro, puis dites : « Bienvenue ! À la matinée 1, on a vu ce qui peut mal tourner. Aujourd'hui : ce que la loi impose déjà au Québec, et les principes qui guident le reste. Rassurez-vous : pas besoin d'être juriste. »
 
 PRUDENCE — Vous n'êtes pas juriste non plus : pour un cas précis, renvoyez toujours au responsable de la protection des renseignements personnels de l'organisation, ou à un avocat. Ce module donne des repères, pas un avis juridique.
 
@@ -8216,6 +8315,8 @@ TRANSITION — « Arrêtons-nous sur l'obligation la plus directement liée à l
   `⏱ 4 min · ARTICLE 12.1 (4 clics)
 
 DIRE — « L'article 12.1 s'applique quand une décision repose exclusivement sur un traitement automatisé de renseignements personnels. Trois obligations, qu'on a vues dans la lettre "explicable" ce matin. »
+
+SOBEYS — Dites « à la matinée 1 » au lieu de « ce matin ».
 → beat 1 : « Informer la personne que la décision a été prise de façon automatisée, au plus tard au moment où on l'informe de la décision. »
 → beat 2 : « Sur demande, lui dire quels renseignements ont été utilisés, les raisons et les principaux facteurs et paramètres de la décision, et son droit de faire corriger ces renseignements. »
 → beat 3 : « Lui permettre de présenter ses observations à un membre du personnel en mesure de réviser la décision. »
@@ -8314,7 +8415,7 @@ DIRE — Relisez les cinq points.
 À VOTRE POSTE — « Savez-vous qui est la personne responsable de la protection des renseignements personnels chez vous ? Son nom doit figurer sur le site de votre organisation. Demandez-lui si vos projets d'IA ont eu leur EFVP. »
 
 TRANSITION — « Maintenant, un cas de votre secteur. Avec vos six questions en main, vous allez juger… et dire ce que vous auriez fait à leur place. »`,
-  `⏱ 1 min · DÉBUT DE L'ATELIER 2 (≈ 13 h 40)
+  `⏱ 1 min · DÉBUT DE L'ATELIER 2 (≈ 13 h 40 · SOBEYS : ≈ 9 h 40)
 
 VERSION CLIENT — Le cas change selon le client choisi sur la couverture.
 
@@ -8430,8 +8531,8 @@ SOBEYS —
 
 « Ces garde-fous, il faut les écrire quelque part, et dire qui les fait respecter. C'est l'objet du module 7… après la pause. »
 
-PAUSE — Annoncez 15 minutes (≈ 14 h 20).`,
-  `⏱ 1 min · DÉBUT DU MODULE 7 (≈ 14 h 35, au retour de la pause)
+PAUSE — Annoncez 15 minutes (≈ 14 h 20 · SOBEYS : ≈ 10 h 20).`,
+  `⏱ 1 min · DÉBUT DU MODULE 7 (≈ 14 h 35, au retour de la pause · SOBEYS : ≈ 10 h 35)
 
 OBJECTIF — Passer des principes à l'organisation : rôles, responsabilités, charte (contenu officiel du chapitre 5).
 
@@ -8447,6 +8548,8 @@ DIRE — « Colombie-Britannique, février 2024. Après le décès de sa grand-m
 
 LIEN — C'est la réponse au QCM 2 de ce matin, sur Léa.
 
+SOBEYS — Dites « de la matinée 1 » au lieu de « de ce matin ».
+
 TRANSITION — « Alors, qui fait quoi ? »`,
   `⏱ 5 min · SIX RÔLES
 
@@ -8459,6 +8562,8 @@ DIRE — Parcourez les six cartes, avec la correspondance à la Mutuelle :
 • Chaque employé : respecte la charte, utilise les outils approuvés, signale un problème.
 
 QUESTION — « Dans votre organisation, lesquels de ces rôles existent déjà, au moins de fait ? » Deux réponses au micro. Si un participant a répondu 5 au sondage de ce matin (règles d'usage), c'est le moment de lui donner la parole.
+
+SOBEYS — Dites « de la matinée 1 » au lieu de « de ce matin ».
 
 TRANSITION — « Ces rôles interviennent à des moments précis de la vie d'un projet. »`,
   `⏱ 4 min · CINQ POINTS DE CONTRÔLE (6 clics)
@@ -8480,6 +8585,8 @@ DIRE — « Une charte éthique IA tient en une page, en cinq rubriques. C'est l
 1. Nos principes : trois à cinq, reformulés avec nos mots (pas les dix de Montréal recopiés).
 2. Nos règles d'usage : permis, interdit, soumis à accord.
 3. Nos données : le feu tricolore de ce matin.
+
+SOBEYS — « de la matinée 1 » au lieu de « de ce matin ».
 4. Nos rôles : qui approuve, qui répond, à qui signaler.
 5. Notre suivi : incidents, indicateurs, date de révision.
 
@@ -8515,7 +8622,7 @@ DIRE — Relisez les cinq points.
 À VOTRE POSTE — « Qui, chez nous, peut arrêter un système d'IA qui dérape ? Si personne ne sait répondre, vous avez trouvé votre premier chantier. »
 
 TRANSITION — « Dernier atelier : votre mini-charte. »`,
-  `⏱ 1 min · DÉBUT DE L'ATELIER 3 (≈ 15 h)
+  `⏱ 1 min · DÉBUT DE L'ATELIER 3 (≈ 15 h · SOBEYS : ≈ 11 h)
 
 OBJECTIF — Élaborer une mini-charte éthique pour encadrer l'usage de l'IA en organisation (objectif officiel n° 5), puis la présenter et recevoir une rétroaction croisée.
 
@@ -8581,6 +8688,8 @@ ANIMATION — Collez le texte à copier dans le Chat. Lancez le minuteur.
 
 DIRE — « Avant de coller : aucun nom, aucun détail confidentiel. Puis lisez la critique… avec les réflexes de ce matin. L'IA peut se tromper sur la Loi 25 ! Gardez seulement ce qui vous convainc, et réécrivez une phrase. »
 
+SOBEYS — Dites « de la matinée 1 » au lieu de « de ce matin ».
+
 CE QU'ILS VONT OBSERVER — Des critiques souvent pertinentes (règles vagues, absence de recours, de date) ; parfois des obligations inventées ou des références légales approximatives : bon rappel du module 1.
 
 TRANSITION — « Présentations. »`,
@@ -8592,12 +8701,16 @@ VOTRE RÔLE — Synthétisez après chaque passage en une phrase, à partir de l
 
 SI PERSONNE NE SE PORTE VOLONTAIRE — Présentez vous-même une charte « à améliorer » (par exemple celle de la Mutuelle sans les règles 6 et 8) et demandez au groupe ce qui manque.
 
-TRANSITION — « Merci à nos volontaires. Il est temps de faire le bilan de la journée. »`,
-  `⏱ 3 min · CLÔTURE (≈ 15 h 45)
+TRANSITION — « Merci à nos volontaires. Il est temps de faire le bilan de la journée. »
+
+SOBEYS — Dites « le bilan de nos deux matinées ».`,
+  `⏱ 3 min · CLÔTURE (≈ 15 h 45 · SOBEYS : ≈ 11 h 45)
 
 OBJECTIF — Remettre en perspective le chemin parcouru.
 
 DIRE — « Une journée, huit modules. Ce matin : l'IA apprend d'exemples et prédit le probable, pas le vrai. Elle rend de vrais services dans tous les secteurs. Vous l'avez prise en flagrant délit. Puis les enjeux : biais, transparence, vie privée. Cet après-midi : la Loi 25 et six principes ; un cas de votre secteur, où un outil d'IA mal encadré dérape ; la gouvernance ; et votre charte. »
+
+SOBEYS — Dites plutôt : « Deux matinées, huit modules. À la matinée 1 : l'IA apprend d'exemples et prédit le probable, pas le vrai. Elle rend de vrais services dans tous les secteurs. Vous l'avez prise en flagrant délit. Puis les enjeux : biais, transparence, vie privée. À la matinée 2 : la Loi 25 et six principes ; un cas de votre secteur, où un outil d'IA mal encadré dérape ; la gouvernance ; et votre charte. »
 
 QUESTION — « Quel module vous servira le plus en rentrant ? » Deux ou trois réponses au micro.
 
@@ -8652,6 +8765,9 @@ DIRE — « Merci pour votre participation, vos analyses et vos chartes. Une phr
 
 CLÔTURE — « Bon retour, et bonne gouvernance ! »`,
 ];
+
+// Version light (« Télécharger › Version light (PDF) ») — 0-based page indices, written by the build.
+export const light: number[] = [0, 1, 3, 4, 5, 6, 7, 9, 10, 11, 12, 13, 14, 15, 16, 17, 19, 22, 23, 24, 25, 26, 27, 28, 29, 31, 38, 39, 40, 41, 43, 46, 47, 48, 49, 50, 52, 53, 54, 57, 66, 67, 68, 69, 70, 71, 73, 81, 84, 85, 86];
 
 // @@TIMERS-BEGIN
 // Minuteurs de la deck — généré par scripts/timers-manifest.mjs (page = index 0-based).

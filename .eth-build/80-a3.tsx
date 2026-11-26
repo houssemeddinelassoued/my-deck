@@ -295,7 +295,7 @@ export const __pages = [A3_Divider, A3_Brief, A3_Step1, A3_Step2, A3_Step3, A3_S
 
 // @@NOTES-BEGIN
 export const __notes = [
-  `⏱ 1 min · DÉBUT DE L'ATELIER 3 (≈ 15 h)
+  `⏱ 1 min · DÉBUT DE L'ATELIER 3 (≈ 15 h · SOBEYS : ≈ 11 h)
 
 OBJECTIF — Élaborer une mini-charte éthique pour encadrer l'usage de l'IA en organisation (objectif officiel n° 5), puis la présenter et recevoir une rétroaction croisée.
 
@@ -361,6 +361,8 @@ ANIMATION — Collez le texte à copier dans le Chat. Lancez le minuteur.
 
 DIRE — « Avant de coller : aucun nom, aucun détail confidentiel. Puis lisez la critique… avec les réflexes de ce matin. L'IA peut se tromper sur la Loi 25 ! Gardez seulement ce qui vous convainc, et réécrivez une phrase. »
 
+SOBEYS — Dites « de la matinée 1 » au lieu de « de ce matin ».
+
 CE QU'ILS VONT OBSERVER — Des critiques souvent pertinentes (règles vagues, absence de recours, de date) ; parfois des obligations inventées ou des références légales approximatives : bon rappel du module 1.
 
 TRANSITION — « Présentations. »`,
@@ -372,6 +374,8 @@ VOTRE RÔLE — Synthétisez après chaque passage en une phrase, à partir de l
 
 SI PERSONNE NE SE PORTE VOLONTAIRE — Présentez vous-même une charte « à améliorer » (par exemple celle de la Mutuelle sans les règles 6 et 8) et demandez au groupe ce qui manque.
 
-TRANSITION — « Merci à nos volontaires. Il est temps de faire le bilan de la journée. »`,
+TRANSITION — « Merci à nos volontaires. Il est temps de faire le bilan de la journée. »
+
+SOBEYS — Dites « le bilan de nos deux matinées ».`,
 ];
 // @@NOTES-END

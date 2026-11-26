@@ -103,7 +103,7 @@ const M2_Cases: Page = () => (
       </M2Case>
     </div>
     <Callout cls={A.in} title="Le revers de chaque réussite" tone="violet" icon="scale" size={26} style={{ position: 'absolute', left: 120, top: 870, width: 1680, padding: '14px 26px', ...dl(700) }}>
-      Qui vérifie l’erreur du système ? Qui a donné ses données ? Qui peut contester ? Ce sera notre après-midi.
+      Qui vérifie l’erreur du système ? Qui a donné ses données ? Qui peut contester ? Ce sera <ByClient apsm="notre après-midi" sobeys="notre deuxième matinée" />.
     </Callout>
   </Frame>
 );
@@ -380,6 +380,8 @@ OBJECTIF — Passer de la théorie aux usages réels.
 
 DIRE — « Module 2 : les applications concrètes. Quatre secteurs, ceux du programme : RH, santé, finance, marketing. Des réussites documentées. Deux démonstrations. Et les quatre projets d'IA de la Mutuelle des Érables, qui vont nous servir tout l'après-midi. »
 
+SOBEYS — Dites « qui vont nous servir jusqu'à la fin de la formation ».
+
 RYTHME — Environ 30 minutes, puis la pause.
 
 TRANSITION — « Faisons le tour des secteurs. »`,
@@ -388,6 +390,8 @@ TRANSITION — « Faisons le tour des secteurs. »`,
 OBJECTIF — Identifier des cas d'usage concrets dans différents secteurs (objectif officiel n° 2).
 
 DIRE — Un secteur par clic. Pour chacun, lisez les trois usages, puis la vigilance en rouge : c'est le fil qu'on tirera cet après-midi.
+
+SOBEYS — Dites « à la matinée 2 » au lieu de « cet après-midi ».
 → beat 1 : RH. « Rédiger des offres d'emploi inclusives, présélectionner des candidatures, répondre aux questions des employés. Vigilance : les biais dans le tri. »
 → beat 2 : Santé. « Aide au diagnostic en imagerie, transcription des notes cliniques, prévision de l'achalandage des urgences. Vigilance : des données parmi les plus sensibles, et la décision reste médicale. »
 → beat 3 : Finance et assurance. « Fraude en temps réel, risque de crédit ou d'assurance, lecture de documents. Vigilance : pouvoir expliquer un refus. »
@@ -461,6 +465,8 @@ TRANSITION — « Ces outils, la Mutuelle veut les utiliser. Voici ses quatre pr
   `⏱ 4 min · LE PROGRAMME IA DE LA MUTUELLE (4 clics)
 
 OBJECTIF — Poser les quatre projets du fil rouge, chacun avec sa question éthique. On les retrouvera tout l'après-midi.
+
+SOBEYS — Dites « à la matinée 2 » au lieu de « tout l'après-midi ».
 
 DIRE — Présentez les quatre cartes (elles apparaissent seules), puis un clic par question éthique :
 → beat 1 : P1, Léa, portée par Vincent. « Peut-elle promettre ? Le membre sait-il qu'il parle à une IA ? »

@@ -90,10 +90,10 @@ const CL_Merci: Page = () => (
     <Squares s={300} x={1400} y={330} delay={200} />
     <div style={{ position: 'absolute', left: 120, top: 380, width: 1100 }}>
       <h1 className={A.in} style={{ margin: 0, fontFamily: display, fontWeight: 700, fontSize: 150, lineHeight: 1, color: C.ink }}>
-        {LIGHT ? 'À bientôt !' : 'Merci !'}
+        {isLightExport() ? 'À bientôt !' : 'Merci !'}
       </h1>
       <p className={A.in} style={{ margin: '28px 0 0', fontSize: 36, lineHeight: 1.35, color: C.soft, ...dl(150) }}>
-        {LIGHT
+        {isLightExport()
           ? 'Avant la formation : créez vos comptes gratuits (Make, Google) et pensez à une tâche répétitive de votre travail. Le guide du participant explique tout.'
           : 'Votre avis compte : prenez trois minutes pour remplir l’évaluation de la formation.'}
       </p>

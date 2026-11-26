@@ -144,8 +144,10 @@ if (typeof window !== 'undefined') {
 const SLIDE_ID = '__SLIDE_ID__';
 const P = '__P__'; // CSS class prefix, unique per deck
 const DAY: number = __DAY__;
-// Version light (sent before the training): same pages minus QCM, exercises and ateliers.
-const LIGHT: boolean = __LIGHT__;
+// Version light: true while the deck page prints « Télécharger › Version light (PDF) »
+// (the core patch marks its print root). Pages use it to adapt the cover tag or closing text.
+const isLightExport = (): boolean =>
+  typeof document !== 'undefined' && !!document.getElementById('os-print-root')?.hasAttribute('data-osd-light');
 // Combined 2-day deck: pages after DAY_SPLIT belong to day 2 (0 = single-day deck).
 const DAY_SPLIT: number = __DAY_SPLIT__;
 const useDay = (): number => {

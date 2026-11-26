@@ -130,6 +130,33 @@ let kit = fs
   console.log(`  clients: logos {${logos.length ? CLIENT_IDS.filter((i) => logos.some((l) => l.startsWith(i))).join(', ') : '—'}} · guides {${guides.length ? CLIENT_IDS.filter((i) => guides.some((g) => g.startsWith(i))).join(', ') : '—'}}`);
 }
 
+// ─── Version light (à envoyer avant la formation) ─────────────────────────────
+// No separate deck: index.tsx exports `light` = 0-based indices of the pages of the light version,
+// recomputed at every build, so the light version always follows the main deck. The deck page's
+// « Télécharger › Version light (PDF) » (core patch) prints only those pages, never the notes,
+// in the client version chosen on the cover (APSM / Sobeys). Left out: the three ateliers, pages
+// whose code uses <QcmPage>, <AtelierPage> or kind="qcm|exercice|atelier" (Sections kept), LIGHT_DROP.
+const LIGHT_DROP_PARTS = new Set(['30-a1.tsx', '60-a2.tsx', '80-a3.tsx']); // the three ateliers
+const LIGHT_DROP = new Set(['OP_Roundtable', 'OP_Quiz0', 'CL_Quiz', 'CL_Action']);
+const LIGHT_KEEP = new Set(['OP_HowWeWork']); // mentions kind="qcm" in its cards, but useful pre-reading
+const lightIdx = (() => {
+  const pageCode = (code, name) => {
+    const i = code.indexOf(`const ${name}: Page`);
+    if (i < 0) throw new Error(`page ${name}: definition not found`);
+    const rest = code.slice(i + 1);
+    const j = rest.search(/\n(const |\/\/ ─── )/);
+    return j < 0 ? rest : rest.slice(0, j);
+  };
+  const keep = (p, name) => {
+    if (LIGHT_KEEP.has(name)) return true;
+    if (LIGHT_DROP_PARTS.has(p.file) || LIGHT_DROP.has(name)) return false;
+    const c = pageCode(p.code, name);
+    if (/<Section\b/.test(c)) return true;
+    return !/<QcmPage\b|<AtelierPage\b|kind="(qcm|exercice|atelier)"/.test(c);
+  };
+  return parts.flatMap((p) => p.pages.map((n) => keep(p, n))).flatMap((k, i) => (k ? [i] : []));
+})();
+
 const text = [
   kit,
   '',
@@ -161,6 +188,9 @@ ${pages.map((n) => `  ${n},`).join('\n')}
 export const notes: (string | undefined)[] = [
 ${notes.map((n) => `  ${n},`).join('\n')}
 ];
+
+// Version light (« Télécharger › Version light (PDF) ») — 0-based page indices, written by the build.
+export const light: number[] = [${lightIdx.join(', ')}];
 `,
 ].join('\n');
 
@@ -172,57 +202,7 @@ writeDeck(path.join(dest, 'index.tsx'), text); // + saved design, client logo, M
 
 // Upper-case drive letter, or Vite loads React twice (q:/ vs Q:/) and every page fails to render.
   execSync(`node scripts/timers-manifest.mjs ${path.basename(dest)}`, { cwd: ROOT.replace(/^([a-z]):/, (_, d) => `${d.toUpperCase()}:`), stdio: 'inherit' });
-console.log(`→ slides/${DECK.id}/index.tsx: ${pages.length} pages, ${text.split('\n').length} lines`);
-
-// ─── Version light (à envoyer avant la formation) ─────────────────────────────
-// slides/introduction-ia-ethique-light : mêmes sources, sans QCM, exercices, ateliers ni pages
-// d'animation, et sans notes du formateur. Client par défaut : LIGHT.client (le bouton de la
-// couverture permet toujours de changer). PDF : node scripts/light-pdf.mjs introduction-ia-ethique-light …
-const LIGHT = { id: 'introduction-ia-ethique-light', p: 'ethl', client: 'sobeys', title: 'Introduction à l’IA et à l’éthique — IA114 · Version light (avant la formation)' };
-const LIGHT_DROP_PARTS = new Set(['30-a1.tsx', '60-a2.tsx', '80-a3.tsx']); // the three ateliers
-const LIGHT_DROP = new Set(['OP_Roundtable', 'OP_Quiz0', 'CL_Quiz', 'CL_Action']);
-const LIGHT_KEEP = new Set(['OP_HowWeWork']); // mentions kind="qcm" in its cards, but useful pre-reading
-{
-  const pageCode = (code, name) => {
-    const i = code.indexOf(`const ${name}: Page`);
-    if (i < 0) throw new Error(`page ${name}: definition not found`);
-    const rest = code.slice(i + 1);
-    const j = rest.search(/\n(const |\/\/ ─── )/);
-    return j < 0 ? rest : rest.slice(0, j);
-  };
-  const keep = (p, name) => {
-    if (LIGHT_KEEP.has(name)) return true;
-    if (LIGHT_DROP_PARTS.has(p.file) || LIGHT_DROP.has(name)) return false;
-    const c = pageCode(p.code, name);
-    if (/<Section\b/.test(c)) return true;
-    return !/<QcmPage\b|<AtelierPage\b|kind="(qcm|exercice|atelier)"/.test(c);
-  };
-  const lightPages = parts.flatMap((p) => p.pages.filter((n) => keep(p, n)));
-  const rep = (s, a, b) => {
-    if (!s.includes(a)) throw new Error(`light: anchor missing: ${a}`);
-    return s.replace(a, b);
-  };
-  let kitL = rep(kit, `const SLIDE_ID = '${DECK.id}';`, `const SLIDE_ID = '${LIGHT.id}';`);
-  kitL = rep(kitL, `const P = '${DECK.p}';`, `const P = '${LIGHT.p}';`);
-  // Same photos, logos and guides as the full deck: imported from its folder (no copy).
-  kitL = kitL.replaceAll("from './assets/", `from '../${DECK.id}/assets/`);
-  kitL = rep(kitL, "const DEFAULT_CLIENT: ClientId = 'apsm';", `const DEFAULT_CLIENT: ClientId = '${LIGHT.client}';`);
-  const lightText = [
-    kitL,
-    '',
-    ...parts.map((p) => `// ═══ ${p.file.replace(/\.tsx$/, '')} ${'═'.repeat(Math.max(4, 70 - p.file.length))}\n\n${p.code}\n`),
-    text
-      .slice(text.indexOf('// ─── Styles (collected above'))
-      .replace(/export const meta: SlideMeta = \{[\s\S]*?\n\};/, `export const meta: SlideMeta = {\n  title: ${JSON.stringify(LIGHT.title)},\n  createdAt: '${DECK.createdAt}',\n  theme: 'technologia',\n};`)
-      .replace(/export default \[[\s\S]*?\] satisfies Page\[\];/, `export default [\n${lightPages.map((n) => `  ${n},`).join('\n')}\n] satisfies Page[];`)
-      .replace(/export const notes: \(string \| undefined\)\[\] = \[[\s\S]*?\n\];\n/, `export const notes: (string | undefined)[] = [\n${lightPages.map(() => '  undefined,').join('\n')}\n];\n`),
-  ].join('\n');
-  const destL = path.join(ROOT, 'slides', LIGHT.id);
-  fs.mkdirSync(destL, { recursive: true });
-  writeDeck(path.join(destL, 'index.tsx'), lightText);
-  execSync(`node scripts/timers-manifest.mjs ${LIGHT.id}`, { cwd: ROOT.replace(/^([a-z]):/, (_, d) => `${d.toUpperCase()}:`), stdio: 'inherit' });
-  console.log(`→ slides/${LIGHT.id}/index.tsx: ${lightPages.length} pages (version light, client par défaut : ${LIGHT.client}, sans notes)`);
-}
+console.log(`→ slides/${DECK.id}/index.tsx: ${pages.length} pages, ${text.split('\n').length} lines · version light : ${lightIdx.length} pages`);
 
 if (process.argv[2] !== '--no-tsc') {
   try {

@@ -409,7 +409,7 @@ export const __pages = [A2_Divider, A2_Case1, A2_Case2, A2_Step1, A2_Step2, A2_D
 
 // @@NOTES-BEGIN
 export const __notes = [
-  `⏱ 1 min · DÉBUT DE L'ATELIER 2 (≈ 13 h 40)
+  `⏱ 1 min · DÉBUT DE L'ATELIER 2 (≈ 13 h 40 · SOBEYS : ≈ 9 h 40)
 
 VERSION CLIENT — Le cas change selon le client choisi sur la couverture.
 
@@ -525,6 +525,6 @@ SOBEYS —
 
 « Ces garde-fous, il faut les écrire quelque part, et dire qui les fait respecter. C'est l'objet du module 7… après la pause. »
 
-PAUSE — Annoncez 15 minutes (≈ 14 h 20).`,
+PAUSE — Annoncez 15 minutes (≈ 14 h 20 · SOBEYS : ≈ 10 h 20).`,
 ];
 // @@NOTES-END

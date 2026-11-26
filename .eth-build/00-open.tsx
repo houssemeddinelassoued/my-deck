@@ -5,7 +5,7 @@ const OP_Cover: Page = () => (
     <img src={logoStack} alt="Technologia" className={A.fade} style={{ position: 'absolute', left: 112, top: 78, height: 150, display: 'block' }} />
     <div style={{ position: 'absolute', left: 120, top: 318, width: 980 }}>
       <Eyebrow cls={A.in} size={28}>
-        Formation IA114 · 1 jour
+        <ByClient apsm="Formation IA114 · 1 jour" sobeys="Formation IA114 · 2 matinées" />
       </Eyebrow>
       <h1
         className={A.in}
@@ -153,7 +153,7 @@ const ObjStep = ({ i, h, tone, verb, when, children }: { i: number; h: number; t
     </div>
     <div className={A.fade} style={{ position: 'absolute', left: 26, bottom: 24, ...dl(600 + i * 140) }}>
       <Tag tone={when === 'Matin' ? 'blue' : 'green'} size={20}>
-        {when}
+        <ByClient apsm={when} sobeys={when === 'Matin' ? 'Matinée 1' : 'Matinée 2'} />
       </Tag>
     </div>
   </div>
@@ -161,7 +161,9 @@ const ObjStep = ({ i, h, tone, verb, when, children }: { i: number; h: number; t
 
 const OP_Objectives: Page = () => (
   <Frame mod={0}>
-    <Title>Ce que vous saurez faire ce soir</Title>
+    <Title>
+      <ByClient apsm="Ce que vous saurez faire ce soir" sobeys="Ce que vous saurez faire après les deux matinées" />
+    </Title>
     <Lede>Cinq objectifs, du plus simple au plus engageant.</Lede>
     <ObjStep i={1} h={400} tone="blue" verb="COMPRENDRE" when="Matin">
       Les concepts clés : IA, machine learning, deep learning
@@ -217,7 +219,62 @@ const HalfCol = ({ x, title, sub, d, children }: { x: number; title: string; sub
   </div>
 );
 
+const ProgramColsSobeys = () => (
+  <>
+    <HalfCol x={120} title="Matinée 1" sub="Fondamentaux de l’IA" d={0}>
+      <ProgRow t="9:00" icon="users" d={150}>
+        Accueil et tour de table
+      </ProgRow>
+      <ProgRow t="9:15" n={1} d={210}>
+        Qu’est-ce que l’intelligence artificielle ?
+      </ProgRow>
+      <ProgRow t="10:05" n={2} d={270}>
+        Applications concrètes et démonstrations
+      </ProgRow>
+      <ProgBreak t="10:35" d={330}>
+        Pause
+      </ProgBreak>
+      <ProgRow t="10:50" n={3} tone="yellow" d={390}>
+        Atelier 1 · Explorer des outils IA
+      </ProgRow>
+      <ProgRow t="11:30" n={4} tone="violet" d={450}>
+        Les grands enjeux éthiques
+      </ProgRow>
+      <ProgBreak t="12:00" d={510}>
+        Fin de la matinée 1
+      </ProgBreak>
+    </HalfCol>
+    <HalfCol x={984} title="Matinée 2" sub="Éthique et gouvernance" d={150}>
+      <ProgRow t="9:00" n={5} tone="violet" d={300}>
+        Rappel, Loi 25 et principes de l’IA responsable
+      </ProgRow>
+      <ProgRow t="9:40" n={6} tone="yellow" d={360}>
+        Atelier 2 · Étude de cas éthique
+      </ProgRow>
+      <ProgBreak t="10:20" d={420}>
+        Pause
+      </ProgBreak>
+      <ProgRow t="10:35" n={7} tone="violet" d={480}>
+        Vers une gouvernance de l’IA
+      </ProgRow>
+      <ProgRow t="11:00" n={8} tone="yellow" d={540}>
+        Atelier 3 · Mini-charte éthique
+      </ProgRow>
+      <ProgRow t="11:45" icon="flag" d={600}>
+        Bilan, plan d’action et évaluation
+      </ProgRow>
+      <ProgBreak t="12:00" d={660}>
+        Fin de la formation
+      </ProgBreak>
+    </HalfCol>
+  </>
+);
+
 const ProgramCols = () => (
+  useClient() === 'sobeys' ? <ProgramColsSobeys /> : <ProgramColsApsm />
+);
+
+const ProgramColsApsm = () => (
   <>
     <HalfCol x={120} title="Matin" sub="Fondamentaux de l’IA" d={0}>
       <ProgRow t="9:00" icon="users" d={150}>
@@ -270,7 +327,9 @@ const ProgramCols = () => (
 
 const OP_Program: Page = () => (
   <Frame mod={0}>
-    <Title>Programme de la journée</Title>
+    <Title>
+      <ByClient apsm="Programme de la journée" sobeys="Programme des deux matinées" />
+    </Title>
     <ProgramCols />
     <div className={A.fade} style={{ position: 'absolute', left: 120, top: 900, display: 'flex', alignItems: 'center', gap: 28, fontSize: 24, color: C.soft, ...dl(800) }}>
       <span style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
@@ -423,20 +482,22 @@ const OP_Mutuelle: Page = () => (
 // ─── The question of the day ────────────────────────────────────────────────
 const OP_Question: Page = () => (
   <Frame mod={0} kind="cas" label="Ouverture · Fil rouge">
-    <Title>La question qui nous suivra toute la journée</Title>
+    <Title>
+      <ByClient apsm="La question qui nous suivra toute la journée" sobeys="La question qui nous suivra pendant les deux matinées" />
+    </Title>
     <div className={A.in} style={{ position: 'absolute', left: 120, top: 260, width: 1680, ...dl(100) }}>
       <Quote by="Nathalie, au comité de direction de la Mutuelle">
         Comment profiter de l’IA <Hl>sans trahir la confiance</Hl> de nos membres et de nos employés ?
       </Quote>
     </div>
     <div style={{ position: 'absolute', left: 120, top: 520, width: 1680, display: 'grid', gridTemplateColumns: 'repeat(3, 540px)', columnGap: 30 }}>
-      <Card tone="blue" icon="bulb" title="Ce matin" size={26} cls={A.in} style={{ height: 300, ...dl(300) }}>
+      <Card tone="blue" icon="bulb" title={<ByClient apsm="Ce matin" sobeys="Matinée 1 · début" />} size={26} cls={A.in} style={{ height: 300, ...dl(300) }}>
         Comprendre ce qu’est l’IA, ce qu’elle sait faire, et l’essayer vous-même.
       </Card>
-      <Card tone="violet" icon="scale" title="Avant et après le dîner" size={26} cls={A.in} style={{ height: 300, ...dl(450) }}>
+      <Card tone="violet" icon="scale" title={<ByClient apsm="Avant et après le dîner" sobeys="Fin de la matinée 1 et début de la matinée 2" />} size={26} cls={A.in} style={{ height: 300, ...dl(450) }}>
         Repérer les risques : biais, opacité, données. Connaître la Loi 25.
       </Card>
-      <Card tone="yellow" icon="shieldCheck" title="Cet après-midi" size={26} cls={A.in} style={{ height: 300, ...dl(600) }}>
+      <Card tone="yellow" icon="shieldCheck" title={<ByClient apsm="Cet après-midi" sobeys="Matinée 2" />} size={26} cls={A.in} style={{ height: 300, ...dl(600) }}>
         Juger un cas de votre secteur, puis écrire les règles du jeu : une mini-charte.
       </Card>
     </div>
@@ -452,7 +513,7 @@ const OP_Quiz0: Page = () => (
     <Qcm
       multi
       q="Parmi ces affirmations sur l’IA, lesquelles sont vraies ?"
-      explain="L’IA est utile et déjà partout, mais elle n’est ni neutre ni infaillible. Et au Québec, la loi encadre déjà les décisions automatisées. C’est tout le programme de la journée."
+      explain="L’IA est utile et déjà partout, mais elle n’est ni neutre ni infaillible. Et au Québec, la loi encadre déjà les décisions automatisées. C’est tout le programme de la formation."
     >
       <Opt why="Piège ! Une IA apprend à partir de données produites par des humains. Elle hérite de leurs déséquilibres : on le verra au module 4.">
         Une IA est neutre, puisque c’est une machine
@@ -484,11 +545,19 @@ VERSION CLIENT — AVANT LA SESSION, cliquez le logo du client sur cette page : 
 
 OBJECTIF — Installer un climat chaleureux et poser le cadre : une journée pour passer de « on entend parler de l'IA partout » à « je comprends ce qu'elle fait, ce qu'elle risque, et comment l'encadrer ».
 
+SOBEYS — Deux matinées de trois heures (matinée 1, puis matinée 2), pas une journée. Même objectif pour l'ensemble.
+
 DIRE — « Bonjour et bienvenue à la formation Introduction à l'IA et à l'éthique. Ce matin, on comprend ce qu'est l'intelligence artificielle et ce qu'elle sait faire ; on l'essaie. Cet après-midi, on regarde ses risques en face, la Loi 25, et on écrit ensemble les règles du jeu. »
+
+SOBEYS — Dites plutôt : « Bonjour et bienvenue à la formation Introduction à l'IA et à l'éthique. À la matinée 1, on comprend ce qu'est l'intelligence artificielle et ce qu'elle sait faire ; on l'essaie ; puis on ouvre le dossier des risques. À la matinée 2, on regarde la Loi 25, on juge un cas de votre secteur, et on écrit ensemble les règles du jeu. »
 
 Montrer l'animation : « Une balance : d'un côté la performance de l'IA, de l'autre la confiance. Toute la journée, on va chercher l'équilibre. »
 
+SOBEYS — Dites « Pendant nos deux matinées » au lieu de « Toute la journée ».
+
 LOGISTIQUE — Classe virtuelle : horaire 9 h – 16 h, pauses vers 10 h 35 et 14 h 20, dîner 12 h – 13 h. Vérifiez le son, la caméra et l'accès au Chat. Demandez à chacun d'ouvrir dès maintenant un assistant d'IA dans un autre onglet ou sur un second écran : un compte gratuit ChatGPT, Copilot, Gemini ou Claude suffit. Évaluation à la fin de la journée.
+
+SOBEYS — Deux matinées de 9 h à 12 h, sans dîner : pause vers 10 h 35 à la matinée 1, vers 10 h 20 à la matinée 2. Confirmez la date et l'heure de la matinée 2. Demandez de garder le document de l'atelier 1 (les trois constats) : on s'en resservira à la matinée 2. L'évaluation a lieu à la fin de la matinée 2.
 
 TRANSITION — « Avant d'entrer dans le sujet, quelques mots sur moi. »`,
   `⏱ 2 min
@@ -507,6 +576,8 @@ TRANSITION — « À votre tour maintenant. »`,
   `⏱ 7 min (30 secondes par personne, ajuster selon la taille du groupe)
 
 OBJECTIF — Connaître le groupe, ses secteurs et son humeur face à l'IA, pour adapter les exemples de la journée.
+
+SOBEYS — « Exemples de la journée » = exemples des deux matinées.
 
 ANIMATION — Lancez le minuteur. Appelez chaque personne par son prénom (ordre de la liste des participants) ; elle ouvre son micro et répond aux deux questions. Notez dans un document à vous les secteurs (RH, santé, finance, marketing, public…) : vous y reviendrez au module 2. Notez aussi les mots d'humeur : « inquiétude » et « méfiance » sont de très bonnes portes d'entrée pour l'après-midi.
 
@@ -529,14 +600,20 @@ DIRE — « Cinq marches, qui reprennent les objectifs de la formation. »
 4. APPLIQUER — « La Loi 25 et les principes de l'IA responsable. »
 5. ÉLABORER — « Votre mini-charte éthique, la dernière marche, celle qui engage. »
 
-TRANSITION — « Voici comment la journée s'organise. »`,
+TRANSITION — « Voici comment la journée s'organise. »
+
+SOBEYS — Dites « Voici comment nos deux matinées s'organisent. »`,
   `⏱ 1 min
 
 OBJECTIF — Donner de la visibilité sur le déroulement.
 
 DIRE — « Le matin, les fondamentaux : ce qu'est l'IA, ses applications, avec des démonstrations, puis l'atelier 1 où vous explorez vous-mêmes un agent conversationnel et un outil de génération. Avant le dîner, on ouvre le dossier éthique : biais, transparence, vie privée. »
 
+SOBEYS — Dites plutôt : « La matinée 1 : les fondamentaux, ce qu'est l'IA, ses applications avec des démonstrations, puis l'atelier 1 où vous explorez vous-mêmes un agent conversationnel et un outil de génération. En fin de matinée, on ouvre le dossier éthique : biais, transparence, vie privée. »
+
 « L'après-midi : la Loi 25 et les principes de l'IA responsable, puis l'atelier 2, une étude de cas de votre secteur. Après la pause, la gouvernance : qui fait quoi dans une organisation. Et l'atelier 3 : votre mini-charte. »
+
+SOBEYS — Dites plutôt : « La matinée 2 : la Loi 25 et les principes de l'IA responsable, puis l'atelier 2, une étude de cas de votre secteur. Après la pause, la gouvernance : qui fait quoi dans une organisation. Et l'atelier 3 : votre mini-charte. Chaque matinée va de 9 h à 12 h. »
 
 À SOULIGNER — Les modules en jaune sont les ateliers : chacun sur son poste, guidé pas à pas, avec un minuteur. Les numéros en haut à droite de chaque page sont cliquables : ils vous ramènent au début d'un module.
 
@@ -580,6 +657,8 @@ TRANSITION — « Et voici la question que se pose Nathalie. »`,
 DIRE — Lisez la citation lentement : « Comment profiter de l'IA sans trahir la confiance de nos membres et de nos employés ? »
 
 « Ce matin, on comprend et on essaie. Autour du dîner, on repère les risques. Cet après-midi, on juge un cas de votre secteur et on écrit les règles du jeu. »
+
+SOBEYS — Dites plutôt : « À la matinée 1, on comprend, on essaie, puis on repère les risques. À la matinée 2, on juge un cas de votre secteur et on écrit les règles du jeu. »
 
 INTERACTION — « Dans votre organisation, qui se pose cette question aujourd'hui ? » Une ou deux réponses au micro suffisent.
 

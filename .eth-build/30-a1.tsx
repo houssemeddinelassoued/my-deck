@@ -365,6 +365,8 @@ DIRE — « Votre mission : prendre l'IA en flagrant délit. Chacun sur son post
 
 « Votre livrable : trois constats, notés dans un document à vous (Word, Bloc-notes, OneNote, papier). On s'en resservira cet après-midi. »
 
+SOBEYS — Dites « à la matinée 2 ». Rappelez de garder ce document : il sert à nouveau à la prochaine matinée.
+
 RÈGLE D'OR — « Aucune donnée réelle : ni nom, ni dossier, ni information de santé. Tous les textes sont fictifs : je les colle dans le Chat au début de chaque étape. »
 
 GUIDE — Le lien « Guide du participant » (bas de page) ouvre le PDF du client choisi : collez ce lien dans le Chat pour que chacun ait toutes les demandes à copier.

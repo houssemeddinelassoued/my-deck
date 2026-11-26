@@ -734,6 +734,8 @@ OBJECTIF — Annoncer le plan du module.
 
 DIRE — « Module 1 : qu'est-ce que l'intelligence artificielle ? Le but n'est pas de faire de vous des spécialistes, mais que vous compreniez assez bien la machine pour savoir quand lui faire confiance… et quand vous en méfier. C'est la base de toute l'éthique de cet après-midi. »
 
+SOBEYS — Dites « de la matinée 2 » au lieu de « de cet après-midi ».
+
 « Au programme : une définition et un peu d'histoire ; comment une machine apprend ; la différence entre IA, machine learning et deep learning ; un panorama des technologies ; et comment un outil comme ChatGPT écrit ses réponses. »
 
 RYTHME — Environ 50 minutes.

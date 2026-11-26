@@ -267,7 +267,7 @@ export const __pages = [M7_Divider, M7_AirCanada, M7_Roles, M7_Lifecycle, M7_Cha
 
 // @@NOTES-BEGIN
 export const __notes = [
-  `⏱ 1 min · DÉBUT DU MODULE 7 (≈ 14 h 35, au retour de la pause)
+  `⏱ 1 min · DÉBUT DU MODULE 7 (≈ 14 h 35, au retour de la pause · SOBEYS : ≈ 10 h 35)
 
 OBJECTIF — Passer des principes à l'organisation : rôles, responsabilités, charte (contenu officiel du chapitre 5).
 
@@ -283,6 +283,8 @@ DIRE — « Colombie-Britannique, février 2024. Après le décès de sa grand-m
 
 LIEN — C'est la réponse au QCM 2 de ce matin, sur Léa.
 
+SOBEYS — Dites « de la matinée 1 » au lieu de « de ce matin ».
+
 TRANSITION — « Alors, qui fait quoi ? »`,
   `⏱ 5 min · SIX RÔLES
 
@@ -295,6 +297,8 @@ DIRE — Parcourez les six cartes, avec la correspondance à la Mutuelle :
 • Chaque employé : respecte la charte, utilise les outils approuvés, signale un problème.
 
 QUESTION — « Dans votre organisation, lesquels de ces rôles existent déjà, au moins de fait ? » Deux réponses au micro. Si un participant a répondu 5 au sondage de ce matin (règles d'usage), c'est le moment de lui donner la parole.
+
+SOBEYS — Dites « de la matinée 1 » au lieu de « de ce matin ».
 
 TRANSITION — « Ces rôles interviennent à des moments précis de la vie d'un projet. »`,
   `⏱ 4 min · CINQ POINTS DE CONTRÔLE (6 clics)
@@ -316,6 +320,8 @@ DIRE — « Une charte éthique IA tient en une page, en cinq rubriques. C'est l
 1. Nos principes : trois à cinq, reformulés avec nos mots (pas les dix de Montréal recopiés).
 2. Nos règles d'usage : permis, interdit, soumis à accord.
 3. Nos données : le feu tricolore de ce matin.
+
+SOBEYS — « de la matinée 1 » au lieu de « de ce matin ».
 4. Nos rôles : qui approuve, qui répond, à qui signaler.
 5. Notre suivi : incidents, indicateurs, date de révision.
 

@@ -11,7 +11,9 @@ const CLMod = ({ n, tone, title, d, children }: { n: number; tone: Tone; title: 
 
 const CL_Journey: Page = () => (
   <Frame mod={9} kind="synthese">
-    <Title>Une journée, huit modules : le chemin parcouru</Title>
+    <Title>
+      <ByClient apsm="Une journée, huit modules : le chemin parcouru" sobeys="Deux matinées, huit modules : le chemin parcouru" />
+    </Title>
     <div style={{ position: 'absolute', left: 120, top: 220, width: 1680, display: 'grid', gridTemplateColumns: 'repeat(4, 397px)', rowGap: 26, columnGap: 30 }}>
       <CLMod n={1} tone="blue" title="Qu’est-ce que l’IA ?" d={100}>
         Elle apprend d’exemples et prédit le probable, pas le vrai.
@@ -50,7 +52,7 @@ const CL_Quiz: Page = () => (
     <Qcm
       multi
       q="Lesquelles de ces pratiques relèvent d’une IA responsable ?"
-      explain="Dire qu’une IA intervient, tester les résultats, garder un humain capable de réviser, encadrer les outils : c’est la réponse à la question de Nathalie, ce matin."
+      explain={<>Dire qu’une IA intervient, tester les résultats, garder un humain capable de réviser, encadrer les outils : c’est la réponse à la question de Nathalie, <ByClient apsm="ce matin" sobeys="posée dès la première matinée" />.</>}
     >
       <Opt ok why="Oui : c’est la transparence, exigée en Europe pour les agents conversationnels et attendue partout.">
         Informer les membres qu’ils échangent avec une IA
@@ -219,11 +221,13 @@ export const __pages = [CL_Journey, CL_Quiz, CL_Action, CL_Resources, CL_Credits
 
 // @@NOTES-BEGIN
 export const __notes = [
-  `⏱ 3 min · CLÔTURE (≈ 15 h 45)
+  `⏱ 3 min · CLÔTURE (≈ 15 h 45 · SOBEYS : ≈ 11 h 45)
 
 OBJECTIF — Remettre en perspective le chemin parcouru.
 
 DIRE — « Une journée, huit modules. Ce matin : l'IA apprend d'exemples et prédit le probable, pas le vrai. Elle rend de vrais services dans tous les secteurs. Vous l'avez prise en flagrant délit. Puis les enjeux : biais, transparence, vie privée. Cet après-midi : la Loi 25 et six principes ; un cas de votre secteur, où un outil d'IA mal encadré dérape ; la gouvernance ; et votre charte. »
+
+SOBEYS — Dites plutôt : « Deux matinées, huit modules. À la matinée 1 : l'IA apprend d'exemples et prédit le probable, pas le vrai. Elle rend de vrais services dans tous les secteurs. Vous l'avez prise en flagrant délit. Puis les enjeux : biais, transparence, vie privée. À la matinée 2 : la Loi 25 et six principes ; un cas de votre secteur, où un outil d'IA mal encadré dérape ; la gouvernance ; et votre charte. »
 
 QUESTION — « Quel module vous servira le plus en rentrant ? » Deux ou trois réponses au micro.
 

@@ -166,7 +166,7 @@ const bodyFor = (cl) => `
 <section class="np">
   <h2>Sommaire</h2>
   <ol class="toc">
-    <li>Avant de commencer</li><li>Le programme de la journée</li><li>Le fil rouge : la Mutuelle des Érables</li>
+    <li>Avant de commencer</li><li>${cl === 'sobeys' ? 'Le programme des deux matinées' : 'Le programme de la journée'}</li><li>Le fil rouge : la Mutuelle des Érables</li>
     <li>Mémo · Qu’est-ce que l’IA ?</li><li>Mémo · Applications concrètes</li><li>Atelier 1 · Explorer des outils d’IA</li>
     <li>Mémo · Les grands enjeux éthiques</li><li>Mémo · Loi 25 et IA responsable</li><li>Atelier 2 · Étude de cas éthique</li>
     <li>Mémo · Vers une gouvernance de l’IA</li><li>Atelier 3 · Votre mini-charte éthique IA</li><li>Votre plan d’action</li>
@@ -184,10 +184,27 @@ const bodyFor = (cl) => `
     <li>Gardez ce guide ouvert : toutes les demandes à copier y sont. Le formateur les colle aussi dans le Chat.</li>
     <li>Ouvrez un document à vous (Word, OneNote, Bloc-notes ou papier) pour vos notes et vos livrables.</li>
   </ul>
-  ${BOX('warn', 'Règle d’or de la journée', 'Aucune donnée réelle dans les outils : ni nom, ni dossier, ni information de santé. Tous les cas de la formation sont fictifs, sauf les études de cas publiques et documentées.')}
+  ${BOX('warn', (cl === 'sobeys' ? 'Règle d’or de la formation' : 'Règle d’or de la journée'), 'Aucune donnée réelle dans les outils : ni nom, ni dossier, ni information de santé. Tous les cas de la formation sont fictifs, sauf les études de cas publiques et documentées.')}
 
-  <h2 style="margin-top:12pt"><span class="n">2</span>Le programme de la journée</h2>
-  <table>
+  <h2 style="margin-top:12pt"><span class="n">2</span>${cl === 'sobeys' ? 'Le programme des deux matinées' : 'Le programme de la journée'}</h2>
+  ${cl === 'sobeys' ? `  <table>
+    <tr><th style="width:14%">Heure</th><th style="width:10%">Module</th><th>Contenu</th></tr>
+    <tr><td colspan="3"><b>Matinée 1</b> · Fondamentaux de l’IA (9 h – 12 h)</td></tr>
+    <tr><td>9 h 00</td><td>—</td><td>Accueil, tour de table, fil rouge</td></tr>
+    <tr><td>9 h 15</td><td>1</td><td>Qu’est-ce que l’intelligence artificielle ? Définition, historique, IA, machine learning, deep learning</td></tr>
+    <tr><td>10 h 05</td><td>2</td><td>Applications concrètes : RH, santé, finance, marketing ; démonstrations</td></tr>
+    <tr><td>10 h 35</td><td>—</td><td><i>Pause</i></td></tr>
+    <tr><td>10 h 50</td><td>3</td><td><b>Atelier 1</b> · Explorer des outils d’IA</td></tr>
+    <tr><td>11 h 30</td><td>4</td><td>Les grands enjeux éthiques : biais, transparence, vie privée</td></tr>
+    <tr><td>12 h 00</td><td>—</td><td><i>Fin de la matinée 1</i></td></tr>
+    <tr><td colspan="3"><b>Matinée 2</b> · Éthique et gouvernance (9 h – 12 h)</td></tr>
+    <tr><td>9 h 00</td><td>5</td><td>Rappel, Loi 25 et principes de l’IA responsable</td></tr>
+    <tr><td>9 h 40</td><td>6</td><td><b>Atelier 2</b> · Étude de cas éthique</td></tr>
+    <tr><td>10 h 20</td><td>—</td><td><i>Pause</i></td></tr>
+    <tr><td>10 h 35</td><td>7</td><td>Vers une gouvernance de l’IA</td></tr>
+    <tr><td>11 h 00</td><td>8</td><td><b>Atelier 3</b> · Votre mini-charte éthique IA</td></tr>
+    <tr><td>11 h 45</td><td>—</td><td>Bilan, plan d’action, évaluation</td></tr>
+  </table>` : `  <table>
     <tr><th style="width:14%">Heure</th><th style="width:10%">Module</th><th>Contenu</th></tr>
     <tr><td>9 h 00</td><td>—</td><td>Accueil, tour de table, fil rouge</td></tr>
     <tr><td>9 h 15</td><td>1</td><td>Qu’est-ce que l’intelligence artificielle ? Définition, historique, IA, machine learning, deep learning</td></tr>
@@ -202,7 +219,7 @@ const bodyFor = (cl) => `
     <tr><td>14 h 35</td><td>7</td><td>Vers une gouvernance de l’IA</td></tr>
     <tr><td>15 h 00</td><td>8</td><td><b>Atelier 3</b> · Votre mini-charte éthique IA</td></tr>
     <tr><td>15 h 45</td><td>—</td><td>Bilan, plan d’action, évaluation</td></tr>
-  </table>
+  </table>`}
 </section>
 
 <section style="margin-top:16pt">
@@ -210,7 +227,7 @@ const bodyFor = (cl) => `
   <div class="row">
     <div style="flex:1.1">
       <p class="lede">Une mutuelle d’assurance de personnes <b>fictive</b> : vie, invalidité, assurance collective. 650 employés, 310 000 membres, siège à Trois-Rivières. Elle manipule chaque jour des données parmi les plus sensibles : santé, revenus, famille.</p>
-      ${BOX('tip', 'La question de la journée', '« Comment profiter de l’IA <b>sans trahir la confiance</b> de nos membres et de nos employés ? » (Nathalie, au comité de direction)')}
+      ${BOX('tip', (cl === 'sobeys' ? 'La question des deux matinées' : 'La question de la journée'), '« Comment profiter de l’IA <b>sans trahir la confiance</b> de nos membres et de nos employés ? » (Nathalie, au comité de direction)')}
     </div>
     <div style="flex:1">${FIG('troisRivieres', '52mm', 'Trois-Rivières')}</div>
   </div>

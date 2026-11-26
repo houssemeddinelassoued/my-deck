@@ -4385,10 +4385,37 @@ index 826ce5c..4401dda 100644
  
  export function cssVarsToString(vars: Record<string, string>): string {
 diff --git a/src/app/lib/export-pdf.ts b/src/app/lib/export-pdf.ts
-index 7ce2b2b..ab37709 100644
+index 7ce2b2b..e3b3a86 100644
 --- a/src/app/lib/export-pdf.ts
 +++ b/src/app/lib/export-pdf.ts
-@@ -99,10 +99,32 @@ export type PdfExportProgress = {
+@@ -64,19 +64,16 @@ const PRINT_STYLES = `
+     transform: scale(0.5);
+     transform-origin: top left;
+   }
+-  /* Chromium serializes box-shadow and CSS gradients as PDF transparency
+-     groups / soft masks. macOS Preview re-composites those on every page
+-     turn, causing 0.5–2s per-page lag. Strip them in the print container
+-     only — gradients on pseudo-elements via CSS (DOM walk can't reach them),
+-     inline-style gradients via neutralizeGradientBackgrounds() below. */
++  /* Project patch: the PDF must look like the slide. Upstream stripped every
++     box-shadow and CSS gradient here (macOS Preview page-turn lag), which
++     erased the decks' navy side panels, gradient bars and inset-shadow
++     frames. Keep them, and force background printing on every element so the
++     browser's « Graphiques d'arrière-plan » setting can't drop them either. */
+   #${PRINT_ROOT_ID} *,
+   #${PRINT_ROOT_ID} *::before,
+   #${PRINT_ROOT_ID} *::after {
+-    box-shadow: none !important;
+-  }
+-  #${PRINT_ROOT_ID} *::before,
+-  #${PRINT_ROOT_ID} *::after {
+-    background-image: none !important;
++    -webkit-print-color-adjust: exact !important;
++    print-color-adjust: exact !important;
+   }
+ }
+ `;
+@@ -99,10 +96,32 @@ export type PdfExportProgress = {
  const ANIMATION_TIMEOUT_MS = 15_000;
  const POLL_INTERVAL_MS = 100;
  
@@ -4421,7 +4448,27 @@ index 7ce2b2b..ab37709 100644
  ): Promise<void> {
    const pages = slide.default ?? [];
    if (pages.length === 0) return;
-@@ -154,11 +176,23 @@ export async function exportSlideAsPdf(
+@@ -117,6 +136,11 @@ export async function exportSlideAsPdf(
+   const root = document.createElement('div');
+   root.id = PRINT_ROOT_ID;
+   root.setAttribute('aria-hidden', 'true');
++  // Light export: decks may adapt a page (cover tag, closing text) by checking this attribute.
++  if (options.light) root.setAttribute('data-osd-light', '');
++  // A deck that exports `light` (page indices, written by its build) defines its light version;
++  // otherwise activity pages are detected after rendering (isActivityFrame).
++  const lightSet = options.light && Array.isArray(slide.light) ? new Set(slide.light) : null;
+   document.body.appendChild(root);
+ 
+   onProgress?.({ phase: 'processing', current: 0, total, percent: 0 });
+@@ -128,6 +152,7 @@ export async function exportSlideAsPdf(
+   for (let i = 0; i < pages.length; i++) {
+     const Page = pages[i];
+     if (!Page) continue;
++    if (lightSet && !lightSet.has(i)) continue;
+     const host = document.createElement('div');
+     host.className = 'os-print-frame';
+     host.setAttribute('data-osd-canvas', '');
+@@ -154,11 +179,23 @@ export async function exportSlideAsPdf(
    await nextPaint();
  
    const previousTitle = document.title;
@@ -4431,7 +4478,7 @@ index 7ce2b2b..ab37709 100644
    try {
      await waitForFonts();
  
-+    if (options.light) {
++    if (options.light && !lightSet) {
 +      // Drop activity pages (pages keep their original numbers, so day/module labels stay right).
 +      for (let i = frames.length - 1; i >= 0; i--) {
 +        const frame = frames[i];
@@ -4446,7 +4493,7 @@ index 7ce2b2b..ab37709 100644
      // Poll per-page animation completion. The bar tracks how many pages have
      // settled, which matches "page X of N is being processed" mental model.
      const deadline = performance.now() + ANIMATION_TIMEOUT_MS;
-@@ -167,10 +201,10 @@ export async function exportSlideAsPdf(
+@@ -167,15 +204,14 @@ export async function exportSlideAsPdf(
        onProgress?.({
          phase: 'processing',
          current: settled,
@@ -4460,6 +4507,94 @@ index 7ce2b2b..ab37709 100644
        await sleep(POLL_INTERVAL_MS);
      }
  
+     await waitForDataWaitfor(root);
+-    neutralizeGradientBackgrounds(root);
+     await sleep(100); // flush layout
+ 
+     onProgress?.({ phase: 'printing', current: total, total, percent: 99 });
+@@ -191,82 +227,6 @@ export async function exportSlideAsPdf(
+   }
+ }
+ 
+-// Strip inline-style gradients from background-image so Chromium does not
+-// emit them as PDF soft masks. url(...) backgrounds are preserved.
+-function neutralizeGradientBackgrounds(root: HTMLElement): void {
+-  const elements = root.querySelectorAll<HTMLElement>('*');
+-  for (const el of elements) {
+-    const styles = getComputedStyle(el);
+-    const bg = styles.backgroundImage;
+-    if (!bg?.includes('gradient(')) continue;
+-
+-    const result = removeGradientBackgroundLayers(bg);
+-    const size = styles.backgroundSize;
+-    const position = styles.backgroundPosition;
+-    const repeat = styles.backgroundRepeat;
+-
+-    el.style.backgroundImage = result.backgroundImage;
+-    if (result.keptIndices.length === 0 || result.keptIndices.length === result.layerCount)
+-      continue;
+-
+-    el.style.backgroundSize = reindexBackgroundLayerValues(size, result.keptIndices);
+-    el.style.backgroundPosition = reindexBackgroundLayerValues(position, result.keptIndices);
+-    el.style.backgroundRepeat = reindexBackgroundLayerValues(repeat, result.keptIndices);
+-  }
+-}
+-
+-function removeGradientBackgroundLayers(backgroundImage: string): {
+-  backgroundImage: string;
+-  keptIndices: number[];
+-  layerCount: number;
+-} {
+-  const layers = splitBackgroundImageLayers(backgroundImage);
+-  const keptLayers: string[] = [];
+-  const keptIndices: number[] = [];
+-
+-  for (let i = 0; i < layers.length; i++) {
+-    const layer = layers[i];
+-    if (!layer) continue;
+-    const value = layer.trim();
+-    if (value.startsWith('url(') && !value.includes('gradient(')) {
+-      keptLayers.push(value);
+-      keptIndices.push(i);
+-    }
+-  }
+-
+-  return {
+-    backgroundImage: keptLayers.length > 0 ? keptLayers.join(', ') : 'none',
+-    keptIndices,
+-    layerCount: layers.length,
+-  };
+-}
+-
+-function reindexBackgroundLayerValues(value: string, keptIndices: number[]): string {
+-  const layers = splitBackgroundImageLayers(value);
+-  if (layers.length === 0) return value;
+-
+-  return keptIndices.map((index) => layers[index % layers.length]).join(', ');
+-}
+-
+-function splitBackgroundImageLayers(backgroundImage: string): string[] {
+-  const layers: string[] = [];
+-  let depth = 0;
+-  let layerStart = 0;
+-
+-  for (let i = 0; i < backgroundImage.length; i++) {
+-    const char = backgroundImage[i];
+-    if (char === '(') depth++;
+-    if (char === ')') depth = Math.max(0, depth - 1);
+-    if (char === ',' && depth === 0) {
+-      layers.push(backgroundImage.slice(layerStart, i).trim());
+-      layerStart = i + 1;
+-    }
+-  }
+-
+-  layers.push(backgroundImage.slice(layerStart).trim());
+-  return layers;
+-}
+-
+ function waitForAfterPrint(timeoutMs = 60_000): Promise<void> {
+   return new Promise((resolve) => {
+     const cleanup = () => {
 diff --git b/src/app/lib/folder-lock.ts b/src/app/lib/folder-lock.ts
 new file mode 100644
 index 0000000..3b5221c
@@ -5166,7 +5301,7 @@ index 0000000..b4e21a6
 +  return d.last;
 +}
 diff --git a/src/app/lib/sdk.ts b/src/app/lib/sdk.ts
-index 082e3c4..cebbadb 100644
+index 082e3c4..3946335 100644
 --- a/src/app/lib/sdk.ts
 +++ b/src/app/lib/sdk.ts
 @@ -9,6 +9,13 @@ export type SlideMeta = {
@@ -5183,12 +5318,14 @@ index 082e3c4..cebbadb 100644
  };
  
  export type SlideModule = {
-@@ -17,15 +24,21 @@ export type SlideModule = {
+@@ -17,15 +24,23 @@ export type SlideModule = {
    design?: DesignSystem;
    // Index-aligned with `default`.
    notes?: (string | undefined)[];
 +  // Countdown timers of the deck, listed by scripts/timers-manifest.mjs.
 +  timers?: { id: string; label: string; page: number; minutes: number }[];
++  /** Project patch: 0-based indices of the pages of the « version light » (written by the deck build). */
++  light?: number[];
    transition?: SlideTransition;
  };
  
